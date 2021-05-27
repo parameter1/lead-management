@@ -71,9 +71,15 @@ services:
       <<: *server-env
       # @todo need to determine how to port the GAM service below....
       GAM_SERVICE_URL: ${GAM_SERVICE_URL-http://docker.for.mac.host.internal:9017}
+
+      BRIGHTCOVE_ACCOUNT_ID: ${BRIGHTCOVE_ACCOUNT_ID}
+      BRIGHTCOVE_APP_ID: ${BRIGHTCOVE_APP_ID}
+      BRIGHTCOVE_SECRET: ${BRIGHTCOVE_SECRET}
+      EXPOSED_PORT: 9288
+      HOST_NAME: ${HOST_NAME}
+      GAM_GRAPHQL_URI: ${GAM_GRAPHQL_URI-http://google-ad-manager}
       MONGO_DSN: ${MONGO_DSN-mongodb://mongo:27017/leads-graph}
       REDIS_DSN: ${REDIS_DSN-redis://redis:6379/0}
-      GAM_GRAPHQL_URI: ${GAM_GRAPHQL_URI-http://google-ad-manager}
     ports:
       - "9288:80"
     depends_on:

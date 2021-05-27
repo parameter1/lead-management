@@ -3,13 +3,13 @@ const http = require('http');
 const bootService = require('@parameter1/terminus/boot-service');
 const { log } = require('@parameter1/terminus/utils');
 const newrelic = require('./newrelic');
-// const createSchema = require('./graphql/schema');
-// const graphql = require('./graphql/server');
+const createSchema = require('./graphql/schema');
+const graphql = require('./graphql/server');
 const server = require('./server');
 const mongoose = require('./mongodb/connection');
 const redis = require('./redis');
 const pkg = require('../package.json');
-const { HOST, PORT } = require('./env');
+const { EXPOSED_PORT, HOST, PORT } = require('./env');
 
 process.on('unhandledRejection', (e) => {
   newrelic.noticeError(e);
@@ -27,14 +27,15 @@ bootService({
   server: http.createServer(server),
   host: HOST,
   port: PORT,
+  exposedPort: EXPOSED_PORT,
   onError: newrelic.noticeError.bind(newrelic),
   onStart: async () => {
-    await Promise.all([
+    const [schema] = await Promise.all([
+      createSchema(),
       mongoose.then((m) => log(`MongoDB connected ${m.client.s.url}`)),
       redis.connect().then(() => log('Redis connected')),
     ]);
-    // const schema = await createSchema();
-    // graphql({ app: server, schema, path: '/graph' });
+    graphql({ app: server, schema, path: '/graphql' });
   },
   onSignal: () => Promise.all([
     mongoose.close().then(() => log('MongoDB disconnected.')),

@@ -6,7 +6,13 @@ const {
 } = require('envalid');
 
 module.exports = cleanEnv(process.env, {
+  BRIGHTCOVE_ACCOUNT_ID: str({ desc: 'The Brightcove account ID.' }),
+  BRIGHTCOVE_APP_ID: str({ desc: 'The Brightcove API APP ID.' }),
+  BRIGHTCOVE_SECRET: str({ desc: 'The Brightcove API secret.' }),
+  EXPOSED_PORT: port({ desc: 'The exposed port that the server will run on.', default: 80 }),
   HOST: str({ desc: 'The host that the service will run on.', default: '0.0.0.0' }),
+  HOST_NAME: str({ desc: 'The host name of the server.' }),
+  GAM_GRAPHQL_URI: str({ desc: 'The GAM GraphQL API URI.' }),
   MONGO_DSN: str({ desc: 'The MongoDB DSN to connect to.' }),
   NEW_RELIC_ENABLED: bool({ desc: 'Whether New Relic is enabled.', default: true, devDefault: false }),
   NEW_RELIC_LICENSE_KEY: str({ desc: 'The license key for New Relic.', devDefault: '(unset)' }),
