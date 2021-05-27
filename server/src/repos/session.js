@@ -95,8 +95,8 @@ module.exports = {
     }));
 
     const memberKey = `${SETTINGS.userPrefix}:${uid}`;
-    const addUserId = redis.saddAsync(memberKey, sid);
-    const updateExpires = redis.expireAsync(memberKey, SETTINGS.expires);
+    const addUserId = redis.sadd(memberKey, sid);
+    const updateExpires = redis.expire(memberKey, SETTINGS.expires);
     await Promise.all([addUserId, updateExpires]);
 
     // Return the public session.

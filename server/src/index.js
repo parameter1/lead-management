@@ -31,7 +31,10 @@ bootService({
   onError: newrelic.noticeError.bind(newrelic),
   onStart: async () => {
     const [schema] = await Promise.all([
-      createSchema(),
+      createSchema().then((s) => {
+        log('GraphQL remote schemas created.');
+        return s;
+      }),
       mongoose.then((m) => log(`MongoDB connected ${m.client.s.url}`)),
       redis.connect().then(() => log('Redis connected')),
     ]);
@@ -39,13 +42,13 @@ bootService({
   },
   onSignal: () => Promise.all([
     mongoose.close().then(() => log('MongoDB disconnected.')),
-    redis.disconnect().then(() => log('Redis disconnected')),
+    redis.quit().then(() => log('Redis disconnected')),
   ]),
   onHealthCheck: () => Promise.all([
     redis.ping().then(() => 'Redis pinged successfully.'),
     pingMongo().then(() => 'MongoDB pinged successfully.'),
   ]),
-}).then(() => log('Server ready.')).catch((e) => setImmediate(() => {
+}).catch((e) => setImmediate(() => {
   newrelic.noticeError(e);
   throw e;
 }));

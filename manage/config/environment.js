@@ -22,7 +22,7 @@ module.exports = function(environment) {
       // when it is created
     },
     apollo: {
-      apiURL: '/graph',
+      apiURL: '/graphql',
     },
     behaviorAPI : {
       propertyId: '5ae0d9270f265f923a9a72c4',

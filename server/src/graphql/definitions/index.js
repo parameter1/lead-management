@@ -1,5 +1,7 @@
 const { gql } = require('apollo-server-express');
 
+const user = require('./user');
+
 module.exports = gql`
 
 directive @apiValue(path: String, as: ApiValueDirectiveAsEnum) on FIELD_DEFINITION
@@ -61,5 +63,7 @@ input TypeAheadInput {
 input TypeAheadOptionsInput {
   position: String!
 }
+
+${user}
 
 `;
