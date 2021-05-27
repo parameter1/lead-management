@@ -1,0 +1,24 @@
+#import 'leads-manage/gql/fragments/tracked-campaign/list'
+
+fragment TrackedCampaignViewFragment on TrackedCampaign {
+  ...TrackedCampaignListFragment
+  name
+  hash
+  notes
+  range {
+    start
+    end
+  }
+  email {
+    id
+    enabled
+  }
+  customer {
+    id
+    name
+    children {
+      id
+      name
+    }
+  }
+}

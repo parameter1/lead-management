@@ -1,0 +1,29 @@
+query SearchCustomers($pagination: PaginationInput, $search: TypeAheadInput!, $options: TypeAheadOptionsInput) {
+  searchCustomers(pagination: $pagination, search: $search, options: $options) {
+    totalCount
+    edges {
+      node {
+        id
+        name
+        createdAt
+        updatedAt
+        externalSource {
+          identifier
+        }
+        linkedAdvertisers {
+          googleAdManager {
+            nodes {
+              id
+              name
+            }
+          }
+        }
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

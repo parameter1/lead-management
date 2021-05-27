@@ -1,0 +1,52 @@
+<div class="card-header">
+  <ul class="nav nav-pills card-header-pills" role="tablist">
+    <li class="nav-item">{{#link-to "reports.line-items.form" class="nav-link" role="tab"}}Leads{{/link-to}}</li>
+  </ul>
+</div>
+{{progress-bar show=isLoading class="progress-md"}}
+<div class="card-body pb-0">
+  <a class="btn btn-lg btn-success mb-3" role="button" href="/export/line-item/{{lineitem.hash}}/form/leads">{{entypo-icon "download"}} Download Form/MQL Leads</a>
+</div>
+
+{{#fetch-more
+  query=observable
+  edges=model.edges
+  hasNextPage=model.pageInfo.hasNextPage
+  endCursor=model.pageInfo.endCursor
+  on-fetch-start=(route-action "showLoading")
+  on-fetch-end=(route-action "hideLoading")
+  resultKey=resultKey
+  as |fetch|
+}}
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">
+      <h4 class="card-title">
+        Title: {{lineitem.form.name}}
+        <a href={{lineitem.form.previewUrl}} target="_blank" rel="noopener">{{entypo-icon "popup" class="ml-1"}}</a>
+      </h4>
+      <h5 class="mb-0 text-muted">Total Results: {{model.totalCount}}</h5>
+    </li>
+  </ul>
+
+  <div class="card-body pb-0">
+    <div class="row">
+      {{#each fetch.nodes as |item|}}
+        {{line-item/form-entry-card
+          entry=item
+          canEdit=false
+          showEntryNo=false
+          class="mb-4"
+        }}
+      {{/each}}
+    </div>
+  </div>
+
+  {{#if fetch.hasNextPage}}
+    <div class="card-footer">
+      <button class="btn btn-primary btn-lg" disabled={{fetch.isFetching}} {{action fetch.actions.loadMore}}>
+        {{entypo-icon "download"}} {{#if fetch.isFetching}}Loading...{{else}}Load More{{/if}}
+      </button>
+    </div>
+  {{/if}}
+
+{{/fetch-more}}

@@ -1,0 +1,14 @@
+query EditFormLineItemDetails($input: ModelIdInput!) {
+  formLineItem(input: $input) {
+    id
+    name
+    requiredLeads
+    totalValue
+    notes
+    archived
+    range {
+      start
+      end
+    }
+  }
+}

@@ -1,0 +1,17 @@
+#import 'leads-manage/gql/fragments/identity/view'
+
+query EditEmailLineItemInactiveLeads($input: ModelIdInput!, $pagination: PaginationInput, $sort: IdentitySortInput) {
+  emailLineItemInactiveIdentities(input: $input, pagination: $pagination, sort: $sort) {
+    totalCount
+    edges {
+      node {
+        ...IdentityViewFragment
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

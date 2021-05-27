@@ -1,0 +1,14 @@
+query EditEmailLineItemQualifications($input: ModelIdInput!) {
+  emailLineItem(input: $input) {
+    id
+    requiredFields
+    excludedFields
+    identityFilters {
+      id
+      key
+      label
+      matchType
+      terms
+    }
+  }
+}

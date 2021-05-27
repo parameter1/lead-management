@@ -1,0 +1,13 @@
+{{#list-controls/button
+  disabled=isDisabled
+  class=buttonClass
+  click=(action "onClick")
+}}
+  <span class="d-none d-sm-inline">
+    Filters
+  </span>
+  {{#if (not isDisabled)}}
+    <span class="badge badge-light">{{ activeFilterCount }}</span>
+  {{/if}}
+  {{entypo-icon (if isOpen "cross" "menu")}}
+{{/list-controls/button}}

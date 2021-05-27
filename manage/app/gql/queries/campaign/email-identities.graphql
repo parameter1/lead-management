@@ -1,0 +1,17 @@
+#import 'leads-manage/gql/fragments/identity/view'
+
+query CampaignEditEmailIdentities($id: String!, $pagination: PaginationInput, $sort: IdentitySortInput) {
+  emailCampaignIdentities(id: $id, pagination: $pagination, sort: $sort) {
+    totalCount
+    edges {
+      node {
+        ...IdentityViewFragment
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

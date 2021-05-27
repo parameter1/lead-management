@@ -1,0 +1,16 @@
+<label>{{label}}</label>
+<fieldset disabled={{disabled}}>
+  {{#power-calendar-range
+    center=center
+    selected=range
+    onCenterChange=(action (mut center) value="moment")
+    onSelect=(action "emitChange" value="moment")
+    as |calendar|
+  }}
+    {{calendar.nav}}
+    {{calendar.days}}
+  {{/power-calendar-range}}
+  <button class="btn btn-secondary btn-sm mt-2" disabled={{noDatesSelected}} {{action "clear"}}>
+    {{entypo-icon name="cross"}} Clear
+  </button>
+</fieldset>

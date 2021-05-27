@@ -1,0 +1,30 @@
+#import 'leads-manage/gql/fragments/identity/view'
+
+query LeadReportEmailIdentityExport($hash: String!, $pagination: PaginationInput, $sort: IdentitySortInput) {
+  reportEmailIdentityExport(hash: $hash, pagination: $pagination, sort: $sort) {
+    totalCount
+    edges {
+      node {
+        identity {
+          ...IdentityViewFragment
+        }
+        sends {
+          id
+          sentDate
+          name
+        }
+        urls {
+          id
+          values {
+            resolved
+          }
+        }
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

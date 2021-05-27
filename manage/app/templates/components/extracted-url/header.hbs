@@ -1,0 +1,14 @@
+{{#if model.errorMessage}}
+  {{entypo-icon "warning" class="text-warning"}}
+  {{model.errorMessage}}
+{{else}}
+  {{entypo-icon "link"}}
+  <a href={{model.values.resolved}} title={{model.meta.description}} target="_blank" rel="noopener noreferer">
+    {{#if model.title}}
+      {{{ model.title }}}
+    {{else}}
+      (No Title Found)
+    {{/if}}
+  </a>
+{{/if}}
+<small>({{model.host.value}})</small>

@@ -1,0 +1,7 @@
+#import 'leads-manage/gql/fragments/line-item/email/links'
+
+query EditEmailLineItemDeploymentLinks($input: ModelIdInput!) {
+  emailLineItem(input: $input) {
+    ...EmailLineItemLinksFragment
+  }
+}

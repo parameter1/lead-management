@@ -1,0 +1,10 @@
+{{entypo-icon "aircraft-take-off"}}
+{{#if hasRun}}
+  {{#if result.contentCount}}
+    Found {{format-number result.contentCount "0,0"}} Content Items
+  {{else}}
+    No Matching Content Found
+  {{/if}}
+{{else}}
+  {{#if isRunning}}Testing...{{else}}Test Query{{/if}}
+{{/if}}

@@ -1,0 +1,29 @@
+{{#bs-modal show=true size="large" onHidden=(route-action "transitionTo" "customer.list.gam-advertisers") as |modal|}}
+  {{#modal.header}}
+    <h5 class="modal-title">Link {{model.name}}</h5>
+    <button {{action modal.actions.hide}} type="button" class="close" aria-label="Close">
+      {{entypo-icon "cross"}}
+    </button>
+  {{/modal.header}}
+  {{#modal.body}}
+    <form id="link-gam-advertiser-to-customer" class="row" {{action (action "link") on="submit"}}>
+      <div class="col-md-6">
+        <div class="form-group mb-0">
+          <label>Customer</label>
+          {{type-ahead
+            dropdownClass="in-modal-dropdown"
+            placeholder="Begin typing to find a customer..."
+            disabled=isActionRunning
+            type="customer"
+            selected=model.customer
+            onChange=(action (mut model.customer))
+          }}
+          <small class="form-text text-muted">Select the Leads customer to link with {{model.name}} in GAM.</small>
+        </div>
+      </div>
+    </form>
+  {{/modal.body}}
+  {{#modal.footer}}
+    {{model-save-button form="link-gam-advertiser-to-customer" disabled=isActionRunning}}
+  {{/modal.footer}}
+{{/bs-modal}}

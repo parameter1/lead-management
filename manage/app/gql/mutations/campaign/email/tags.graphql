@@ -1,0 +1,10 @@
+mutation CampaignEditEmailTags($input: EmailCampaignTagsInput!) {
+  emailCampaignTags(input: $input) {
+    id
+    tags {
+      id
+      name
+    }
+    urlCount
+  }
+}

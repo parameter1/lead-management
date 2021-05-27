@@ -1,0 +1,89 @@
+<div class="col-lg-6 col-xl-7">
+  <div class="row">
+
+    <div class="col-12">
+      <div class="form-group">
+        <label for="line-item-name">Line Item Name {{required-field-label}}</label>
+        <input type="text" value={{model.name}} onchange={{action "setName"}} required="true" class="form-control" id="line-item-name" aria-describedby="line-item-name-help">
+        <small id="line-item-name-help" class="form-text text-muted">A descriptive name for this line item. It will appear in lists, the dashboard and in reports.</small>
+      </div>
+    </div>
+
+  </div>
+  <div class="row">
+
+    <div class="col-6">
+      <div class="form-group">
+        <label for="line-item-total-leads">Total Leads {{required-field-label}}</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">#</span>
+          </div>
+          <input type="number" value={{model.requiredLeads}} onchange={{action "setRequiredLeads"}} min="1" class="form-control" required="true" id="line-item-total-leads" aria-describedby="line-item-total-leads-help">
+        </div>
+        <small id="line-item-total-leads-help" class="form-text text-muted">The number of qualified leads needed to fulfill this line item.</small>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="form-group">
+        <label for="line-item-value">Total Value {{required-field-label}}</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">$</span>
+          </div>
+          <input type="number" value={{model.totalValue}} onchange={{action "setTotalValue"}} min="0" class="form-control" required="true" id="line-item-value" aria-describedby="line-item-value-help">
+        </div>
+        <small id="line-item-value-help" class="form-text text-muted">The <em>total</em> value of this line item, e.g. $2,000.</small>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <label for="line-item-notes">Notes</label>
+        <textarea rows="3" onchange={{action "setNotes"}} class="form-control" id="line-item-notes" aria-describedby="line-item-notes-help">{{model.notes}}</textarea>
+        <small id="line-item-notes-help" class="form-text text-muted">Additional information about this line item.</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <div class="custom-control custom-checkbox">
+          {{input type="checkbox" checked=model.archived class="custom-control-input" id="line-item-archived" change=(action "setArchived")}}
+          <label class="custom-control-label" for="line-item-archived">Archived?</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="col-lg-6 col-xl-5 d-flex justify-content-center">
+  <div class="form-group mb-0">
+    <label>Date Range {{required-field-label}}</label>
+    {{#power-calendar-range
+      center=center
+      selected=dateRange
+
+      onCenterChange=(action (mut center) value="moment")
+      onSelect=(action "setDateRange" value="moment")
+      as |calendar|
+    }}
+      {{calendar.nav}}
+      {{calendar.days}}
+    {{/power-calendar-range}}
+    <p class="form-text mb-0 text-muted">
+      {{#if (and model.range.start model.range.end)}}
+        {{moment-format model.range.start "MMM Do, YYYY"}}
+        -
+        {{moment-format model.range.end "MMM Do, YYYY"}}
+      {{else}}
+        Select a date range...
+      {{/if}}
+    </p>
+
+  </div>
+</div>

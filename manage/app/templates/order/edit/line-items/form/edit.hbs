@@ -1,0 +1,39 @@
+{{#bs-modal show=true size="xl" backdrop="static" onClose=(route-action "transitionTo" "order.edit.line-items") as |modal|}}
+  {{#modal.header}}
+    <ul class="nav nav-pills">
+      <li class="nav-item">
+        {{#link-to "order.edit.line-items.form.edit.index" class="nav-link"}}
+          {{entypo-icon "pie-chart"}}
+          Overview
+        {{/link-to}}
+      </li>
+      <li class="nav-item">
+        {{#link-to "order.edit.line-items.form.edit.leads" class="nav-link"}}
+          {{entypo-icon "users"}}
+          Leads
+        {{/link-to}}
+      </li>
+      <li class="nav-item">
+        {{#link-to "order.edit.line-items.form.edit.qualifications" class="nav-link"}}
+          {{entypo-icon "check"}}
+          Qualifications
+        {{/link-to}}
+      </li>
+      <li class="nav-item">
+        {{#link-to "order.edit.line-items.form.edit.details" class="nav-link"}}
+          {{entypo-icon "list"}}
+          Details
+        {{/link-to}}
+      </li>
+    </ul>
+    <button {{action modal.actions.hide}} type="button" class="close" aria-label="Close">
+      {{entypo-icon "cross"}}
+    </button>
+  {{/modal.header}}
+  {{outlet}}
+  {{#bs-modal/footer}}
+    {{#link-to (concat "reports.line-items." model.type) model.hash class="btn btn-lg btn-info" role="button"}}
+      {{entypo-icon "pie-chart"}} Report
+    {{/link-to}}
+  {{/bs-modal/footer}}
+{{/bs-modal}}

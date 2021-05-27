@@ -1,0 +1,7 @@
+#import 'leads-manage/gql/fragments/authentication'
+
+mutation loginUser($input: LoginInput!) {
+	loginUser(input: $input) {
+		...AuthenticationFragment
+	}
+}

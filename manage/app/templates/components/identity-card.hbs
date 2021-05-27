@@ -1,0 +1,45 @@
+<div class="card mnh-100">
+  <div class="card-body d-flex flex-column">
+    {{#if canEdit}}
+      <p class="card-text mb-1">
+        {{identity-card/badge inactive=_isInactive domainExcluded=identity.domainExcluded}}
+      </p>
+    {{/if}}
+    <small class="card-text text-muted">{{ identity.emailAddress }}</small>
+    <h5 class="card-title mb-1">
+      <strong>
+        {{ identity.givenName}} {{ identity.familyName}}
+      </strong>
+    </h5>
+
+    {{#each identityAttributes.cardBlocks as |block|}}
+      {{identity-card/text identity=identity title=block.title fields=block.fields}}
+    {{/each}}
+
+    {{#if canEdit}}
+      <div class="dropup mt-auto align-self-end">
+        <button class="btn btn-info dropdown-toggle" disabled={{identity.domainExcluded}} type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{entypo-icon "cog"}}
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+          {{#if user.isAdmin}}
+            {{identity-card/action
+              labelSuffix="Globally"
+              inactive=_isInactiveGlobally
+              on-click=(action "toggleGlobalActivation")
+            }}
+          {{/if}}
+          {{#if customerId}}
+            {{identity-card/action labelSuffix="for Customer" inactive=_isInactiveCustomer on-click=(action "toggleCustomerActivation")}}
+          {{/if}}
+          {{#if campaignId}}
+            {{identity-card/action labelSuffix="for Campaign" inactive=_isInactiveCampaign on-click=(action "toggleCampaignActivation")}}
+          {{/if}}
+          {{#if lineItemId}}
+            {{identity-card/action labelSuffix="for Line Item" inactive=_isInactiveLineItem on-click=(action "toggleLineItemActivation")}}
+          {{/if}}
+        </div>
+      </div>
+    {{/if}}
+  </div>
+</div>

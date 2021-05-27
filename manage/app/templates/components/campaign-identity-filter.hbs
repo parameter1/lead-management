@@ -1,0 +1,26 @@
+<div class="card-header">{{title}}</div>
+<div class="card-body">
+  {{#each filters as |filter index|}}
+    {{campaign-identity-filter/item
+      dropdownClass=dropdownClass
+      triggerClass=triggerClass
+      label=filter.label
+      terms=filter.terms
+      matchType=filter.matchType
+      class="mb-3"
+      on-destroy=(action "removeFilter" index)
+      on-change=(action "triggerChange")
+    }}
+  {{/each}}
+  <div class="dropdown">
+    <button type="button" class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown">
+      {{entypo-icon "circle-with-plus"}} Add
+    </button>
+    <div class="dropdown-menu">
+      {{#each identityAttributes.fields as |field|}}
+        <a class="dropdown-item" href="javascript:void(0);" {{action "addFilter" field}}>{{ field.label }}</a>
+      {{/each}}
+    </div>
+  </div>
+</div>
+

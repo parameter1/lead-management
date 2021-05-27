@@ -1,0 +1,27 @@
+query CampaignEditAdMetrics($input: ModelIdInput!) {
+  campaign(input: $input) {
+    id
+    adMetrics {
+      id
+      enabled
+      excludedGAMLineItemIds
+    }
+    gamLineItems(input: { limit: 500 }) {
+      nodes {
+        id
+        name
+      }
+    }
+    customer {
+      id
+      linkedAdvertisers {
+        googleAdManager {
+          nodes {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+}

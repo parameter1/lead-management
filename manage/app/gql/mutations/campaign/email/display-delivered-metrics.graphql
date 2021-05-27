@@ -1,0 +1,6 @@
+mutation CampaignEditEmailDisplayDeliveredMetrics($input: CampaignDisplayDeliveredMetricsInput!) {
+  emailCampaignDisplayDeliveredMetrics(input: $input) {
+    id
+    displayDeliveredMetrics
+  }
+}

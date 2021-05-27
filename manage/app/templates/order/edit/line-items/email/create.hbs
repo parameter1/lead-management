@@ -1,0 +1,113 @@
+{{#bs-modal show=true size="xl" backdrop="static" onHidden=(route-action "transitionTo" "order.edit.line-items") as |modal|}}
+  {{#modal.header}}
+    <h5 class="modal-title">{{entypo-icon "email"}} Create Email Line Item for <strong>{{order.fullName}}</strong></h5>
+    <button {{action modal.actions.hide}} type="button" class="close" aria-label="Close">
+      {{entypo-icon "cross"}}
+    </button>
+  {{/modal.header}}
+  {{progress-bar class="progress-md" show=isActionRunning}}
+  <form {{action (action "create" model) on="submit"}}>
+    {{#modal.body}}
+      {{line-item/details-card
+        class="mb-3"
+        model=model
+        onDateChange=(action "setDateRange")
+      }}
+
+      <div class="card mb-3">
+        <div class="card-header"><strong>{{entypo-icon "mail"}} Email Criteria</strong></div>
+        <div class="card-body">
+
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label>Gather leads from the following email categories...</label>
+                {{#type-ahead
+                  placeholder="Begin typing to find a category... e.g. ien or blasts"
+                  type="email-category"
+                  multiple=true
+                  dropdownClass="in-modal-dropdown"
+                  field="fullName"
+                  selected=model.categories
+                  onChange=(action "setCategories")
+                  closeOnSelect=false as |category|
+                }}
+                  {{category.fullName}}
+                {{/type-ahead}}
+                <small class="form-text text-muted">Leaving empty will pull from <em>all</em> deployments. Individual email sends and links can be excluded later.</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="form-group mb-lg-0">
+                <label>Where links are tagged with...</label>
+                {{type-ahead
+                  placeholder="Begin typing to find a tag... e.g. pr or video"
+                  type="tag"
+                  multiple=true
+                  dropdownClass="in-modal-dropdown"
+                  selected=model.tags
+                  onChange=(action "setTags")
+                }}
+                <small class="form-text text-muted">Leave empty to include all links.</small>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group mb-0">
+                {{line-item/link-types
+                  dropdownClass="in-modal-dropdown"
+                  linkTypes=model.linkTypes
+                  onChange=(action "setLinkTypes")
+                }}
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><strong>{{entypo-icon "check"}} Qualification Criteria</strong></div>
+        <div class="card-body">
+
+          <div class="row">
+            <div class="col-lg-6">
+              {{line-item/required-fields
+                dropdownClass="in-modal-dropdown"
+                requiredFields=model.requiredFields
+                onChange=(action "setRequiredFields")
+              }}
+            </div>
+            <div class="col-lg-6">
+              {{line-item/excluded-fields
+                dropdownClass="in-modal-dropdown"
+                excludedFields=model.excludedFields
+                onChange=(action "setExcludedFields")
+              }}
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <div class="form-group mb-0">
+                {{campaign-identity-filter
+                  title="Exclude leads when..."
+                  dropdownClass="in-modal-dropdown"
+                  filters=model.identityFilters
+                  on-change=(action "setIdentityFilters")
+                }}
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    {{/modal.body}}
+    {{progress-bar class="progress-md" show=isActionRunning}}
+    {{#modal.footer}}
+      {{model-save-button disabled=isActionRunning}}
+    {{/modal.footer}}
+  </form>
+{{/bs-modal}}

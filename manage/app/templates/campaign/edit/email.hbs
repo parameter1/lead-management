@@ -1,0 +1,119 @@
+<div class="card-body">
+
+  <div class="row">
+    <div class="col">
+      <div class="custom-control custom-checkbox">
+        {{input type="checkbox" checked=model.enabled class="custom-control-input" id="include-email-leads" change=(action "updateStatus")}}
+        <label class="custom-control-label" for="include-email-leads">Include Email Leads in Campaign?</label>
+      </div>
+    </div>
+  </div>
+  {{#if model.enabled}}
+    <div class="row mt-3">
+      <div class="col-lg-6 mnh-100">
+        <div class="card mnh-100">
+          <div class="card-header">
+            Email URL/Link Rules
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label for="tags">Only Include Links Tagged With...</label>
+              {{type-ahead
+                placeholder="Begin typing to find a tag..."
+                type="tag"
+                multiple=true
+                selected=model.tags
+                onChange=(action "updateTags")
+              }}
+              <small class="form-text text-muted">Leave empty to include all links.</small>
+            </div>
+
+            <div class="form-group">
+              <label for="excludedTags"><em>Exclude</em> Links Tagged With...</label>
+              {{type-ahead
+                placeholder="Begin typing to find a tag..."
+                type="tag"
+                multiple=true
+                selected=model.excludedTags
+                onChange=(action "updateExcludedTags")
+              }}
+            </div>
+
+            <div class="form-group">
+              <label>Only Include Links Set As...</label>
+              {{#power-select-multiple
+                options=linkTypeOptions
+                selected=model.allowedLinkTypes
+                onchange=(action "updateLinkTypes")
+                closeOnSelect=false as |linkType|
+              }}
+                {{linkType}}
+              {{/power-select-multiple}}
+              <small class="form-text text-muted">Check the link types that should be included in the report.</small>
+            </div>
+
+            <div class="form-group">
+              <div class="custom-control custom-checkbox">
+                {{input type="checkbox" checked=model.restrictToSentDate class="custom-control-input" id="restrict-to-sent-date" change=(action "updateRestrictToSentDate")}}
+                <label class="custom-control-label" for="restrict-to-sent-date">Restrict to Email Sent Dates?</label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="custom-control custom-checkbox">
+                {{input type="checkbox" checked=model.displayDeliveredMetrics class="custom-control-input" id="delivered-metrics" change=(action "updateDisplayDeliveredMetrics")}}
+                <label class="custom-control-label" for="delivered-metrics">Include delivered metrics?</label>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-between">
+              {{#link-to "campaign.edit.email.links" class="btn btn-primary" role="button"}}
+                {{entypo-icon "link"}} Manage Links ({{model.urlCount}})
+              {{/link-to}}
+              {{#link-to "campaign.edit.email.identities" class="btn btn-primary" role="button"}}
+                {{entypo-icon "users"}} Manage Leads
+              {{/link-to}}
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="card mb-3">
+          <div class="card-header">
+            Exclude Fields
+          </div>
+          <div class="card-body">
+            <div class="form-group mb-0">
+              <label>Hide The Selected Fields...</label>
+              {{#power-select-multiple
+                options=excludeFieldOptions
+                selected=selectedFieldOptions
+                disabled=areExcludeFieldsDisabled
+                onchange=(action "updateExcludeFields")
+                closeOnSelect=false as |field|
+              }}
+                {{field.label}}
+              {{/power-select-multiple}}
+              <small class="form-text text-muted">Check all fields you wish to exclude from reports.</small>
+            </div>
+
+          </div>
+        </div>
+
+        {{campaign-identity-filter
+          filters=model.identityFilters
+          on-change=(action "updateIdentityFilters")
+        }}
+
+      </div>
+    </div>
+  {{/if}}
+</div>
+<div class="card-footer text-right">
+  <a class="btn btn-success" role="button" href="/export/campaign/{{campaign.hash}}/leads">{{entypo-icon "download"}} Download Email Leads</a>
+</div>
+
+{{outlet}}

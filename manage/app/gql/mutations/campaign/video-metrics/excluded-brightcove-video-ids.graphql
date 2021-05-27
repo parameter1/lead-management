@@ -1,0 +1,9 @@
+mutation CampaignEditVideoMetricsExcludedBrightcoveVideoIds($input: VideoMetricsExcludedBrightcoveVideoIdsMutationInput!) {
+  videoMetricsExcludedBrightcoveVideoIds(input: $input) {
+    id
+    videoMetrics {
+      id
+      excludedBrightcoveVideoIds
+    }
+  }
+}

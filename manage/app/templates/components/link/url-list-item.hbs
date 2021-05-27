@@ -1,0 +1,33 @@
+{{#link-to
+  "link.urls.edit" item.id
+  class="list-group-item list-group-item-action flex-column align-items-start"
+}}
+  <div class="d-flex w-100 justify-content-between">
+    <h5 class="mb-1">{{#if item.title}}{{{item.title}}}{{else}}(No Title){{/if}}</h5>
+    {{#if item.lastCrawledDate}}
+      <small>{{entypo-icon "clock"}} Crawled {{moment-format item.lastCrawledDate "MMM Do, YYYY h:mm a"}}</small>
+    {{/if}}
+  </div>
+
+  <p class="mb-1 font-weight-bold">{{item.host.value}}</p>
+  <p class="mb-1 truncate">Redirected To: {{item.values.resolved}}</p>
+  <small class="mb-1 d-block truncate text-muted">Original: {{item.values.original}}</small>
+  <small class="d-block">ID: {{item.id}}</small>
+
+  {{#if hasAssignments}}
+    <div class="mt-2">
+      {{#if activeCustomer}}
+        <span class="badge badge-pill badge-info">
+          <span class="d-block m-1">Customer: {{activeCustomer.name}}</span>
+        </span>
+      {{/if}}
+      {{#each uniqueTags as |tag|}}
+        <span class="badge badge-pill badge-info">
+          <span class="d-block m-1">Tag: {{tag.name}}</span>
+        </span>
+      {{/each}}
+    </div>
+  {{else}}
+    <p class="text-info mt-2 mb-0">No tracking currently assigned.</p>
+  {{/if}}
+{{/link-to}}

@@ -1,0 +1,17 @@
+#import 'leads-manage/gql/fragments/identity/view'
+
+query EditEmailLineItemSearchActiveLeads($input: ModelIdInput!, $pagination: PaginationInput, $search: TypeAheadInput!, $options: TypeAheadOptionsInput) {
+  searchEmailLineItemActiveIdentities(input: $input, pagination: $pagination, search: $search, options: $options) {
+    totalCount
+    edges {
+      node {
+        ...IdentityViewFragment
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

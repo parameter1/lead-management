@@ -1,0 +1,17 @@
+{{#bs-modal show=true size="large" onHidden=(route-action "transitionTo" "campaign.edit.email") as |modal|}}
+  {{#modal.header}}
+    <h5 class="modal-title">Manage Email Campaign Links</h5>
+    <button {{action modal.actions.hide}} type="button" class="close" aria-label="Close">
+      {{entypo-icon "cross"}}
+    </button>
+  {{/modal.header}}
+  {{#modal.body}}
+    {{email-campaign/url-groups
+      urlGroups=model.urlGroups
+      disabled=isActionRunning
+      on-change=(action "updateExcludedUrls")
+    }}
+  {{/modal.body}}
+  {{#modal.footer}}
+  {{/modal.footer}}
+{{/bs-modal}}

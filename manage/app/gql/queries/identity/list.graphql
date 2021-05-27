@@ -1,0 +1,17 @@
+#import 'leads-manage/gql/fragments/identity/list'
+
+query ListIdentities($pagination: PaginationInput, $sort: IdentitySortInput) {
+  allIdentities(pagination: $pagination, sort: $sort) {
+    totalCount
+    edges {
+      node {
+        ...IdentityListFragment
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

@@ -1,0 +1,6 @@
+mutation formEntryActivate($input: ModelIdInput!) {
+	formEntryActivate(input: $input) {
+    id
+    inactive
+	}
+}

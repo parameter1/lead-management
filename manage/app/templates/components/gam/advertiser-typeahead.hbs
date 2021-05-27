@@ -1,0 +1,30 @@
+{{#if multiple}}
+  {{#power-select-multiple
+    search=(perform search)
+    selected=selected
+    dropdownClass=dropdownClass
+    triggerClass=triggerClass
+    placeholder=placeholder
+    onchange=(if onChange onChange (action (mut selected)))
+    closeOnSelect=closeOnSelect
+    disabled=disabled
+    as |model|
+  }}
+    {{ model.name }}
+  {{/power-select-multiple}}
+{{else}}
+  {{#power-select
+    search=(perform search)
+    selected=selected
+    dropdownClass=dropdownClass
+    triggerClass=triggerClass
+    placeholder=placeholder
+    allowClear=allowClear
+    closeOnSelect=closeOnSelect
+    disabled=disabled
+    onchange=(if onChange onChange (action (mut selected)))
+    as |model|
+  }}
+    {{ model.name }}
+  {{/power-select}}
+{{/if}}

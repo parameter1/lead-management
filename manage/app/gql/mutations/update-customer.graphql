@@ -1,0 +1,7 @@
+#import 'leads-manage/gql/fragments/customer-fragment'
+
+mutation updateCustomer($input: UpdateCustomerInput!) {
+	updateCustomer(input: $input) {
+    ...CustomerFragment
+	}
+}

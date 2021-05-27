@@ -1,0 +1,8 @@
+mutation IdentityCampaignActivation($input: IdentityCampaignActivation!) {
+	identityCampaignActivation(input: $input) {
+    id
+    inactiveCampaigns {
+      id
+    }
+	}
+}

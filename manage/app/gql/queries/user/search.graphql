@@ -1,0 +1,17 @@
+#import 'leads-manage/gql/fragments/user-fragment'
+
+query SearchUsers($pagination: PaginationInput, $search: TypeAheadInput!, $options: TypeAheadOptionsInput) {
+  searchUsers(pagination: $pagination, search: $search, options: $options) {
+    totalCount
+    edges {
+      node {
+        ...UserFragment
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

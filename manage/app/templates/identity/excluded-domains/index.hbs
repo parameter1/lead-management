@@ -1,0 +1,40 @@
+{{#nav-breadcrumbs as |crumbs|}}
+  {{#crumbs.item active=true}}{{entypo-icon "email"}} Excluded Email Domains{{/crumbs.item}}
+{{/nav-breadcrumbs}}
+
+<div class="row">
+  <div class="col">
+    <div class="card list-index">
+      <div class="card-header"></div>
+
+      {{#fetch-more
+        query=observable
+        edges=model.edges
+        hasNextPage=model.pageInfo.hasNextPage
+        endCursor=model.pageInfo.endCursor
+        on-fetch-start=(route-action "showLoading")
+        on-fetch-end=(route-action "hideLoading")
+        resultKey=resultKey as |fetch|
+      }}
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><h5 class="mb-0 text-muted">Total Results: {{model.totalCount}}</h5></li>
+          {{#each fetch.nodes as |item|}}
+            {{partial "identity/excluded-domains/list-item"}}
+          {{/each}}
+        </ul>
+
+        <div class="card-footer border-0">
+          {{#if fetch.hasNextPage}}
+            <button class="btn btn-primary btn-lg" disabled={{fetch.isFetching}} {{action fetch.actions.loadMore}}>
+              {{entypo-icon "download"}} {{#if fetch.isFetching}}Loading...{{else}}Load More{{/if}}
+            </button>
+          {{/if}}
+        </div>
+
+      {{/fetch-more}}
+
+    </div>
+  </div>
+</div>
+
+{{model-create-button icon="email" title="Create Excluded Email Domain" click=(route-action "transitionTo" "identity.excluded-domains.create")}}

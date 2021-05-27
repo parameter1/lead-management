@@ -1,0 +1,11 @@
+mutation FormLineItemChoiceFilters($input: FormLineItemChoiceFiltersInput!) {
+  formLineItemChoiceFilters(input: $input) {
+    id
+    choiceFilters {
+      id
+      fieldId
+      title
+      choices
+    }
+  }
+}

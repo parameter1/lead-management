@@ -1,0 +1,7 @@
+#import 'leads-manage/gql/fragments/tag-fragment'
+
+mutation createTag($input: CreateTagInput!) {
+	createTag(input: $input) {
+    ...TagFragment
+	}
+}

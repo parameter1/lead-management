@@ -1,0 +1,17 @@
+#import 'leads-manage/gql/fragments/extracted-url/view'
+
+query ListExtractedUrls($pagination: PaginationInput, $sort: ExtractedUrlSortInput) {
+  allExtractedUrls(pagination: $pagination, sort: $sort) {
+    totalCount
+    edges {
+      node {
+        ...ExtractedUrlViewFragment
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

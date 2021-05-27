@@ -1,0 +1,32 @@
+{{#fetch-more
+  query=observable
+  edges=model.edges
+  hasNextPage=model.pageInfo.hasNextPage
+  endCursor=model.pageInfo.endCursor
+  on-fetch-start=(route-action "showLoading")
+  on-fetch-end=(route-action "hideLoading")
+  resultKey=resultKey as |fetch|
+}}
+  <ul class="list-group list-group-flush my-4">
+    <li class="list-group-item pt-0"><h5 class="mb-0 text-muted">Total Results: {{model.totalCount}}</h5></li>
+  </ul>
+
+  <div class="row">
+    {{#each fetch.nodes as |item|}}
+      {{line-item/form-entry-card
+        entry=item
+        canEdit=true
+        class="mb-4"
+      }}
+    {{/each}}
+  </div>
+
+  <div class="card-footer border-0">
+    {{#if fetch.hasNextPage}}
+      <button class="btn btn-primary btn-lg" disabled={{fetch.isFetching}} {{action fetch.actions.loadMore}}>
+        {{entypo-icon "download"}} {{#if fetch.isFetching}}Loading...{{else}}Load More{{/if}}
+      </button>
+    {{/if}}
+  </div>
+
+{{/fetch-more}}

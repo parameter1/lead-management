@@ -1,0 +1,16 @@
+<button class="btn btn-primary" type="button" disabled={{isActionRunning}} {{action "load"}}>
+  {{entypo-icon "link"}}
+  {{#if isLoading}}
+    Loading Links...
+  {{else}}
+    Manage Links
+  {{/if}}
+</button>
+
+{{#if hasLoaded}}
+  {{email-campaign/url-groups
+    urlGroups=results.urlGroups
+    disabled=isActionRunning
+    on-change=(action "updateExcludedUrls")
+  }}
+{{/if}}

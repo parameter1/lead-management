@@ -1,0 +1,46 @@
+<div class="row mt-3 mb-3">
+  <div class="col">
+    {{#if hasAssignments}}
+      {{#if activeCustomer}}
+        <span class="badge badge-pill badge-info">
+          <span class="h6 d-block m-1">Customer: {{activeCustomer.name}}</span>
+        </span>
+      {{/if}}
+      {{#each uniqueTags as |tag|}}
+        <span class="badge badge-pill badge-info">
+          <span class="h6 d-block m-1">Tag: {{tag.name}}</span>
+        </span>
+      {{/each}}
+    {{else}}
+      <h6 class="text-info mb-0">No tracking currently assigned.</h6>
+    {{/if}}
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <button class="btn btn-primary" {{action "toggleSettings" true}}>
+      {{entypo-icon "cog"}}
+      {{#if showSettings}}{{entypo-icon "chevron-small-down"}}{{else}}{{entypo-icon "chevron-small-up"}}{{/if}}
+    </button>
+  </div>
+</div>
+
+{{#if showSettings}}
+  <div class="row mt-3">
+    <div class="col-12 col-lg-6">
+      {{extracted-url/assignment
+        class="mnh-100"
+        model=model.host
+        value=model.host.value
+      }}
+    </div>
+    <div class="col-12 col-lg-6">
+      {{extracted-url/assignment
+        class="mnh-100"
+        model=model
+        value=model.values.resolved
+      }}
+    </div>
+  </div>
+{{/if}}

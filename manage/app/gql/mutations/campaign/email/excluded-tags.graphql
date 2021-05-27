@@ -1,0 +1,10 @@
+mutation CampaignEditEmailExcludedTags($input: EmailCampaignExcludedTagsInput!) {
+  emailCampaignExcludedTags(input: $input) {
+    id
+    excludedTags {
+      id
+      name
+    }
+    urlCount
+  }
+}

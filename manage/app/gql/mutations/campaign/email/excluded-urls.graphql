@@ -1,0 +1,7 @@
+#import 'leads-manage/gql/fragments/campaign/email-links'
+
+mutation CampaignEditEmailExcludedUrls($input: EmailCampaignExcludedUrlsInput!) {
+  emailCampaignExcludedUrls(input: $input) {
+    ...EmailCampaignLinksFragment
+  }
+}

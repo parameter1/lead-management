@@ -1,0 +1,36 @@
+{{#bs-modal show=true size="xl" onHidden=(route-action "transitionTo" "order.edit.line-items") as |modal|}}
+  {{#modal.header}}
+    <h5 class="modal-title">{{entypo-icon "text-document"}} Create MQL Line Item for <strong>{{order.fullName}}</strong></h5>
+    <button {{action modal.actions.hide}} type="button" class="close" aria-label="Close">
+      {{entypo-icon "cross"}}
+    </button>
+  {{/modal.header}}
+  {{progress-bar class="progress-md" show=isActionRunning}}
+  <form {{action (action "create" model) on="submit"}}>
+    {{#modal.body}}
+      {{line-item/details-card
+        class="mb-3"
+        model=model
+        onDateChange=(action "setDateRange")
+      }}
+      <div class="card">
+        <div class="card-header">
+          {{entypo-icon "text-document"}} Form
+        </div>
+        <div class="card-body">
+          {{line-item/forms-for-customer
+            class="mb-0"
+            customerId=order.customer.id
+            selected=model.form
+            dropdownClass="in-modal-dropdown"
+            onChange=(action "setForm")
+          }}
+        </div>
+      </div>
+    {{/modal.body}}
+    {{progress-bar class="progress-md" show=isActionRunning}}
+    {{#modal.footer}}
+      {{model-save-button disabled=isActionRunning}}
+    {{/modal.footer}}
+  </form>
+{{/bs-modal}}

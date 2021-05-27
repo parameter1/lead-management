@@ -1,0 +1,16 @@
+#import 'leads-manage/gql/fragments/external-source'
+
+fragment VideoIndexFragment on Video {
+  id
+  customer {
+    id
+    name
+  }
+  name
+  description
+  publishedAt
+  thumbnail
+  externalSource {
+    ...ExternalSourceFragment
+  }
+}

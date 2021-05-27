@@ -1,0 +1,6 @@
+mutation LineItemNotes($input: LineItemNotesInput!) {
+  lineItemNotes(input: $input) {
+    id
+    notes
+  }
+}

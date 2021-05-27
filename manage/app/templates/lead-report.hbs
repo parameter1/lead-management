@@ -1,0 +1,36 @@
+<div class="row mt-4 mb-3">
+  <div class="col">
+    <h1>Lead Report</h1>
+    <h3>{{model.fullName}}</h3>
+  </div>
+</div>
+<div class="row mb-5">
+  <div class="col">
+    <div class="card model-form">
+      <div class="card-header">
+        <ul class="nav nav-pills card-header-pills" role="tablist">
+          {{#if displayEmail}}
+            <li class="nav-item">{{#link-to "lead-report.email" class="nav-link" role="tab"}}Email Deployments{{/link-to}}</li>
+          {{/if}}
+          {{#if displayForms}}
+            <li class="nav-item">{{#link-to "lead-report.forms" class="nav-link" role="tab"}}Form Submissions{{/link-to}}</li>
+          {{/if}}
+          {{#if displayAds}}
+            <li class="nav-item">{{#link-to "lead-report.ads" class="nav-link" role="tab"}}Pre-Rolls{{/link-to}}</li>
+          {{/if}}
+          {{#if displayAdMetrics}}
+            <li class="nav-item">{{#link-to "lead-report.ad-metrics" class="nav-link" role="tab"}}Ad Metrics{{/link-to}}</li>
+          {{/if}}
+          {{#if displayVideoMetrics}}
+            <li class="nav-item">{{#link-to "lead-report.video-metrics" class="nav-link" role="tab"}}Video Metrics{{/link-to}}</li>
+          {{/if}}
+        </ul>
+      </div>
+      {{progress-bar show=isLoading class="progress-md"}}
+      <div class="card-body">
+        {{outlet}}
+      </div>
+      <div class="card-footer"></div>
+    </div>
+  </div>
+</div>

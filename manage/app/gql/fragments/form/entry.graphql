@@ -1,0 +1,8 @@
+fragment FormEntryFragment on FormEntry {
+  id
+  identifier
+  inactive
+  values
+  createdAt
+  submittedAt
+}

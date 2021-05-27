@@ -1,0 +1,5 @@
+#import 'leads-manage/gql/fragments/content-query-result/list'
+
+fragment ContentQueryResultFragment on ContentQueryResult {
+  ...ContentQueryResultListFragment
+}

@@ -1,0 +1,6 @@
+mutation EmailLineItemLinkTypes($input: EmailLineItemLinkTypesInput!) {
+  emailLineItemLinkTypes(input: $input) {
+    id
+    linkTypes
+  }
+}

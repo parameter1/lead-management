@@ -1,0 +1,15 @@
+<div class="card-header" id="heading{{targetId}}">
+
+  <a class="font-weight-bold" href="javascript:void(0);" data-toggle="collapse" data-target="#collapse{{targetId}}" aria-expanded="true" aria-controls="collapse{{targetId}}">
+    {{#if (gt number 1)}}AND {{/if}}Set {{number}}{{#if model.type}}: {{model.type}}{{/if}}
+  </a>
+</div>
+
+{{behavior/criteria-builder/fields
+  id=(concat "collapse" targetId)
+  model=model
+  types=types
+  aria-labelledby=(concat "heading" targetId)
+  data-parent="#criteria-builder"
+  destroy=onDestroy
+}}

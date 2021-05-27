@@ -1,0 +1,3 @@
+mutation BehaviorDeleteContentQuery($input: BehaviorModelIdInput!) {
+	behaviorDeleteContentQuery(input: $input)
+}

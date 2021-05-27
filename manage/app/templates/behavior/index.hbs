@@ -1,0 +1,60 @@
+{{#nav-breadcrumbs as |crumbs|}}
+  {{#crumbs.item active=true}}{{entypo-icon "hair-cross"}} Behavior Queries{{/crumbs.item}}
+{{/nav-breadcrumbs}}
+
+<div class="row">
+  <div class="col">
+    <div class="card list-index">
+      <div class="card-header"></div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <div class="row">
+              <div class="col-12">
+                {{!-- Fix menu alignment, once https://github.com/twbs/bootstrap/pull/26255 is merged --}}
+                <div class="btn-toolbar float-md-right" role="toolbar" aria-label="Filter Toolbar">
+                  {{list-controls/sort
+                    class="mr-2"
+                    options=sortOptions
+                    ascending=ascending
+                    sortBy=sortBy
+                    disabled=isSortDisabled
+                    alignment="right"
+                  }}
+                  {{list-controls/limit options=limitOptions limit=first alignment="right"}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {{#fetch-more
+        query=observable
+        edges=model.edges
+        hasNextPage=model.pageInfo.hasNextPage
+        endCursor=model.pageInfo.endCursor
+        on-fetch-start=(route-action "showLoading")
+        on-fetch-end=(route-action "hideLoading")
+        resultKey="allBehaviorQueries" as |fetch|
+      }}
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item pt-0"><h5 class="mb-0 text-muted">Total Results: {{model.totalCount}}</h5></li>
+          {{#each fetch.nodes as |item|}}
+            {{partial "behavior/list-item"}}
+          {{/each}}
+        </ul>
+
+        <div class="card-footer border-0">
+          {{#if fetch.hasNextPage}}
+            <button class="btn btn-primary btn-lg" disabled={{fetch.isFetching}} {{action fetch.actions.loadMore}}>
+              {{entypo-icon "download"}} {{#if fetch.isFetching}}Loading...{{else}}Load More{{/if}}
+            </button>
+          {{/if}}
+        </div>
+
+      {{/fetch-more}}
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+query EditEmailLineItemDeployments($input: ModelIdInput!) {
+  emailLineItem(input: $input) {
+    id
+    linkTypes
+    tags {
+      id
+      name
+    }
+    excludedTags {
+      id
+      name
+    }
+    categories {
+      id
+      fullName
+    }
+  }
+}

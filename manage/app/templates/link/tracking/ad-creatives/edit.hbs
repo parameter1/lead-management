@@ -1,0 +1,35 @@
+{{#bs-modal show=true size="xl" backdrop="static" onClose=(route-action "transitionTo" "link.tracking.ad-creatives.index") as |modal|}}
+  {{#modal.header}}
+    <h5 class="modal-title">{{entypo-icon "code"}} Edit Ad Creative Tracker</h5>
+    <button {{action modal.actions.hide}} type="button" class="close" aria-label="Close">
+      {{entypo-icon "cross"}}
+    </button>
+  {{/modal.header}}
+  {{progress-bar class="progress-md" show=isActionRunning}}
+  <form {{action (action "update") on="submit"}}>
+    {{#modal.body}}
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="ad-creative-tracker-click">Click Tracker</label>
+            {{input id="ad-creative-tracker-click" type="text" class="form-control" readonly=true value=model.trackers.click}}
+            <small class="form-text text-muted">In DFP/GAM, use this link to track clicks.</small>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="ad-creative-tracker-impression">Impression Tracker</label>
+            {{input id="ad-creative-tracker-impression" type="text" class="form-control" readonly=true value=model.trackers.impression}}
+            <small class="form-text text-muted">In DFP/GAM, use this link to track impressions.</small>
+          </div>
+        </div>
+      </div>
+      {{partial "link/tracking/ad-creatives/form"}}
+    {{/modal.body}}
+    {{#modal.footer}}
+      {{model-save-button disabled=isActionRunning}}
+    {{/modal.footer}}
+  </form>
+{{/bs-modal}}

@@ -1,0 +1,37 @@
+<div class="card-header">{{title}}</div>
+<div class="card-body">
+  <div class="dropdown">
+    <button
+      type="button"
+      class="btn btn-outline-success dropdown-toggle"
+      data-toggle="dropdown"
+      disabled={{disabled}}
+    >
+      {{#if isLoading}}
+        {{entypo-icon "hour-glass"}} Loading...
+      {{else}}
+        {{entypo-icon "circle-with-plus"}} Field
+      {{/if}}
+    </button>
+    <div class="dropdown-menu">
+      {{#each fields as |field|}}
+        <a class="dropdown-item" href="#add-field" {{action "addFilter" field}}>{{ field.title }}</a>
+      {{/each}}
+    </div>
+  </div>
+
+  {{#each filters as |filter index|}}
+    {{line-item/forms/field-choices-filter/item
+      dropdownClass=dropdownClass
+      triggerClass=triggerClass
+      fieldId=filter.fieldId
+      title=filter.title
+      selected=filter.choices
+      fields=fields
+      onRemove=(action "removeFilter" index)
+      onChange=(action "triggerChange" filter)
+      class="mt-3"
+    }}
+    <hr>
+  {{/each}}
+</div>

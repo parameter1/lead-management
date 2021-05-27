@@ -1,0 +1,9 @@
+{{progress-bar class="progress-md" show=isLoading}}
+{{#bs-modal/body}}
+  {{line-item/forms/field-choices-filter
+    formId=model.form.id
+    filters=model.choiceFilters
+    dropdownClass="in-modal-dropdown"
+    onChange=(action "setChoiceFilters")
+  }}
+{{/bs-modal/body}}

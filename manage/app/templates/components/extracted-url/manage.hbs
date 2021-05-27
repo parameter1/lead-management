@@ -1,0 +1,43 @@
+<div class="form-group mb-3">
+  {{extracted-url/url
+    settingsDisabled=false
+    original=model.values.original
+    resolved=model.values.resolved
+    on-settings-toggle=(action "toggleSettings")
+  }}
+</div>
+
+<div class="row mb-3">
+  <div class="col">
+    {{extracted-url/types selected=model.linkType onChange=(action "setLinkType")}}
+  </div>
+</div>
+
+<div class="row mb-0">
+  <div class="col">
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" href="#tracking{{ model.id }}" data-toggle="tab" role="tab">
+          Tracking
+          <span class="badge badge-pill badge-primary ml-1">{{ assignmentCount }}</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#parameters{{ model.id }}" data-toggle="tab" role="tab">
+          Params to Add
+          <span class="badge badge-pill badge-primary ml-1">{{ paramsCount }}</span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      <div class="tab-pane active" id="tracking{{ model.id }}" role="tabpanel">
+        {{ partial "components/extracted-url/-tracking-pane" }}
+      </div>
+      <div class="tab-pane" id="parameters{{ model.id }}" role="tabpanel">
+        {{ partial "components/extracted-url/-parameters-pane" }}
+      </div>
+    </div>
+
+  </div>
+</div>

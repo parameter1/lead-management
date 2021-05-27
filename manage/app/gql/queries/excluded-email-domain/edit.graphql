@@ -1,0 +1,6 @@
+query EditExcludedEmailDomain($input: ModelIdInput!) {
+  excludedEmailDomain(input: $input) {
+    id
+    domain
+  }
+}

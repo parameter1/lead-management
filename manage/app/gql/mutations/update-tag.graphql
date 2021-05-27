@@ -1,0 +1,7 @@
+#import 'leads-manage/gql/fragments/tag-fragment'
+
+mutation updateTag($input: UpdateTagInput!) {
+	updateTag(input: $input) {
+    ...TagFragment
+	}
+}

@@ -1,0 +1,6 @@
+fragment EmailCategoryListFragment on EmailCategory {
+  id
+  fullName
+  createdAt
+  updatedAt
+}

@@ -1,0 +1,7 @@
+#import 'leads-manage/gql/fragments/extracted-url/view'
+
+query CrawlUrl($url: String!, $cache: Boolean = true) {
+  crawlUrl(url: $url, cache: $cache) {
+    ...ExtractedUrlViewFragment
+  }
+}

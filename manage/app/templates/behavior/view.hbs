@@ -1,0 +1,22 @@
+{{#nav-breadcrumbs as |crumbs|}}
+  {{#crumbs.item}}{{#link-to "behavior.index"}}{{entypo-icon "hair-cross"}} Behavior Queries{{/link-to}}{{/crumbs.item}}
+  {{#crumbs.item active=true}}{{model.name}}{{/crumbs.item}}
+{{/nav-breadcrumbs}}
+
+
+<div class="card model-form">
+  <div class="card-header">
+    <ul class="nav nav-pills card-header-pills">
+      <li class="nav-item">
+        {{#link-to "behavior.view.index" class="nav-link"}}Criteria{{/link-to}}
+      </li>
+      <li class="nav-item">
+        {{#link-to "behavior.view.run" class="nav-link"}}Run{{/link-to}}
+      </li>
+      <li class="nav-item">
+        {{#link-to "behavior.view.results" class="nav-link"}}Results{{/link-to}}
+      </li>
+    </ul>
+  </div>
+  {{outlet}}
+</div>

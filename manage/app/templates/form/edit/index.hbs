@@ -1,0 +1,20 @@
+<form {{action (route-action "update" model) on="submit"}}>
+
+  <div class="card-body">
+    {{ partial "form/form" }}
+  </div>
+  <div class="card-footer d-flex justify-content-between">
+    {{model-save-button disabled=isActionRunning}}
+
+    <div class="btn-group btn pr-0">
+      {{confirm-button
+        icon="trash"
+        label="Delete"
+        class="btn-danger"
+        disabled=isActionRunning
+        onConfirm=(route-action "delete" model.id "form.index")
+      }}
+    </div>
+  </div>
+
+</form>

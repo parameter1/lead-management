@@ -1,0 +1,23 @@
+query CampaignEditVideoMetrics($input: ModelIdInput!) {
+  campaign(input: $input) {
+    id
+    videoMetrics {
+      id
+      enabled
+      excludedBrightcoveVideoIds
+    }
+    customer {
+      id
+      linkedVideos {
+        brightcove(input: { limit: 100, sort: { field: CREATED_AT, order: DESC } }) {
+          nodes {
+            id
+            name
+            createdAt
+            publishedAt
+          }
+        }
+      }
+    }
+  }
+}

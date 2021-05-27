@@ -1,0 +1,24 @@
+{{#nav-breadcrumbs as |crumbs|}}
+  {{#crumbs.item}}{{#link-to "order.index"}}{{entypo-icon "credit"}} Orders{{/link-to}}{{/crumbs.item}}
+  {{#crumbs.item active=true}}{{ model.fullName }} [ {{model.salesRep.givenName}} {{model.salesRep.familyName}} ]{{/crumbs.item}}
+{{/nav-breadcrumbs}}
+
+{{beta-feature}}
+
+<div class="row mb-5">
+  <div class="col">
+    <div class="card model-form">
+      <div class="card-header">
+        <ul class="nav nav-pills card-header-pills" role="tablist">
+          <li class="nav-item">{{#link-to "order.edit.index" class="nav-link" role="tab"}}Details{{/link-to}}</li>
+          <li class="nav-item">{{#link-to "order.edit.line-items" class="nav-link" role="tab"}}Line Items{{/link-to}}</li>
+        </ul>
+      </div>
+      {{outlet}}
+    </div>
+  </div>
+</div>
+
+{{!-- <button class="btn btn-lg btn-info create fixed-bottom float-right" title="View Report" {{action (route-action "transitionToReport" model.hash)}}>
+  {{entypo-icon "pie-chart"}} Report
+</button> --}}

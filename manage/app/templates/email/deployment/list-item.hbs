@@ -1,0 +1,18 @@
+{{#link-to
+  "email.deployment.view" item.id
+  class="list-group-item list-group-item-action flex-column align-items-start"
+}}
+  <div class="d-flex w-100 justify-content-between">
+    <h4 class="mb-1">{{item.name}}</h4>
+    {{#if item.externalSource.createdAt}}
+      <small>{{entypo-icon "clock "}} Created {{moment-format item.externalSource.createdAt "MMM Do, YYYY h:mm a"}}</small>
+    {{/if}}
+  </div>
+
+  <p class="mb-1">{{item.subject}}</p>
+  <p class="mb-1">Jobs Sent: {{item.sendCount}}</p>
+  <small class="d-block">ID: {{item.id}}</small>
+  {{#if item.externalSource.identifier}}
+    <small class="d-block">From {{item.externalSource.namespace}}: {{item.externalSource.identifier}}</small>
+  {{/if}}
+{{/link-to}}

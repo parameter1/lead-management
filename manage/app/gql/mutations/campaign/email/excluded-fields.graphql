@@ -1,0 +1,6 @@
+mutation CampaignEditEmailExcludedFields($input: EmailCampaignExcludedFieldsInput!) {
+  emailCampaignExcludedFields(input: $input) {
+    id
+    excludeFields
+  }
+}

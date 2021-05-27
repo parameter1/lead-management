@@ -1,0 +1,11 @@
+<label>Excluded Fields</label>
+{{#power-select-multiple
+  dropdownClass=dropdownClass
+  options=options
+  selected=selected
+  onchange=(action "onChange")
+  closeOnSelect=false as |field|
+}}
+  {{field.label}}
+{{/power-select-multiple}}
+<small class="form-text text-muted">Select all fields you wish to hide on reports/exports.</small>

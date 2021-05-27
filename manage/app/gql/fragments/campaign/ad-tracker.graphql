@@ -1,0 +1,19 @@
+fragment AdCampaignTrackersFragment on AdCampaign {
+  id
+  excludeTrackers {
+    id
+  }
+  trackers {
+    id
+    url
+    description
+    customer {
+      id
+      name
+    }
+    tags {
+      id
+      name
+    }
+  }
+}

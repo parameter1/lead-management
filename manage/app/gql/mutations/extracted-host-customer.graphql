@@ -1,0 +1,9 @@
+mutation extractedHostCustomer($input: ExtractedHostCustomerInput!) {
+	extractedHostCustomer(input: $input) {
+		id
+		customer {
+			id
+			name
+		}
+	}
+}

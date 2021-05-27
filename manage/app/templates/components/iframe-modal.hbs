@@ -1,0 +1,17 @@
+{{#bs-modal show=show size="large" as |modal|}}
+  {{#modal.header}}
+    {{#if title}}
+      <h5 class="modal-title">
+        <a href={{ src }} target="_blank" rel="noopener noreferer">{{ title }}{{entypo-icon "popup" class="ml-2"}}</a>
+      </h5>
+    {{/if}}
+    <button {{action modal.actions.hide}} type="button" class="close" aria-label="Close">
+      {{entypo-icon "cross"}}
+    </button>
+  {{/modal.header}}
+  {{#modal.body}}
+    <div class="embed-responsive embed-responsive-1by1">
+      <iframe class="embed-responsive-item" src={{ src }}></iframe>
+    </div>
+  {{/modal.body}}
+{{/bs-modal}}

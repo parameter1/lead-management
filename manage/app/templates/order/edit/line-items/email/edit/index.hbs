@@ -1,0 +1,108 @@
+{{progress-bar class="progress-md" show=isLoading}}
+{{#bs-modal/body}}
+  <h4 class="mb-2">{{model.name}} ({{order.name}}) [ {{line-item-status status=model.status}} ]</h4>
+  <h5 class="mb-2">Customer: {{order.customer.name}}, Rep: {{order.salesRep.givenName}} {{order.salesRep.familyName}}</h5>
+  <p class="mb-4">
+    {{moment-format model.range.start "MMM Do, YYYY"}}
+    -
+    {{moment-format model.range.end "MMM Do, YYYY"}}
+    {{#if startsEnds}}
+      ({{startsEnds}})
+    {{/if}}
+  </p>
+  {{#line-item-progress class="row" lineItemId=model.id as |progress|}}
+    <div class="col-sm-6 col-xl-3 mb-4">
+      {{dashboard/data-card
+        icon="hair-cross"
+        title="Goal"
+        format="0,0"
+        value=model.requiredLeads
+        color="primary"
+      }}
+    </div>
+    <div class="col-sm-6 col-xl-3 mb-4">
+      {{dashboard/data-card
+        icon="credit"
+        title="Value"
+        value=model.totalValue
+        format="$0,0.[00]"
+        secondaryValue=model.cpl
+        secondaryFormat="$0,0.[00]"
+        secondarySuffix="CPL"
+        color="info"
+      }}
+    </div>
+    <div class="col-sm-6 col-xl-3 mb-4">
+      {{dashboard/fulfilled-leads
+        isLoading=progress.isActionRunning
+        rate=progress.qualified.rate
+        total=progress.qualified.total
+        pacing=progress.pacing
+      }}
+    </div>
+    <div class="col-sm-6 col-xl-3 mb-4">
+      {{dashboard/data-card
+        isLoading=progress.isActionRunning
+        icon="block"
+        title="Avg. Scrub Rate"
+        format="0.[0]%"
+        secondaryFormat="0,0"
+        value=progress.scrubbed.rate
+        secondaryValue=progress.scrubbed.total
+        secondarySuffix="Leads"
+        color="warning"
+      }}
+    </div>
+  {{/line-item-progress}}
+  <div class="row">
+    <div class="col-lg-6">
+      <h6 class="font-weight-bold">{{entypo-icon "mail"}} Collecting leads from...</h6>
+      <ul class="list-group mb-3">
+        {{#each model.categories as |category|}}
+          <li class="list-group-item p-2 text-muted">{{category.fullName}}</li>
+        {{else}}
+          <li class="list-group-item p-2 text-muted"><em>All email categories</em></li>
+        {{/each}}
+      </ul>
+
+      <h6 class="font-weight-bold">{{entypo-icon "tag"}} Where links are tagged with...</h6>
+      <ul class="list-group mb-3">
+        {{#each model.tags as |tag|}}
+          <li class="list-group-item p-2 text-muted">{{tag.name}}</li>
+        {{else}}
+          <li class="list-group-item p-2 text-muted"><em>No tag requirements</em></li>
+        {{/each}}
+      </ul>
+
+      <h6 class="font-weight-bold">{{entypo-icon "link"}} Where links are set as...</h6>
+      <ul class="list-group mb-lg-0 mb-3">
+        {{#each model.linkTypes as |linkType|}}
+          <li class="list-group-item p-2 text-muted">{{linkType}}</li>
+        {{else}}
+          <li class="list-group-item p-2 text-muted"><em>No link type requirements.</em></li>
+        {{/each}}
+      </ul>
+    </div>
+    <div class="col-lg-6">
+      <h6 class="font-weight-bold">{{entypo-icon "check"}} Where subscribers must have the following fields...</h6>
+      <ul class="list-group mb-3">
+        {{#each requiredFields as |field|}}
+          <li class="list-group-item p-2 text-muted">{{field}}</li>
+        {{else}}
+          <li class="list-group-item p-2 text-muted"><em>No field requirements.</em></li>
+        {{/each}}
+      </ul>
+
+      <h6 class="font-weight-bold">{{entypo-icon "remove-user"}} And are excluded when...</h6>
+      <ul class="list-group mb-lg-0 mb-3">
+        {{#each identityFilters as |filter|}}
+          <li class="list-group-item p-2 text-muted">
+            {{filter}}
+          </li>
+        {{else}}
+          <li class="list-group-item p-2 text-muted"><em>No exclusion filters set.</em></li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+{{/bs-modal/body}}

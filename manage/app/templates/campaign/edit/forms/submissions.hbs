@@ -1,0 +1,45 @@
+{{#bs-modal show=true size="xl" onHidden=(route-action "transitionTo" "campaign.edit.forms") as |modal|}}
+  {{#modal.header}}
+    <h5 class="modal-title">
+      <a href={{model.previewUrl}} target="_blank" rel="noopener noreferer">{{model.name}}{{entypo-icon "popup" class="ml-1"}}</a>
+    </h5>
+    <button {{action modal.actions.hide}} type="button" class="close" aria-label="Close">
+      {{entypo-icon "cross"}}
+    </button>
+  {{/modal.header}}
+  {{#modal.body}}
+
+    <h5 class="card-title mb-0">
+      {{#if model.entries.totalCount}}
+        Found {{model.entries.totalCount}} Record{{#if (gt model.entries.totalCount 1)}}s{{/if}}
+      {{else}}
+        No Records Found
+      {{/if}}
+    </h5>
+
+    {{#fetch-more
+      query=observable
+      edges=model.entries.edges
+      hasNextPage=model.entries.pageInfo.hasNextPage
+      endCursor=model.entries.pageInfo.endCursor
+      on-fetch-start=(route-action "showLoading")
+      on-fetch-end=(route-action "hideLoading")
+      resultKey="form"
+      applyToField="entries" as |fetch|
+    }}
+      <div class="row mt-3">
+        {{#each fetch.nodes as |node|}}
+          {{!-- {{node.identifier}} --}}
+          {{form-entry-card entry=node showTitle=false form=model canEdit=true class="mb-3"}}
+        {{/each}}
+      </div>
+      {{#if fetch.hasNextPage}}
+        <button class="btn btn-primary btn-block btn-lg" disabled={{fetch.isFetching}} {{action fetch.actions.loadMore}}>
+          {{entypo-icon "download"}} {{#if fetch.isFetching}}Loading...{{else}}Load More{{/if}}
+        </button>
+      {{/if}}
+    {{/fetch-more}}
+  {{/modal.body}}
+  {{#modal.footer}}
+  {{/modal.footer}}
+{{/bs-modal}}

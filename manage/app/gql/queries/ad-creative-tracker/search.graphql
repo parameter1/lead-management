@@ -1,0 +1,17 @@
+#import 'leads-manage/gql/fragments/ad-creative-tracker/list'
+
+query SearchAdCreativeTrackers($pagination: PaginationInput, $search: TypeAheadInput!, $options: TypeAheadOptionsInput) {
+  searchAdCreativeTrackers(pagination: $pagination, search: $search, options: $options) {
+    totalCount
+    edges {
+      node {
+        ...AdCreativeTrackerListFragment
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

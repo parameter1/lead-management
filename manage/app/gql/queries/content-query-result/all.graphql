@@ -1,0 +1,17 @@
+#import 'leads-manage/gql/fragments/content-query-result/list'
+
+query allContentQueryResults($queryId: String!, $pagination: PaginationInput, $sort: ContentQueryResultSortInput) {
+  allContentQueryResults(queryId: $queryId, pagination: $pagination, sort: $sort) {
+    totalCount
+    edges {
+      node {
+        ...ContentQueryResultListFragment
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

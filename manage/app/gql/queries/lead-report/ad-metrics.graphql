@@ -1,0 +1,6 @@
+query LeadReportAdMetrics($hash: String!) {
+  campaignByHash(hash: $hash) {
+    id
+    gamLineItemReport
+  }
+}

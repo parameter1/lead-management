@@ -1,0 +1,7 @@
+#import 'leads-manage/gql/fragments/ad-creative-tracker/edit'
+
+query EditAdCreativeTracker($input: ModelIdInput!) {
+  adCreativeTracker(input: $input) {
+    ...AdCreativeTrackerEditFragment
+  }
+}

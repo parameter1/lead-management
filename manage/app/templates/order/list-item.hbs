@@ -1,0 +1,14 @@
+{{#link-to
+  "order.edit.line-items" item.id
+  class="list-group-item list-group-item-action flex-column align-items-start"
+}}
+  <div class="d-flex w-100 justify-content-between">
+    <h4 class="mb-1">{{item.fullName}}</h4>
+    {{#if item.updatedAt}}
+      <small>{{entypo-icon "clock"}} Updated {{moment-format item.updatedAt "MMM Do, YYYY h:mm a"}}</small>
+    {{/if}}
+  </div>
+  <p class="mb-1">Customer: {{item.customer.name}}</p>
+  <p class="mb-1">Sales Rep: {{item.salesRep.givenName}} {{item.salesRep.familyName}}</p>
+  <small>ID: {{item.id}}</small>
+{{/link-to}}

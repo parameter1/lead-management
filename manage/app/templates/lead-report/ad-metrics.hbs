@@ -1,0 +1,63 @@
+<div class="row">
+  <div class="col">
+    {{#if model.gamLineItemReport.length}}
+      <div class="card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-striped table-sm">
+              <thead>
+                <tr>
+                  <th>Advertiser Name</th>
+                  <th>Order Name</th>
+                  <th>Line Item Name</th>
+                  <th>Line Item Type</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Creative Type</th>
+                  <th>Creative Size</th>
+                  <th>Impressions</th>
+                  <th>Clicks</th>
+                  <th>CTR</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{#each model.gamLineItemReport as |row|}}
+                  <tr>
+                    <td>{{ row.Dimension.ADVERTISER_NAME }}</td>
+                    <td>{{ row.Dimension.ORDER_NAME }}</td>
+                    <td>{{ row.Dimension.LINE_ITEM_NAME }}</td>
+                    <td>{{ row.Dimension.LINE_ITEM_TYPE }}</td>
+                    <td>{{ gam-line-item-date row.DimensionAttribute.LINE_ITEM_START_DATE_TIME }}</td>
+                    <td>
+                      {{#if (eq row.DimensionAttribute.LINE_ITEM_END_DATE_TIME "Unlimited")}}
+                        Unlimited
+                      {{else}}
+                        {{ gam-line-item-date row.DimensionAttribute.LINE_ITEM_END_DATE_TIME }}
+                      {{/if}}
+                    </td>
+                    <td>{{ row.Dimension.CREATIVE_TYPE }}</td>
+                    <td>{{ row.Dimension.CREATIVE_SIZE }}</td>
+                    <td>{{ format-number row.Column.AD_SERVER_IMPRESSIONS "0,0" }}</td>
+                    <td>{{ format-number row.Column.AD_SERVER_CLICKS "0,0" }}</td>
+                    <td>{{ format-number row.Column.AD_SERVER_CTR "0.0[00]%" }}</td>
+                  </tr>
+                {{/each}}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Total Items: {{ format-number model.gamLineItemReport.length format="0,0" }}</th>
+                  <th colspan="7">&nbsp;</th>
+                  <th>{{ format-number totalImpressions "0,0" }}</th>
+                  <th>{{ format-number totalClicks "0,0" }}</th>
+                  <th>{{ format-number avgCTR "0.0[00]%" }}</th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    {{else}}
+      <h5 class="mb-0 card-title">No ad metrics found for this campaign.</h5>
+    {{/if}}
+  </div>
+</div>

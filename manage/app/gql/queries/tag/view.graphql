@@ -1,0 +1,7 @@
+#import 'leads-manage/gql/fragments/tag-fragment'
+
+query tag($input: ModelIdInput!) {
+  tag(input: $input) {
+    ...TagFragment
+  }
+}

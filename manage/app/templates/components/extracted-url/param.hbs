@@ -1,0 +1,23 @@
+<div class="row mb-3">
+  <div class="input-group col-5 pr-0">
+    <div class="input-group-prepend">
+      <small class="input-group-text">{{entypo-icon "key"}}</small>
+    </div>
+    {{input type="text" class="form-control form-control-sm" value=param.key placeholder="Key"}}
+  </div>
+
+  <div class="input-group col-7 pl-0">
+    <div class="input-group-prepend">
+      <small class="input-group-text border-left-0">{{entypo-icon "price-tag"}}</small>
+    </div>
+
+    {{input type="text" class="form-control form-control-sm" value=param.value placeholder="Value"}}
+
+    <div class="input-group-append">
+      <button class="btn btn-outline-danger btm-sm" {{action onRemove}}>
+        {{entypo-icon "circle-with-cross" class="ml-1 mr-1"}}
+      </button>
+    </div>
+
+  </div>
+</div>

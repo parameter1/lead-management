@@ -1,0 +1,17 @@
+#import 'leads-manage/gql/fragments/identity/view'
+
+query CampaignEditSearchAdIdentities($id: String!, $pagination: PaginationInput, $search: TypeAheadInput!, $options: TypeAheadOptionsInput) {
+  searchAdCampaignIdentities(id: $id, pagination: $pagination, search: $search, options: $options) {
+    totalCount
+    edges {
+      node {
+        ...IdentityViewFragment
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

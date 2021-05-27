@@ -1,0 +1,9 @@
+mutation CampaignEditVideoMetricsStatus($input: CampaignStatusInput!) {
+  videoMetricsCampaignStatus(input: $input) {
+    id
+    videoMetrics {
+      id
+      enabled
+    }
+  }
+}

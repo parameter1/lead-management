@@ -1,0 +1,16 @@
+query SearchTags($pagination: PaginationInput, $search: TypeAheadInput!, $options: TypeAheadOptionsInput) {
+  searchTags(pagination: $pagination, search: $search, options: $options) {
+    totalCount
+    edges {
+      node {
+        id
+        name
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

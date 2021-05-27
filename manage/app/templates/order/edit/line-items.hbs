@@ -1,0 +1,51 @@
+<div class="card-body">
+  {{partial "list-controls"}}
+</div>
+
+{{#fetch-more
+  query=observable
+  edges=model.edges
+  hasNextPage=model.pageInfo.hasNextPage
+  endCursor=model.pageInfo.endCursor
+  on-fetch-start=(route-action "showLoading")
+  on-fetch-end=(route-action "hideLoading")
+  resultKey=resultKey as |fetch|
+}}
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item pt-0"><h5 class="mb-0 text-muted">Total Results: {{model.totalCount}}</h5></li>
+    {{#each fetch.nodes as |item|}}
+      {{partial (concat "order/edit/line-items/" item.type "/list-item")}}
+    {{/each}}
+  </ul>
+
+  <div class="card-footer border-0">
+    {{#if fetch.hasNextPage}}
+      <button class="btn btn-primary btn-lg" disabled={{fetch.isFetching}} {{action fetch.actions.loadMore}}>
+        {{entypo-icon "download"}} {{#if fetch.isFetching}}Loading...{{else}}Load More{{/if}}
+      </button>
+    {{/if}}
+  </div>
+
+{{/fetch-more}}
+
+<div class="btn-group dropup fixed-bottom create">
+  <button type="button" title="Create Line Item" class="btn btn-lg btn-success float-right dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    {{entypo-icon "plus"}}{{entypo-icon "list"}}
+  </button>
+  <div class="dropdown-menu">
+    {{#link-to "order.edit.line-items.email.create" class="dropdown-item d-flex justify-content-between"}}
+      Email Line Item
+      {{entypo-icon "mail" class="ml-1"}}
+    {{/link-to}}
+    {{#link-to "order.edit.line-items.form.create" class="dropdown-item d-flex justify-content-between"}}
+      MQL/Form Line Item
+      {{entypo-icon "text-document" class="ml-1"}}
+    {{/link-to}}
+    {{#link-to "order.edit.line-items.video.create" class="dropdown-item d-flex justify-content-between"}}
+      Video Line Item
+      {{entypo-icon "video" class="ml-1"}}
+    {{/link-to}}
+  </div>
+</div>
+
+{{outlet}}

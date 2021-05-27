@@ -1,0 +1,7 @@
+#import 'leads-manage/gql/fragments/email-deployment-fragment'
+
+query ViewEmailDeployment($input: ModelIdInput!) {
+  emailDeployment(input: $input) {
+    ...EmailDeploymentFragment
+  }
+}

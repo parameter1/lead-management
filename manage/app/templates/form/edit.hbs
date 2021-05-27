@@ -1,0 +1,15 @@
+{{#nav-breadcrumbs as |crumbs|}}
+  {{#crumbs.item}}{{#link-to "form.index"}}{{entypo-icon "text-document"}} Forms{{/link-to}}{{/crumbs.item}}
+  {{#crumbs.item active=true}}{{ model.name }} (<a href={{model.previewUrl}} target="_blank" rel="noopener noreferrer">view</a>){{/crumbs.item}}
+{{/nav-breadcrumbs}}
+
+
+<div class="card model-form">
+  <div class="card-header">
+    <ul class="nav nav-pills card-header-pills" role="tablist">
+      <li class="nav-item">{{#link-to "form.edit.index" class="nav-link" role="tab"}}Details{{/link-to}}</li>
+      <li class="nav-item">{{#link-to "form.edit.entries" class="nav-link" role="tab"}}Entries{{/link-to}}</li>
+    </ul>
+  </div>
+  {{outlet}}
+</div>

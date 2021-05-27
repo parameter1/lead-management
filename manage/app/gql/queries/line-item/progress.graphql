@@ -1,0 +1,26 @@
+query LineItemProgress($input: ModelIdInput!) {
+  lineItem(input: $input) {
+    id
+    progress {
+      qualified {
+        total
+        rate
+      }
+      scrubbed {
+        total
+        rate
+      }
+      pacing {
+        totalDays
+        requiredLeadsPerDay
+        daysElapsed
+        currentLeadsPerDay
+        pacingRate
+        leadsShouldBeAtPct
+        leadsShouldBeAt
+        leadsCurrentlyAtPct
+        leadsCurrentlyAt
+      }
+    }
+  }
+}

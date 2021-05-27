@@ -1,0 +1,9 @@
+<div class="accordion mb-3" id="criteria-builder">
+  {{#each criteria as |model index|}}
+    {{behavior/criteria-builder/criteria index=index model=model types=types onDestroy=(action "remove" model)}}
+  {{else}}
+    {{!-- <p class="list-group-item">No criteria set. Add some by clicking the button below...</p> --}}
+  {{/each}}
+</div>
+
+<button class="btn btn-info" type="button" {{action "add"}}>{{entypo-icon "plus"}} Add Criteria</button>

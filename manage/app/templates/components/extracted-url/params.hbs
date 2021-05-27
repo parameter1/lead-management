@@ -1,0 +1,21 @@
+<div class="card-header">
+  <span class="font-weight-bold">{{headerText}}</span><br>
+  <small class="truncate">{{value}}</small>
+</div>
+<div class="card-body">
+  {{#each params as |param index|}}
+    {{extracted-url/param param=param index=index onRemove=(action "pop" index)}}
+  {{/each}}
+
+  <div class="row">
+    <div class="col">
+      <button class="btn btn-outline-success btn-sm" {{action "add"}}>
+        {{entypo-icon "plus"}} Add
+      </button>
+
+      <button class="btn btn-outline-success btn-sm float-right" {{action "saveParams"}}>
+        {{entypo-icon "check"}} Save
+      </button>
+    </div>
+  </div>
+</div>

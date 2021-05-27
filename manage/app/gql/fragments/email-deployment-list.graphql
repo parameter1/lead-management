@@ -1,0 +1,13 @@
+fragment EmailDeploymentListFragment on EmailDeployment {
+  id
+  name
+  subject
+  sendCount
+  externalSource {
+    identifier
+    namespace
+    lastRetrievedAt
+    createdAt
+    updatedAt
+  }
+}

@@ -1,0 +1,3 @@
+query BehaviorContentQueryIds($input: BehaviorModelIdInput!) {
+  behaviorContentQueryIds(input: $input)
+}

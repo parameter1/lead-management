@@ -1,0 +1,11 @@
+<label>Required Fields</label>
+{{#power-select-multiple
+  dropdownClass=dropdownClass
+  options=options
+  selected=selected
+  onchange=(action "onChange")
+  closeOnSelect=false as |field|
+}}
+  {{field.label}}
+{{/power-select-multiple}}
+<small class="form-text text-muted">Leads <em>must</em> have the selected fields to qualify. Email is always available.</small>

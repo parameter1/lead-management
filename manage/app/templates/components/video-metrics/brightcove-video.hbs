@@ -1,0 +1,17 @@
+{{input
+  id=video.id
+  type="checkbox"
+  class="mr-2"
+  checked=checked
+  disabled=disabled
+  change=(action toggleExcluded video isExcluded)
+}}
+<strong class="mr-2">
+  {{video.name}}
+</strong>
+{{#if video.createdAt}}
+  <span class="mr-2">Created: {{moment-format video.createdAt "MMM Do, YYYY h:mm a"}}</span>
+{{/if}}
+{{#if video.publishedAt}}
+  <span class="mr-2">Published: {{moment-format video.publishedAt "MMM Do, YYYY h:mm a"}}</span>
+{{/if}}

@@ -1,0 +1,5 @@
+#import 'leads-manage/gql/fragments/order/list'
+
+fragment OrderViewFragment on Order {
+  ...OrderListFragment
+}

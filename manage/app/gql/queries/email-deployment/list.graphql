@@ -1,0 +1,17 @@
+#import 'leads-manage/gql/fragments/email-deployment-list'
+
+query ListEmailDeployments($pagination: PaginationInput, $sort: EmailDeploymentSortInput) {
+  allEmailDeployments(pagination: $pagination, sort: $sort) {
+    totalCount
+    edges {
+      node {
+        ...EmailDeploymentListFragment
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

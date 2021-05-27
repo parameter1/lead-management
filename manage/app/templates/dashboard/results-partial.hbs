@@ -1,0 +1,98 @@
+<div class="card-body">
+  <div class="mb-3">
+    {{partial "list-controls"}}
+    {{#if filtersOpen}}
+      <div class="row mt-3">
+        <div class="col-lg-6"></div>
+        <div class="col-lg-6">
+          <div class="card">
+            <div class="card-header font-weight-bold">Filters</div>
+            <div class="card-body">
+              <div class="form-group">
+                <label>Customer(s)</label>
+                {{type-ahead
+                  placeholder="Begin typing to find a customer..."
+                  type="customer"
+                  multiple=true
+                  selected=customers
+                  disabled=routeLoading
+                  onChange=(action "setCustomers")
+                }}
+              </div>
+
+              <div class="form-group">
+                <label>Sales Rep(s)</label>
+                {{#type-ahead
+                  placeholder="Begin typing to find a user..."
+                  type="user"
+                  field="givenName"
+                  multiple=true
+                  selected=salesReps
+                  disabled=routeLoading
+                  onChange=(action "setSalesReps")
+                  as |user|
+                }}
+                  {{user.givenName}} {{user.familyName}}
+                {{/type-ahead}}
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    {{filters/date-range
+                      label="Starting Between"
+                      start=starting.start
+                      end=starting.end
+                      disabled=routeLoading
+                      onChange=(action "setStartingRange")
+                    }}
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    {{filters/date-range
+                      label="Ending Between"
+                      start=ending.start
+                      end=ending.end
+                      disabled=routeLoading
+                      onChange=(action "setEndingRange")
+                    }}
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="card-footer d-flex justify-content-end">
+              <button class="btn btn-primary" disabled={{clearButtonDisabled}} {{action "clearFilters"}}>Clear All</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    {{/if}}
+  </div>
+
+  {{#fetch-more
+    query=observable
+    edges=model.edges
+    hasNextPage=model.pageInfo.hasNextPage
+    endCursor=model.pageInfo.endCursor
+    on-fetch-start=(route-action "showLoading")
+    on-fetch-end=(route-action "hideLoading")
+    resultKey=resultKey as |fetch|
+  }}
+    <h5 class="text-muted">Total Results: {{model.totalCount}}</h5>
+    {{#each fetch.nodes as |item|}}
+      {{partial "dashboard/item"}}
+    {{else}}
+      No results found.
+    {{/each}}
+
+    <div class="d-flex">
+      {{#if fetch.hasNextPage}}
+        <button class="btn btn-primary btn-lg" disabled={{fetch.isFetching}} {{action fetch.actions.loadMore}}>
+          {{entypo-icon "download"}} {{#if fetch.isFetching}}Loading...{{else}}Load More{{/if}}
+        </button>
+      {{/if}}
+    </div>
+  {{/fetch-more}}
+</div>

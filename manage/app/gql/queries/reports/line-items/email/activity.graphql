@@ -1,0 +1,34 @@
+#import 'leads-manage/gql/fragments/identity/view'
+
+query EmailLineItemReportActivity($hash: String!) {
+  emailLineItemActivityReport(hash: $hash) {
+    totalCount
+    edges {
+      node {
+        identity {
+          ...IdentityViewFragment
+        }
+        send {
+          id
+          url
+          sentDate
+          name
+        }
+        url {
+          id
+          title
+          values {
+            resolved
+          }
+        }
+        clicks
+        last
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

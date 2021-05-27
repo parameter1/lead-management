@@ -1,0 +1,5 @@
+query EditEmailLineItemLeads($input: ModelIdInput!) {
+  emailLineItem(input: $input) {
+    id
+  }
+}

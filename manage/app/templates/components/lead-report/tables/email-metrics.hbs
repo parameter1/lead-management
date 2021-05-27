@@ -1,0 +1,67 @@
+<thead>
+  <tr>
+    <th>Name {{lead-report/tables/sort-field key="name" sortBy=sortBy ascending=ascending reset=false}}</th>
+    <th>Date {{lead-report/tables/sort-field key="sentDate" sortBy=sortBy ascending=ascending reset=false}}</th>
+    {{#if displayDelivered}}
+      <th>Delivered {{lead-report/tables/sort-field key="metrics.delivered" sortBy=sortBy ascending=ascending reset=false}}</th>
+    {{/if}}
+    <th>Unique Opens {{lead-report/tables/sort-field key="metrics.uniqueOpens" sortBy=sortBy ascending=ascending reset=false}}</th>
+    {{#if displayUniqueClicks}}
+      <th>Unique Clicks {{lead-report/tables/sort-field key="metrics.uniqueClicks" sortBy=sortBy ascending=ascending reset=false}}</th>
+    {{/if}}
+    <th>Open Rate</th>
+    <th>CTOR</th>
+    <th>CTR</th>
+    <th>Advertiser CTR</th>
+    <th>Total Ad Clicks per Day</th>
+    <th>Total Unique Clicks</th>
+  </tr>
+</thead>
+<tbody>
+  {{#each sends as |row|}}
+    <tr>
+      <td>
+        {{#if row.send.url}}
+          <a href="#" {{action "displayIframeModal" row.send}}>{{ row.send.name }}</a>
+        {{else}}
+          {{ row.send.name }}
+        {{/if}}
+      </td>
+      <td>{{moment-format row.send.sentDate "MMM Do, YYYY @ h:mma"}}</td>
+      {{#if displayDelivered}}
+        <td>{{ format-number row.send.metrics.delivered format="0,0" }}</td>
+      {{/if}}
+      <td>{{ format-number row.send.metrics.uniqueOpens format="0,0" }}</td>
+      {{#if displayUniqueClicks}}
+        <td>{{ format-number row.send.metrics.uniqueClicks format="0,0" }}</td>
+      {{/if}}
+      <td>{{ format-number row.send.metrics.openRate format="00.0%" }}</td>
+      <td>{{ format-number row.send.metrics.clickToOpenRate format="00.0%" }}</td>
+      <td>{{ format-number row.send.metrics.clickToDeliveredRate format="00.0%" }}</td>
+      <td>{{ format-number row.advertiserClickRate format="0.00%" }}</td>
+      <td>{{ format-number row.clicks format="0,0" }}</td>
+      <td>{{ format-number row.identities format="0,0" }}</td>
+    </tr>
+  {{/each}}
+</tbody>
+<tfoot>
+  <tr>
+    <th>Total Emails: {{ format-number totals.sends format="0,0" }}</th>
+    <th>&nbsp;</th>
+    {{#if displayDelivered}}
+      <th>{{ format-number totals.metrics.delivered format="0,0" }}</th>
+    {{/if}}
+    <th>{{ format-number totals.metrics.uniqueOpens format="0,0" }}</th>
+    {{#if displayUniqueClicks}}
+      <th>{{ format-number totals.metrics.uniqueClicks format="0,0" }}</th>
+    {{/if}}
+    <th>{{ format-number totals.metrics.openRate format="00.0%" }}</th>
+    <th>{{ format-number totals.metrics.clickToOpenRate format="00.0%" }}</th>
+    <th>{{ format-number totals.metrics.clickToDeliveredRate format="00.0%" }}</th>
+    <th>{{ format-number totals.advertiserClickRate format="0.00%" }}</th>
+    <th>{{ format-number totals.clicks format="0,0" }}</th>
+    <th>{{ format-number totals.identities format="0,0" }}</th>
+  </tr>
+</tfoot>
+
+{{iframe-modal show=iframe.show src=iframe.src title=iframe.title}}

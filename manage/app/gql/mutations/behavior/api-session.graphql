@@ -1,0 +1,8 @@
+mutation BehaviorApiSession($input: BehaviorApiSessionInput!) {
+	behaviorCreateApiSession(input: $input) {
+		session {
+      token
+      exp
+    }
+	}
+}

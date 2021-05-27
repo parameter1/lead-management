@@ -1,0 +1,13 @@
+<label>Customer Form {{required-field-label}}</label>
+{{#power-select
+  dropdownClass=dropdownClass
+  options=options
+  selected=selected
+  loadingMessage="Loading forms..."
+  placeholder="Select form..."
+  onchange=(action onChange)
+  closeOnSelect=true as |form|
+}}
+  {{form.name}} ({{form.externalSource.identifier}})
+{{/power-select}}
+<small class="form-text text-muted">Leads will be generated from submissions to this form.</small>

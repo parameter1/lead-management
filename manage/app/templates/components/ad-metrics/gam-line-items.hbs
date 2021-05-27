@@ -1,0 +1,23 @@
+<div class="card-header font-weight-bold">
+  GAM Line Items to Include
+</div>
+<div class="card-body">
+  {{#if linkedAdvertisers.length}}
+    <ul class="list-group">
+      {{#each lineItems as |lineItem|}}
+        {{ad-metrics/gam-line-item
+          lineItem=lineItem
+          excludedIds=excludedIds
+          toggleExcluded=toggleExcluded
+          disabled=disabled
+        }}
+      {{else}}
+        <li class="list-group-item">
+          No line items found for the specified campaign criteria.
+        </li>
+      {{/each}}
+    </ul>
+  {{else}}
+    <p class="mb-0">No GAM Advertisers have been {{#link-to "customer.edit" customerId}}linked to this customer{{/link-to}}.</p>
+  {{/if}}
+</div>

@@ -1,0 +1,50 @@
+<div class="row">
+  <div class="col">
+    {{#if model.brightcoveVideoReport.nodes.length}}
+      <div class="card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-striped table-sm">
+              <thead>
+                <tr>
+                  <th>Video Name</th>
+                  <th>Total Impressions</th>
+                  <th>Total Views</th>
+                  <th>Engagement Score</th>
+                  <th>Views to 25%</th>
+                  <th>Views to 50%</th>
+                  <th>Views to 75%</th>
+                  <th>Views to 100%</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{#each model.brightcoveVideoReport.nodes as |row|}}
+                  <tr>
+                    <td>{{ row.video_name }}</td>
+                    <td>{{ format-number row.video_impression "0,0" }}</td>
+                    <td>{{ format-number row.video_view "0,0" }}</td>
+                    <td>{{ format-number row.engagement_score "0,0" }}</td>
+                    <td>{{ format-number row.video_engagement_25 "0,0" }}</td>
+                    <td>{{ format-number row.video_engagement_50 "0,0" }}</td>
+                    <td>{{ format-number row.video_engagement_75 "0,0" }}</td>
+                    <td>{{ format-number row.video_engagement_100 "0,0" }}</td>
+                  </tr>
+                {{/each}}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Total Items: {{ format-number model.brightcoveVideoReport.nodes.length format="0,0" }}</th>
+                  <th>{{ format-number totalImpressions "0,0" }}</th>
+                  <th>{{ format-number totalViews "0,0" }}</th>
+                  <th colspan="5">&nbsp;</th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    {{else}}
+      <h5 class="mb-0 card-title">No ad metrics found for this campaign.</h5>
+    {{/if}}
+  </div>
+</div>

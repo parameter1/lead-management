@@ -1,0 +1,17 @@
+#import 'leads-manage/gql/fragments/tag-fragment'
+
+query ListTags($pagination: PaginationInput, $sort: TagSortInput) {
+  allTags(pagination: $pagination, sort: $sort) {
+    totalCount
+    edges {
+      node {
+        ...TagFragment
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

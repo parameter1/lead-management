@@ -1,0 +1,18 @@
+fragment LineItemListFragment on LineItem {
+  id
+  hash
+  type
+  archived
+  name
+  notes
+  updatedAt
+  createdAt
+  archived
+  requiredLeads
+  totalValue
+  cpl
+  range {
+    start
+    end
+  }
+}

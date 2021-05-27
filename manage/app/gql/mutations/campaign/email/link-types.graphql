@@ -1,0 +1,7 @@
+mutation CampaignEditEmailLinkTypes($input: EmailCampaignLinkTypesInput!) {
+  emailCampaignLinkTypes(input: $input) {
+    id
+    allowedLinkTypes
+    urlCount
+  }
+}

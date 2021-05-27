@@ -1,0 +1,19 @@
+query FormsForCustomer($customerId: String!) {
+  allForms(input: { customerIds: [$customerId] }, pagination: { first: 200 }, sort: { field: "name", order: 1 }) {
+    totalCount
+    edges {
+      node {
+        id
+        name
+        externalSource {
+          namespace
+          identifier
+        }
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

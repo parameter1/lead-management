@@ -1,0 +1,10 @@
+mutation LineItemDateRange($input: LineItemDateRangeInput!) {
+  lineItemDateRange(input: $input) {
+    id
+    range {
+      start
+      end
+    }
+    status
+  }
+}

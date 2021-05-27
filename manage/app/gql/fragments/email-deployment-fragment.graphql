@@ -1,0 +1,21 @@
+#import 'leads-manage/gql/fragments/email-deployment-list'
+#import 'leads-manage/gql/fragments/email-send-metrics'
+
+fragment EmailDeploymentFragment on EmailDeployment {
+  ...EmailDeploymentListFragment
+  sends {
+    id
+    sentDate
+    isTestSend
+    metrics {
+      ...EmailSendMetricsFragment
+    }
+  }
+  metrics {
+    ...EmailSendMetricsFragment
+  }
+  category {
+    id
+    fullName
+  }
+}

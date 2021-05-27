@@ -1,0 +1,7 @@
+mutation LineItemRequiredLeads($input: LineItemRequiredLeadsInput!) {
+  lineItemRequiredLeads(input: $input) {
+    id
+    requiredLeads
+    cpl
+  }
+}

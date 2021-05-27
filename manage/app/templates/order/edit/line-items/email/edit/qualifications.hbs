@@ -1,0 +1,32 @@
+{{progress-bar class="progress-md" show=isLoading}}
+{{#bs-modal/body}}
+  <div class="row">
+    <div class="col-lg-6">
+      {{line-item/required-fields
+        dropdownClass="in-modal-dropdown"
+        requiredFields=model.requiredFields
+        onChange=(action "setRequiredFields")
+      }}
+    </div>
+    <div class="col-lg-6">
+      {{line-item/excluded-fields
+        dropdownClass="in-modal-dropdown"
+        excludedFields=model.excludedFields
+        onChange=(action "setExcludedFields")
+      }}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div class="form-group mb-0">
+        {{campaign-identity-filter
+          title="Exclude leads when..."
+          dropdownClass="in-modal-dropdown"
+          filters=model.identityFilters
+          on-change=(action "setIdentityFilters")
+        }}
+      </div>
+    </div>
+  </div>
+{{/bs-modal/body}}

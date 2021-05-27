@@ -1,0 +1,7 @@
+#import 'leads-manage/gql/fragments/tracked-campaign/view'
+
+mutation CreateTrackedCampaign($input: CreateTrackedCampaignInput!) {
+  createTrackedCampaign(input: $input) {
+    ...TrackedCampaignViewFragment
+  }
+}

@@ -1,0 +1,24 @@
+{{#basic-dropdown as |dropdown|}}
+  <button class="btn btn-primary dropdown-toggle" disabled={{disabled}} data-ebd-id="{{dropdown.uniqueId}}-trigger" {{action dropdown.actions.toggle}}>
+    {{entypo-icon "calendar"}}
+    {{#if hasSelected}}
+      {{moment-format range.start "MMMM Do, YYYY"}} - {{moment-format range.end "MMMM Do, YYYY"}}
+    {{else}}
+      Select Date Range
+    {{/if}}
+  </button>
+  {{#dropdown.content}}
+    <div class="card border-0 z-depth-1">
+      <div class="card-body">
+        {{#power-calendar-range
+          center=center
+          selected=range
+          onCenterChange=(action (mut center) value="date")
+          onSelect=(action (mut range) value="moment") as |calendar|}}
+          {{calendar.nav}}
+          {{calendar.days minDate=minDate maxDate=now}}
+        {{/power-calendar-range}}
+      </div>
+    </div>
+  {{/dropdown.content}}
+{{/basic-dropdown}}

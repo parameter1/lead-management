@@ -1,0 +1,17 @@
+#import 'leads-manage/gql/fragments/form/index'
+
+query SearchForms($pagination: PaginationInput, $search: TypeAheadInput!, $options: TypeAheadOptionsInput) {
+  searchForms(pagination: $pagination, search: $search, options: $options) {
+    totalCount
+    edges {
+      node {
+        ...FormIndexFragment
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

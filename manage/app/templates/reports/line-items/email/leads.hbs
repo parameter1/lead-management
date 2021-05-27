@@ -1,0 +1,38 @@
+{{#fetch-more
+  query=observable
+  edges=model.edges
+  hasNextPage=model.pageInfo.hasNextPage
+  endCursor=model.pageInfo.endCursor
+  on-fetch-start=(route-action "showLoading")
+  on-fetch-end=(route-action "hideLoading")
+  resultKey="emailLineItemIdentitiesReport"
+  as |fetch|
+}}
+
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item"><h5 class="mb-0 text-muted">Total Unique Leads for Campaign: {{model.totalCount}}</h5></li>
+  </ul>
+
+  <div class="card-body pb-0">
+    <div class="row">
+      {{#each fetch.nodes as |item|}}
+        {{identity-card
+          identity=item
+          lineItemId=lineitem.id
+          customerId=lineitem.order.customer.id
+          canEdit=false
+          class="mb-4"
+        }}
+      {{/each}}
+    </div>
+  </div>
+
+  {{#if fetch.hasNextPage}}
+    <div class="card-footer">
+      <button class="btn btn-primary btn-lg" disabled={{fetch.isFetching}} {{action fetch.actions.loadMore}}>
+        {{entypo-icon "download"}} {{#if fetch.isFetching}}Loading...{{else}}Load More{{/if}}
+      </button>
+    </div>
+  {{/if}}
+
+{{/fetch-more}}

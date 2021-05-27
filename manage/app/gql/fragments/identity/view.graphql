@@ -1,0 +1,27 @@
+fragment IdentityViewFragment on Identity {
+  id
+  emailAddress
+  givenName
+  familyName
+  title
+  companyName
+  street
+  city
+  region
+  postalCode
+  country
+  phoneNumber
+  attributes
+  fieldCount
+  inactive
+  domainExcluded
+  inactiveCustomers {
+    id
+  }
+  inactiveCampaigns {
+    id
+  }
+  inactiveLineItems {
+    id
+  }
+}

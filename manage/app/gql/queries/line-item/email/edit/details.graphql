@@ -1,0 +1,14 @@
+query EditEmailLineItemDetails($input: ModelIdInput!) {
+  emailLineItem(input: $input) {
+    id
+    name
+    requiredLeads
+    totalValue
+    notes
+    archived
+    range {
+      start
+      end
+    }
+  }
+}

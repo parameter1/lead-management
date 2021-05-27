@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="col">
+    {{#if model.length}}
+      <div class="card">
+        <div class="card-header">
+          <ul class="nav nav-tabs card-header-tabs" role="tablist">
+            {{#each model as |form index|}}
+              <li class="nav-item">{{#link-to "lead-report.forms.submissions" form.id class="nav-link" title=form.nam role="tab"}}Form {{add index 1}}{{/link-to}}</li>
+            {{/each}}
+          </ul>
+        </div>
+        {{outlet}}
+      </div>
+    {{else}}
+      <h5 class="mb-0 card-title">No form submissions found for this campaign.</h5>
+    {{/if}}
+  </div>
+</div>

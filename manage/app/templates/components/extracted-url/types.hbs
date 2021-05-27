@@ -1,0 +1,12 @@
+<div class="form-group w-50">
+  <label class="mr-2">Link Type</label>
+  {{#power-select
+    triggerClass="w-25"
+    options=options
+    selected=selected
+    onchange=onChange
+    as |linkType|
+  }}
+    {{linkType}}
+  {{/power-select}}
+</div>

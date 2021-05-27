@@ -1,0 +1,3 @@
+mutation VideoEditCustomer($input: LinkBrightcoveVideoToCustomersMutationInput!) {
+  linkBrightcoveVideoToCustomers(input: $input)
+}

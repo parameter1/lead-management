@@ -1,0 +1,17 @@
+#import 'leads-manage/gql/fragments/extracted-url/view'
+
+query SearchExtractedUrlsForSend($sendId: String!, $pagination: PaginationInput, $search: TypeAheadInput!, $options: TypeAheadOptionsInput) {
+  searchExtractedUrlsForSend(sendId: $sendId, pagination: $pagination, search: $search, options: $options) {
+    totalCount
+    edges {
+      node {
+        ...ExtractedUrlViewFragment
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

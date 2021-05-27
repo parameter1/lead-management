@@ -1,0 +1,21 @@
+#import 'leads-manage/gql/fragments/form/entry'
+#import 'leads-manage/gql/fragments/form/edit'
+
+query FormEditEntries($input: FormInput!, $entriesInput: FormEntriesInput, $pagination: PaginationInput, $sort: FormEntrySortInput) {
+  form(input: $input) {
+    ...FormEditFragment
+    entries(input: $entriesInput, pagination: $pagination, sort: $sort) {
+      totalCount
+      edges {
+        node {
+          ...FormEntryFragment
+        }
+        cursor
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+    }
+  }
+}

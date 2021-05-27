@@ -1,0 +1,7 @@
+#import 'leads-manage/gql/fragments/ad-creative-tracker/edit'
+
+mutation UpdateAdCreativeTracker($input: UpdateAdCreativeTrackerInput!) {
+  updateAdCreativeTracker(input: $input) {
+    ...AdCreativeTrackerEditFragment
+  }
+}

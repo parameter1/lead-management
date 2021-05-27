@@ -1,0 +1,17 @@
+#import 'leads-manage/gql/fragments/identity/list'
+
+query SearchIdentities($pagination: PaginationInput, $search: TypeAheadInput!, $options: TypeAheadOptionsInput) {
+  searchIdentities(pagination: $pagination, search: $search, options: $options) {
+    totalCount
+    edges {
+      node {
+        ...IdentityListFragment
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

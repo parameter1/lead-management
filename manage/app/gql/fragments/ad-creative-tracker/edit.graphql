@@ -1,0 +1,17 @@
+fragment AdCreativeTrackerEditFragment on AdCreativeTracker {
+  id
+  url
+  description
+  customer {
+    id
+    name
+  }
+  tags {
+    id
+    name
+  }
+  trackers {
+    click
+    impression
+  }
+}

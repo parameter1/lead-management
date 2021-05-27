@@ -1,0 +1,6 @@
+mutation EmailLineItemExcludedFields($input: EmailLineItemExcludedFieldsInput!) {
+  emailLineItemExcludedFields(input: $input) {
+    id
+    excludedFields
+  }
+}

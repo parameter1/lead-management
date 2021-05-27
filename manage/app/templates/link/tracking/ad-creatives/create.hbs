@@ -1,0 +1,17 @@
+{{#bs-modal show=true size="xl" backdrop="static" onClose=(route-action "transitionTo" "link.tracking.ad-creatives.index") as |modal|}}
+  {{#modal.header}}
+    <h5 class="modal-title">{{entypo-icon "code"}} Create Ad Creative Tracker</h5>
+    <button {{action modal.actions.hide}} type="button" class="close" aria-label="Close">
+      {{entypo-icon "cross"}}
+    </button>
+  {{/modal.header}}
+  {{progress-bar class="progress-md" show=isActionRunning}}
+  <form {{action (action "create" modal.actions.hide) on="submit"}}>
+    {{#modal.body}}
+      {{partial "link/tracking/ad-creatives/form"}}
+    {{/modal.body}}
+    {{#modal.footer}}
+      {{model-save-button disabled=isActionRunning}}
+    {{/modal.footer}}
+  </form>
+{{/bs-modal}}

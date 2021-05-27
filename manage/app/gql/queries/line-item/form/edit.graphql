@@ -1,0 +1,7 @@
+query EditFormLineItem($input: ModelIdInput!) {
+  formLineItem(input: $input) {
+    id
+    type
+    hash
+  }
+}

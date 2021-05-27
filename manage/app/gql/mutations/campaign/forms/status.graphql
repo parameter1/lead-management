@@ -1,0 +1,6 @@
+mutation CampaignEditFormStatus($input: CampaignStatusInput!) {
+  formCampaignStatus(input: $input) {
+    id
+    enabled
+  }
+}

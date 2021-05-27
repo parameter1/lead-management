@@ -1,0 +1,12 @@
+mutation EmailLineItemIdentityFilters($input: EmailLineItemIdentityFiltersInput!) {
+  emailLineItemIdentityFilters(input: $input) {
+    id
+    identityFilters {
+      id
+      key
+      label
+      matchType
+      terms
+    }
+  }
+}

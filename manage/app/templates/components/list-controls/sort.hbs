@@ -1,0 +1,22 @@
+{{#if options.length}}
+  <div class="btn-group {{directionClass}}" role="group">
+    {{#list-controls/button
+      disabled=disabled
+      class=(concat "dropdown-toggle" " " buttonClass)
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+    }}
+      <span class="d-none d-sm-inline">{{selected.label}}</span>
+    {{/list-controls/button}}
+
+    <div class="dropdown-menu {{alignmentClass}}">
+      {{#each filteredOptions as |option|}}
+        <a class="dropdown-item" href="javascript:void(0)" {{action "sortBy" option.key}}>{{option.label}}</a>
+      {{/each}}
+    </div>
+  </div>
+  {{#list-controls/button class=buttonClass disabled=disabled click=(action "toggleAscending")}}
+    {{entypo-icon (if ascending "arrow-up" "arrow-down")}}
+  {{/list-controls/button}}
+{{/if}}

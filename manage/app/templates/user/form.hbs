@@ -1,0 +1,33 @@
+<div class="row">
+  <div class="col-sm-6">
+    <div class="form-group">
+      <label for="givenName">First Name</label>
+      {{input type="text" required="true" autocomplete="given-name" value=model.givenName class="form-control" id="givenName" placeholder="First Name"}}
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="form-group">
+      <label for="familyName">Last Name</label>
+      {{input type="text" required="true" autocomplete="family-name" value=model.familyName class="form-control" id="familyName" placeholder="Last Name"}}
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <div class="form-group">
+      <label for="email">Email Address</label>
+      {{input type="email" required="true" autocomplete="email" value=model.email class="form-control" id="email" placeholder="Email Address"}}
+    </div>
+    <div class="form-group">
+      <label>Role/Permissions</label>
+      {{#power-select
+        options=userRoles.roles
+        selected=model.role
+        searchEnabled=false
+        onchange=(action (mut model.role)) as |role|}}
+        {{role}}
+      {{/power-select}}
+    </div>
+  </div>
+</div>

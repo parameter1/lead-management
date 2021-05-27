@@ -1,0 +1,58 @@
+{{#link-to
+  "order.edit.line-items.form.edit" item.id
+  class="list-group-item list-group-item-action flex-column align-items-start"
+}}
+  <div class="d-flex w-100 justify-content-between">
+
+    <div class="d-flex flex-column">
+      <div class="d-flex flex-row">
+        <div class="d-flex flex-column">
+          <h4 class="mb-2">{{entypo-icon "text-document"}} {{item.name}}</h4>
+          <h5 class="mb-2">
+            {{item.form.name}} ({{item.form.externalSource.identifier}})
+          </h5>
+          <p class="mb-1">
+            Requires
+            <strong>
+              {{format-number item.requiredLeads format="0,0"}}
+            </strong>
+            Leads
+          </p>
+          <p class="mb-1">
+            Value
+            <strong>
+              {{format-number item.totalValue format="$0,0.[00]"}}
+            </strong>
+            ({{format-number item.cpl format="$0,0.[00]"}} CPL)
+          </p>
+          <p class="mb-1">
+            Archived? {{#if item.archived}}<span class="text-warning">Yes</span>{{else}}<span class="text-success">No</span>{{/if}}
+          </p>
+          <p class="mb-1 text-muted">
+            Notes: {{#if item.notes}}{{item.notes}}{{else}}(none){{/if}}
+          </p>
+          <small class="mb-1">ID: {{item.id}}</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-none d-sm-flex flex-column align-items-end text-right">
+      <div>
+        <p class="mb-2">
+          {{line-item-status status=item.status}}
+        </p>
+        {{line-item-date futureLabel="Starts" pastLabel="Started" date=item.range.start}}
+        {{line-item-date class="mb-2" futureLabel="Ends" pastLabel="Ended" date=item.range.end}}
+      </div>
+      <div class="mt-auto">
+        {{#if item.updatedAt}}
+          <small class="d-block">{{entypo-icon "clock"}} Updated {{moment-format item.updatedAt "MMM Do, YYYY h:mm a"}}</small>
+        {{/if}}
+        {{#if item.createdAt}}
+          <small class="d-block">{{entypo-icon "clock"}} Created {{moment-format item.createdAt "MMM Do, YYYY h:mm a"}}</small>
+        {{/if}}
+      </div>
+    </div>
+
+  </div>
+{{/link-to}}

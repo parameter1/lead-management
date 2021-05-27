@@ -1,0 +1,22 @@
+{{#link-to
+  "customer.edit" item.id
+  class="list-group-item list-group-item-action flex-column align-items-start"
+}}
+  <div class="d-flex w-100 justify-content-between">
+    <h4 class="mb-1">{{item.name}}</h4>
+    {{#if item.updatedAt}}
+      <small>{{entypo-icon "clock "}} Updated {{moment-format item.updatedAt "MMM Do, YYYY h:mm a"}}</small>
+    {{/if}}
+  </div>
+
+  {{#if item.linkedAdvertisers.googleAdManager.nodes.length}}
+    <p class="my-1">
+      GAM Advertisers:
+      {{#each item.linkedAdvertisers.googleAdManager.nodes as |advertiser|}}
+        <span>{{ advertiser.name }}</span>
+      {{/each}}
+    </p>
+  {{/if}}
+
+  <small>ID: {{item.id}}</small>
+{{/link-to}}

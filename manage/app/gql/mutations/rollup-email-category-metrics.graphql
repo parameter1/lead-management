@@ -1,0 +1,7 @@
+#import 'leads-manage/gql/fragments/email-category'
+
+mutation rollupEmailCatgoryMetrics($categoryId: String!, $rollupMetrics: Boolean!, $isNewsletter: Boolean = false) {
+  rollupEmailCatgoryMetrics(categoryId: $categoryId, rollupMetrics: $rollupMetrics, isNewsletter: $isNewsletter) {
+    ...EmailCategoryFragment
+  }
+}

@@ -1,0 +1,17 @@
+#import 'leads-manage/gql/fragments/user-fragment'
+
+query allUsers($pagination: PaginationInput, $sort: UserSortInput) {
+  allUsers(pagination: $pagination, sort: $sort) {
+    totalCount
+    edges {
+      node {
+        ...UserFragment
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

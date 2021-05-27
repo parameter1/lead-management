@@ -1,0 +1,19 @@
+fragment AdCampaignFragment on AdCampaign {
+  id
+  tags {
+    id
+    name
+  }
+  trackers {
+    id
+  }
+  excludeFields
+  identityFilters {
+    id
+    key
+    label
+    matchType
+    terms
+  }
+  enabled
+}

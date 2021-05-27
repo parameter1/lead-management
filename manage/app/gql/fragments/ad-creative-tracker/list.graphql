@@ -1,0 +1,13 @@
+fragment AdCreativeTrackerListFragment on AdCreativeTracker {
+  id
+  url
+  description
+  customer {
+    id
+    name
+  }
+  tags {
+    id
+    name
+  }
+}

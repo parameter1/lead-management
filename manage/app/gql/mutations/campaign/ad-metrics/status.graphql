@@ -1,0 +1,9 @@
+mutation CampaignEditAdMetricsStatus($input: CampaignStatusInput!) {
+  adMetricsCampaignStatus(input: $input) {
+    id
+    adMetrics {
+      id
+      enabled
+    }
+  }
+}

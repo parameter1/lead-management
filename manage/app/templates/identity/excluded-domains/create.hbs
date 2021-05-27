@@ -1,0 +1,24 @@
+{{#nav-breadcrumbs as |crumbs|}}
+  {{#crumbs.item}}{{#link-to "identity.excluded-domains.index"}}{{entypo-icon "email"}} Excluded Email Domains{{/link-to}}{{/crumbs.item}}
+  {{#crumbs.item active=true}}Create New{{/crumbs.item}}
+{{/nav-breadcrumbs}}
+
+<form {{action (route-action "create" model) on="submit"}}>
+  <div class="card model-form">
+    <div class="card-header"></div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col">
+          <div class="form-group mb-0">
+            <label for="domain">Domain Name</label>
+            {{input type="text" required=true value=model.domain class="form-control" id="domain" placeholder="domain.com" aria-describedby="domainHelp"}}
+            <small id="domnainHelp" class="form-text text-muted hide">The email domain name to exclude, without the @ symbol, e.g. google.com</small>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      {{model-save-button disabled=isActionRunning}}
+    </div>
+  </div>
+</form>

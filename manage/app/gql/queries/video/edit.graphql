@@ -1,0 +1,10 @@
+query brightcoveCMSVideos($input: BrightcoveCMSVideoQueryInput!) {
+  brightcoveCMSVideo(input: $input) {
+    id
+    name
+    customers {
+      id
+      name
+    }
+  }
+}

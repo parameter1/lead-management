@@ -1,0 +1,17 @@
+query ListGAMAdvertisers($input: ListGAMAdvertisersQueryInput!) {
+  listGAMAdvertisers(input: $input) {
+    totalCount
+    nodes {
+      id
+      name
+      customer {
+        id
+        name
+      }
+    }
+    pageInfo {
+      hasNextPage
+      nextOffset
+    }
+  }
+}

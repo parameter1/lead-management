@@ -1,0 +1,26 @@
+{{#nav-breadcrumbs as |crumbs|}}
+  {{#crumbs.item}}{{#link-to "identity.excluded-domains.index"}}{{entypo-icon "email"}} Excluded Email Domains{{/link-to}}{{/crumbs.item}}
+  {{#crumbs.item active=true}}{{ model.domain }}{{/crumbs.item}}
+{{/nav-breadcrumbs}}
+
+<div class="card model-form">
+  <div class="card-header"></div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col">
+        <h5 class="mb-0">{{model.domain}}</h5>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer d-flex justify-content-between">
+    <div class="btn-group btn pr-0">
+      {{confirm-button
+        icon="trash"
+        label="Delete"
+        class="btn-danger"
+        disabled=isActionRunning
+        onConfirm=(route-action "delete" model.id "identity.excluded-domains.index")
+      }}
+    </div>
+  </div>
+</div>

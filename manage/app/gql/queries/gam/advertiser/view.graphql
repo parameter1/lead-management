@@ -1,0 +1,10 @@
+query ViewGAMAdvertiser($input: GAM_SingleRecordQueryInput!) {
+  gam_company(input: $input) {
+    id
+    name
+    customer {
+      id
+      name
+    }
+  }
+}

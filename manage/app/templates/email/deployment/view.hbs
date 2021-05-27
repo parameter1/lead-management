@@ -1,0 +1,71 @@
+{{#nav-breadcrumbs as |crumbs|}}
+  {{#crumbs.item}}{{#link-to "email.deployment.index"}}{{entypo-icon "mail"}} Email Deployments{{/link-to}}{{/crumbs.item}}
+  {{#crumbs.item active=true}}{{ model.name }}{{/crumbs.item}}
+{{/nav-breadcrumbs}}
+
+<div class="card model-form">
+  <div class="card-header"></div>
+  <div class="card-body">
+    <h5 class="card-title">Subject: {{ model.subject }}</h5>
+
+    <p class="mb-1">Jobs Sent: {{model.sendCount}}</p>
+    <p class="mb-0">Category: {{#link-to "email.category.view" model.category.id}}{{model.category.fullName}}{{/link-to}}</p>
+    <hr>
+    <h5 class="card-title">Sends</h5>
+    <table class="table table-striped table-responsive mb-0">
+      <thead>
+        <tr>
+          <th>Sent Date</th>
+          <th>Test?</th>
+          <th>Sent</th>
+          <th>Delivered</th>
+          <th>Delivery Rate</th>
+          <th>Unique Opens</th>
+          <th>Unique Clicks</th>
+          <th>Open Rate</th>
+          <th>Click Rate (O / D)</th>
+          <th>Unsubs</th>
+          <th>Bounces</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each model.sends as |send|}}
+          <tr>
+            <td>{{#link-to "email.send.view" send.id}}{{ moment-format send.sentDate "MM/DD/YYYY h:mma" }}{{/link-to}}</td>
+            <td>{{#if send.isTestSend}}Yes{{else}}No{{/if}}</td>
+            <td>{{ format-number send.metrics.sent format="0,0" }}</td>
+            <td>{{ format-number send.metrics.delivered format="0,0" }}</td>
+            <td>{{ format-number send.metrics.deliveryRate format="00.0%" }}</td>
+            <td>{{ format-number send.metrics.uniqueOpens format="0,0" }}</td>
+            <td>{{ format-number send.metrics.uniqueClicks format="0,0" }}</td>
+            <td>{{ format-number send.metrics.openRate format="00.0%" }}</td>
+            <td>{{ format-number send.metrics.clickToOpenRate format="00.0%" }} / {{ format-number send.metrics.clickToDeliveredRate format="00.0%" }}</td>
+            <td>{{ format-number send.metrics.unsubscribes format="0,0" }}</td>
+            <td>{{ format-number send.metrics.bounces format="0,0" }}</td>
+          </tr>
+        {{else}}
+          <tr>
+            <td colspan="10">No sends found.</td>
+          </tr>
+        {{/each}}
+      </tbody>
+      {{#if model.sends.length}}
+        <tfoot>
+          <tr>
+            <th>Totals:</th>
+            <th>&nbsp;</th>
+            <th>{{ format-number model.metrics.sent format="0,0" }}</th>
+            <th>{{ format-number model.metrics.delivered format="0,0" }}</th>
+            <th>{{ format-number model.metrics.deliveryRate format="00.0%" }}</th>
+            <th>{{ format-number model.metrics.uniqueOpens format="0,0" }}</th>
+            <th>{{ format-number model.metrics.uniqueClicks format="0,0" }}</th>
+            <th>{{ format-number model.metrics.openRate format="00.0%" }}</th>
+            <th>{{ format-number model.metrics.clickToOpenRate format="00.0%" }} / {{ format-number model.metrics.clickToDeliveredRate format="00.0%" }}</th>
+            <th>{{ format-number model.metrics.unsubscribes format="0,0" }}</th>
+            <th>{{ format-number model.metrics.bounces format="0,0" }}</th>
+          </tr>
+        </tfoot>
+      {{/if}}
+    </table>
+  </div>
+</div>

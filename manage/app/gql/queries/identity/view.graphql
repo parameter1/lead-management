@@ -1,0 +1,7 @@
+#import 'leads-manage/gql/fragments/identity/view'
+
+query ViewIdentity($input: ModelIdInput!) {
+  identity(input: $input) {
+    ...IdentityViewFragment
+  }
+}

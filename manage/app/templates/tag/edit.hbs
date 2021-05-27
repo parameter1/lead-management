@@ -1,0 +1,26 @@
+{{#nav-breadcrumbs as |crumbs|}}
+  {{#crumbs.item}}{{#link-to "tag.index"}}{{entypo-icon "price-tag"}} Tags{{/link-to}}{{/crumbs.item}}
+  {{#crumbs.item active=true}}{{ model.name }}{{/crumbs.item}}
+{{/nav-breadcrumbs}}
+
+<form {{action (route-action "update" model) on="submit"}}>
+  <div class="card model-form">
+    <div class="card-header"></div>
+    <div class="card-body">
+      {{ partial "tag/form" }}
+    </div>
+    <div class="card-footer d-flex justify-content-between">
+      {{model-save-button disabled=isActionRunning}}
+
+      <div class="btn-group btn pr-0">
+        {{confirm-button
+          icon="trash"
+          label="Delete"
+          class="btn-danger"
+          disabled=isActionRunning
+          onConfirm=(route-action "delete" model.id "tag.index")
+        }}
+      </div>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,7 @@
+#import 'leads-manage/gql/fragments/content-query-result/view'
+
+mutation createContentQueryResult($input: CreateContentQueryResultInput!) {
+  createContentQueryResult(input: $input) {
+    ...ContentQueryResultFragment
+  }
+}

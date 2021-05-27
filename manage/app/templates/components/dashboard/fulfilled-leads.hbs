@@ -1,0 +1,35 @@
+<div class="card-body">
+  <div class="d-flex flex-row justify-content-between align-items-center">
+    <div class="d-flex flex-column">
+      <span class="h1 mb-0 my-auto text-success">
+        {{entypo-icon "gauge"}}
+      </span>
+    </div>
+
+    <div class="d-flex flex-column text-right w-100">
+      <div class="text-uppercase">% Fulfilled</div>
+      <div class="h4 mb-0 text-success" title={{rate}}>
+        {{#if isLoading}}
+          {{progress-bar color="success" show=true class="ml-auto mt-1 w-50"}}
+        {{else}}
+          {{format-number rate format="0.[0]%"}}
+        {{/if}}
+      </div>
+      <span class="h5 mb-0 text-muted" title={{total}}>
+        {{#unless isLoading}}
+          {{format-number total format="0,0"}} Leads
+        {{/unless}}
+      </span>
+    </div>
+  </div>
+  {{#unless isLoading}}
+    {{line-item-pacing
+      class="mt-2"
+      leadsShouldBeAtPct=pacing.leadsShouldBeAtPct
+      leadsShouldBeAt=pacing.leadsShouldBeAt
+      leadsCurrentlyAtPct=pacing.leadsCurrentlyAtPct
+      leadsCurrentlyAt=pacing.leadsCurrentlyAt
+      pacingRate=pacing.pacingRate
+    }}
+  {{/unless}}
+</div>

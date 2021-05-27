@@ -1,0 +1,11 @@
+<div class="row my-4">
+  <div class="col">
+    <h2>{{model.order.name}}: {{model.name}}</h2>
+    <h3>{{model.order.customer.name}}</h3>
+    <h4 class="mb-4">{{moment-format model.range.start "MMM Do, YYYY"}} &ndash; {{moment-format model.range.end "MMM Do, YYYY"}}</h4>
+
+    <div class="card model-form">
+      {{outlet}}
+    </div>
+  </div>
+</div>

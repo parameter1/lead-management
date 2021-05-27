@@ -1,0 +1,11 @@
+<label>Where links are set as... {{required-field-label}}</label>
+{{#power-select-multiple
+  dropdownClass=dropdownClass
+  options=options
+  selected=linkTypes
+  onchange=(action "onChange")
+  closeOnSelect=false as |linkType|
+}}
+  {{linkType}}
+{{/power-select-multiple}}
+<small class="form-text text-muted">Choose at least one.</small>

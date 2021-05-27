@@ -1,0 +1,25 @@
+<div class="row mb-3">
+  <div class="col">
+    <p class="mb-0">
+      <a class="btn btn-lg btn-success" role="button" href="/export/campaign/{{model.hash}}/leads">{{entypo-icon "download"}} Download Email Leads</a>
+    </p>
+    <small class="text-muted">
+      Note: Metrics reflect total clicks. Employee clicks for testing purposes and bad email addresses are removed from customer lead reports.
+    </small>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <div class="card">
+      <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs" role="tablist">
+          <li class="nav-item">{{#link-to "lead-report.email.metrics" class="nav-link" role="tab"}}Metrics{{/link-to}}</li>
+          <li class="nav-item">{{#link-to "lead-report.email.leads" class="nav-link" role="tab"}}Leads{{/link-to}}</li>
+          <li class="nav-item">{{#link-to "lead-report.email.export" class="nav-link" role="tab"}}Lead Detail{{/link-to}}</li>
+          <li class="nav-item">{{#link-to "lead-report.email.activity" class="nav-link" role="tab"}}Activity{{/link-to}}</li>
+        </ul>
+      </div>
+      {{outlet}}
+    </div>
+  </div>
+</div>

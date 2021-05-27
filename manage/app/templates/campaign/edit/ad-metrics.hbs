@@ -1,0 +1,22 @@
+<div class="card-body">
+
+  <div class="row">
+    <div class="col">
+      <div class="custom-control custom-checkbox">
+        {{input type="checkbox" checked=model.adMetrics.enabled class="custom-control-input" id="include-ad-metrics" change=(action "updateStatus")}}
+        <label class="custom-control-label" for="include-ad-metrics">Include Ad Metrics in Campaign?</label>
+      </div>
+    </div>
+  </div>
+  {{#if model.adMetrics.enabled}}
+    {{ad-metrics/gam-line-items
+      class="mt-3"
+      customerId=model.customer.id
+      linkedAdvertisers=model.customer.linkedAdvertisers.googleAdManager.nodes
+      lineItems=model.gamLineItems.nodes
+      disabled=isActionRunning
+      excludedIds=model.adMetrics.excludedGAMLineItemIds
+      toggleExcluded=(action "toggleExcludedGAMLineItem")
+    }}
+  {{/if}}
+</div>

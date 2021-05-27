@@ -1,0 +1,17 @@
+#import 'leads-manage/gql/fragments/tracked-campaign/list'
+
+query SearchTrackedCampaigns($pagination: PaginationInput, $search: TypeAheadInput!, $options: TypeAheadOptionsInput) {
+  searchTrackedCampaigns(pagination: $pagination, search: $search, options: $options) {
+    totalCount
+    edges {
+      node {
+        ...TrackedCampaignListFragment
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

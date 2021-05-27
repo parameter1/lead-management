@@ -1,0 +1,7 @@
+fragment ExternalSourceFragment on ExternalSource {
+  identifier
+  namespace
+  lastRetrievedAt
+  createdAt
+  updatedAt
+}

@@ -1,0 +1,15 @@
+{{#nav-breadcrumbs as |crumbs|}}
+  {{#crumbs.item}}{{#link-to "identity.index"}}{{entypo-icon "users"}} Leads{{/link-to}}{{/crumbs.item}}
+  {{#crumbs.item active=true}}{{ model.emailAddress }}{{/crumbs.item}}
+{{/nav-breadcrumbs}}
+
+
+<div class="card model-form">
+  <div class="card-header">
+  </div>
+  <div class="card-body">
+    <div class="row">
+      {{identity-card identity=model fullWidth=true canEdit=true class="mb-0"}}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+query ListCustomers($pagination: PaginationInput, $sort: CustomerSortInput) {
+  allCustomers(pagination: $pagination, sort: $sort) {
+    totalCount
+    edges {
+      node {
+        id
+        name
+        createdAt
+        updatedAt
+        externalSource {
+          identifier
+        }
+        linkedAdvertisers {
+          googleAdManager {
+            nodes {
+              id
+              name
+            }
+          }
+        }
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

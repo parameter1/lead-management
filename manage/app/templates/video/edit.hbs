@@ -1,0 +1,48 @@
+{{#nav-breadcrumbs as |crumbs|}}
+  {{#crumbs.item}}{{#link-to "video.index"}}{{entypo-icon "video-camera"}} Videos{{/link-to}}{{/crumbs.item}}
+  {{#crumbs.item active=true}}{{ model.name }}{{/crumbs.item}}
+{{/nav-breadcrumbs}}
+
+
+<form {{action (route-action "update" model) on="submit"}}>
+  <div class="card model-form">
+    <div class="card-header">
+    </div>
+
+    <div class="card-body">
+      <div class="row">
+        <div class="col-6">
+          <div class="form-group">
+            <label for="form-identifier">Brightcove ID</label>
+            {{input id="form-identifier"
+              type="text"
+              required=true
+              value=model.id
+              disabled=true
+              class="form-control"
+            }}
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="form-group mb-0">
+            <label>Customers</label>
+            {{type-ahead
+              multiple=true
+              placeholder="Begin typing to find a customer..."
+              type="customer"
+              selected=model.customers
+              onChange=(action (mut model.customers))
+            }}
+            <small class="form-text text-muted">The customer(s) to assign to this video.</small>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="card-footer d-flex justify-content-between">
+      {{model-save-button disabled=isActionRunning}}
+    </div>
+  </div>
+</form>

@@ -1,0 +1,9 @@
+mutation CampaignEditAdMetricsExcludedGAMLineItemIds($input: AdMetricsExcludedGAMLineItemIdsMutationInput!) {
+  adMetricsExcludedGAMLineItemIds(input: $input) {
+    id
+    adMetrics {
+      id
+      excludedGAMLineItemIds
+    }
+  }
+}

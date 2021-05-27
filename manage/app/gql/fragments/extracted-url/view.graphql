@@ -1,0 +1,46 @@
+fragment ExtractedUrlViewFragment on ExtractedUrl {
+  id
+  title
+  lastCrawledDate
+  errorMessage
+  linkType
+  values {
+    original
+    resolved
+  }
+  meta {
+    description
+  }
+  host {
+    id
+    value
+    customer {
+      id
+      name
+    }
+    tags {
+      id
+      name
+    }
+    urlParams {
+      key
+      value
+      isMergeVar
+      encodedValue
+    }
+  }
+  customer {
+    id
+    name
+  }
+  tags {
+    id
+    name
+  }
+  urlParams {
+    key
+    value
+    isMergeVar
+    encodedValue
+  }
+}

@@ -1,0 +1,17 @@
+#import 'leads-manage/gql/fragments/ad-creative-tracker/list'
+
+query ListAdCreativeTrackers($pagination: PaginationInput, $sort: AdCreativeTrackerSortInput) {
+  allAdCreativeTrackers(pagination: $pagination, sort: $sort) {
+    totalCount
+    edges {
+      node {
+        ...AdCreativeTrackerListFragment
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

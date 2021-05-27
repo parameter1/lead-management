@@ -1,0 +1,5 @@
+mutation CreateAdCreativeTracker($input: CreateAdCreativeTrackerInput!) {
+  createAdCreativeTracker(input: $input) {
+    id
+  }
+}

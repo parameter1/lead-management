@@ -1,0 +1,15 @@
+<label>{{ title }}</label><br>
+{{#power-select-multiple
+  options=options
+  selected=selected
+  dropdownClass=dropdownClass
+  triggerClass=triggerClass
+  onchange=(action "handleChange")
+  placeholder="Enter values..." as |term|
+}}
+  {{term}}
+{{/power-select-multiple}}
+
+<button class="btn btn-sm btn-outline-danger mt-2" {{action onRemove}}>
+  {{entypo-icon "circle-with-cross"}} Remove
+</button>

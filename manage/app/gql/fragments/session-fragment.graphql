@@ -1,0 +1,6 @@
+fragment SessionFragment on Session {
+  id
+  uid
+  exp
+  token
+}

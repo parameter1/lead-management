@@ -1,0 +1,7 @@
+#import 'leads-manage/gql/fragments/form/edit'
+
+mutation createForm($input: CreateFormInput!) {
+	createForm(input: $input) {
+    ...FormEditFragment
+	}
+}

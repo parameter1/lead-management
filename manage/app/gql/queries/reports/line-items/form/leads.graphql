@@ -1,0 +1,24 @@
+query FormLineItemReportLeads($input: FormLineItemLeadsQueryInput!, $pagination: PaginationInput = { first: 28 }, $sort: FormEntrySortInput = {}) {
+  formLineItemLeads(input: $input, pagination: $pagination, sort: $sort) {
+    totalCount
+    edges {
+      node {
+        id
+        identifier
+        submittedAt
+        inactive
+        values: wufooValues {
+          field {
+            id
+            title
+          }
+          value
+        }
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

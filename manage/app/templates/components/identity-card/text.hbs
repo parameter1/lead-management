@@ -1,0 +1,13 @@
+{{#if (eq _isEmpty false)}}
+  <small class="text-muted">{{ title }}</small>
+  {{#each fields as |field|}}
+    {{#if (get identity field.key)}}
+      {{identity-card/field
+        key=field.key
+        label=field.label
+        value=(get identity field.key)
+        inline=field.inline
+      }}
+    {{/if}}
+  {{/each}}
+{{/if}}

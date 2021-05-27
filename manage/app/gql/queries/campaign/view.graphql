@@ -1,0 +1,7 @@
+#import 'leads-manage/gql/fragments/campaign/view'
+
+query ViewCampaign($input: ModelIdInput!) {
+  campaign(input: $input) {
+    ...CampaignViewFragment
+  }
+}

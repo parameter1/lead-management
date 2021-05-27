@@ -1,0 +1,107 @@
+<div class="jumbotron mt-4 z-depth-1">
+  <h1 class="display-4">Welcome!</h1>
+  <p class="lead">Begin by using the navigation above.</p>
+</div>
+
+{{!--
+{{#nav-breadcrumbs as |crumbs|}}
+  {{#crumbs.item active=true}}{{entypo-icon "blackboard"}} Dashboard{{/crumbs.item}}
+{{/nav-breadcrumbs}}
+
+{{beta-feature}}
+
+
+{{#fetch-more
+  query=observable
+  edges=model.edges
+  hasNextPage=model.pageInfo.hasNextPage
+  endCursor=model.pageInfo.endCursor
+  on-fetch-start=(route-action "showLoading")
+  on-fetch-end=(route-action "hideLoading")
+  resultKey=resultKey as |fetch|
+}}
+  {{#each fetch.nodes as |item|}}
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4>
+          {{#if (eq item.type "email")}}
+            {{entypo-icon "mail"}}
+          {{/if}}
+          {{item.order.customer.name}}
+          &ndash;
+          {{#link-to "order.edit" item.order.id}}{{item.order.name}}{{/link-to}}
+          &ndash;
+          {{#link-to "order.edit.line-items.email.edit" item.order.id item.id}}{{item.name}}{{/link-to}}
+        </h4>
+      </div>
+      <div class="card-body">
+        <div class="mb-3">
+          <h5 class="mb-2">
+            {{line-item-status status=item.status}}
+          </h5>
+          <p>Rep: {{item.order.salesRep.givenName}} {{item.order.salesRep.familyName}}</p>
+
+          {{line-item-date futureLabel="Starts" pastLabel="Started" date=item.range.start}}
+          {{line-item-date class="mb-2" futureLabel="Ends" pastLabel="Ended" date=item.range.end}}
+        </div>
+        {{#line-item-progress class="row" lineItemId=item.id as |progress|}}
+          <div class="col-sm-6 col-xl-3 mb-4">
+            {{dashboard/data-card
+              icon="hair-cross"
+              title="Goal"
+              format="0,0"
+              value=item.requiredLeads
+              color="primary"
+            }}
+          </div>
+          <div class="col-sm-6 col-xl-3 mb-4">
+            {{dashboard/data-card
+              icon="credit"
+              title="Value"
+              value=item.totalValue
+              format="$0,0.[00]"
+              secondaryValue=item.cpl
+              secondaryFormat="$0,0.[00]"
+              secondarySuffix="CPL"
+              color="info"
+            }}
+          </div>
+          <div class="col-sm-6 col-xl-3 mb-4">
+            {{dashboard/data-card
+              isLoading=progress.isActionRunning
+              icon="gauge"
+              title="% Fulfilled"
+              format="0.[0]%"
+              secondaryFormat="0,0"
+              value=progress.qualified.rate
+              secondaryValue=progress.qualified.total
+              secondarySuffix="Leads"
+              color="success"
+            }}
+          </div>
+          <div class="col-sm-6 col-xl-3 mb-4">
+            {{dashboard/data-card
+              isLoading=progress.isActionRunning
+              icon="block"
+              title="Avg. Scrub Rate"
+              format="0.[0]%"
+              secondaryFormat="0,0"
+              value=progress.scrubbed.rate
+              secondaryValue=progress.scrubbed.total
+              secondarySuffix="Leads"
+              color="warning"
+            }}
+          </div>
+        {{/line-item-progress}}
+        <p class="mb-0 text-muted">
+          Notes: {{#if item.notes}}{{item.notes}}{{else}}(none){{/if}}
+        </p>
+      </div>
+      <div class="card-footer text-align-right">
+        {{#link-to (concat "reports.line-items." item.type) item.hash class="btn btn-info" role="button"}}
+          {{entypo-icon "pie-chart"}} Report
+        {{/link-to}}
+      </div>
+    </div>
+  {{/each}}
+{{/fetch-more}} --}}

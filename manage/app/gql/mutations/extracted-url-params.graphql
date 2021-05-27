@@ -1,0 +1,11 @@
+mutation extractedUrlParams($input: ExtractedUrlParamsInput!) {
+	extractedUrlParams(input: $input) {
+    id
+		urlParams {
+			key
+      value
+			isMergeVar
+      encodedValue
+		}
+	}
+}

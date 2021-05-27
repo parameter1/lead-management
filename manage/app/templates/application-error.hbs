@@ -1,0 +1,19 @@
+<div class="container my-3">
+  <div class="row">
+    <div class="col col-sm-10 col-md-8 col-lg-6 mx-auto">
+      <div class="card error" role="alert">
+        <div class="card-header">
+          <h4 class="mb-0 text-danger">
+            {{entypo-icon "warning"}} Houston, we have a problem!
+          </h4>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">An error was encountered with this request:</h5>
+          <code>{{ model.message }}</code>
+          <hr>
+          {{#link-to "index" class="btn btn-secondary"}}{{entypo-icon "home"}} Return Home{{/link-to}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

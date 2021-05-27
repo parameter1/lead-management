@@ -1,0 +1,22 @@
+query EmailClickEventReport($input: EmailClickEventReportQueryInput!) {
+  emailClickEventReport(input: $input) {
+    id
+    clicks
+    uniqueClicks
+    send {
+      id
+      name
+      sentDate
+    }
+    url {
+      id
+      values {
+        resolved
+      }
+      customer {
+        id
+        name
+      }
+    }
+  }
+}

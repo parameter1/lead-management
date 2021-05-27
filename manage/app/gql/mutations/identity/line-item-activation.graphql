@@ -1,0 +1,8 @@
+mutation IdentityLineItemActivation($input: IdentityLineItemActivation!) {
+	identityLineItemActivation(input: $input) {
+    id
+    inactiveLineItems {
+      id
+    }
+	}
+}

@@ -1,0 +1,11 @@
+#import 'leads-manage/gql/fragments/session-fragment'
+#import 'leads-manage/gql/fragments/user-fragment'
+
+fragment AuthenticationFragment on Authentication {
+  session {
+    ...SessionFragment
+  }
+  user {
+    ...UserFragment
+  }
+}

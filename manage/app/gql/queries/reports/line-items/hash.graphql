@@ -1,0 +1,30 @@
+query LineItemReportHash($input: LineItemByHashInput!) {
+  lineItemByHash(input: $input) {
+    id
+    hash
+    name
+    type
+    order {
+      id
+      name
+      customer {
+        id
+        name
+      }
+    }
+    range {
+      start
+      end
+    }
+    ... on EmailLineItem {
+      excludedFields
+    }
+    ... on FormLineItem {
+      form {
+        id
+        name
+        previewUrl
+      }
+    }
+  }
+}

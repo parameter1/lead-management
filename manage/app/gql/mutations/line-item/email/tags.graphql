@@ -1,0 +1,9 @@
+mutation EmailLineItemTags($input: EmailLineItemTagsInput!) {
+  emailLineItemTags(input: $input) {
+    id
+    tags {
+      id
+      name
+    }
+  }
+}

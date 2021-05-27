@@ -1,0 +1,8 @@
+mutation IdentityCustomerActivation($input: IdentityCustomerActivation!) {
+	identityCustomerActivation(input: $input) {
+    id
+    inactiveCustomers {
+      id
+    }
+	}
+}

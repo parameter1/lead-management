@@ -1,0 +1,20 @@
+{{#link-to
+  "form.edit" item.id
+  class="list-group-item list-group-item-action flex-column align-items-start"
+}}
+  <div class="d-flex w-100 justify-content-between">
+    <h4 class="mb-2">{{item.name}}</h4>
+    {{#if item.externalSource.createdAt}}
+      <small>{{entypo-icon "clock"}} Updated {{moment-format item.externalSource.createdAt "MMM Do, YYYY h:mm a"}}</small>
+    {{/if}}
+  </div>
+  {{#if item.customer.name}}
+    <h5 class="mb-2">{{item.customer.name}}</h5>
+  {{/if}}
+  <div class="mb-2">{{{item.description}}}</div>
+
+  <small class="d-block">ID: {{item.id}}</small>
+  {{#if item.externalSource.identifier}}
+    <small class="d-block">From {{item.externalSource.namespace}}: {{item.externalSource.identifier}}</small>
+  {{/if}}
+{{/link-to}}

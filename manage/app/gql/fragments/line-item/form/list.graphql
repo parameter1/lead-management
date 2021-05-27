@@ -1,0 +1,11 @@
+fragment FormLineItemListFragment on FormLineItem {
+  id
+  form {
+    id
+    name
+    previewUrl
+    externalSource {
+      identifier
+    }
+  }
+}

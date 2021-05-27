@@ -1,0 +1,7 @@
+#import 'leads-manage/gql/fragments/order/view'
+
+mutation CreateOrder($input: CreateOrderInput!) {
+  createOrder(input: $input) {
+    ...OrderViewFragment
+  }
+}

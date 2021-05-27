@@ -1,0 +1,55 @@
+fragment CampaignHashFragment on Campaign {
+  id
+  fullName
+  hash
+  maxIdentities
+  startDate
+  endDate
+  customer {
+    id
+    name
+    linkedAdvertisers {
+      googleAdManager {
+        nodes {
+          id
+          name
+        }
+      }
+    }
+    linkedVideos {
+      brightcove {
+        nodes {
+          id
+        }
+      }
+    }
+  }
+  email {
+    id
+    enabled
+    excludeFields
+    displayDeliveredMetrics
+    hasEmailSends
+  }
+  forms {
+    id
+    enabled
+    forms(refreshEntries: false) {
+      id
+    }
+  }
+  ads {
+    id
+    enabled
+    excludeFields
+    hasIdentities
+  }
+  adMetrics {
+    id
+    enabled
+  }
+  videoMetrics {
+    id
+    enabled
+  }
+}

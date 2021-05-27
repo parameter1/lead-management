@@ -1,0 +1,66 @@
+<div class="row">
+  <div class="col">
+    <div class="row">
+      <div class="col-12 col-lg-8">
+        {{list-controls/search
+          phrase=id_phrase
+          searchType=id_searchType
+          fields=searchFields
+          searchBy=id_searchBy
+          onSubmit=(action "search")
+        }}
+      </div>
+
+      <div class="col-12 col-lg-4 mt-3 mt-lg-0">
+        {{!-- Fix menu alignment, once https://github.com/twbs/bootstrap/pull/26255 is merged --}}
+        <div class="btn-toolbar float-md-right" role="toolbar" aria-label="Filter Toolbar">
+          {{list-controls/sort
+            class="mr-2"
+            options=sortOptions
+            ascending=id_ascending
+            sortBy=id_sortBy
+            disabled=isSortDisabled
+            alignment="right"
+          }}
+          {{list-controls/limit options=limitOptions limit=id_first alignment="right"}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{#fetch-more
+  query=observable
+  edges=model.edges
+  hasNextPage=model.pageInfo.hasNextPage
+  endCursor=model.pageInfo.endCursor
+  on-fetch-start=(route-action "showLoading")
+  on-fetch-end=(route-action "hideLoading")
+  resultKey=resultKey as |fetch|
+}}
+  <ul class="list-group list-group-flush my-4">
+    <li class="list-group-item pt-0"><h5 class="mb-0 text-muted">Total Results: {{model.totalCount}}</h5></li>
+  </ul>
+
+  <div class="row">
+    {{#each fetch.nodes as |item|}}
+      {{identity-card
+        identity=item
+        lineItemId=lineItemId
+        customerId=customerId
+        refetchQueries=refetchQueries
+        canEdit=true
+        class="mb-4"
+      }}
+    {{/each}}
+  </div>
+
+  <div class="card-footer border-0">
+    {{#if fetch.hasNextPage}}
+      <button class="btn btn-primary btn-lg" disabled={{fetch.isFetching}} {{action fetch.actions.loadMore}}>
+        {{entypo-icon "download"}} {{#if fetch.isFetching}}Loading...{{else}}Load More{{/if}}
+      </button>
+    {{/if}}
+  </div>
+
+{{/fetch-more}}

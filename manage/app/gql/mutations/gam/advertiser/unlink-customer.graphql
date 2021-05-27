@@ -1,0 +1,10 @@
+mutation UnlinkGAMAdvertiser($input: UnlinkGAMAdvertiserMutationInput!) {
+  unlinkGAMAdvertiser(input: $input) {
+    id
+    name
+    customer {
+      id
+      name
+    }
+  }
+}

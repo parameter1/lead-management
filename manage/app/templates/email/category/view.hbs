@@ -1,0 +1,72 @@
+{{#nav-breadcrumbs as |crumbs|}}
+  {{#crumbs.item}}{{#link-to "email.category.index"}}{{entypo-icon "tag"}} Email Categories{{/link-to}}{{/crumbs.item}}
+  {{#crumbs.item active=true}}{{ model.name }}{{/crumbs.item}}
+{{/nav-breadcrumbs}}
+
+<form {{action (route-action "update" model) on="submit"}}>
+  <div class="card model-form">
+    <div class="card-header"></div>
+
+    <div class="card-body">
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="category-name">Name</label>
+            {{input
+              id="category-name"
+              type="text"
+              required=true
+              value=model.name
+              disabled=true
+              class="form-control"
+            }}
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="category-full-name">Full Name</label>
+            {{input
+              id="category-full-name"
+              type="text"
+              value=model.fullName
+              disabled=true
+              class="form-control"
+            }}
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <div class="custom-control custom-checkbox">
+            {{input
+              id="rollup-metrics"
+              type="checkbox"
+              class="custom-control-input"
+              name="rollupMetrics"
+              checked=model.rollupMetrics
+            }}
+            <label class="custom-control-label" for="rollup-metrics">Rollup Deployment Metrics?</label>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="custom-control custom-checkbox">
+            {{input
+              id="is-newsletter"
+              type="checkbox"
+              class="custom-control-input"
+              name="isNewsletter"
+              checked=model.isNewsletter
+            }}
+            <label class="custom-control-label" for="is-newsletter">Newsletter</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      {{model-save-button disabled=isActionRunning}}
+    </div>
+  </div>
+</form>

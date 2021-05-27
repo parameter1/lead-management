@@ -1,0 +1,3 @@
+mutation deleteCustomer($input: ModelIdInput!) {
+	deleteCustomer(input: $input)
+}

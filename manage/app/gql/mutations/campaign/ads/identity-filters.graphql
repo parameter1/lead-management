@@ -1,0 +1,12 @@
+mutation CampaignEditAdIdentityFilters($input: AdCampaignIdentityFiltersInput!) {
+  adCampaignIdentityFilters(input: $input) {
+    id
+    identityFilters {
+      id
+      key
+      label
+      matchType
+      terms
+    }
+  }
+}

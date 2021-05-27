@@ -1,0 +1,19 @@
+<div class="card-header bg-light font-weight-bold">
+  {{input id=inputId type="checkbox" class="mr-1" checked=isDeploymentActive change=(action "toggleDeploymentGroupActive")}}
+  <label class="form-check-label" for={{inputId}}>
+    {{deploymentGroup.deployment.name}}
+  </label>
+</div>
+<div class="card-body pt-0">
+  {{#each deploymentGroup.sendGroups as |sendGroup index|}}
+    <p class="mb-0 mt-3">
+      {{input id=(concat inputId "-" sendGroup.send.id) type="checkbox" class="mr-1" checked=sendGroup.active change=(action "toggleSendGroupActive" index)}}
+      <label class="form-check-label" for={{concat inputId "-" sendGroup.send.id}}>
+        Sent on
+        {{moment-format sendGroup.send.sentDate "ddd, MMM Do, YYYY @ h:mma"}}
+        to
+        {{format-number sendGroup.send.metrics.sent "0,0"}} subscribers.
+      </label>
+    </p>
+  {{/each}}
+</div>

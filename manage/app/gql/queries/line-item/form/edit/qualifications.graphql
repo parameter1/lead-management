@@ -1,0 +1,14 @@
+query EditFormLineItemQualifications($input: ModelIdInput!) {
+  formLineItem(input: $input) {
+    id
+    form {
+      id
+    }
+    choiceFilters {
+      id
+      fieldId
+      title
+      choices
+    }
+  }
+}

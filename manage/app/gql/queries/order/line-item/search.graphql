@@ -1,0 +1,21 @@
+#import 'leads-manage/gql/fragments/line-item/list'
+#import 'leads-manage/gql/fragments/line-item/email/list'
+
+query SearchLineItemsForOrder($input: SearchLineItemsForOrderInput!, $pagination: PaginationInput, $search: TypeAheadInput!, $options: TypeAheadOptionsInput) {
+  searchLineItemsForOrder(input: $input, pagination: $pagination, search: $search, options: $options) {
+    totalCount
+    edges {
+      node {
+        ...LineItemListFragment
+        ... on EmailLineItem {
+          ...EmailLineItemListFragment
+        }
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

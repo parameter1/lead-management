@@ -1,0 +1,7 @@
+#import 'leads-manage/gql/fragments/tracked-campaign/view'
+
+query ViewTrackedCampaign($input: ModelIdInput!) {
+  trackedCampaign(input: $input) {
+    ...TrackedCampaignViewFragment
+  }
+}

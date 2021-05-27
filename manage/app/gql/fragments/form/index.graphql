@@ -1,0 +1,14 @@
+#import 'leads-manage/gql/fragments/external-source'
+
+fragment FormIndexFragment on Form {
+  id
+  name
+  description
+  customer {
+    id
+    name
+  }
+  externalSource {
+    ...ExternalSourceFragment
+  }
+}

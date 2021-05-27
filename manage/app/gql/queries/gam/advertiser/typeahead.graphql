@@ -1,0 +1,12 @@
+query GAMAdvertiserTypeahead($phrase: String!) {
+  listGAMAdvertisers(input: {
+    search: { field: NAME, phrase: $phrase }
+    sort: { field: NAME, order: ASC }
+    limit: 50
+  }) {
+    nodes {
+      id
+      name
+    }
+  }
+}

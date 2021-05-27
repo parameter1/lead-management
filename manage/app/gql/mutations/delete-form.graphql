@@ -1,0 +1,3 @@
+mutation deleteForm($input: ModelIdInput!) {
+	deleteForm(input: $input)
+}

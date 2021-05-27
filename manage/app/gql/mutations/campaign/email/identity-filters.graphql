@@ -1,0 +1,12 @@
+mutation CampaignEditEmailIdentityFilters($input: EmailCampaignIdentityFiltersInput!) {
+  emailCampaignIdentityFilters(input: $input) {
+    id
+    identityFilters {
+      id
+      key
+      label
+      matchType
+      terms
+    }
+  }
+}

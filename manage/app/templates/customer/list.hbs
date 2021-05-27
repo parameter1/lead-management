@@ -1,0 +1,17 @@
+{{#nav-breadcrumbs as |crumbs|}}
+  {{#crumbs.item active=true}}{{entypo-icon "v-card"}} Customers{{/crumbs.item}}
+{{/nav-breadcrumbs}}
+
+<div class="row mb-5">
+  <div class="col">
+    <div class="card model-form">
+      <div class="card-header">
+        <ul class="nav nav-pills card-header-pills" role="tablist">
+          <li class="nav-item">{{#link-to "customer.list.index" class="nav-link" role="tab"}}Customers{{/link-to}}</li>
+          <li class="nav-item">{{#link-to "customer.list.gam-advertisers" class="nav-link" role="tab"}}GAM Advertisers{{/link-to}}</li>
+        </ul>
+      </div>
+      {{outlet}}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+query LeadReportVideoMetrics($hash: String!) {
+  campaignByHash(hash: $hash) {
+    id
+    brightcoveVideoReport {
+      nodes
+    }
+  }
+}

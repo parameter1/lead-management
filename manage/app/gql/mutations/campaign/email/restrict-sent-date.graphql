@@ -1,0 +1,7 @@
+mutation CampaignEditEmailRestrictSentDate($input: CampaignRestrictSentDateInput!) {
+  emailCampaignRestrictSentDate(input: $input) {
+    id
+    restrictToSentDate
+    urlCount
+  }
+}

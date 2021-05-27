@@ -1,0 +1,46 @@
+<div class="card-body">
+  {{#if model.sends.length}}
+
+    <div class="row">
+      <div class="col-12 col-md-6 mb-3">
+        <div class="card">
+          <div class="card-header font-weight-bold text-center">Activity For All Emails</div>
+          <div class="card-body">
+            {{lead-report/charts/email-activity totals=model.totals.metrics count=model.sends.length}}
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 mb-3">
+        <div class="card">
+          <div class="card-header font-weight-bold text-center">Lead Acquisition Share</div>
+          <div class="card-body">
+            <div class="table-responsive">
+              {{lead-report/charts/lead-acquisition sends=model.sends totalIdentityCount=model.totals.identities}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col mt-2">
+        <h5>Statistics per Email</h5>
+        <div class="table-responsive">
+          {{lead-report/tables/email-metrics
+            displayDeliveredMetrics=campaign.email.displayDeliveredMetrics
+            sends=model.sends
+            totals=model.totals
+            sortBy=sortBy
+            ascending=ascending
+            class="mb-0"
+          }}
+        </div>
+      </div>
+    </div>
+  {{else}}
+    <h5 class="mb-0">No email deployments found for this campaign.</h5>
+  {{/if}}
+</div>
+<div class="card-footer text-right">
+  <a class="btn btn-success" role="button" href="/export/campaign/{{campaign.hash}}/email/metrics">{{entypo-icon "download"}} Export Email Metrics</a>
+</div>

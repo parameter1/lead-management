@@ -1,0 +1,70 @@
+<div class="card-body">
+  <h4 class="card-title">
+    Results for
+    {{moment-format model.result.startDate "MMM D, YYYY"}} - {{moment-format model.result.endDate "MMM D, YYYY"}}
+    <span class="h6">({{#link-to "behavior.view.results.index"}}see all results{{/link-to}})</span>
+  </h4>
+  <h5>
+    {{#if model.result.identityCount}}
+      Found <span class="font-weight-bold text-info">{{format-number model.result.identityCount "0,0"}}</span> Identities
+    {{else}}
+      No Identities Found
+    {{/if}}
+  </h5>
+  <p class="card-text">Content Items: {{format-number model.result.contentCount "0,0"}}</p>
+
+  <p class="card-text mb-0 text-muted">
+    Ran {{moment-from-now model.result.ranAt}} by {{model.result.ranBy.givenName}} {{model.result.ranBy.familyName}}
+  </p>
+</div>
+
+{{#if model.rows.edges.length}}
+  <div class="card-footer d-flex justify-content-between">
+    <a class="btn btn-success btn-lg" href="/export/behavior/{{model.result.id}}">
+      {{entypo-icon "export"}} Export
+    </a>
+  </div>
+
+  <div class="card-body">
+    <div class="row">
+      <div class="col">
+        <div class="row">
+          {{!-- Fix menu alignment, once https://github.com/twbs/bootstrap/pull/26255 is merged --}}
+          <div class="col-12 col-md-6 mt-3 mt-md-0">
+            <div class="btn-toolbar" role="toolbar" aria-label="Filter Toolbar">
+              {{list-controls/limit options=limitOptions limit=first alignment="right"}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{#fetch-more
+    query=observable
+    edges=model.rows.edges
+    hasNextPage=model.rows.pageInfo.hasNextPage
+    endCursor=model.rows.pageInfo.endCursor
+    on-fetch-start=(action showLoading)
+    on-fetch-end=(action hideLoading)
+    resultKey="allContentQueryResultRows" as |fetch|
+  }}
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item pt-0"><h5 class="mb-0 text-muted">Total Results: {{model.rows.totalCount}}</h5></li>
+      {{#each fetch.nodes as |node|}}
+        <li class="list-group-item">{{node.emailAddress}}</li>
+      {{/each}}
+    </ul>
+
+    <div class="card-footer border-0">
+      {{#if fetch.hasNextPage}}
+        <button class="btn btn-primary btn-lg" disabled={{fetch.isFetching}} {{action fetch.actions.loadMore}}>
+          {{entypo-icon "download"}} {{#if fetch.isFetching}}Loading...{{else}}Load More{{/if}}
+        </button>
+      {{/if}}
+    </div>
+
+  {{/fetch-more}}
+{{/if}}
+
+{{outlet}}

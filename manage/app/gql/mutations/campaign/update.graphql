@@ -1,0 +1,7 @@
+#import 'leads-manage/gql/fragments/campaign/view'
+
+mutation UpdateCampaign($input: UpdateCampaignInput!) {
+  updateCampaign(input: $input) {
+    ...CampaignViewFragment
+  }
+}

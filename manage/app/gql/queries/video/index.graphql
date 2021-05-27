@@ -1,0 +1,24 @@
+query VideoIndex($input: BrightcoveCMSVideosQueryInput!) {
+  brightcoveCMSVideos(input: $input) {
+    totalCount
+    nodes {
+      id
+      name
+      description
+      createdAt
+      updatedAt
+      publishedAt
+      images(input: { type: "thumbnail" }) {
+        src
+      }
+      customers {
+        id
+        name
+      }
+    }
+    pageInfo {
+      hasNextPage
+      nextOffset
+    }
+  }
+}

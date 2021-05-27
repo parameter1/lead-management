@@ -1,0 +1,6 @@
+mutation IdentityActivation($input: IdentityActivation!) {
+	identityActivation(input: $input) {
+    id
+    inactive
+	}
+}

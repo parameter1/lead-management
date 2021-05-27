@@ -1,0 +1,17 @@
+#import 'leads-manage/gql/fragments/order/list'
+
+query ListOrders($pagination: PaginationInput, $sort: OrderSortInput) {
+  allOrders(pagination: $pagination, sort: $sort) {
+    totalCount
+    edges {
+      node {
+        ...OrderListFragment
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

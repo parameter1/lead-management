@@ -1,0 +1,7 @@
+{{#line-item-pacing/total type=type}}
+  {{log "inner" leadsCurrentlyAtPct leadsShouldBeAtPct}}
+  {{line-item-pacing/actual type=type value=leadsCurrentlyAtPct}}
+  {{line-item-pacing/expected value=leadsShouldBeAtPct}}
+{{/line-item-pacing/total}}
+
+<small class="text-muted">Expected at least {{shouldBe}} leads</small>

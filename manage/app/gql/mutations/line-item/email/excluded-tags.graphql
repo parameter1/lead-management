@@ -1,0 +1,9 @@
+mutation EmailLineItemExcludedTags($input: EmailLineItemExcludedTagsInput!) {
+  emailLineItemExcludedTags(input: $input) {
+    id
+    excludedTags {
+      id
+      name
+    }
+  }
+}

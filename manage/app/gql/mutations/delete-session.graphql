@@ -1,0 +1,3 @@
+mutation deleteSession {
+	deleteSession
+}

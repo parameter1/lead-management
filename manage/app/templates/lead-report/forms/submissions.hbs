@@ -1,0 +1,40 @@
+<div class="card-body">
+  <a class="btn btn-lg btn-success mb-3" role="button" href="/export/campaign/{{campaign.hash}}/form-entries/{{model.id}}">{{entypo-icon "download"}} Download Form Leads</a>
+
+  <h4 class="card-title">
+    Title: {{model.name}}
+    <a href={{model.previewUrl}} target="_blank" rel="noopener noreferer">{{entypo-icon "popup" class="ml-1"}}</a>
+  </h4>
+  <h5 class="card-title mb-0">
+    {{#if model.entries.totalCount}}
+      Found {{model.entries.totalCount}} Record{{#if (gt model.entries.totalCount 1)}}s{{/if}}
+    {{else}}
+      No Records Found
+    {{/if}}
+  </h5>
+
+  {{#fetch-more
+    query=observable
+    edges=model.entries.edges
+    hasNextPage=model.entries.pageInfo.hasNextPage
+    endCursor=model.entries.pageInfo.endCursor
+    on-fetch-start=(route-action "showLoading")
+    on-fetch-end=(route-action "hideLoading")
+    resultKey="form"
+    applyToField="entries" as |fetch|
+  }}
+    <div class="row mt-3">
+      {{#each fetch.nodes as |node|}}
+        {{form-entry-card entry=node showTitle=false showEntryNo=false form=model canEdit=false class="mb-3"}}
+      {{/each}}
+    </div>
+    {{#if fetch.hasNextPage}}
+      <button class="btn btn-primary btn-block btn-lg" disabled={{fetch.isFetching}} {{action fetch.actions.loadMore}}>
+        {{entypo-icon "download"}} {{#if fetch.isFetching}}Loading...{{else}}Load More{{/if}}
+      </button>
+    {{/if}}
+  {{/fetch-more}}
+
+</div>
+
+

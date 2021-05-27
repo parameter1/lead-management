@@ -1,0 +1,24 @@
+#import 'leads-manage/gql/fragments/behavior/content-query/list'
+
+fragment BehaviorContentQueryViewFragment on BehaviorContentQuery {
+  ...BehaviorContentQueryListFragment
+  criteria {
+    type
+    items {
+      ... on BehaviorTaxonomy {
+        id
+        name
+        type
+      }
+      ... on BehaviorSection {
+        id
+        name
+        alias
+      }
+      ... on BehaviorCompany {
+        id
+        name
+      }
+    }
+  }
+}

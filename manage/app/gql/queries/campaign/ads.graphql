@@ -1,0 +1,7 @@
+#import 'leads-manage/gql/fragments/campaign/ad'
+
+query CampaignEditAds($input: ModelIdInput!) {
+  adCampaign(input: $input) {
+    ...AdCampaignFragment
+  }
+}

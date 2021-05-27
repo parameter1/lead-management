@@ -1,0 +1,7 @@
+#import 'leads-manage/gql/fragments/content-query-result/view'
+
+query contentQueryResult($input: ModelIdInput!) {
+  contentQueryResult(input: $input) {
+    ...ContentQueryResultFragment
+  }
+}

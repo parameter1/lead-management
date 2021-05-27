@@ -1,0 +1,6 @@
+mutation CreateExcludedEmailDomain($input: CreateExcludedEmailDomainInput!) {
+  createExcludedEmailDomain(input: $input) {
+    id
+    domain
+  }
+}

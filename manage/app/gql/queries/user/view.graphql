@@ -1,0 +1,7 @@
+#import 'leads-manage/gql/fragments/user-fragment'
+
+query user($input: ModelIdInput!) {
+  user(input: $input) {
+    ...UserFragment
+  }
+}

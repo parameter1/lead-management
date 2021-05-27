@@ -1,0 +1,17 @@
+#import 'leads-manage/gql/fragments/identity/query-result-row'
+
+query allContentQueryResultRows($resultId: String!, $pagination: PaginationInput, $sort: IdentitySortInput) {
+  allContentQueryResultRows(resultId: $resultId, pagination: $pagination, sort: $sort) {
+    totalCount
+    edges {
+      node {
+        ...IdentityQueryResultRow
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

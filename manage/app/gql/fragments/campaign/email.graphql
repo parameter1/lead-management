@@ -1,0 +1,24 @@
+fragment EmailCampaignFragment on EmailCampaign {
+  id
+  tags {
+    id
+    name
+  }
+  excludedTags {
+    id
+    name
+  }
+  enabled
+  urlCount
+  excludeFields
+  restrictToSentDate
+  displayDeliveredMetrics
+  allowedLinkTypes
+  identityFilters {
+    id
+    key
+    label
+    matchType
+    terms
+  }
+}

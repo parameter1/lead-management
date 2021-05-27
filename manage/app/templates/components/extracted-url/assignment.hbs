@@ -1,0 +1,28 @@
+<div class="card-header">
+  <span class="font-weight-bold">{{headerText}}</span><br>
+  <small class="truncate">{{value}}</small>
+</div>
+<div class="card-body">
+
+  <div class="form-group">
+    <label>Customer</label>
+    {{type-ahead
+      placeholder="Begin typing to find a customer..."
+      type="customer"
+      selected=model.customer
+      onChange=(action "setCustomer")
+    }}
+  </div>
+
+  <div class="form-group mb-0">
+    <label>Tags</label>
+    {{type-ahead
+      placeholder="Begin typing to find a tag..."
+      type="tag"
+      multiple=true
+      selected=model.tags
+      onChange=(action "setTags")
+    }}
+  </div>
+
+</div>

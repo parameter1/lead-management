@@ -1,0 +1,6 @@
+mutation EmailLineItemRequiredFields($input: EmailLineItemRequiredFieldsInput!) {
+  emailLineItemRequiredFields(input: $input) {
+    id
+    requiredFields
+  }
+}

@@ -1,0 +1,13 @@
+fragment EmailSendListFragment on EmailSend {
+  id
+  name
+  isTestSend
+  subject
+  sentDate
+  fromName
+  status
+  externalSource {
+    identifier
+    namespace
+  }
+}

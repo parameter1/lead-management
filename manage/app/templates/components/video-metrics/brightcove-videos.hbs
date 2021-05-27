@@ -1,0 +1,22 @@
+<div class="card-header font-weight-bold">
+  Brightcove Videos to Include
+</div>
+<div class="card-body">
+  {{#if videos.length}}
+    <p class="text-muted">
+      Note: videos without any metrics for this campaign's date range will automatically be excluded from reports.
+    </p>
+    <ul class="list-group">
+      {{#each videos as |video|}}
+        {{video-metrics/brightcove-video
+          video=video
+          excludedIds=excludedIds
+          toggleExcluded=toggleExcluded
+          disabled=disabled
+        }}
+      {{/each}}
+    </ul>
+  {{else}}
+    <p class="mb-0">No {{#link-to "video" }}videos{{/link-to}} have been linked to this customer.</p>
+  {{/if}}
+</div>

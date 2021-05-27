@@ -1,0 +1,15 @@
+fragment EmailSendMetricsFragment on EmailSendMetrics {
+  sent
+  delivered
+  deliveryRate
+  uniqueOpens
+  uniqueClicks
+  unsubscribes
+  openRate
+  clickToOpenRate
+  clickToDeliveredRate
+  forwards
+  bounces
+}
+
+

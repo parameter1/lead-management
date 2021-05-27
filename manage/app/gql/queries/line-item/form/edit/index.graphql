@@ -1,0 +1,28 @@
+query EditFormLineItemIndex($input: ModelIdInput!) {
+  formLineItem(input: $input) {
+    id
+    name
+    status
+    requiredLeads
+    totalValue
+    cpl
+    range {
+      start
+      end
+    }
+    form {
+      id
+      name
+      previewUrl
+      externalSource {
+        identifier
+      }
+    }
+    choiceFilters {
+      id
+      fieldId
+      title
+      choices
+    }
+  }
+}

@@ -1,0 +1,7 @@
+
+mutation LineItemArchived($input: LineItemArchivedInput!) {
+  lineItemArchived(input: $input) {
+    id
+    archived
+  }
+}

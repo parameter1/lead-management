@@ -1,0 +1,7 @@
+#import 'leads-manage/gql/fragments/extracted-url/view'
+
+query ViewExtractedUrl($input: ModelIdInput!) {
+  extractedUrl(input: $input) {
+    ...ExtractedUrlViewFragment
+  }
+}

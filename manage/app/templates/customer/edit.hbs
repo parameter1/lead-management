@@ -1,0 +1,26 @@
+{{#nav-breadcrumbs as |crumbs|}}
+  {{#crumbs.item}}{{#link-to "customer.list"}}{{entypo-icon "v-card"}} Customers{{/link-to}}{{/crumbs.item}}
+  {{#crumbs.item active=true}}{{ model.name }}{{/crumbs.item}}
+{{/nav-breadcrumbs}}
+
+<form {{action (action "update") on="submit"}}>
+  <div class="card model-form">
+    <div class="card-header"></div>
+    <div class="card-body">
+      {{ partial "customer/form" }}
+    </div>
+    <div class="card-footer d-flex justify-content-between">
+      {{model-save-button disabled=isSaveDisabled}}
+
+      <div class="btn-group btn pr-0">
+        {{confirm-button
+          icon="trash"
+          label="Delete"
+          class="btn-danger"
+          disabled=isActionRunning
+          onConfirm=(action "delete")
+        }}
+      </div>
+    </div>
+  </div>
+</form>

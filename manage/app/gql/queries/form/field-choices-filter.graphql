@@ -1,0 +1,13 @@
+query FormFieldChoicesFilter($id: String!, $refresh: Boolean = true, $choicesOnly: Boolean = true) {
+  form(input: { id: $id }) {
+   id
+   wufooFields(input: { refresh: $refresh choicesOnly: $choicesOnly }) {
+      id
+      title
+      __typename
+      ... on WufooChoicesField {
+        choices
+      }
+    }
+  }
+}

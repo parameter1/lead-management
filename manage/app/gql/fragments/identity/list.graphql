@@ -1,0 +1,16 @@
+fragment IdentityListFragment on Identity {
+  id
+  emailAddress
+  givenName
+  familyName
+  title
+  companyName
+  createdAt
+  updatedAt
+  inactive
+  domainExcluded
+  externalSource {
+    identifier
+    namespace
+  }
+}

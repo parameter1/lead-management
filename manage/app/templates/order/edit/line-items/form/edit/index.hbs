@@ -1,0 +1,91 @@
+{{progress-bar class="progress-md" show=isLoading}}
+{{#bs-modal/body}}
+  {{!-- @todo this should be a global header component --}}
+  <h4 class="mb-2">{{model.name}} ({{order.name}}) [ {{line-item-status status=model.status}} ]</h4>
+  <h5 class="mb-2">Customer: {{order.customer.name}}, Rep: {{order.salesRep.givenName}} {{order.salesRep.familyName}}</h5>
+  <p class="mb-4">
+    {{moment-format model.range.start "MMM Do, YYYY"}}
+    -
+    {{moment-format model.range.end "MMM Do, YYYY"}}
+    {{#if startsEnds}}
+      ({{startsEnds}})
+    {{/if}}
+  </p>
+  {{#line-item-progress class="row" lineItemId=model.id as |progress|}}
+    <div class="col-sm-6 col-xl-3 mb-4">
+      {{dashboard/data-card
+        icon="hair-cross"
+        title="Goal"
+        format="0,0"
+        value=model.requiredLeads
+        color="primary"
+      }}
+    </div>
+    <div class="col-sm-6 col-xl-3 mb-4">
+      {{dashboard/data-card
+        icon="credit"
+        title="Value"
+        value=model.totalValue
+        format="$0,0.[00]"
+        secondaryValue=model.cpl
+        secondaryFormat="$0,0.[00]"
+        secondarySuffix="CPL"
+        color="info"
+      }}
+    </div>
+    <div class="col-sm-6 col-xl-3 mb-4">
+      {{dashboard/data-card
+        isLoading=progress.isActionRunning
+        icon="gauge"
+        title="% Fulfilled"
+        format="0.[0]%"
+        secondaryFormat="0,0"
+        value=progress.qualified.rate
+        secondaryValue=progress.qualified.total
+        secondarySuffix="Leads"
+        color="success"
+      }}
+    </div>
+    <div class="col-sm-6 col-xl-3 mb-4">
+      {{dashboard/data-card
+        isLoading=progress.isActionRunning
+        icon="block"
+        title="Avg. Scrub Rate"
+        format="0.[0]%"
+        secondaryFormat="0,0"
+        value=progress.scrubbed.rate
+        secondaryValue=progress.scrubbed.total
+        secondarySuffix="Leads"
+        color="warning"
+      }}
+    </div>
+  {{/line-item-progress}}
+
+  <div class="row">
+    <div class="col-lg-6">
+      <h6 class="font-weight-bold">{{entypo-icon "text-document"}} Collecting leads from...</h6>
+      <ul class="list-group mb-3">
+        <li class="list-group-item p-2 text-muted">
+          {{model.form.name}}
+          ({{model.form.externalSource.identifier}})
+          {{#if model.form.previewUrl}}
+            [<a href={{model.form.previewUrl}} target="_blank" rel="noopener">view</a>]
+          {{/if}}
+        </li>
+      </ul>
+    </div>
+
+    <div class="col-lg-6">
+      <h6 class="font-weight-bold">{{entypo-icon "check"}} And must have the following choices...</h6>
+      <ul class="list-group mb-lg-0 mb-3">
+        {{#each choiceFilters as |filter|}}
+          <li class="list-group-item p-2 text-muted">
+            {{filter}}
+          </li>
+        {{else}}
+          <li class="list-group-item p-2 text-muted"><em>No choice filters set.</em></li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+{{/bs-modal/body}}

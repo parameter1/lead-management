@@ -1,0 +1,4 @@
+fragment FormCampaignFragment on FormCampaign {
+  id
+  enabled
+}

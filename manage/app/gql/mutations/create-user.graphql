@@ -1,0 +1,7 @@
+#import 'leads-manage/gql/fragments/user-fragment'
+
+mutation createUser($input: CreateUserInput!) {
+	createUser(input: $input) {
+    ...UserFragment
+	}
+}

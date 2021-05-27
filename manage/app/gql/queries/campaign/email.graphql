@@ -1,0 +1,7 @@
+#import 'leads-manage/gql/fragments/campaign/email'
+
+query CampaignEditEmail($input: ModelIdInput!) {
+  emailCampaign(input: $input) {
+    ...EmailCampaignFragment
+  }
+}

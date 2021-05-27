@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="col-6">
+    <div class="form-group">
+      <label for="form-source">Source</label>
+      {{input id="form-source" type="text" required=true value=model.externalSource.namespace disabled=true class="form-control"}}
+    </div>
+  </div>
+  <div class="col-6">
+    <div class="form-group">
+      <label for="form-identifier">Identifier</label>
+      {{input id="form-identifier"
+        type="text"
+        required=true
+        value=model.externalSource.identifier
+        disabled=(eq model.isNew false)
+        placeholder="Example: znngl1c0ds77a2"
+        class="form-control"
+      }}
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-6">
+    <div class="form-group mb-0">
+      <label>Customer</label>
+      {{type-ahead
+        placeholder="Begin typing to find a customer..."
+        type="customer"
+        selected=model.customer
+        onChange=(action (mut model.customer))
+      }}
+      <small class="form-text text-muted">The customer to assign to this form.</small>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,7 @@
+#import 'leads-manage/gql/fragments/customer-fragment'
+
+query ViewCustomer($input: ModelIdInput!) {
+  customer(input: $input) {
+    ...CustomerFragment
+  }
+}

@@ -1,0 +1,32 @@
+query RunEmailDeploymentReport($input: EmailDeploymentReportInput!) {
+  emailDeploymentReport(input: $input) {
+    start
+    end
+    weeks {
+      id
+      year
+      number
+      starting
+      ending
+      lastRetrievedAt
+      categories {
+        id
+        name
+        deploymentCount
+        totalSent
+        totalDelivered
+        totalUniqueOpens
+        totalUniqueClicks
+        avgSent
+        avgDelivered
+        avgUniqueOpens
+        avgUniqueClicks
+
+        avgDeliveryRate
+        avgUniqueOpenRate
+        avgUniqueClickToDeliveredRate
+        avgUniqueClickToOpenRate
+      }
+    }
+  }
+}

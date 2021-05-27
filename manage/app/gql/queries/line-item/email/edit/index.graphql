@@ -1,0 +1,32 @@
+query EditEmailLineItemIndex($input: ModelIdInput!) {
+  emailLineItem(input: $input) {
+    id
+    name
+    status
+    requiredLeads
+    totalValue
+    cpl
+    range {
+      start
+      end
+    }
+    requiredFields
+    excludedFields
+    linkTypes
+    identityFilters {
+      id
+      key
+      label
+      matchType
+      terms
+    }
+    tags {
+      id
+      name
+    }
+    categories {
+      id
+      fullName
+    }
+  }
+}

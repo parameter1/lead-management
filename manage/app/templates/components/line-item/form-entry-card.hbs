@@ -1,0 +1,33 @@
+<div class="card mnh-100">
+  <div class="card-body d-flex flex-column">
+    {{#if canEdit}}
+      <p class="card-text mb-1">
+        {{identity-card/badge inactive=entry.inactive}}
+      </p>
+    {{/if}}
+    {{#if showEntryNo}}
+      <small class="card-text">Entry No: {{ entry.identifier }}</small>
+    {{/if}}
+    <small class="card-text text-muted mb-2">{{moment-format entry.submittedAt "MMM Do, YYYY @ h:mma"}}</small>
+
+    {{#each entry.values as |data|}}
+      {{#if data.value}}
+        <div class="mb-2">
+          <small class="d-block">{{ data.field.title }}</small>
+          <p class="card-text mb-0">{{ data.value }}</p>
+        </div>
+      {{/if}}
+    {{/each}}
+
+    {{#if canEdit}}
+      <div class="dropup mt-auto align-self-end">
+        <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{entypo-icon "cog"}}
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+          {{identity-card/action labelSuffix="for Form" inactive=entry.inactive on-click=(action "toggleActivation")}}
+        </div>
+      </div>
+    {{/if}}
+  </div>
+</div>

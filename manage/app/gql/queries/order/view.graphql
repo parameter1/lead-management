@@ -1,0 +1,7 @@
+#import 'leads-manage/gql/fragments/order/view'
+
+query ViewOrder($input: ModelIdInput!) {
+  order(input: $input) {
+    ...OrderViewFragment
+  }
+}

@@ -1,0 +1,17 @@
+{{#power-calendar
+  center=center
+  selected=momentSelected
+  onCenterChange=(action (mut center) value="moment")
+  onSelect=(action (mut selected) value="moment")
+  as |calendar|
+}}
+  {{calendar.nav}}
+  {{calendar.days minDate=(readonly momentMinDate) maxDate=(readonly momentMaxDate)}}
+  <button
+    class="btn btn-sm btn-outline-primary mt-1 float-right"
+    disabled={{disableRemove}}
+    {{action "clearDate"}}
+  >
+    {{entypo-icon "cross"}} Clear
+  </button>
+{{/power-calendar}}

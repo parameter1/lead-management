@@ -1,0 +1,5 @@
+mutation CreateFormLineItem($input: CreateFormLineItemInput!) {
+  createFormLineItem(input: $input) {
+    id
+  }
+}

@@ -1,0 +1,7 @@
+#import 'leads-manage/gql/fragments/form/index'
+
+fragment FormEditFragment on Form {
+  ...FormIndexFragment
+  previewUrl
+  fields
+}

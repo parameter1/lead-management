@@ -1,0 +1,16 @@
+mutation LinkGAMAdvertiser($input: LinkGAMAdvertiserToCustomerMutationInput!) {
+  linkGAMAdvertiserToCustomer(input: $input) {
+    id
+    linkedAdvertisers {
+      googleAdManager {
+        nodes {
+          id
+          customer {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+}

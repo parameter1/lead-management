@@ -1,0 +1,7 @@
+mutation LineItemTotalValue($input: LineItemTotalValueInput!) {
+  lineItemTotalValue(input: $input) {
+    id
+    totalValue
+    cpl
+  }
+}

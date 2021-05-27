@@ -1,0 +1,59 @@
+{{#if session.isAuthenticated}}
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)" role="button">
+      {{entypo-icon "cog"}}
+    </a>
+    <div class="dropdown-menu dropdown-menu-right">
+
+      <a class="dropdown-item d-flex justify-content-between" href="javascript:void(0)" {{action "displayUpdateProfile"}}>
+        <span>{{model.givenName}} {{model.familyName}}</span>
+        {{entypo-icon "user" class="ml-1"}}
+      </a>
+      <a class="dropdown-item d-flex justify-content-between" href="javascript:void(0)" title="Change Password" {{action "displayChangePassword"}}>
+        <span>Change Password</span>
+        {{entypo-icon "key" class="ml-1"}}
+      </a>
+
+      <div class="dropdown-divider"></div>
+      <a class="dropdown-item d-flex justify-content-between" href="javascript:void(0)" title="Logout" {{action "logout"}}>
+        Logout
+        {{entypo-icon "log-out" class="ml-1"}}
+      </a>
+    </div>
+  </li>
+
+  {{#bs-modal show=isUpdateProfileOpen as |modal|}}
+    <form {{action "saveProfile" on="submit"}}>
+      {{#modal.header}}
+        <h5 class="modal-title">Update Profile</h5>
+        <button {{action modal.actions.hide}} type="button" class="close" aria-label="Close">
+          {{entypo-icon "cross"}}
+        </button>
+      {{/modal.header}}
+
+      {{#modal.body}}
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label for="name">First Name</label>
+              {{input class="form-control" value=model.givenName}}
+            </div>
+            <div class="form-group">
+              <label for="name">Last Name</label>
+              {{input class="form-control" value=model.familyName}}
+            </div>
+          </div>
+        </div>
+      {{/modal.body}}
+
+      {{#modal.footer}}
+        <button class="btn btn-success">
+          {{entypo-icon "check"}} Save
+        </button>
+      {{/modal.footer}}
+    </form>
+  {{/bs-modal}}
+
+  {{change-password-modal isChangePasswordOpen=isChangePasswordOpen model=model}}
+
+{{/if}}

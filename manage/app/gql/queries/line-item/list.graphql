@@ -1,0 +1,41 @@
+
+query AllLineItems($input: AllLineItemsInput, $pagination: PaginationInput, $sort: LineItemSortInput) {
+  allLineItems(input: $input, pagination: $pagination, sort: $sort) {
+    totalCount
+    edges {
+      node {
+        id
+        hash
+        name
+        status
+        notes
+        requiredLeads
+        totalValue
+        cpl
+        range {
+          start
+          end
+        }
+        type
+        archived
+        order {
+          id
+          name
+          customer {
+            id
+            name
+          }
+          salesRep {
+            id
+            givenName
+            familyName
+          }
+        }
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

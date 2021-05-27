@@ -1,0 +1,13 @@
+{{#link-to
+  "email.category.view" item.id
+  class="list-group-item list-group-item-action flex-column align-items-start"
+}}
+  <div class="d-flex w-100 justify-content-between">
+    <h4 class="mb-1">{{item.fullName}}</h4>
+    {{#if item.createdAt}}
+      <small>{{entypo-icon "clock"}} Created {{moment-format item.createdAt "MMM Do, YYYY h:mm a"}}</small>
+    {{/if}}
+  </div>
+
+  <small class="d-block">ID: {{item.id}}</small>
+{{/link-to}}

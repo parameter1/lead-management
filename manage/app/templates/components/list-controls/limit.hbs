@@ -1,0 +1,17 @@
+{{#if options.length}}
+  {{#list-controls/button
+    disabled=disabled
+    class=(concat "dropdown-toggle" " " buttonClass)
+    data-toggle="dropdown"
+    aria-haspopup="true"
+    aria-expanded="false"
+  }}
+    <span class="d-none d-sm-inline">{{label}}</span> {{limit}}
+  {{/list-controls/button}}
+
+  <div class="dropdown-menu {{alignmentClass}}">
+    {{#each filteredOptions as |option|}}
+      <a class="dropdown-item" href="javascript:void(0)" {{action "setLimit" option}}>{{option}}</a>
+    {{/each}}
+  </div>
+{{/if}}

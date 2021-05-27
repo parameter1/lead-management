@@ -1,0 +1,42 @@
+fragment EmailLineItemEditFragment on EmailLineItem {
+  id
+  name
+  notes
+  status
+  archived
+  requiredLeads
+  totalValue
+  cpl
+  progress {
+    qualified {
+      total
+      rate
+    }
+    scrubbed {
+      total
+      rate
+    }
+  }
+  range {
+    start
+    end
+  }
+  requiredFields
+  excludedFields
+  linkTypes
+  identityFilters {
+    id
+    key
+    label
+    matchType
+    terms
+  }
+  tags {
+    id
+    name
+  }
+  categories {
+    id
+    fullName
+  }
+}

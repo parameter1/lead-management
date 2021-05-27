@@ -1,0 +1,39 @@
+{{#bs-modal show=true size="large" onHidden=(route-action "transitionTo" "campaign.edit.ads") as |modal|}}
+  {{#modal.header}}
+    <h5 class="modal-title">Manage Ad Campaign Trackers</h5>
+    <button {{action modal.actions.hide}} type="button" class="close" aria-label="Close">
+      {{entypo-icon "cross"}}
+    </button>
+  {{/modal.header}}
+  <ul class="list-group list-group-flush">
+    {{#each model.trackers as |tracker|}}
+      <li class="list-group-item flex-column align-items-start">
+        <div class="d-flex w-100 justify-content-between">
+          {{ad-campaign/tracker-toggle
+            excludeTrackers=model.excludeTrackers
+            tracker=tracker
+            disabled=isActionRunning
+            on-change=(action "updateExcludedTrackers")
+            class="mb-1"
+          }}
+        </div>
+        <p class="mb-0">URL: {{tracker.url}}</p>
+        <p class="mb-0">
+          Tags:
+          {{#each tracker.tags as |tag|}}
+            {{tag.name}}
+          {{else}}
+            (none)
+          {{/each}}
+        </p>
+        <p class="mb-1">Description: {{if tracker.description tracker.description "(none)"}}</p>
+      </li>
+    {{else}}
+      <li class="list-group-item">
+        No trackers found for the selected campaign criteria.
+      </li>
+    {{/each}}
+  </ul>
+  {{#modal.footer}}
+  {{/modal.footer}}
+{{/bs-modal}}

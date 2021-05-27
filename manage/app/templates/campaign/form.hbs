@@ -1,0 +1,58 @@
+<div class="row">
+
+  <div class="col-lg-4 col-xl-5">
+
+    <div class="form-group">
+      <label>Customer</label>
+      {{type-ahead
+        placeholder="Begin typing to find a customer..."
+        type="customer"
+        selected=model.customer
+        allowClear=false
+        onChange=(action (mut model.customer))
+      }}
+      <small class="form-text text-muted">Required. The customer to assign to this campaign.</small>
+      {{#if model.customer.children.length}}
+        <small class="form-text text-muted">
+          {{model.customer.name}} also includes the following companies:
+          {{#each model.customer.children as |child|}}
+            {{child.name}}
+          {{/each}}
+        </small>
+      {{/if}}
+    </div>
+
+    <div class="form-group">
+      <label for="campaign-name">Name</label>
+      {{input type="text" value=model.name class="form-control" id="campaign-name" aria-describedby="campaign-name-help" placeholder="Campaign name"}}
+      <small id="campaign-name-help" class="form-text text-muted hide">Optional. The campaign name - should be descriptive.</small>
+    </div>
+
+    <div class="form-group mb-0">
+      <label for="maxIdentities">Maximum Leads</label>
+      {{#if user.isAdmin}}
+        {{input type="number" min=0 value=model.maxIdentities class="form-control" id="maxIdentities" aria-describedby="maxIdentitiesHelp" placeholder="Max Leads"}}
+        <small id="maxIdentitiesHelp" class="form-text text-muted">A 0 value will allow unlimited leads.</small>
+      {{else}}
+        {{input type="number" min=1 max=200 value=model.maxIdentities class="form-control" id="maxIdentities" aria-describedby="maxIdentitiesHelp" placeholder="Max Leads"}}
+        <small id="maxIdentitiesHelp" class="form-text text-muted">Maximum 200.</small>
+      {{/if}}
+    </div>
+
+  </div>
+
+  <div class="col-lg-8 col-xl-7">
+    <div class="row">
+      <div class="col-sm-6 mb-4">
+        <label>Start Date</label>
+        {{date-calendar selected=model.startDate maxDate=model.endDate}}
+      </div>
+
+      <div class="col-sm-6 mb-4">
+        <label>End Date</label>
+        {{date-calendar selected=model.endDate minDate=model.startDate}}
+      </div>
+    </div>
+  </div>
+
+</div>

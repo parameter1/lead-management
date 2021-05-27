@@ -1,0 +1,9 @@
+mutation EmailLineItemCategories($input: EmailLineItemCategoriesInput!) {
+  emailLineItemCategories(input: $input) {
+    id
+    categories {
+      id
+      fullName
+    }
+  }
+}

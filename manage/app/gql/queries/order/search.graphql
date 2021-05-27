@@ -1,0 +1,17 @@
+#import 'leads-manage/gql/fragments/order/list'
+
+query SearchOrders($pagination: PaginationInput, $search: TypeAheadInput!, $options: TypeAheadOptionsInput) {
+  searchOrders(pagination: $pagination, search: $search, options: $options) {
+    totalCount
+    edges {
+      node {
+        ...OrderListFragment
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

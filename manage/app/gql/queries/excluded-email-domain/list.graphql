@@ -1,0 +1,16 @@
+query AllExcludedEmailDomains($pagination: PaginationInput, $sort: ExcludedEmailDomainSortInput) {
+  allExcludedEmailDomains(pagination: $pagination, sort: $sort) {
+    totalCount
+    edges {
+      node {
+        id
+        domain
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

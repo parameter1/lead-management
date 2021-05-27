@@ -1,0 +1,15 @@
+query EditEmailLineItemProgress($input: ModelIdInput!) {
+  emailLineItem(input: $input) {
+    id
+    progress {
+      qualified {
+        total
+        rate
+      }
+      scrubbed {
+        total
+        rate
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{{#bs-modal show=true size="xl" onHidden=(route-action "transitionTo" "order.edit.line-items") as |modal|}}
+  {{#modal.header}}
+    <h5 class="modal-title">{{entypo-icon "video"}} Create Video Line Item</h5>
+    <button {{action modal.actions.hide}} type="button" class="close" aria-label="Close">
+      {{entypo-icon "cross"}}
+    </button>
+  {{/modal.header}}
+  {{#modal.body}}
+    <h4 class="mb-0">Coming Soon</h4>
+  {{/modal.body}}
+  {{#modal.footer}}
+  {{/modal.footer}}
+{{/bs-modal}}

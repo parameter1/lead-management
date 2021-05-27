@@ -1,0 +1,20 @@
+<div class="card-body">
+
+  <div class="row">
+    <div class="col">
+      <div class="custom-control custom-checkbox">
+        {{input type="checkbox" checked=model.videoMetrics.enabled class="custom-control-input" id="include-video-metrics" change=(action "updateStatus")}}
+        <label class="custom-control-label" for="include-video-metrics">Include Video Metrics in Campaign?</label>
+      </div>
+    </div>
+  </div>
+  {{#if model.videoMetrics.enabled}}
+    {{video-metrics/brightcove-videos
+      class="mt-3"
+      videos=model.customer.linkedVideos.brightcove.nodes
+      disabled=isActionRunning
+      excludedIds=model.videoMetrics.excludedBrightcoveVideoIds
+      toggleExcluded=(action "toggleExcludedBrightcoveVideo")
+    }}
+  {{/if}}
+</div>

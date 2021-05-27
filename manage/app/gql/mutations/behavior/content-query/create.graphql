@@ -1,0 +1,7 @@
+#import 'leads-manage/gql/fragments/behavior/content-query/view'
+
+mutation CreateContentQuery($input: BehaviorCreateContentQueryInput!) {
+  behaviorCreateContentQuery(input: $input) {
+    ...BehaviorContentQueryViewFragment
+  }
+}

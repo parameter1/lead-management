@@ -1,0 +1,17 @@
+#import 'leads-manage/gql/fragments/identity/view'
+
+query LeadReportAdIdentities($hash: String!, $pagination: PaginationInput, $sort: IdentitySortInput) {
+  reportAdIdentities(hash: $hash, pagination: $pagination, sort: $sort) {
+    totalCount
+    edges {
+      node {
+        ...IdentityViewFragment
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
