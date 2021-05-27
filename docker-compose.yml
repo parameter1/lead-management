@@ -72,10 +72,10 @@ services:
       # @todo need to determine how to port the GAM service below....
       GAM_SERVICE_URL: ${GAM_SERVICE_URL-http://docker.for.mac.host.internal:9017}
       MONGO_DSN: ${MONGO_DSN-mongodb://mongo:27017/leads-graph}
-      REDIS_DSN: redis://redis:6379/0
+      REDIS_DSN: ${REDIS_DSN-redis://redis:6379/0}
       GAM_GRAPHQL_URI: ${GAM_GRAPHQL_URI-http://google-ad-manager}
     ports:
-      - "9288:9288"
+      - "9288:80"
     depends_on:
       - redis
       - mongo
