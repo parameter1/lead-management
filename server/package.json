@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
-    "dev": "HOST=0.0.0.0 PORT=8288 gulp",
+    "dev": "HOST=0.0.0.0 PORT=9288 gulp",
     "lint": "eslint --ext .js ./src",
     "test": "yarn lint"
   },

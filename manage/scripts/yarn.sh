@@ -1,5 +1,7 @@
 #!/bin/bash
 docker-compose run \
   --rm \
-  yarn \
+  --no-deps \
+  --entrypoint yarn \
+  manage-commands \
   $@

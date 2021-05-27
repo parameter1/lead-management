@@ -1,0 +1,111 @@
+version: '3.7'
+
+x-manage-env-defaults: &manage-env
+  NODE_ENV: development
+  YARN_CACHE_FOLDER: /.manage-yarn-cache
+
+x-server-env-defaults: &server-env
+  NEW_RELIC_ENABLED: ${NEW_RELIC_ENABLED-0}
+  NEW_RELIC_LICENSE_KEY: ${NEW_RELIC_LICENSE_KEY-(unset)}
+  NODE_ENV: development
+  TERMINUS_TIMEOUT: 1000
+  TERMINUS_SHUTDOWN_DELAY: 0
+  YARN_CACHE_FOLDER: /.server-yarn-cache
+
+x-server-node-defaults: &server-node
+  tty: true
+  init: true
+  image: node:14.14
+  entrypoint: ["node"]
+  working_dir: /server
+  volumes:
+    - ./server:/server:cached
+    - ./server/node_modules:/server/node_modules:delegated
+    - server-yarn-cache:/.server-yarn-cache
+
+x-ember-defaults: &ember
+  tty: true
+  init: true
+  image: danlynn/ember-cli:3.8.1
+  entrypoint: ["bash"]
+  working_dir: /myapp
+  volumes:
+    - ./manage:/myapp:cached
+    - ./manage/node_modules:/myapp/node_modules:delegated
+    - manage-yarn-cache:/.manage-yarn-cache
+  environment:
+    <<: *manage-env
+
+services:
+  manage-commands:
+    <<: *ember
+    entrypoint: ["tail"]
+    command: ["-f", "/dev/null"]
+
+  server-commands:
+    <<: *server-node
+    working_dir: /server
+    entrypoint: ["tail"]
+    command: ["-f", "/dev/null"]
+    environment:
+      <<: *server-env
+
+  manage:
+    <<: *ember
+    entrypoint: ["node_modules/.bin/ember"]
+    command: ["serve", "--port", "9285", "--live-reload-port", "9286", "--proxy", "http://server"]
+    restart: on-failure
+    ports:
+      - "9285:9285"
+      - "9286:9286"
+      - "9287:9287"
+    depends_on:
+      - server
+
+  server:
+    <<: *server-node
+    working_dir: /server
+    entrypoint: ["yarn"]
+    command: ["dev"]
+    environment:
+      <<: *server-env
+      # @todo need to determine how to port the GAM service below....
+      GAM_SERVICE_URL: ${GAM_SERVICE_URL-http://docker.for.mac.host.internal:9017}
+      MONGO_DSN: ${MONGO_DSN-mongodb://mongo:27017/leads-graph}
+      REDIS_DSN: redis://redis:6379/0
+      GAM_GRAPHQL_URI: ${GAM_GRAPHQL_URI-http://google-ad-manager}
+    ports:
+      - "9288:9288"
+    depends_on:
+      - redis
+      - mongo
+      - google-ad-manager
+
+  google-ad-manager:
+    tty: true
+    image: parameter1/google-ad-manager-graphql-service:v0.2.2
+    volumes:
+      - ./service-account.json:/service-account.json
+    environment:
+      JSON_KEY_FILE_PATH: /service-account.json
+      NETWORK_CODE: 137873098
+      VERSION: v202102
+
+  mongo:
+    tty: true
+    image: mongo:3.4
+    restart: always
+    volumes:
+      - mongodb:/data/db
+    ports:
+      - "${SERVER_DB_PORT-9289}:27017"
+
+  redis:
+    tty: true
+    restart: always
+    image: redis:alpine
+
+volumes:
+  mongodb: {}
+  server-yarn-cache: {}
+  manage-yarn-cache: {}

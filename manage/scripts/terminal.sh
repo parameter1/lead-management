@@ -1,4 +1,7 @@
 #!/bin/bash
 docker-compose run \
   --rm \
-  terminal
+  --no-deps \
+  --entrypoint /bin/bash \
+  manage-commands \
+  $@
