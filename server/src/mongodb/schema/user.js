@@ -78,7 +78,7 @@ schema.index({ familyName: 1, _id: 1 }, { unique: true });
  */
 schema.pre('save', async function setPassword() {
   if (!this.isModified('password')) return;
-  const { hash } = await bcrypt.hash(this.password, 13);
+  const hash = await bcrypt.hash(this.password, 13);
   this.password = hash;
 });
 
