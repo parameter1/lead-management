@@ -39,6 +39,7 @@
     "jsonwebtoken": "^8.5.1",
     "lodash.merge": "^4.6.2",
     "mongoose": "^5.12.11",
+    "nanoid": "^3.1.23",
     "newrelic": "^7.4.0",
     "nocache": "^2.1.0",
     "node-fetch": "^2.6.1",
