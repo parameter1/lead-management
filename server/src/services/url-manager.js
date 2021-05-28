@@ -97,7 +97,7 @@ module.exports = {
       map.set('utm_term', '@{track_id}@');
     }
     const newParams = [];
-    map.forEach((key, v) => newParams.push({ key, value: v }));
+    map.forEach((v, key) => newParams.push({ key, value: v }));
     extractedHost.set('urlParams', newParams);
     return extractedHost;
   },
@@ -232,13 +232,7 @@ module.exports = {
     this.applyHostTrackingRules(host);
 
     const $setOnInsert = { value: host.value };
-    const update = { $setOnInsert };
-    if (host.urlParams.length) {
-      update.$addToSet = {
-        urlParams: { $each: host.urlParams },
-      };
-    }
-
+    const update = { $setOnInsert, $set: { urlParams: host.urlParams } };
     const options = { new: true, upsert: true };
     return ExtractedHost.findOneAndUpdate({ value: host.value }, update, options);
   },
