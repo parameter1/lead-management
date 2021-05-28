@@ -1,4 +1,4 @@
-const { Pagination, TypeAhead, paginationResolvers } = require('@limit0/mongoose-graphql-pagination');
+const { Pagination, TypeAhead, paginationResolvers } = require('../pagination');
 const UserRepo = require('../../repos/user');
 const User = require('../../mongodb/models/user');
 const SessionRepo = require('../../repos/session');
