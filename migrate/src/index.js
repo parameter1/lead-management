@@ -14,6 +14,9 @@ const { log } = console;
 
 const limit = 1000;
 const collections = [
+  'behavior-entities',
+  'behavior-views',
+  'content-query-results',
   'customers',
   'extracted-hosts',
   'extracted-urls',
