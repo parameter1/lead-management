@@ -73,8 +73,8 @@ module.exports = {
     const { value } = extractedHost;
 
     const map = extractedHost.urlParams.reduce((m, { key, value: v }) => {
-      map.set(key, v);
-      return map;
+      m.set(key, v);
+      return m;
     }, new Map());
 
     if (/www\.ien\.com/i.test(value)
