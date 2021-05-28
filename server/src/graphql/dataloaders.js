@@ -1,11 +1,12 @@
 const DataLoader = require('dataloader');
 
 const {
+  Customer,
+  Tag,
   User,
 } = require('../mongodb/models');
 
 // const Campaign = require('../models/campaign');
-// const Customer = require('../models/customer');
 // const EmailCategory = require('../models/email-category');
 // const EmailDeployment = require('../models/email-deployment');
 // const EmailSend = require('../models/email-send');
@@ -16,7 +17,6 @@ const {
 // const FormEntry = require('../models/form-entry');
 // const Identity = require('../models/identity');
 // const Order = require('../models/order');
-// const Tag = require('../models/tag');
 // const Video = require('../models/video');
 
 const createBatchFn = (Model) => async (ids) => {
@@ -30,7 +30,7 @@ const createBatchFn = (Model) => async (ids) => {
 
 module.exports = {
   // campaign: new DataLoader(createBatchFn(Campaign)),
-  // customer: new DataLoader(createBatchFn(Customer)),
+  customer: new DataLoader(createBatchFn(Customer)),
   // emailCategory: new DataLoader(createBatchFn(EmailCategory)),
   // emailDeployment: new DataLoader(createBatchFn(EmailDeployment)),
   // emailSend: new DataLoader(createBatchFn(EmailSend)),
@@ -40,7 +40,7 @@ module.exports = {
   // formEntry: new DataLoader(createBatchFn(FormEntry)),
   // identity: new DataLoader(createBatchFn(Identity)),
   // order: new DataLoader(createBatchFn(Order)),
-  // tag: new DataLoader(createBatchFn(Tag)),
+  tag: new DataLoader(createBatchFn(Tag)),
   user: new DataLoader(createBatchFn(User)),
   // video: new DataLoader(createBatchFn(Video)),
 
