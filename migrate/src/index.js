@@ -54,8 +54,12 @@ const run = async () => {
     const handler = async ({ results: cursor }) => {
       const bulkOps = [];
       await iterateCursor(cursor, async (doc) => {
-        if (transformer) throw new Error('IMPLEMENT TRANSFORMER!');
-        const { _id, ...rest } = doc;
+        const transformed = transformer ? transformer(doc) : doc;
+        const { _id, ...rest } = transformed;
+
+        // remove all `wasImported` flags from the old migration
+        delete rest.wasImported;
+
         bulkOps.push({
           updateOne: {
             filter: { _id },
