@@ -28,6 +28,7 @@
     "graphql": "^15.5.0",
     "graphql-type-json": "^0.3.2",
     "helmet": "^4.6.0",
+    "html-entities": "^2.3.2",
     "ioredis": "^4.27.3",
     "jsonwebtoken": "^8.5.1",
     "lodash.merge": "^4.6.2",
@@ -38,6 +39,7 @@
     "oauth": "^0.9.15",
     "passport": "^0.4.1",
     "passport-http-bearer": "^1.0.1",
+    "slug": "^5.0.1",
     "uuid": "^8.3.2",
     "validator": "^13.6.0"
   },
