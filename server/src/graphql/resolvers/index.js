@@ -4,9 +4,11 @@ const GraphQLDate = require('@parameter1/graphql-type-date');
 const GraphQLObjectID = require('@parameter1/graphql-type-objectid');
 const { ObjectId } = require('mongoose').SchemaTypes;
 
+const tag = require('./tag');
 const user = require('./user');
 
 module.exports = merge(
+  tag,
   user,
 
   {

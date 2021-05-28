@@ -1,5 +1,6 @@
 const { gql } = require('apollo-server-express');
 
+const tag = require('./tag');
 const user = require('./user');
 
 module.exports = gql`
@@ -64,6 +65,7 @@ input TypeAheadOptionsInput {
   position: String!
 }
 
+${tag}
 ${user}
 
 `;
