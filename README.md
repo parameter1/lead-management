@@ -19,3 +19,4 @@
 - fix ad creative trackers to use new customer IDs... see `graphql/resolvers/ad-creative-tracker.js`
 - fix `allExtractedUrlsForSend` and `searchExtractedUrlsForSend` queries
 - fix `allContentQueryResultRows` query
+- fix identity references in `excluded-email-domain` schema
