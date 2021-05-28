@@ -16,3 +16,4 @@
   ]
   ```
 - need to determine if the deployment name can be included in merge vars
+- fix ad creative trackers to use new customer IDs... see `graphql/resolvers/ad-creative-tracker.js`

@@ -4,6 +4,7 @@ const GraphQLDate = require('@parameter1/graphql-type-date');
 const GraphQLObjectID = require('@parameter1/graphql-type-objectid');
 const { ObjectId } = require('mongoose').SchemaTypes;
 
+const adCreativeTracker = require('./ad-creative-tracker');
 const behavior = require('./behavior');
 const brightcove = require('./brightcove');
 const customer = require('./customer');
@@ -13,6 +14,7 @@ const url = require('./url');
 const user = require('./user');
 
 module.exports = merge(
+  adCreativeTracker,
   behavior,
   brightcove,
   customer,

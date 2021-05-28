@@ -1,5 +1,6 @@
 const { gql } = require('apollo-server-express');
 
+const adCreativeTracker = require('./ad-creative-tracker');
 const behavior = require('./behavior');
 const brightcove = require('./brightcove');
 const customer = require('./customer');
@@ -70,6 +71,7 @@ input TypeAheadOptionsInput {
   position: String!
 }
 
+${adCreativeTracker}
 ${behavior}
 ${brightcove}
 ${customer}
