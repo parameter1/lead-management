@@ -14,6 +14,8 @@ const { log } = console;
 
 const limit = 1000;
 const collections = [
+  'ad-creative-trackers',
+  'ad-creatives',
   'behavior-entities',
   'behavior-views',
   'content-query-results',
