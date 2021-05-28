@@ -37,6 +37,20 @@ x-ember-defaults: &ember
     <<: *manage-env
 
 services:
+  migrate:
+    tty: true
+    init: true
+    image: node:14.14-alpine
+    working_dir: /migrate
+    entrypoint: ["node"]
+    command: ["src/index.js"]
+    volumes:
+      - ./migrate:/migrate:cached
+    environment:
+      DESTINATION_MONGO_URI: ${MIGRATE_DESTINATION_MONGO_URI}
+      NODE_ENV: development
+      SOURCE_MONGO_URI: ${MIGRATE_SOURCE_MONGO_URI}
+
   manage-commands:
     <<: *ember
     entrypoint: ["tail"]

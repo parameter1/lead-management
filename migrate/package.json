@@ -1,0 +1,28 @@
+{
+  "name": "@lead-management/migrate",
+  "version": "0.0.0",
+  "main": "src/index.js",
+  "repository": "https://github.com/parameter1/lead-management.git",
+  "author": "Jacob Bare <jacob@parameter1.com>",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "dev": "gulp",
+    "lint": "eslint --ext .js ./src",
+    "test": "yarn lint"
+  },
+  "dependencies": {
+    "@parameter1/mongodb": "^1.4.14",
+    "@parameter1/utils": "^1.1.19",
+    "async": "^3.2.0",
+    "envalid": "^7.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.27.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.23.3"
+  },
+  "engines": {
+    "node": ">=12"
+  }
+}
