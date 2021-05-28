@@ -41,6 +41,7 @@
     "mongoose": "^5.12.11",
     "nanoid": "^3.1.23",
     "newrelic": "^7.4.0",
+    "no-case": "^3.0.4",
     "nocache": "^2.1.0",
     "node-fetch": "^2.6.1",
     "oauth": "^0.9.15",
