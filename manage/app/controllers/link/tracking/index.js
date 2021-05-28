@@ -78,10 +78,10 @@ export default Controller.extend(LoadingMixin, {
       this._clearValuesForPreProcess();
     },
 
-    async createTrackedHtml(useNewTracking = false) {
+    async createTrackedHtml() {
       this.showLoading();
       try {
-        const result = await this.get('urlProcessor').generateTrackedHtml(this.get('html'), useNewTracking);
+        const result = await this.get('urlProcessor').generateTrackedHtml(this.get('html'));
         this.set('trackedResult', result);
       } catch (e) {
         this.get('errorProcessor').show(e);

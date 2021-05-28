@@ -13,7 +13,7 @@ extend type Query {
   # searchExtractedUrlsForSend(sendId: String!, pagination: PaginationInput = {}, search: TypeAheadInput!, options: TypeAheadOptionsInput): ExtractedUrlConnection!
 
   extractUrlsFromHtml(html: String!): [String]
-  generateTrackedHtml(html: String!, useNewTracking: Boolean = false): String!
+  generateTrackedHtml(html: String!): String!
 
   crawlUrl(url: String!, cache: Boolean = true): ExtractedUrl!
 }

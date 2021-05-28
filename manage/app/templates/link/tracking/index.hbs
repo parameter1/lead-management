@@ -31,11 +31,6 @@
 
 {{#if trackedResult}}
   <h4 class="mt-4">Tracked HTML</h4>
-  {{#if this.useNewTracking}}
-    <div class="alert alert-info">
-      Note: this HTML was tracked using the <strong>new</strong> tracking method.
-    </div>
-  {{/if}}
   <div class="form-group">
     {{textarea
       rows="8"
@@ -60,7 +55,7 @@
 
     {{#if results.length}}
       <div class="d-flex justify-content-between align-items-center w-100">
-        <button class="btn btn-lg btn-success" {{action "createTrackedHtml" true}}>
+        <button class="btn btn-lg btn-success" {{action "createTrackedHtml"}}>
           {{entypo-icon "edit"}} Generate HTML
         </button>
       </div>

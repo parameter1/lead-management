@@ -93,9 +93,9 @@ module.exports = {
     /**
      *
      */
-    generateTrackedHtml: (root, { html, useNewTracking }, { host, auth }) => {
+    generateTrackedHtml: (root, { html }, { auth }) => {
       auth.checkAdmin();
-      return LinkInjector.injectInto(html, host, useNewTracking);
+      return LinkInjector.injectInto(html);
     },
 
     /**
