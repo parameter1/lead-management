@@ -2,6 +2,8 @@ const DataLoader = require('dataloader');
 
 const {
   Customer,
+  ExtractedHost,
+  ExtractedUrl,
   Tag,
   User,
 } = require('../mongodb/models');
@@ -11,8 +13,6 @@ const {
 // const EmailDeployment = require('../models/email-deployment');
 // const EmailSend = require('../models/email-send');
 // const ExcludedEmailDomain = require('../models/excluded-email-domain');
-// const ExtractedHost = require('../models/extracted-host');
-// const ExtractedUrl = require('../models/extracted-url');
 // const Form = require('../models/form');
 // const FormEntry = require('../models/form-entry');
 // const Identity = require('../models/identity');
@@ -34,8 +34,8 @@ module.exports = {
   // emailCategory: new DataLoader(createBatchFn(EmailCategory)),
   // emailDeployment: new DataLoader(createBatchFn(EmailDeployment)),
   // emailSend: new DataLoader(createBatchFn(EmailSend)),
-  // extractedHost: new DataLoader(createBatchFn(ExtractedHost)),
-  // extractedUrl: new DataLoader(createBatchFn(ExtractedUrl)),
+  extractedHost: new DataLoader(createBatchFn(ExtractedHost)),
+  extractedUrl: new DataLoader(createBatchFn(ExtractedUrl)),
   // form: new DataLoader(createBatchFn(Form)),
   // formEntry: new DataLoader(createBatchFn(FormEntry)),
   // identity: new DataLoader(createBatchFn(Identity)),
