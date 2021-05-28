@@ -14,7 +14,7 @@ const schema = new Schema({
   _id: false,
 });
 
-const mergeRegex = new RegExp('^%{');
+const mergeRegex = new RegExp('^@{');
 schema.virtual('isMergeVar').get(function isMergeVar() {
   return mergeRegex.test(this.value);
 });
