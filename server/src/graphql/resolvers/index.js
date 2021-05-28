@@ -5,12 +5,14 @@ const GraphQLObjectID = require('@parameter1/graphql-type-objectid');
 const { ObjectId } = require('mongoose').SchemaTypes;
 
 const brightcove = require('./brightcove');
+const customer = require('./customer');
 const gam = require('./gam');
 const tag = require('./tag');
 const user = require('./user');
 
 module.exports = merge(
   brightcove,
+  customer,
   gam,
   tag,
   user,

@@ -1,6 +1,7 @@
 const { gql } = require('apollo-server-express');
 
 const brightcove = require('./brightcove');
+const customer = require('./customer');
 const gam = require('./gam');
 const tag = require('./tag');
 const user = require('./user');
@@ -68,6 +69,7 @@ input TypeAheadOptionsInput {
 }
 
 ${brightcove}
+${customer}
 ${gam}
 ${tag}
 ${user}
