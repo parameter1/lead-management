@@ -1,7 +1,7 @@
 const { Schema } = require('mongoose');
-const { isURL } = require('validator');
 const externalSourcePlugin = require('../plugins/external-source');
 const nameSlug = require('../../utils/name-slug');
+const isURL = require('../../utils/is-url');
 const hashablePlugin = require('../plugins/hashable');
 
 const schema = new Schema({
@@ -22,10 +22,7 @@ const schema = new Schema({
     validate: {
       validator(v) {
         if (!v) return true;
-        return isURL(`${v}`, {
-          protocols: ['http', 'https'],
-          require_protocol: true,
-        });
+        return isURL(v);
       },
       message: 'The provided website URL is invalid {VALUE}',
     },
