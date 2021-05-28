@@ -1,5 +1,6 @@
 const { gql } = require('apollo-server-express');
 
+const gam = require('./gam');
 const tag = require('./tag');
 const user = require('./user');
 
@@ -65,6 +66,7 @@ input TypeAheadOptionsInput {
   position: String!
 }
 
+${gam}
 ${tag}
 ${user}
 
