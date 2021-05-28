@@ -4,6 +4,7 @@ const brightcove = require('./brightcove');
 const customer = require('./customer');
 const gam = require('./gam');
 const tag = require('./tag');
+const url = require('./url');
 const user = require('./user');
 
 module.exports = gql`
@@ -72,6 +73,7 @@ ${brightcove}
 ${customer}
 ${gam}
 ${tag}
+${url}
 ${user}
 
 `;
