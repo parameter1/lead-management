@@ -2,6 +2,10 @@
 
 ## Omeda Migration Notes
 - need "click stream" api that can search for all click events during a certain date range
+- need to determine which demographics (specifically business and title code) need to be used
+- there are ALOT of deployment types (transferred from blasts, etc) -- which ones are going to be used?
+- some newsletter products seem to be missing (specifically, only IEN newsletter products seem to exist)
+- do list queries even exist yet for newsletters?
 - need to establish custom merge variables for formstack forms, e.g. company name, city, state, zip, etc. See https://main.omeda.com/knowledge-base/email-merge-variables/
   - for now, temporary values were set (see the `extracted-urls` transformer in the `migrate` service)
   ```js
