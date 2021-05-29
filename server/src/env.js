@@ -16,6 +16,8 @@ module.exports = cleanEnv(process.env, {
   MONGO_DSN: str({ desc: 'The MongoDB DSN to connect to.' }),
   NEW_RELIC_ENABLED: bool({ desc: 'Whether New Relic is enabled.', default: true, devDefault: false }),
   NEW_RELIC_LICENSE_KEY: str({ desc: 'The license key for New Relic.', devDefault: '(unset)' }),
+  OMEDA_APP_ID: str({ desc: 'The Omeda API App ID.' }),
+  OMEDA_BRAND_KEY: str({ desc: 'The Omeda brand database key.' }),
   PORT: port({ desc: 'The port that express will run on.', default: 80 }),
   REDIS_DSN: str({ desc: 'The Redis DSN to connect to.' }),
   TRUSTED_PROXIES: str({ desc: 'A comma seperated list of trusted proxy IP addresses.', default: '' }),

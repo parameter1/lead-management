@@ -93,6 +93,8 @@ services:
       HOST_NAME: ${HOST_NAME}
       GAM_GRAPHQL_URI: ${GAM_GRAPHQL_URI-http://google-ad-manager}
       MONGO_DSN: ${MONGO_DSN-mongodb://mongo:27017/leads-graph}
+      OMEDA_APP_ID: ${OMEDA_APP_ID}
+      OMEDA_BRAND_KEY: ${OMEDA_BRAND_KEY}
       REDIS_DSN: ${REDIS_DSN-redis://redis:6379/0}
     ports:
       - "9288:80"
