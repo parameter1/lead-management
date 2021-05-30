@@ -8,9 +8,8 @@ const mongodb = new MongoDBClient({ url: MONGO_DSN });
 const pattern = /lt\.lid=([a-f0-9]{24})/;
 const { log } = console;
 
-const run = async ({ trackId } = {}) => {
+module.exports = async ({ trackId } = {}) => {
   const now = new Date();
-  await mongodb.connect();
   const db = await mongodb.db({ name: 'lead-management' });
   log(`Loading email deployment ${trackId} from Omeda...`);
   const { data } = await omeda.resource('email').lookupDeploymentById({ trackId });
@@ -108,10 +107,5 @@ const run = async ({ trackId } = {}) => {
   });
   log(`Upserting ${urlOps.length} URLs for ${trackId}...`);
   if (urlOps.length) await db.collection('omeda-email-deployment-urls').bulkWrite(urlOps);
-  await mongodb.close();
-  log('DONE');
+  log(`URL upsert complete for ${trackId}`);
 };
-
-run({
-  trackId: 'IMCD210528002',
-}).catch((e) => setImmediate(() => { throw e; }));
