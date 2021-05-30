@@ -6,6 +6,7 @@ const ContentQueryResult = require('./content-query/result');
 const Customer = require('./customer');
 const ExtractedHost = require('./extracted-host');
 const ExtractedUrl = require('./extracted-url');
+const OmedaEmailDeployment = require('./omeda/email-deployment');
 const OmedaEmailDeploymentUrl = require('./omeda/email-deployment-url');
 const Tag = require('./tag');
 const User = require('./user');
@@ -19,6 +20,7 @@ module.exports = {
   Customer,
   ExtractedHost,
   ExtractedUrl,
+  OmedaEmailDeployment,
   OmedaEmailDeploymentUrl,
   Tag,
   User,
