@@ -21,8 +21,8 @@ const run = async () => {
   const start = lastDeployment ? lastDeployment.data.SentDate : defaultStart;
 
   const { data } = await omeda.resource('email').searchDeployments({
-    // add 15 minute clock drift...
-    deploymentDateStart: dayjs(start).subtract(15, 'minutes').toDate(),
+    // add 1 hour clock drift...
+    deploymentDateStart: dayjs(start).subtract(1, 'hour').toDate(),
     numResults: 1000,
     statuses: ['SENT_OR_SENDING'],
   });

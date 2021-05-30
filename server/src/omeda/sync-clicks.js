@@ -2,6 +2,7 @@ const MongoDBClient = require('@parameter1/mongodb/client');
 const { MONGO_DSN } = require('../env');
 const dayjs = require('../dayjs');
 const syncDeploymentClicks = require('./sync-deployment-clicks');
+const syncDeploymentMetrics = require('./sync-deployment-metrics');
 
 const mongodb = new MongoDBClient({ url: MONGO_DSN });
 const { log } = console;
@@ -18,7 +19,10 @@ const run = async () => {
   });
   log(`Found ${trackIds.length} deployment(s) to sync clicks for...`);
   await Promise.all(trackIds.map(async (trackId) => {
-    await syncDeploymentClicks({ trackId });
+    await Promise.all([
+      syncDeploymentClicks({ trackId }),
+      syncDeploymentMetrics({ trackId }),
+    ]);
   }));
   await mongodb.close();
   log('Click sync complete.');

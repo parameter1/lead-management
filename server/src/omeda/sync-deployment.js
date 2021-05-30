@@ -51,7 +51,6 @@ module.exports = async ({ trackId } = {}) => {
   }, { upsert: true });
 
   // load a the distinct host map for the found urls
-  // @todo use dataloaders?
   const hostMap = await (async () => {
     const distinctHosts = urls.reduce((map, { resolvedHostId }) => {
       map.set(`${resolvedHostId}`, resolvedHostId);

@@ -12,48 +12,42 @@ module.exports = async ({ trackId } = {}) => {
   log(`Syncing click data for ${trackId}...`);
   const db = await mongodb.db({ name: 'lead-management' });
   const { data } = await omeda.resource('email').searchClicks({ trackId });
-  if (data) {
-    const customerIdSet = new Set();
-    const urlIdSet = new Set();
-    const clickOps = [];
-    getAsArray(data, 'splits').forEach((split) => {
-      getAsArray(split, 'links').forEach((link) => {
-        const matches = pattern.exec(link.LinkURL);
-        // console.log(link.LinkURL);
-        if (!matches) return;
-        urlIdSet.add(matches[1]);
-        const urlId = new ObjectId(matches[1]);
-        getAsArray(link, 'clicks').forEach((click) => {
-          // console.log(click);
-          const { EncryptedCustomerId, ClickDate } = click;
-          // @todo do we also allow just email address + name???
-          if (!EncryptedCustomerId) return;
-          customerIdSet.add(EncryptedCustomerId);
-          const filter = {
-            urlId,
-            encryptedCustomerId: EncryptedCustomerId,
-            trackId,
-            split: split.Split,
-          };
-          clickOps.push({
-            updateOne: {
-              filter,
-              update: {
-                $setOnInsert: filter,
-                $set: { date: ClickDate, n: click.NumberOfClicks },
-              },
-              upsert: true,
+  const customerIdSet = new Set();
+  const urlIdSet = new Set();
+  const clickOps = [];
+  getAsArray(data, 'splits').forEach((split) => {
+    getAsArray(split, 'links').forEach((link) => {
+      const matches = pattern.exec(link.LinkURL);
+      if (!matches) return;
+      urlIdSet.add(matches[1]);
+      const urlId = new ObjectId(matches[1]);
+      getAsArray(link, 'clicks').forEach((click) => {
+        const { EncryptedCustomerId, ClickDate } = click;
+        // @todo do we also allow just email address + name???
+        if (!EncryptedCustomerId) return;
+        customerIdSet.add(EncryptedCustomerId);
+        const filter = {
+          urlId,
+          encryptedCustomerId: EncryptedCustomerId,
+          trackId,
+          split: split.Split,
+        };
+        clickOps.push({
+          updateOne: {
+            filter,
+            update: {
+              $setOnInsert: filter,
+              $set: { date: ClickDate, n: click.NumberOfClicks },
             },
-          });
+            upsert: true,
+          },
         });
       });
     });
-    log(`Found ${clickOps.length} clicks to upsert for ${trackId}...`);
-    if (clickOps.length) db.collection('omeda-email-clicks').bulkWrite(clickOps);
-    // console.log(customerIdSet); // sync these
-    // console.log(urlIdSet); // get data for these.. and append to ops??
-  } else {
-    log(`No click data found for ${trackId}`);
-  }
+  });
+  log(`Found ${clickOps.length} click(s) to upsert for ${trackId}...`);
+  if (clickOps.length) db.collection('omeda-email-clicks').bulkWrite(clickOps);
+  // console.log(customerIdSet); // sync these
+  // console.log(urlIdSet); // get data for these.. and append to ops??
   log(`Click data sync complete for ${trackId}`);
 };
