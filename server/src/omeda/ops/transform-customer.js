@@ -21,10 +21,10 @@ module.exports = ({
   postalAddresses,
 }) => {
   const now = new Date();
-  const primaryEmail = emails.getPrimary();
-  const primaryPhone = phoneNumbers.getPrimary();
-  const primaryAddress = postalAddresses.getPrimary();
-  const companyName = postalAddresses.getCompanyName();
+  const primaryEmail = emails ? emails.getPrimary() : null;
+  const primaryPhone = phoneNumbers ? phoneNumbers.getPrimary() : null;
+  const primaryAddress = phoneNumbers ? postalAddresses.getPrimary() : null;
+  const companyName = postalAddresses ? postalAddresses.getCompanyName() : null;
 
   const fields = {
     emailAddress: g(primaryEmail, 'EmailAddress').toLowerCase(),
@@ -50,9 +50,9 @@ module.exports = ({
     attributes,
     data: {
       ...data,
-      Emails: emails.data,
-      PhoneNumbers: phoneNumbers.data,
-      Addresses: postalAddresses.data,
+      ...(emails && { Emails: emails.data }),
+      ...(phoneNumbers && { PhoneNumbers: phoneNumbers.data }),
+      ...(postalAddresses && { Addresses: postalAddresses.data }),
     },
     updatedAt: now,
   };
