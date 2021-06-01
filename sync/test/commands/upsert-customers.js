@@ -1,4 +1,4 @@
-const run = require('./_run');
+const run = require('../_run');
 const command = require('../../src/commands/upsert-customers');
 
 run(command, { customerIds: [1100728937] })
