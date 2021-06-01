@@ -4,7 +4,7 @@ const { Schema } = require('mongoose');
 const schema = new Schema({});
 
 schema.index({ entity: 1 }, { unique: true });
-schema.index({ 'data.Status': 1 });
-schema.index({ 'data.SentDate': 1 });
+schema.index({ 'omeda.Status': 1 });
+schema.index({ 'omeda.SentDate': 1 });
 
 module.exports = schema;
