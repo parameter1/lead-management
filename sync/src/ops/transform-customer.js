@@ -49,7 +49,7 @@ module.exports = ({
     emailDomain: getEmailDomain(fields.emailAddress),
     fieldCount: getFieldCount(fields) + getFieldCount(attributes),
     attributes,
-    data: {
+    omeda: {
       ...data,
       ...(emails && { Emails: emails.data }),
       ...(phoneNumbers && { PhoneNumbers: phoneNumbers.data }),
