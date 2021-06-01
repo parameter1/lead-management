@@ -19,6 +19,7 @@ module.exports = ({
   emails,
   phoneNumbers,
   postalAddresses,
+  legacyInactiveMap = new Map(),
 }) => {
   const now = new Date();
   const primaryEmail = emails ? emails.getPrimary() : null;
@@ -56,11 +57,14 @@ module.exports = ({
     },
     updatedAt: now,
   };
+
+  const legacyInactiveEntry = fields.emailAddress
+    ? legacyInactiveMap.get(fields.emailAddress) : undefined;
+
   const $setOnInsert = {
     ...filter,
     createdAt: now,
-    inactive: false,
-    inactiveCustomerIds: [],
+    ...(legacyInactiveEntry || { inactive: false, inactiveCustomerIds: [] }),
     inactiveCampaignIds: [],
     inactiveLineItemIds: [],
   };

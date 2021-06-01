@@ -1,5 +1,6 @@
 const customerEntity = require('../utils/customer-entity');
 const transform = require('../ops/transform-customer');
+const createInactiveMap = require('../ops/legacy-inactive-map');
 const mongodb = require('../mongodb');
 
 /**
@@ -10,6 +11,8 @@ const mongodb = require('../mongodb');
  */
 module.exports = async ({ records = [] } = {}) => {
   if (!Array.isArray(records)) throw new Error('The records parameter must be an array.');
+
+  const emails = [];
   const writeMap = records.filter(({ EmailAddress }) => EmailAddress).reduce((map, record) => {
     const { EmailAddress, FirstName, LastName } = record;
     const entity = customerEntity({ emailAddress: EmailAddress });
@@ -22,12 +25,14 @@ module.exports = async ({ records = [] } = {}) => {
         getPrimary: () => ({ EmailAddress }),
       },
     });
+    emails.push(EmailAddress);
     return map;
   }, new Map());
 
+  const legacyInactiveMap = await createInactiveMap({ emails });
   const bulkOps = [];
   writeMap.forEach((record) => {
-    const transformed = transform(record);
+    const transformed = transform({ ...record, legacyInactiveMap });
     bulkOps.push(transformed);
   });
 
