@@ -1,7 +1,7 @@
 const Joi = require('@parameter1/joi');
 const { validateAsync } = require('@parameter1/joi/utils');
 
-const loadCustomer = require('../ops/load-customer');
+const loadCustomers = require('../ops/load-customers');
 const transform = require('../ops/transform-customer');
 const createInactiveMap = require('../ops/legacy-inactive-map');
 const loadDB = require('../mongodb/load-db');
@@ -11,18 +11,20 @@ module.exports = async (params = {}) => {
     customerIds: Joi.array().items(Joi.number().min(1).required()).required(),
   }), params);
 
-  const toLoad = [...new Set(customerIds)];
-  if (!toLoad.length) return [];
-  const customers = await Promise.all(toLoad.map((id) => loadCustomer({ customerId: id })));
+  const customers = await loadCustomers({ customerIds });
 
-  const emails = customers.map((customer) => {
+  const emails = [];
+  customers.forEach((customer) => {
     const { EmailAddress } = customer.emails.getPrimary() || {};
-    return EmailAddress;
+    emails.push(EmailAddress);
   });
   const legacyInactiveMap = await createInactiveMap({ emails });
 
   const db = await loadDB();
-  const bulkOps = customers.map((customer) => transform({ ...customer, legacyInactiveMap }));
+  const bulkOps = [];
+  customers.forEach((customer) => {
+    bulkOps.push(transform({ ...customer, legacyInactiveMap }));
+  });
   if (bulkOps.length) await db.collection('identities').bulkWrite(bulkOps);
   return bulkOps;
 };
