@@ -4,9 +4,9 @@ const { Schema } = require('mongoose');
 const schema = new Schema({});
 
 schema.index({
-  urlId: 1,
-  encryptedCustomerId: 1,
-  trackId: 1,
+  url: 1,
+  idt: 1,
+  dep: 1,
   split: 1,
 }, { unique: true });
 
