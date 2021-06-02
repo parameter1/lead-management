@@ -25,7 +25,6 @@ module.exports = async ({
         QueueUrl: queueUrl({ name: queueName }),
         Entries: entries,
       };
-      console.log(params);
       return sqs.sendMessageBatch(params).promise().then((res) => {
         const { Failed } = res;
         if (Failed.length) {
