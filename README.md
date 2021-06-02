@@ -24,3 +24,4 @@
 - fix `allExtractedUrlsForSend` and `searchExtractedUrlsForSend` queries
 - fix `allContentQueryResultRows` query
 - fix identity references in `excluded-email-domain` schema
+- determine how to handle not-found customers
