@@ -16,9 +16,9 @@ const limit = 1000;
 const collections = [
   'ad-creative-trackers',
   'ad-creatives',
-  'behavior-entities',
-  'behavior-views',
-  'content-query-results',
+  // 'behavior-entities', // remove me - these should be new
+  // 'behavior-views', // remove me - these should be new
+  // 'content-query-results', // remove me - these should be new
   'customers',
   'extracted-hosts',
   'extracted-urls',
@@ -30,7 +30,7 @@ const source = new MongoDBClient({ url: SOURCE_MONGO_URI });
 const destination = new MongoDBClient({ url: DESTINATION_MONGO_URI });
 
 const run = async () => {
-  log('Connection to MongoDB...');
+  log('Connecting to MongoDB...');
   await Promise.all([
     source.connect().then(() => log(`SOURCE: ${SOURCE_MONGO_URI}`)),
     destination.connect().then(() => log(`DESTINATION: ${DESTINATION_MONGO_URI}`)),
