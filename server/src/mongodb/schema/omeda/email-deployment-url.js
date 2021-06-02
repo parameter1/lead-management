@@ -19,7 +19,7 @@ const schema = new Schema({
   customerId: { type: Schema.Types.ObjectId },
   linkType: { type: String },
   omeda: { type: Schema.Types.Mixed },
-  tagIds: { type: [Schema.Types.ObjectId] },
+  tagIds: [{ type: Schema.Types.ObjectId }],
 });
 
 schema.index({ urlId: 1, 'deployment.entity': 1 }, { unique: true });
