@@ -1,5 +1,6 @@
 const { Schema } = require('mongoose');
 const { nanoid } = require('nanoid');
+const { getAsArray } = require('@parameter1/utils');
 const connection = require('../connection');
 const urlParamsPlugin = require('../plugins/url-params');
 const cleanUrl = require('../../utils/clean-url');
@@ -133,5 +134,28 @@ schema.index({ 'values.original': 1 }, { unique: true });
 schema.index({ customerId: 1 });
 schema.index({ resolvedHostId: 1 });
 schema.index({ tagIds: 1 });
+
+schema.pre('save', async function updateDeploymentUrls() {
+  const fields = ['customerId', 'tagIds', 'linkType'];
+  const shouldUpdate = fields.some((field) => this.isModified(field));
+  if (!shouldUpdate) return;
+
+  const host = await connection.model('extracted-host').findById(this.resolvedHostId, {
+    tagIds: 1,
+    customerId: 1,
+  });
+
+  const tagSet = new Set([
+    ...getAsArray(this, 'tagIds'),
+    ...getAsArray(host, 'tagIds'),
+  ].map((id) => `${id}`));
+
+  const $set = {
+    customerId: this.customerId || host.customerId,
+    linkType: this.linkType,
+    tagIds: [...tagSet],
+  };
+  await connection.model('omeda-email-deployment-url').updateMany({ urlId: this.id }, { $set });
+});
 
 module.exports = schema;
