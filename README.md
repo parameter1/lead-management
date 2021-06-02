@@ -25,3 +25,4 @@
 - fix `allContentQueryResultRows` query
 - fix identity references in `excluded-email-domain` schema
 - determine how to handle not-found customers
+- need to update `omeda-email-deployment-urls` when urls or hosts change
