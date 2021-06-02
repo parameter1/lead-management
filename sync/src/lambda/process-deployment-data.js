@@ -14,10 +14,11 @@ exports.handler = async (event = {}, context = {}) => {
   await mongodb.connect();
 
   const { Records = [] } = event;
-  const trackIds = Records.map((record) => {
+  const trackIds = [...Records.reduce((set, record) => {
     const { trackId } = JSON.parse(record.body);
-    return trackId;
-  });
+    set.add(trackId);
+    return set;
+  }, new Set())];
   log(`Found ${trackIds.length} deployment(s) to process data for...`);
 
   const [{ customerIds, identityRecords }] = await Promise.all([
