@@ -85,7 +85,7 @@ module.exports = async (params = {}) => {
         $setOnInsert: filter,
         $set: {
           host: { _id: host._id, value: host.value },
-          customerId: url.customerId || host.customerId,
+          customerId: url.customerId || host.customerId || null,
           linkType: url.linkType,
           tagIds: [...tagSet].map((id) => new ObjectId(id)),
           'deployment.name': data.DeploymentName,
