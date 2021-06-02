@@ -20,6 +20,7 @@
     "envalid": "^7.1.0"
   },
   "devDependencies": {
+    "aws-sdk": "^2.919.0",
     "eslint": "^7.27.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.23.3"
