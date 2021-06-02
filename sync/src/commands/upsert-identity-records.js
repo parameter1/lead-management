@@ -10,8 +10,8 @@ module.exports = async (params = {}) => {
   const { records } = await validateAsync(Joi.object({
     records: Joi.array().items(Joi.object({
       EmailAddress: Joi.string().lowercase().trim().required(),
-      FirstName: Joi.string().trim(),
-      LastName: Joi.string().trim(),
+      FirstName: Joi.string().trim().allow(null),
+      LastName: Joi.string().trim().allow(null),
     })).required(),
   }), params);
 
