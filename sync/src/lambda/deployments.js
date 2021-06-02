@@ -21,6 +21,7 @@ exports.handler = async (event, context = {}) => {
   const defaultStart = dayjs().subtract(30, 'days').toDate();
   const start = lastDeployment ? lastDeployment.omeda.SentDate : defaultStart;
 
+  // find all omeda deployments since the last save and upsert them to the db
   const trackIds = await loadIds({ onOrAfter: start });
   log(`Found ${trackIds.length} deployment(s) to upsert.`, trackIds);
   if (trackIds.length) await upsert({ trackIds });
