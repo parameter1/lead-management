@@ -7,7 +7,7 @@ const customerEntity = require('../utils/customer-entity');
  * Loads Omeda customer(s) with email, phone number, and address data.
  *
  * @param {object} params
- * @param {number} params.customerId
+ * @param {number[]} params.customerIds
  * @returns {Map} The customers mapped by customer ID.
  */
 module.exports = async (params = {}) => {

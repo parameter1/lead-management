@@ -7,7 +7,7 @@ const deploymentEntity = require('../utils/deployment-entity');
  * Loads Omeda deployment(s).
  *
  * @param {object} params
- * @param {number} params.customerId
+ * @param {string} params.trackIds
  * @returns {Map} The deployments mapped by track ID.
  */
 module.exports = async (params = {}) => {

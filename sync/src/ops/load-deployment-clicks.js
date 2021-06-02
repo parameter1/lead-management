@@ -4,11 +4,11 @@ const omeda = require('../omeda');
 const deploymentEntity = require('../utils/deployment-entity');
 
 /**
- * Loads Omeda deployment(s).
+ * Loads click data for Omeda deployment(s).
  *
  * @param {object} params
- * @param {number} params.customerId
- * @returns {Map} The deployments mapped by track ID.
+ * @param {string[]} params.trackIds
+ * @returns {Map} The deployment click data mapped by track ID.
  */
 module.exports = async (params = {}) => {
   const { trackIds } = await validateAsync(Joi.object({

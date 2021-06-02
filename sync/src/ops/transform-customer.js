@@ -13,6 +13,12 @@ const g = (obj, path, def = '') => {
 
 const getFieldCount = (obj) => Object.keys(obj).filter((k) => obj[k]).length;
 
+/**
+ * Transforms an Omeda customer response into a DB bulk write operation.
+ *
+ * @param {object} params
+ * @param {string} params.entity
+ */
 module.exports = ({
   entity,
   data,
