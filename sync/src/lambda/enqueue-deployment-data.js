@@ -11,6 +11,7 @@ process.on('unhandledRejection', (e) => { throw e; });
 exports.handler = async (event, context = {}) => {
   // see https://docs.atlas.mongodb.com/best-practices-connecting-to-aws-lambda/
   context.callbackWaitsForEmptyEventLoop = false;
+  await mongodb.connect();
   const db = await loadDB();
 
   // find all deployments in the leads database over the last 7 days...
