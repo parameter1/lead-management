@@ -51,6 +51,25 @@ services:
       NODE_ENV: development
       SOURCE_MONGO_URI: ${MIGRATE_SOURCE_MONGO_URI}
 
+  sync:
+    tty: true
+    init: true
+    image: node:14.14-alpine
+    working_dir: /sync
+    volumes:
+      - ./sync:/sync:cached
+      - ./sync/node_modules:/sync/node_modules:delegated
+    environment:
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_ACCOUNT_ID: ${AWS_ACCOUNT_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      LEGACY_MONGO_DSN: ${SYNC_LEGACY_MONGO_DSN}
+      MONGO_DSN: ${SYNC_MONGO_DSN}
+      NODE_ENV: development
+      OMEDA_APP_ID: ${OMEDA_APP_ID}
+      OMEDA_BRAND_KEY: ${OMEDA_BRAND_KEY}
+      TENANT_KEY: ${TENANT_KEY}
+
   manage-commands:
     <<: *ember
     entrypoint: ["tail"]
