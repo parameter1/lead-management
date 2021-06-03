@@ -33,6 +33,7 @@ const schema = new Schema({
   region: { type: String, trim: true, default: '' },
   postalCode: { type: String, trim: true, default: '' },
   country: { type: String, trim: true, default: '' },
+  lastRetrievedAt: { type: Date },
 }, { timestamps: true });
 
 schema.index({ entity: 1 }, { unique: true });

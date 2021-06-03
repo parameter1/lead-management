@@ -35,6 +35,7 @@ type Identity {
   externalSource: ExternalSource
   inactive: Boolean!
   domainExcluded: Boolean
+  lastRetrievedAt: Date
   createdAt: Date
   updatedAt: Date
   inactiveCustomers: [Customer]
