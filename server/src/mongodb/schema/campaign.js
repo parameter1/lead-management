@@ -178,7 +178,7 @@ const emailSchema = new Schema({
 
 emailSchema.method('getExcludeFields', async function getEmailExcludeFields() {
   const isEditorial = this.get('allowedLinkTypes').includes('Editorial');
-  const tag = await connection.model('tag').findOne({ _id: { $in: this.tagIds }, name: 'PR' });
+  const tag = await connection.model('tag').findOne({ _id: { $in: this.tagIds }, name: 'PR' }, { _id: 1 });
   if (!tag && !isEditorial) return this.get('excludeFields');
   return identityAttributes.filter((attr) => !['title', 'companyName'].includes(attr.key)).map((attr) => attr.key);
 });
