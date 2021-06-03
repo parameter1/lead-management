@@ -6,6 +6,8 @@ const redis = require('../../redis');
 const newrelic = require('../../newrelic');
 const identityAttributes = require('../../services/identity-attributes');
 
+const createDate = (value) => dayjs.tz(value, 'America/Chicago');
+
 const identityFilterSchema = new Schema({
   key: {
     type: String,
@@ -208,17 +210,13 @@ const schema = new Schema({
   },
   startDate: {
     type: Date,
-    set: (v) => {
-      if (!(v instanceof Date)) return undefined;
-      return dayjs.tz(v, 'America/Chicago').startOf('day').toDate();
-    },
+    required: true,
+    set: (v) => createDate(v).startOf('day').toDate(),
   },
   endDate: {
     type: Date,
-    set: (v) => {
-      if (!(v instanceof Date)) return undefined;
-      return dayjs.tz(v, 'America/Chicago').endOf('day').toDate();
-    },
+    required: true,
+    set: (v) => createDate(v).endOf('day').toDate(),
   },
   maxIdentities: {
     type: Number,
@@ -275,17 +273,8 @@ schema.methods.createFullName = async function createFullName() {
 
   const customer = await connection.model('customer').findById(customerId, { name: 1 });
   const campaignName = name ? `: ${name}` : '';
-
   const format = 'MMM Do, YYYY';
-  let dateName = 'Indefinite';
-  if (startDate && endDate) {
-    dateName = `${dayjs.tz(startDate, 'America/Chicago').format(format)} to ${dayjs.tz(endDate, 'America/Chicago').format(format)}`;
-  } else if (startDate && !endDate) {
-    dateName = `'Indefinite, starting ${dayjs.tz(startDate, 'America/Chicago').format(format)}'`;
-  } else if (!startDate && endDate) {
-    dateName = `Until ${dayjs.tz(endDate, 'America/Chicago').format(format)}`;
-  }
-
+  const dateName = `${createDate(startDate).format(format)} to ${createDate(endDate).format(format)}`;
   return `${customer.name}${campaignName} (${dateName})`;
 };
 
