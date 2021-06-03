@@ -1,10 +1,5 @@
 const { get } = require('@parameter1/utils');
-
-const getEmailDomain = (email) => {
-  if (!email) return '';
-  const parts = email.split('@');
-  return parts[1].trim().toLowerCase();
-};
+const getEmailDomain = require('../utils/get-email-domain');
 
 const g = (obj, path, def = '') => {
   const value = get(obj, path);
@@ -26,6 +21,7 @@ module.exports = ({
   phoneNumbers,
   postalAddresses,
   legacyInactiveMap = new Map(),
+  excludedDomainMap = new Map(),
 }) => {
   const now = new Date();
   const primaryEmail = emails ? emails.getPrimary() : null;
@@ -49,10 +45,13 @@ module.exports = ({
   };
   const attributes = {}; // @todo change this to use demographics
 
+  const emailDomain = getEmailDomain(fields.emailAddress);
+
   const filter = { entity };
   const $set = {
     ...fields,
-    emailDomain: getEmailDomain(fields.emailAddress),
+    emailDomain,
+    domainExcluded: excludedDomainMap.has(emailDomain),
     fieldCount: getFieldCount(fields) + getFieldCount(attributes),
     attributes,
     omeda: {

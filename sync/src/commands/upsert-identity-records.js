@@ -5,6 +5,7 @@ const transform = require('../ops/transform-customer');
 const customerEntity = require('../utils/customer-entity');
 const loadDB = require('../mongodb/load-db');
 const createInactiveMap = require('../ops/legacy-inactive-map');
+const createExcludedDomainMap = require('../ops/create-excluded-domain-map');
 
 module.exports = async (params = {}) => {
   const { records } = await validateAsync(Joi.object({
@@ -31,10 +32,13 @@ module.exports = async (params = {}) => {
     emails.push(EmailAddress);
   });
 
-  const legacyInactiveMap = await createInactiveMap({ emails });
+  const [legacyInactiveMap, excludedDomainMap] = await Promise.all([
+    createInactiveMap({ emails }),
+    createExcludedDomainMap({ emails }),
+  ]);
   const bulkOps = [];
   writeMap.forEach((record) => {
-    const transformed = transform({ ...record, legacyInactiveMap });
+    const transformed = transform({ ...record, legacyInactiveMap, excludedDomainMap });
     bulkOps.push(transformed);
   });
   const db = await loadDB();
