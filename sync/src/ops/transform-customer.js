@@ -62,6 +62,7 @@ module.exports = ({
       ...(postalAddresses && { Addresses: postalAddresses.data }),
     },
     updatedAt: now,
+    lastRetrievedAt: now,
   };
 
   const legacyInactiveEntry = fields.emailAddress

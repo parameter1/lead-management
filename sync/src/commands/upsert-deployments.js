@@ -109,6 +109,7 @@ module.exports = async (params = {}) => {
     const update = {
       $setOnInsert: { ...filter, createdAt: now },
       $set: {
+        lastRetrievedAt: now,
         updatedAt: now,
         urlIds: verifedDeploymentUrlIds.get(TrackId) || [],
         omeda: data,

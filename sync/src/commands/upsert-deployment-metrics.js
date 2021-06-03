@@ -34,7 +34,7 @@ module.exports = async (params = {}) => {
     const filter = { entity };
     const update = {
       $setOnInsert: { ...filter, createdAt: now },
-      $set: { ...toSet, updatedAt: now },
+      $set: { ...toSet, updatedAt: now, lastRetrievedAt: now },
     };
     bulkOps.push({ updateOne: { filter, update, upsert: true } });
   });
