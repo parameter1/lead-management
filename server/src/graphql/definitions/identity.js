@@ -9,7 +9,6 @@ extend type Query {
 }
 
 extend type Mutation {
-  syncExactTargetSubscriber(subscriberId: String!): Identity!
   identityActivation(input: IdentityActivation!): Identity!
   identityCustomerActivation(input: IdentityCustomerActivation!): Identity!
   identityCampaignActivation(input: IdentityCampaignActivation!): Identity!

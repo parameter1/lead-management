@@ -1,9 +1,6 @@
-const { Pagination, TypeAhead, paginationResolvers } = require('@limit0/mongoose-graphql-pagination');
-const promiseRetry = require('promise-retry');
-const Identity = require('../../models/identity');
-const LineItem = require('../../models/line-item');
-const IdentityProvider = require('../../services/identity-provider');
-const checkDupe = require('../../utils/check-dupe-key');
+const { Pagination, TypeAhead, paginationResolvers } = require('../pagination');
+const Identity = require('../../mongodb/models/identity');
+// const LineItem = require('../../models/line-item');
 
 const { isArray } = Array;
 
@@ -92,17 +89,6 @@ module.exports = {
    *
    */
   Mutation: {
-    /**
-     *
-     */
-    syncExactTargetSubscriber: async (root, { subscriberId }, { auth }) => {
-      auth.check();
-      const identity = await promiseRetry((retry) => IdentityProvider
-        .upsertIdentityFor(subscriberId)
-        .catch((err) => checkDupe(retry, err)), { retries: 1, minTimeout: 100, maxTimeout: 200 });
-      return identity;
-    },
-
     /**
      *
      */
