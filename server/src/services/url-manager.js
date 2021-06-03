@@ -33,7 +33,8 @@ module.exports = {
       .catch((err) => checkDupe(retry, err)), retryOpts);
 
     if (!extractedUrl.errorMessage && extractedUrl.lastCrawledDate && cache) {
-      return extractedUrl;
+      await this.applyTrackingRules(extractedUrl);
+      return extractedUrl.save();
     }
 
     const originalUrl = extractedUrl.values.original;
