@@ -14,9 +14,13 @@ const hostSchema = new Schema({
   tagIds: [{ type: Schema.Types.ObjectId }],
 });
 
+const urlSchema = new Schema({
+  original: { type: String },
+});
+
 const schema = new Schema({
   deployment: { type: deploymentSchema },
-  urlId: { type: Schema.Types.ObjectId },
+  url: { type: urlSchema },
   host: { type: hostSchema },
   customerId: { type: Schema.Types.ObjectId },
   linkType: { type: String },

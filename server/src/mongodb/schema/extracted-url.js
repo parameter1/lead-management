@@ -146,7 +146,7 @@ schema.pre('save', async function updateDeploymentUrls() {
       linkType: this.linkType,
       tagIds: this.tagIds,
     };
-    await connection.model('omeda-email-deployment-url').updateMany({ urlId: this.id }, { $set });
+    await connection.model('omeda-email-deployment-url').updateMany({ 'url._id': this.id }, { $set });
   };
 
   // run update but do not await
