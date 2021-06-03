@@ -9,8 +9,8 @@ extend type Query {
   allExtractedUrls(pagination: PaginationInput = {}, sort: ExtractedUrlSortInput = {}): ExtractedUrlConnection!
   searchExtractedUrls(pagination: PaginationInput = {}, search: TypeAheadInput!, options: TypeAheadOptionsInput): ExtractedUrlConnection!
 
-  # allExtractedUrlsForSend(sendId: String!, pagination: PaginationInput = {}, sort: ExtractedUrlSortInput = {}): ExtractedUrlConnection!
-  # searchExtractedUrlsForSend(sendId: String!, pagination: PaginationInput = {}, search: TypeAheadInput!, options: TypeAheadOptionsInput): ExtractedUrlConnection!
+  allExtractedUrlsForDeployment(deploymentId: String!, pagination: PaginationInput = {}, sort: ExtractedUrlSortInput = {}): ExtractedUrlConnection!
+  searchExtractedUrlsForDeployment(deploymentId: String!, pagination: PaginationInput = {}, search: TypeAheadInput!, options: TypeAheadOptionsInput): ExtractedUrlConnection!
 
   extractUrlsFromHtml(html: String!): [String]
   generateTrackedHtml(html: String!): String!

@@ -4,6 +4,7 @@ const LinkInjector = require('../../services/html-link-injector');
 const {
   ExtractedHost,
   ExtractedUrl,
+  OmedaEmailDeployment,
   Customer,
   Tag,
 } = require('../../mongodb/models');
@@ -125,31 +126,31 @@ module.exports = {
     },
 
     /**
-     * @todo omeda: migrate to use new deployment url rels
+     *
      */
-    // allExtractedUrlsForSend: async (root, { sendId, pagination, sort }, { auth }) => {
-    //   auth.check();
-    //   const urlIds = await EmailSendUrl.distinct('urlId', { sendId });
-    //   const criteria = { _id: { $in: urlIds } };
-    //   return new Pagination(ExtractedUrl, { pagination, sort, criteria });
-    // },
+    allExtractedUrlsForDeployment: async (_, { deploymentId, pagination, sort }, { auth }) => {
+      auth.check();
+      const deployment = await OmedaEmailDeployment.findById(deploymentId);
+      const criteria = { _id: { $in: deployment.urlIds } };
+      return new Pagination(ExtractedUrl, { pagination, sort, criteria });
+    },
 
     /**
-     * @todo omeda: migrate to use new deployment url rels
+     *
      */
-    // searchExtractedUrlsForSend: async (root, {
-    //   sendId,
-    //   pagination,
-    //   search,
-    //   options,
-    // }, { auth }) => {
-    //   auth.check();
-    //   const { field, phrase } = search;
-    //   const urlIds = await EmailSendUrl.distinct('urlId', { sendId });
-    //   const criteria = { _id: { $in: urlIds } };
-    //   const instance = new TypeAhead(field, phrase, criteria, options);
-    //   return instance.paginate(ExtractedUrl, pagination);
-    // },
+    searchExtractedUrlsForDeployment: async (_, {
+      deploymentId,
+      pagination,
+      search,
+      options,
+    }, { auth }) => {
+      auth.check();
+      const { field, phrase } = search;
+      const deployment = await OmedaEmailDeployment.findById(deploymentId);
+      const criteria = { _id: { $in: deployment.urlIds } };
+      const instance = new TypeAhead(field, phrase, criteria, options);
+      return instance.paginate(ExtractedUrl, pagination);
+    },
   },
 
   /**

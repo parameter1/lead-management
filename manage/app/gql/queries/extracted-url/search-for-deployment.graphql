@@ -1,0 +1,17 @@
+#import 'leads-manage/gql/fragments/extracted-url/view'
+
+query SearchExtractedUrlsForDeployment($deploymentId: String!, $pagination: PaginationInput, $search: TypeAheadInput!, $options: TypeAheadOptionsInput) {
+  searchExtractedUrlsForDeployment(deploymentId: $deploymentId, pagination: $pagination, search: $search, options: $options) {
+    totalCount
+    edges {
+      node {
+        ...ExtractedUrlViewFragment
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
