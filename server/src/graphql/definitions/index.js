@@ -4,6 +4,7 @@ const adCreativeTracker = require('./ad-creative-tracker');
 const brightcove = require('./brightcove');
 const customer = require('./customer');
 const emailDeployment = require('./email-deployment');
+const excludedEmailDomain = require('./excluded-email-domain');
 const gam = require('./gam');
 const tag = require('./tag');
 const url = require('./url');
@@ -75,6 +76,7 @@ ${adCreativeTracker}
 ${brightcove}
 ${customer}
 ${emailDeployment}
+${excludedEmailDomain}
 ${gam}
 ${tag}
 ${url}
