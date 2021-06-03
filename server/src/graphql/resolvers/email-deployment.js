@@ -76,18 +76,35 @@ module.exports = {
     /**
      *
      */
-    allEmailDeployments: (root, { pagination, sort }, { auth }) => {
+    allEmailDeployments: (_, args, { auth }) => {
       auth.check();
-      return new Pagination(OmedaEmailDeployment, { pagination, sort });
+      const {
+        pagination,
+        sort,
+        urlIds,
+      } = args;
+      const criteria = {
+        ...(urlIds.length && { urlIds: { $in: urlIds } }),
+      };
+      return new Pagination(OmedaEmailDeployment, { criteria, pagination, sort });
     },
 
     /**
      *
      */
-    searchEmailDeployments: (root, { pagination, search, options }, { auth }) => {
+    searchEmailDeployments: (_, args, { auth }) => {
       auth.check();
+      const {
+        pagination,
+        search,
+        options,
+        urlIds,
+      } = args;
+      const criteria = {
+        ...(urlIds.length && { urlIds: { $in: urlIds } }),
+      };
       const { field, phrase } = search;
-      const instance = new TypeAhead(field, phrase, {}, options);
+      const instance = new TypeAhead(field, phrase, criteria, options);
       return instance.paginate(OmedaEmailDeployment, pagination);
     },
   },

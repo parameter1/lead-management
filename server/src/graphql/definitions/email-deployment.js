@@ -3,8 +3,17 @@ const { gql } = require('apollo-server-express');
 module.exports = gql`
 
 extend type Query {
-  allEmailDeployments(pagination: PaginationInput = {}, sort: EmailDeploymentSortInput = {}): EmailDeploymentConnection!
-  searchEmailDeployments(pagination: PaginationInput = {}, search: TypeAheadInput!, options: TypeAheadOptionsInput): EmailDeploymentConnection!
+  allEmailDeployments(
+    pagination: PaginationInput = {}
+    sort: EmailDeploymentSortInput = {}
+    urlIds: [String!] = []
+  ): EmailDeploymentConnection!
+  searchEmailDeployments(
+    pagination: PaginationInput = {},
+    search: TypeAheadInput!,
+    options: TypeAheadOptionsInput
+    urlIds: [String!] = []
+  ): EmailDeploymentConnection!
   emailDeployment(input: ModelIdInput!): EmailDeployment!
   # emailDeploymentReport(input: EmailDeploymentReportInput = {}): EmailDeploymentReport
 }
