@@ -5,6 +5,7 @@ const {
   ExcludedEmailDomain,
   ExtractedHost,
   ExtractedUrl,
+  Identity,
   OmedaEmailDeployment,
   Tag,
   User,
@@ -14,7 +15,6 @@ const {
 // const EmailCategory = require('../models/email-category');
 // const Form = require('../models/form');
 // const FormEntry = require('../models/form-entry');
-// const Identity = require('../models/identity');
 // const Order = require('../models/order');
 // const Video = require('../models/video');
 
@@ -36,7 +36,7 @@ module.exports = {
   extractedUrl: new DataLoader(createBatchFn(ExtractedUrl)),
   // form: new DataLoader(createBatchFn(Form)),
   // formEntry: new DataLoader(createBatchFn(FormEntry)),
-  // identity: new DataLoader(createBatchFn(Identity)),
+  identity: new DataLoader(createBatchFn(Identity)),
   // order: new DataLoader(createBatchFn(Order)),
   tag: new DataLoader(createBatchFn(Tag)),
   user: new DataLoader(createBatchFn(User)),
