@@ -3,16 +3,21 @@
   class="list-group-item list-group-item-action flex-column align-items-start"
 }}
   <div class="d-flex w-100 justify-content-between">
-    <h4 class="mb-1">{{item.name}}</h4>
-    {{#if item.externalSource.createdAt}}
-      <small>{{entypo-icon "clock "}} Created {{moment-format item.externalSource.createdAt "MMM Do, YYYY h:mm a"}}</small>
-    {{/if}}
+    <h4 class="mb-2">{{item.name}}</h4>
+    <div class="d-flex flex-column align-items-end">
+      {{#if item.sentDate}}
+        <small>{{entypo-icon "clock "}} Sent {{moment-format item.sentDate "MMM Do, YYYY h:mm a"}}</small>
+      {{/if}}
+      {{#if item.createdAt}}
+        <small>{{entypo-icon "clock "}} Created {{moment-format item.createdAt "MMM Do, YYYY h:mm a"}}</small>
+      {{/if}}
+    </div>
   </div>
 
-  <p class="mb-1">{{item.subject}}</p>
-  <p class="mb-1">Jobs Sent: {{item.sendCount}}</p>
+  <h5 class="mb-3">{{item.typeDescription}}</h5>
+  <p class="mb-1">Subject: {{item.subject}}</p>
+  <p class="mb-1">Status: {{item.status}}</p>
+  <p class="mb-2">Splits: {{item.splitCount}}</p>
   <small class="d-block">ID: {{item.id}}</small>
-  {{#if item.externalSource.identifier}}
-    <small class="d-block">From {{item.externalSource.namespace}}: {{item.externalSource.identifier}}</small>
-  {{/if}}
+  <small class="d-block">{{item.entity}}</small>
 {{/link-to}}

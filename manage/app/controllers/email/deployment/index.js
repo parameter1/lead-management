@@ -4,17 +4,16 @@ export default ListController.extend({
   init() {
     this._super(...arguments);
     this.set('sortOptions', [
-      { key: 'externalSource.createdAt', label: 'Created' },
-      { key: 'externalSource.updatedAt', label: 'Updated' },
-      { key: 'externalSource.lastRetrievedAt', label: 'Last Retrieved' },
-      { key: 'name', label: 'Name' },
+      { key: 'omeda.CreatedDate', label: 'Created Date' },
+      { key: 'omeda.DeploymentName', label: 'Name' },
+      { key: 'omeda.SentDate', label: 'Sent Date' },
     ]);
-    this.set('sortBy', 'externalSource.createdAt');
+    this.set('sortBy', 'omeda.SentDate');
 
     this.set('searchFields', [
-      { key: 'name', label: 'Name' },
-      { key: 'subject', label: 'Subject' },
+      { key: 'omeda.DeploymentName', label: 'Name' },
+      { key: 'omeda.Splits.0.Subject', label: 'Subject' },
     ]);
-    this.set('searchBy', 'name');
+    this.set('searchBy', 'omeda.DeploymentName');
   },
 });
