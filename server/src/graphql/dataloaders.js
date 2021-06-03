@@ -2,17 +2,16 @@ const DataLoader = require('dataloader');
 
 const {
   Customer,
+  ExcludedEmailDomain,
   ExtractedHost,
   ExtractedUrl,
+  OmedaEmailDeployment,
   Tag,
   User,
 } = require('../mongodb/models');
 
 // const Campaign = require('../models/campaign');
 // const EmailCategory = require('../models/email-category');
-// const EmailDeployment = require('../models/email-deployment');
-// const EmailSend = require('../models/email-send');
-// const ExcludedEmailDomain = require('../models/excluded-email-domain');
 // const Form = require('../models/form');
 // const FormEntry = require('../models/form-entry');
 // const Identity = require('../models/identity');
@@ -32,8 +31,7 @@ module.exports = {
   // campaign: new DataLoader(createBatchFn(Campaign)),
   customer: new DataLoader(createBatchFn(Customer)),
   // emailCategory: new DataLoader(createBatchFn(EmailCategory)),
-  // emailDeployment: new DataLoader(createBatchFn(EmailDeployment)),
-  // emailSend: new DataLoader(createBatchFn(EmailSend)),
+  emailDeployment: new DataLoader(createBatchFn(OmedaEmailDeployment)),
   extractedHost: new DataLoader(createBatchFn(ExtractedHost)),
   extractedUrl: new DataLoader(createBatchFn(ExtractedUrl)),
   // form: new DataLoader(createBatchFn(Form)),
@@ -44,12 +42,12 @@ module.exports = {
   user: new DataLoader(createBatchFn(User)),
   // video: new DataLoader(createBatchFn(Video)),
 
-  // excludedEmailDomains: new DataLoader(async (domains) => {
-  //   const docs = await ExcludedEmailDomain.find({ domain: { $in: domains } });
-  //   const map = docs.reduce((m, doc) => {
-  //     m.set(doc.domain, doc);
-  //     return m;
-  //   }, new Map());
-  //   return domains.map((domain) => map.get(domain));
-  // }),
+  excludedEmailDomains: new DataLoader(async (domains) => {
+    const docs = await ExcludedEmailDomain.find({ domain: { $in: domains } });
+    const map = docs.reduce((m, doc) => {
+      m.set(doc.domain, doc);
+      return m;
+    }, new Map());
+    return domains.map((domain) => map.get(domain));
+  }),
 };
