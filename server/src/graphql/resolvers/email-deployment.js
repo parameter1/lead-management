@@ -17,6 +17,7 @@ module.exports = {
    *
    */
   EmailDeployment: {
+    createdAt: (dep) => dep.get('omeda.CreatedDate'),
     designation: (dep) => dep.get('omeda.DeploymentDesignation'),
     name: (dep) => dep.get('omeda.DeploymentName'),
     sentDate: (dep) => dep.get('omeda.SentDate'),

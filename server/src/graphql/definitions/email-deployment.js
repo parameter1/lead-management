@@ -59,7 +59,7 @@ type EmailDeploymentEdge {
 }
 
 input EmailDeploymentSortInput {
-  field: String! = createdAt
+  field: String! = "omeda.CreatedDate"
   order: Int! = -1
 }
 
