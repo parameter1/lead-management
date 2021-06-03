@@ -1,7 +1,7 @@
 const Joi = require('@parameter1/joi');
 const { ObjectId } = require('@parameter1/mongodb');
 const { validateAsync } = require('@parameter1/joi/utils');
-const { getAsArray } = require('@parameter1/utils');
+const { get, getAsArray } = require('@parameter1/utils');
 
 const extractUrlId = require('../utils/extract-url-id');
 const loadDeployments = require('../ops/load-deployments');
@@ -37,6 +37,7 @@ module.exports = async (params = {}) => {
       customerId: 1,
       tagIds: 1,
       linkType: 1,
+      'values.original': 1,
     },
   }).toArray();
   const urlMap = urls.reduce((map, url) => {
@@ -75,19 +76,21 @@ module.exports = async (params = {}) => {
       verifedDeploymentUrlIds.get(trackId).push(url._id);
 
       const host = hostMap.get(`${url.resolvedHostId}`);
-      const tagSet = new Set([
-        ...getAsArray(url, 'tagIds'),
-        ...getAsArray(host, 'tagIds'),
-      ].map((id) => `${id}`));
 
-      const filter = { urlId: url._id, 'deployment.entity': entity };
+      const filter = { 'url._id': url._id, 'deployment.entity': entity };
       const update = {
         $setOnInsert: filter,
         $set: {
-          host: { _id: host._id, value: host.value },
-          customerId: url.customerId || host.customerId || null,
+          'url.original': get(url, 'values.original', null),
+          host: {
+            _id: host._id,
+            value: host.value,
+            customerId: host.customerId || null,
+            tagIds: getAsArray(host, 'tagIds'),
+          },
+          customerId: url.customerId || null,
           linkType: url.linkType,
-          tagIds: [...tagSet].map((id) => new ObjectId(id)),
+          tagIds: getAsArray(url, 'tagIds'),
           'deployment.name': data.DeploymentName,
           'deployment.designation': data.DeploymentDesignation,
           'deployment.sentDate': data.SentDate,

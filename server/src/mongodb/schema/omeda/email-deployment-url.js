@@ -10,6 +10,8 @@ const deploymentSchema = new Schema({
 
 const hostSchema = new Schema({
   value: { type: String },
+  customerId: { type: Schema.Types.ObjectId },
+  tagIds: [{ type: Schema.Types.ObjectId }],
 });
 
 const schema = new Schema({
@@ -22,7 +24,8 @@ const schema = new Schema({
   tagIds: [{ type: Schema.Types.ObjectId }],
 });
 
-schema.index({ urlId: 1, 'deployment.entity': 1 }, { unique: true });
+schema.index({ 'url._id': 1, 'deployment.entity': 1 }, { unique: true });
 schema.index({ 'deployment.entity': 1 });
+schema.index({ 'host._id': 1 });
 
 module.exports = schema;

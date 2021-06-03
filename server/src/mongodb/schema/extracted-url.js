@@ -141,20 +141,10 @@ schema.pre('save', async function updateDeploymentUrls() {
   if (!shouldUpdate) return;
 
   const run = async () => {
-    const host = await connection.model('extracted-host').findById(this.resolvedHostId, {
-      tagIds: 1,
-      customerId: 1,
-    });
-
-    const tagSet = new Set([
-      ...this.tagIds,
-      ...host.tagIds,
-    ].map((id) => `${id}`));
-
     const $set = {
-      customerId: this.customerId || host.customerId || null,
+      customerId: this.customerId || null,
       linkType: this.linkType,
-      tagIds: [...tagSet],
+      tagIds: this.tagIds,
     };
     await connection.model('omeda-email-deployment-url').updateMany({ urlId: this.id }, { $set });
   };
