@@ -50,17 +50,20 @@ const excludeUrlSchema = new Schema({
   },
 });
 
-const formsSchema = new Schema({
-  enabled: {
-    type: Boolean,
-    required: true,
-    default: true,
-  },
-  excludeFormIds: [{
-    type: Schema.Types.ObjectId,
-    ref: 'form',
-  }],
-});
+/**
+ * @todo temporarily disable forms
+ */
+// const formsSchema = new Schema({
+//   enabled: {
+//     type: Boolean,
+//     required: true,
+//     default: true,
+//   },
+//   excludeFormIds: [{
+//     type: Schema.Types.ObjectId,
+//     ref: 'form',
+//   }],
+// });
 
 const adMetricsSchema = new Schema({
   enabled: {
@@ -217,7 +220,6 @@ const schema = new Schema({
       return dayjs.tz(v, 'America/Chicago').endOf('day').toDate();
     },
   },
-  // @todo Ensure this is handled.
   maxIdentities: {
     type: Number,
     default: 200,
@@ -231,10 +233,10 @@ const schema = new Schema({
     type: emailSchema,
     default: {},
   },
-  forms: {
-    type: formsSchema,
-    default: {},
-  },
+  // forms: {
+  //   type: formsSchema,
+  //   default: {},
+  // },
   ads: {
     type: adsSchema,
     default: {},
