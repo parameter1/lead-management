@@ -1,7 +1,0 @@
-query BehaviorSearchTaxonomy($propertyId: String!, $phrase: String!) {
-  behaviorSearchTaxonomy(propertyId: $propertyId, phrase: $phrase) {
-    id
-    name
-    type
-  }
-}

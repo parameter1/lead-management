@@ -1,5 +1,0 @@
-query BehaviorTestContentQuery($input: BehaviorModelIdInput!) {
-  behaviorTestContentQuery(input: $input) {
-    contentCount
-  }
-}

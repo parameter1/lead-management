@@ -1,7 +1,0 @@
-query BehaviorSearchSections($propertyId: String!, $phrase: String!) {
-  behaviorSearchSections(propertyId: $propertyId, phrase: $phrase) {
-    id
-    name
-    alias
-  }
-}

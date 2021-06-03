@@ -1,6 +1,0 @@
-query BehaviorSearchCompanies($propertyId: String!, $phrase: String!) {
-  behaviorSearchCompanies(propertyId: $propertyId, phrase: $phrase) {
-    id
-    name
-  }
-}

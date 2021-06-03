@@ -1,5 +1,0 @@
-fragment BehaviorContentQueryListFragment on BehaviorContentQuery {
-  id
-  name
-  updatedAt
-}
