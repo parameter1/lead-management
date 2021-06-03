@@ -6,11 +6,13 @@ const loadDB = require('../mongodb/load-db');
 
 const metrics = [
   'BounceCount',
+  'RecipientCount',
   'RetryCount',
   'SendingCount',
   'SentCount',
   'TotalClicks',
   'TotalOpens',
+  'TotalUnsubscribe',
   'UniqueClicks',
   'UniqueOpens',
 ];
