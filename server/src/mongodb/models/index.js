@@ -1,6 +1,7 @@
 const AdCreativeTracker = require('./ad-creative-tracker');
 const AdCreative = require('./ad-creative');
 const Customer = require('./customer');
+const ExcludedEmailDomain = require('./excluded-email-domain');
 const ExtractedHost = require('./extracted-host');
 const ExtractedUrl = require('./extracted-url');
 const Identity = require('./identity');
@@ -14,6 +15,7 @@ module.exports = {
   AdCreativeTracker,
   AdCreative,
   Customer,
+  ExcludedEmailDomain,
   ExtractedHost,
   ExtractedUrl,
   Identity,
