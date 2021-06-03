@@ -2,8 +2,8 @@ import Route from '@ember/routing/route';
 import ListRouteMixin from 'leads-manage/mixins/list-route-mixin';
 import FormMixin from 'leads-manage/mixins/form-mixin';
 
-import query from 'leads-manage/gql/queries/email-send/list-for-url';
-import search from 'leads-manage/gql/queries/email-send/search-for-url';
+import query from 'leads-manage/gql/queries/email-deployment/list';
+import search from 'leads-manage/gql/queries/email-deployment/search';
 
 export default Route.extend(ListRouteMixin, FormMixin, {
   /**
@@ -12,16 +12,16 @@ export default Route.extend(ListRouteMixin, FormMixin, {
    */
   model({ first, sortBy, ascending, phrase, searchType, searchBy }) {
     const id = this.modelFor('link.urls.edit').get('id');
-    const vars = { urlId: id };
+    const vars = { urlIds: [id] };
 
     return this.getResults({
       query,
-      queryKey: 'allEmailSendsForUrl',
+      queryKey: 'allEmailDeployments',
       queryVars: vars,
     }, {
       search,
       searchVars: vars,
-      searchKey: 'searchEmailSendsForUrl',
+      searchKey: 'searchEmailDeployments',
     }, { first, sortBy, ascending, phrase, searchType, searchBy });
   },
 });

@@ -14,7 +14,7 @@
   <ul class="list-group list-group-flush">
     <li class="list-group-item pt-0"><h5 class="mb-0 text-muted">Total Results: {{model.totalCount}}</h5></li>
     {{#each fetch.nodes as |item|}}
-      {{link/url-list-item item=item}}
+      {{partial "email/deployment/list-item"}}
     {{/each}}
   </ul>
 

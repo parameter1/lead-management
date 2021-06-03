@@ -1,7 +1,17 @@
 #import 'leads-manage/gql/fragments/email-deployment-list'
 
-query SearchEmailDeployments($pagination: PaginationInput, $search: TypeAheadInput!, $options: TypeAheadOptionsInput) {
-  searchEmailDeployments(pagination: $pagination, search: $search, options: $options) {
+query SearchEmailDeployments(
+  $pagination: PaginationInput
+  $search: TypeAheadInput!
+  $options: TypeAheadOptionsInput
+  $urlIds: [String!] = []
+) {
+  searchEmailDeployments(
+    pagination: $pagination
+    search: $search
+    options: $options
+    urlIds: $urlIds
+  ) {
     totalCount
     edges {
       node {

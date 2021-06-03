@@ -52,7 +52,7 @@ Router.map(function() {
     });
     this.route('urls', function() {
       this.route('edit', { path: ':id' }, function() {
-        this.route('email-sends');
+        this.route('email-deployments');
       });
     });
     this.route('hosts');
@@ -142,11 +142,6 @@ Router.map(function() {
   });
   this.route('email', function() {
     this.route('deployment', function() {
-      this.route('view', { path: ':id' }, function() {
-        this.route('urls');
-      });
-    });
-    this.route('send', function() {
       this.route('view', { path: ':id' }, function() {
         this.route('urls');
       });

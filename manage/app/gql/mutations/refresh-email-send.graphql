@@ -1,7 +1,0 @@
-#import 'leads-manage/gql/fragments/email-send-fragment'
-
-mutation refreshEmailSend($input: ModelIdInput!) {
-  refreshEmailSend(input: $input) {
-    ...EmailSendFragment
-  }
-}
