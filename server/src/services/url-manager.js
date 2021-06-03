@@ -128,16 +128,16 @@ module.exports = {
       || /www\.designdevelopmenttoday\.com/i.test(hostname)
     ) {
       // Tag ien.com (and related) hosts with Website Content.
-      if (tagMap.has('Website Content')) extractedUrl.tagIds.push(tagMap.get('Website Content'));
+      if (tagMap.has('Website Content')) extractedUrl.tagIds.addToSet(tagMap.get('Website Content'));
       // Set link type to editorial
       extractedUrl.set('linkType', 'Editorial');
       if (/\/video\//i.test(pathname) && tagMap.has('Video')) {
         // Tag ien.com videos with Video.
-        extractedUrl.tagIds.push(tagMap.get('Video'));
+        extractedUrl.tagIds.addToSet(tagMap.get('Video'));
       }
       if (/\/product\//i.test(pathname) && tagMap.has('PR')) {
         // Tag ien.com products with PR.
-        extractedUrl.tagIds.push(tagMap.get('PR'));
+        extractedUrl.tagIds.addToSet(tagMap.get('PR'));
         const { title } = extractedUrl;
         if (title) {
           // Attempt to extract customer.
@@ -161,7 +161,7 @@ module.exports = {
     }
     if (tagMap.has('CPL Form') && (/ien\.wufoo\.com/i.test(hostname) || /ien\.formstack\.com/i.test(hostname))) {
       // Tag ien.wufoo.com and ien.formstack.com hosts with CPL Form.
-      extractedUrl.tagIds.push(tagMap.get('CPL Form'));
+      extractedUrl.tagIds.addToSet(tagMap.get('CPL Form'));
     }
   },
 
