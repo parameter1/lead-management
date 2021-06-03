@@ -3,9 +3,11 @@ fragment EmailDeploymentListFragment on EmailDeployment {
   entity
   name
   subject
+  designation
   splitCount
   sentDate
   status
   typeDescription
   createdAt
+  lastRetrievedAt
 }

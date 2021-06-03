@@ -1,14 +1,17 @@
 <div class="card-body">
-  <h5 class="card-title">Subject: {{ model.subject }} (<a href={{model.url}} target="_blank" rel="noopener noreferrer">Preview</a>)</h5>
-  <p class="mb-1">From: {{model.fromName}}</p>
-  <p class="mb-1">
-    Sent: {{moment-format model.sentDate "MMM Do, YYYY @ h:mm a"}}
-    ({{moment-from-now model.sentDate}})
-  </p>
-  <p class="mb-0">Master Deployment: {{#link-to "email.deployment.view" model.deployment.id}}{{model.deployment.name}}{{/link-to}}</p>
-  <hr>
+  <h5 class="card-title">Subject: {{ model.subject }}</h5>
+
+  {{#if model.sentDate}}
+    <p class="mb-1">
+      <strong>Sent:</strong> {{moment-format model.sentDate "MMM Do, YYYY @ h:mm a"}}
+    </p>
+  {{/if}}
+
+  <p class="mb-1"><strong>Splits Sent:</strong> {{model.splitCount}}</p>
+  <p class="mb-1"><strong>Designation:</strong> {{model.designation}}</p>
+  <p class="mb-3"><strong>Deployment Type:</strong> {{model.typeDescription}}</p>
   <h5 class="card-title">Metrics</h5>
-  <table class="table table-responsive">
+  <table class="table table-striped table-responsive">
     <thead>
       <tr>
         <th>Sent</th>
@@ -38,7 +41,6 @@
   </table>
   <p class="mb-0">
     <span class="font-weight-bold">Last Retrieved:</span>
-    {{log model}}
     {{#if model.lastRetrievedAt}}
       {{moment-format model.lastRetrievedAt "MMM Do, YYYY @ h:mm a"}}
       ({{moment-from-now model.lastRetrievedAt}})
@@ -48,7 +50,7 @@
   </p>
 </div>
 <div class="card-footer">
-  <button class="btn btn-primary" disabled={{isRefreshing}} {{action "refresh" model.id}}>
-    {{entypo-icon "cycle"}} Refresh Send Data
-  </button>
+  {{!-- <button class="btn btn-primary" disabled={{isRefreshing}} {{action "refresh" model.id}}>
+    {{entypo-icon "cycle"}} Refresh Data
+  </button> --}}
 </div>

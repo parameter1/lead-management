@@ -142,7 +142,9 @@ Router.map(function() {
   });
   this.route('email', function() {
     this.route('deployment', function() {
-      this.route('view', { path: ':id' });
+      this.route('view', { path: ':id' }, function() {
+        this.route('urls');
+      });
     });
     this.route('send', function() {
       this.route('view', { path: ':id' }, function() {
