@@ -257,9 +257,7 @@ schema.index({ deleted: 1 });
 schema.index({ fullName: 'text' });
 schema.index({ 'email._id': 1 });
 schema.index({ fullName: 1, _id: 1 }, { unique: true });
-schema.index({ fullName: -1, _id: -1 }, { unique: true });
 schema.index({ updatedAt: 1, _id: 1 }, { unique: true });
-schema.index({ updatedAt: -1, _id: -1 }, { unique: true });
 
 schema.statics.findByHash = async function findByHash(hash, deleted = false) {
   const campaign = await this.findOne({ hash: hash || null, deleted });
