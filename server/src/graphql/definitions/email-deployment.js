@@ -24,6 +24,7 @@ type EmailDeployment {
   designation: String! # e.g. Newsletter, Third-Party, etc.
   createdAt: Date
   updatedAt: Date
+  lastRetrievedAt: Date
 }
 
 type EmailDeploymentMetrics {

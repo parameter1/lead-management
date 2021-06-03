@@ -4,6 +4,7 @@ const schema = new Schema({
   entity: { type: String },
   urlIds: [{ type: Schema.Types.ObjectId }],
   omeda: { type: Schema.Types.Mixed },
+  lastRetrievedAt: { type: Date },
 }, { timestamps: true });
 
 schema.index({ entity: 1 }, { unique: true });
