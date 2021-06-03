@@ -26,20 +26,20 @@ module.exports = {
     /**
      *
      */
-    inactiveCampaigns: ((identity, _, { loaders }) => {
-      const { inactiveCampaignIds } = identity;
-      if (!isArray(inactiveCampaignIds) || !inactiveCampaignIds.length) return [];
-      return loaders.campaign.loadMany(inactiveCampaignIds);
-    }),
+    // inactiveCampaigns: ((identity, _, { loaders }) => {
+    //   const { inactiveCampaignIds } = identity;
+    //   if (!isArray(inactiveCampaignIds) || !inactiveCampaignIds.length) return [];
+    //   return loaders.campaign.loadMany(inactiveCampaignIds);
+    // }),
 
     /**
      *
      */
-    inactiveLineItems: ((identity) => {
-      const { inactiveLineItemIds } = identity;
-      if (!isArray(inactiveLineItemIds) || !inactiveLineItemIds.length) return [];
-      return LineItem.find({ _id: { $in: inactiveLineItemIds } });
-    }),
+    // inactiveLineItems: ((identity) => {
+    //   const { inactiveLineItemIds } = identity;
+    //   if (!isArray(inactiveLineItemIds) || !inactiveLineItemIds.length) return [];
+    //   return LineItem.find({ _id: { $in: inactiveLineItemIds } });
+    // }),
 
     /**
      *
