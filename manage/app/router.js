@@ -164,18 +164,6 @@ Router.map(function() {
     });
     this.route('create');
   });
-  this.route('behavior', function() {
-    this.route('edit', { path: ':id/edit' });
-    this.route('view', { path: ':id' }, function() {
-      this.route('run');
-      this.route('results', function() {
-        this.route('rows', { path: ':result_id' }, function() {
-          this.route('exports');
-        });
-      });
-    });
-    this.route('create');
-  });
 });
 
 export default Router;

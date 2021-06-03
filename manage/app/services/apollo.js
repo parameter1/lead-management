@@ -29,12 +29,8 @@ export default ApolloService.extend({
     return authLink.concat(httpLink);
   }),
 
-  _runAuthorize(request, context) {
+  _runAuthorize() {
     const headers = {};
-    const { ohBehaveToken } = context;
-    if (ohBehaveToken) {
-      headers['X-Behavior-Token'] = ohBehaveToken;
-    }
     if (!this.get('session.isAuthenticated')) {
       return { headers };
     }

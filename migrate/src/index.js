@@ -16,9 +16,6 @@ const limit = 1000;
 const collections = [
   'ad-creative-trackers',
   'ad-creatives',
-  // 'behavior-entities', // remove me - these should be new
-  // 'behavior-views', // remove me - these should be new
-  // 'content-query-results', // remove me - these should be new
   'customers',
   'extracted-hosts',
   'extracted-urls',
