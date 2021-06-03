@@ -1,4 +1,5 @@
 const { getAsArray } = require('@parameter1/utils');
+const uniqueObjectIds = require('../utils/unique-object-ids');
 
 const mergeVarMap = new Map([
   ['%%emailaddr%%', '@{delivery_email}@'],
@@ -15,15 +16,12 @@ const mergeVarMap = new Map([
   ['%%Industry%%', '@{Industry}@'],
 ]);
 
-module.exports = (doc) => {
+const unqiueUrlParams = (doc) => {
   const urlParams = getAsArray(doc, 'urlParams');
-  if (!urlParams.length) return doc;
-
   const paramMap = urlParams.reduce((m, { key, value: v }) => {
     m.set(key, v);
     return m;
   }, new Map());
-
   const newParams = [];
   paramMap.forEach((value, key) => {
     const newMergeVar = mergeVarMap.get(value);
@@ -34,5 +32,11 @@ module.exports = (doc) => {
     }
     newParams.push({ key, value: v });
   });
-  return { ...doc, urlParams: newParams };
+  return newParams;
 };
+
+module.exports = (doc) => ({
+  ...doc,
+  tagIds: uniqueObjectIds(doc.tagIds),
+  urlParams: unqiueUrlParams(doc),
+});

@@ -1,9 +1,9 @@
 const { getAsArray } = require('@parameter1/utils');
 const isOwnedSite = require('../utils/is-owned-site');
+const uniqueObjectIds = require('../utils/unique-object-ids');
 
-module.exports = (doc) => {
+const unqiueUrlParams = (doc) => {
   const urlParams = getAsArray(doc, 'urlParams');
-  if (!urlParams.length) return doc;
   const { value: hostname } = doc;
 
   const paramMap = urlParams.reduce((m, { key, value: v }) => {
@@ -33,5 +33,11 @@ module.exports = (doc) => {
     }
     newParams.push({ key, value: v });
   });
-  return { ...doc, urlParams: newParams };
+  return newParams;
 };
+
+module.exports = (doc) => ({
+  ...doc,
+  tagIds: uniqueObjectIds(doc.tagIds),
+  urlParams: unqiueUrlParams(doc),
+});
