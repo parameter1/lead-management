@@ -25,6 +25,7 @@ const schema = new Schema({
     default: '',
   },
   emailDomain: { type: String, default() { return getEmailDomain(this.emailAddress); } },
+  domainExcluded: { type: Boolean, default: false },
   phoneNumber: { type: String, trim: true, default: '' },
   street: { type: String, trim: true, default: '' },
   streetExtra: { type: String, trim: true, default: '' },
