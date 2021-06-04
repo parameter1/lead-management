@@ -4,10 +4,8 @@
       <h4 class="mb-1">{{item.givenName}} {{item.familyName}} [{{#link-to "identity.view" item.id}}view{{/link-to}}]</h4>
       <div class="mb-1">{{item.emailAddress}}</div>
 
-      {{#if item.externalSource.identifier}}
-        <small class="d-block mb-1">From {{item.externalSource.namespace}}: {{item.externalSource.identifier}}</small>
-      {{/if}}
       <small class="d-block">ID: {{item.id}}</small>
+      <small class="d-block">{{item.entity}}</small>
     </div>
 
     <div class="d-flex flex-column text-right">

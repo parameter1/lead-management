@@ -9,8 +9,5 @@ fragment IdentityListFragment on Identity {
   updatedAt
   inactive
   domainExcluded
-  externalSource {
-    identifier
-    namespace
-  }
+  entity
 }

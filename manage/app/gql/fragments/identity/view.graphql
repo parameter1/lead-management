@@ -1,5 +1,6 @@
 fragment IdentityViewFragment on Identity {
   id
+  entity
   emailAddress
   givenName
   familyName
