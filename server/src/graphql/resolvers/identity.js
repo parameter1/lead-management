@@ -31,6 +31,7 @@ module.exports = {
     //   if (!isArray(inactiveCampaignIds) || !inactiveCampaignIds.length) return [];
     //   return loaders.campaign.loadMany(inactiveCampaignIds);
     // }),
+    inactiveCampaigns: () => [],
 
     /**
      *
@@ -40,6 +41,7 @@ module.exports = {
     //   if (!isArray(inactiveLineItemIds) || !inactiveLineItemIds.length) return [];
     //   return LineItem.find({ _id: { $in: inactiveLineItemIds } });
     // }),
+    inactiveLineItems: () => [],
 
     /**
      *

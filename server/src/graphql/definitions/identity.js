@@ -39,8 +39,8 @@ type Identity {
   createdAt: Date
   updatedAt: Date
   inactiveCustomers: [Customer]
-  # inactiveCampaigns: [Campaign]
-  # inactiveLineItems: [LineItem]
+  inactiveCampaigns: [Campaign]
+  inactiveLineItems: [LineItem]
 }
 
 type IdentityConnection {

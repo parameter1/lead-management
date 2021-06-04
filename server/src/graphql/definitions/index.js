@@ -2,10 +2,13 @@ const { gql } = require('apollo-server-express');
 
 const adCreativeTracker = require('./ad-creative-tracker');
 const brightcove = require('./brightcove');
+const campaign = require('./campaign');
 const customer = require('./customer');
 const emailDeployment = require('./email-deployment');
 const excludedEmailDomain = require('./excluded-email-domain');
 const gam = require('./gam');
+const identity = require('./identity');
+const lineItem = require('./line-item');
 const tag = require('./tag');
 const url = require('./url');
 const user = require('./user');
@@ -74,10 +77,13 @@ input TypeAheadOptionsInput {
 
 ${adCreativeTracker}
 ${brightcove}
+${campaign}
 ${customer}
 ${emailDeployment}
 ${excludedEmailDomain}
 ${gam}
+${identity}
+${lineItem}
 ${tag}
 ${url}
 ${user}
