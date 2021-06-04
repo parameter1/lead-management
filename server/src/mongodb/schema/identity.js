@@ -34,6 +34,7 @@ const schema = new Schema({
   postalCode: { type: String, trim: true, default: '' },
   country: { type: String, trim: true, default: '' },
   lastRetrievedAt: { type: Date },
+  omeda: { type: Schema.Types.Mixed },
 }, { timestamps: true });
 
 schema.index({ entity: 1 }, { unique: true });

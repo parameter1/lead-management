@@ -17,6 +17,7 @@ extend type Mutation {
 
 type Identity {
   id: String!
+  entity: String!
   givenName: String
   familyName: String
   title: String
