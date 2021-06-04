@@ -1,16 +1,25 @@
 <li class="list-group-item list-group-item-action flex-column align-items-start">
   <div class="d-flex w-100 justify-content-between">
-    <div>
-      <h4 class="mb-1">{{item.givenName}} {{item.familyName}} [{{#link-to "identity.view" item.id}}view{{/link-to}}]</h4>
-      <div class="mb-1">{{item.emailAddress}}</div>
-
-      <small class="d-block">ID: {{item.id}}</small>
-      <small class="d-block">{{item.entity}}</small>
+    <div class="d-flex flex-column justify-content-between">
+      <div>
+        <h4 class="mb-1">{{item.givenName}} {{item.familyName}} [{{#link-to "identity.view" item.id}}view{{/link-to}}]</h4>
+        <div class="mb-1">{{item.emailAddress}}</div>
+      </div>
+      <div>
+        <small class="d-block">ID: {{item.id}}</small>
+        <small class="d-block">{{item.entity}}</small>
+      </div>
     </div>
 
     <div class="d-flex flex-column text-right">
       {{#if item.updatedAt}}
         <small>{{entypo-icon "clock"}} Updated {{moment-format item.updatedAt "MMM Do, YYYY h:mm a"}}</small>
+      {{/if}}
+      {{#if item.createdAt}}
+        <small>{{entypo-icon "clock"}} Created {{moment-format item.createdAt "MMM Do, YYYY h:mm a"}}</small>
+      {{/if}}
+      {{#if item.lastRetrievedAt}}
+        <small>{{entypo-icon "clock"}} Last Retrieved {{moment-format item.lastRetrievedAt "MMM Do, YYYY h:mm a"}}</small>
       {{/if}}
       {{#if user.isAdmin}}
         <p class="card-text mt-3 mb-1">

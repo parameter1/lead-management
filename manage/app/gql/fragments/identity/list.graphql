@@ -7,6 +7,7 @@ fragment IdentityListFragment on Identity {
   companyName
   createdAt
   updatedAt
+  lastRetrievedAt
   inactive
   domainExcluded
   entity
