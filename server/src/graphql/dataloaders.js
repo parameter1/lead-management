@@ -16,7 +16,6 @@ const {
 // const EmailCategory = require('../models/email-category');
 // const Form = require('../models/form');
 // const FormEntry = require('../models/form-entry');
-// const Video = require('../models/video');
 
 const createBatchFn = (Model) => async (ids) => {
   const docs = await Model.find({ _id: { $in: ids } });
@@ -40,7 +39,6 @@ module.exports = {
   order: new DataLoader(createBatchFn(Order)),
   tag: new DataLoader(createBatchFn(Tag)),
   user: new DataLoader(createBatchFn(User)),
-  // video: new DataLoader(createBatchFn(Video)),
 
   excludedEmailDomains: new DataLoader(async (domains) => {
     const docs = await ExcludedEmailDomain.find({ domain: { $in: domains } });
