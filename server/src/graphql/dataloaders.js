@@ -8,6 +8,7 @@ const {
   ExtractedUrl,
   Identity,
   OmedaEmailDeployment,
+  Order,
   Tag,
   User,
 } = require('../mongodb/models');
@@ -15,7 +16,6 @@ const {
 // const EmailCategory = require('../models/email-category');
 // const Form = require('../models/form');
 // const FormEntry = require('../models/form-entry');
-// const Order = require('../models/order');
 // const Video = require('../models/video');
 
 const createBatchFn = (Model) => async (ids) => {
@@ -37,7 +37,7 @@ module.exports = {
   // form: new DataLoader(createBatchFn(Form)),
   // formEntry: new DataLoader(createBatchFn(FormEntry)),
   identity: new DataLoader(createBatchFn(Identity)),
-  // order: new DataLoader(createBatchFn(Order)),
+  order: new DataLoader(createBatchFn(Order)),
   tag: new DataLoader(createBatchFn(Tag)),
   user: new DataLoader(createBatchFn(User)),
   // video: new DataLoader(createBatchFn(Video)),

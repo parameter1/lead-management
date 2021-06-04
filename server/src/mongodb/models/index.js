@@ -9,6 +9,7 @@ const Identity = require('./identity');
 const OmedaEmailClick = require('./omeda/email-click');
 const OmedaEmailDeployment = require('./omeda/email-deployment');
 const OmedaEmailDeploymentUrl = require('./omeda/email-deployment-url');
+const Order = require('./order');
 const Tag = require('./tag');
 const User = require('./user');
 
@@ -24,6 +25,7 @@ module.exports = {
   OmedaEmailClick,
   OmedaEmailDeployment,
   OmedaEmailDeploymentUrl,
+  Order,
   Tag,
   User,
 };
