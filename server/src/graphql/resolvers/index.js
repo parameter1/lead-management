@@ -11,6 +11,7 @@ const emailDeployment = require('./email-deployment');
 const excludedEmailDomain = require('./excluded-email-domain');
 const gam = require('./gam');
 const identity = require('./identity');
+const order = require('./order');
 const tag = require('./tag');
 const url = require('./url');
 const user = require('./user');
@@ -23,6 +24,7 @@ module.exports = merge(
   excludedEmailDomain,
   gam,
   identity,
+  order,
   tag,
   url,
   user,

@@ -9,6 +9,7 @@ const excludedEmailDomain = require('./excluded-email-domain');
 const gam = require('./gam');
 const identity = require('./identity');
 const lineItem = require('./line-item');
+const order = require('./order');
 const tag = require('./tag');
 const url = require('./url');
 const user = require('./user');
@@ -84,6 +85,7 @@ ${excludedEmailDomain}
 ${gam}
 ${identity}
 ${lineItem}
+${order}
 ${tag}
 ${url}
 ${user}
