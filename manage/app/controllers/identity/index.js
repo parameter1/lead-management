@@ -9,20 +9,21 @@ export default ListController.extend(FormMixin, ObjectQueryManager, {
   init() {
     this._super(...arguments);
     this.set('sortOptions', [
-      { key: 'updatedAt', label: 'Updated' },
-      { key: 'createdAt', label: 'Created' },
+      { key: 'omeda.ChangedDate', label: 'Updated' },
+      { key: 'omeda.SignUpDate', label: 'Created' },
+      { key: 'lastRetrievedAt', label: 'Last Retrieved' },
       { key: 'emailAddress', label: 'Email' },
       { key: 'givenName', label: 'First Name' },
       { key: 'familyName', label: 'Last Name' },
     ]);
-    this.set('sortBy', 'updatedAt');
+    this.set('sortBy', 'omeda.ChangedDate');
     this.set('ascending', false);
 
     this.set('searchFields', [
       { key: 'emailAddress', label: 'Email' },
       { key: 'givenName', label: 'First Name' },
       { key: 'familyName', label: 'Last Name' },
-      { key: 'externalSource.identifier', label: 'ExactTarget ID' },
+      { key: 'entity', label: 'Omeda ID' },
     ]);
     this.set('searchBy', 'emailAddress');
   },

@@ -14,6 +14,8 @@ module.exports = {
    *
    */
   Identity: {
+    createdAt: (identity) => identity.get('omeda.SignUpDate'),
+    updatedAt: (identity) => identity.get('omeda.ChangedDate'),
     /**
      *
      */

@@ -39,6 +39,9 @@ const schema = new Schema({
 
 schema.index({ entity: 1 }, { unique: true });
 schema.index({ fieldCount: 1, _id: 1 }, { unique: true });
+schema.index({ 'omeda.ChangedDate': 1, _id: 1 }, { unique: true });
+schema.index({ 'omeda.SignUpDate': 1, _id: 1 }, { unique: true });
+schema.index({ lastRetrievedAt: 1, _id: 1 }, { unique: true });
 schema.index({ region: 1, _id: 1 }, { unique: true });
 schema.index({ emailAddress: 1 });
 schema.index({ inactive: 1 });
