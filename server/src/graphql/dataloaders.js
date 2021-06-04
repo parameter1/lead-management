@@ -1,6 +1,7 @@
 const DataLoader = require('dataloader');
 
 const {
+  Campaign,
   Customer,
   ExcludedEmailDomain,
   ExtractedHost,
@@ -11,7 +12,6 @@ const {
   User,
 } = require('../mongodb/models');
 
-// const Campaign = require('../models/campaign');
 // const EmailCategory = require('../models/email-category');
 // const Form = require('../models/form');
 // const FormEntry = require('../models/form-entry');
@@ -28,7 +28,7 @@ const createBatchFn = (Model) => async (ids) => {
 };
 
 module.exports = {
-  // campaign: new DataLoader(createBatchFn(Campaign)),
+  campaign: new DataLoader(createBatchFn(Campaign)),
   customer: new DataLoader(createBatchFn(Customer)),
   // emailCategory: new DataLoader(createBatchFn(EmailCategory)),
   emailDeployment: new DataLoader(createBatchFn(OmedaEmailDeployment)),

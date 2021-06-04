@@ -56,8 +56,8 @@ type Campaign {
   name: String
   fullName: String!
   customer: Customer!
-  startDate: Date
-  endDate: Date
+  startDate: Date!
+  endDate: Date!
   maxIdentities: Int
   email: EmailCampaign
   forms: FormCampaign
