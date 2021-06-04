@@ -21,8 +21,15 @@
   ```
 - need to determine if the deployment name can be included in merge vars
 - fix ad creative trackers to use new customer IDs... see `graphql/resolvers/ad-creative-tracker.js`
-- fix `allExtractedUrlsForSend` and `searchExtractedUrlsForSend` queries
-- fix `allContentQueryResultRows` query
-- fix identity references in `excluded-email-domain` schema
+- [x] fix `allExtractedUrlsForSend` and `searchExtractedUrlsForSend` queries
+- [x] fix identity references in `excluded-email-domain` schema
 - determine how to handle not-found customers
-- need to update `omeda-email-deployment-urls` when urls or hosts change
+- [x] need to update `omeda-email-deployment-urls` when urls or hosts change
+- [x] fix cache of extracted urls
+- legacy excluded/inactive identity data needs to move to the new DB so the old DB can eventually be removed
+- [ ] use https://www.omeda.com/knowledge-base/customer-change-lookup/ API for customer updates
+- [x] drop behaviors - this can be done in onq now
+- [ ] re-enable `Identity.inactiveCampaigns` and `Identity.inactiveLineItems` resolvers
+- [ ] review campaign and line item resolvers
+- [ ] handle `LineItem.formLineItemLeads` query, and `LineItem.formLineItemChoiceFilters,createFormLineItem` mutations
+- [ ] restore `EmailCampaign.urls,hasEmailSends,urlCount,urlGroups`
