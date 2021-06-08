@@ -1,7 +1,13 @@
 const { Schema } = require('mongoose');
 
-// this model is for indexing only.
-const schema = new Schema({});
+const schema = new Schema({
+  dep: { type: String },
+  idt: { type: String },
+  split: { type: String },
+  url: { type: Schema.Types.ObjectId },
+  date: { type: Date },
+  n: { type: Number },
+});
 
 schema.index({
   url: 1,

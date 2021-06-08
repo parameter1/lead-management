@@ -5,6 +5,7 @@ const brightcove = require('./brightcove');
 const campaign = require('./campaign');
 const customer = require('./customer');
 const emailDeployment = require('./email-deployment');
+const eventEmailClick = require('./event-email-click');
 const excludedEmailDomain = require('./excluded-email-domain');
 const gam = require('./gam');
 const identity = require('./identity');
@@ -81,6 +82,7 @@ ${brightcove}
 ${campaign}
 ${customer}
 ${emailDeployment}
+${eventEmailClick}
 ${excludedEmailDomain}
 ${gam}
 ${identity}

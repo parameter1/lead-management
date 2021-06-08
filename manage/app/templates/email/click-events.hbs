@@ -68,7 +68,8 @@
                   <thead>
                     <tr>
                       <th>Customer</th>
-                      <th>Send Name</th>
+                      <th>Deployment Name</th>
+                      <th>Deployment Type</th>
                       <th>Sent Date</th>
                       <th>URL</th>
                       <th>Unique Clicks</th>
@@ -79,7 +80,8 @@
                     {{#each result as |row|}}
                       <tr>
                         <td>{{row.url.customer.name}}</td>
-                        <td>{{row.send.name}}</td>
+                        <td>{{row.deployment.name}}</td>
+                        <td>{{row.deployment.typeDescription}}</td>
                         <td>{{moment-format row.send.sentDate "MMM Do, YYYY @ h:mma"}}</td>
                         <td>{{row.url.values.resolved}}</td>
                         <td>{{row.uniqueClicks}}</td>

@@ -3,10 +3,11 @@ query EmailClickEventReport($input: EmailClickEventReportQueryInput!) {
     id
     clicks
     uniqueClicks
-    send {
+    deployment {
       id
       name
       sentDate
+      typeDescription
     }
     url {
       id
