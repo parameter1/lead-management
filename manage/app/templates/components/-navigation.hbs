@@ -71,11 +71,11 @@
           {{#link-to "tag" class="nav-link"}}{{entypo-icon "price-tag"}} Tags{{/link-to}}
         </li>
       {{/if}}
-      {{#if user.isAdmin}}
+      {{!-- {{#if user.isAdmin}}
         <li class="nav-item">
           {{#link-to "form" class="nav-link"}}{{entypo-icon "text-document"}} Forms{{/link-to}}
         </li>
-      {{/if}}
+      {{/if}} --}}
       {{#if user.isAdmin}}
         <li class="nav-item">
           {{#link-to "user" class="nav-link"}}{{entypo-icon "user"}} Users{{/link-to}}
