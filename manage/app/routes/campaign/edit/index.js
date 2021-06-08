@@ -17,19 +17,22 @@ export default Route.extend(FormMixin, RouteQueryManager, {
      *
      * @param {object} params
      */
-    async update({ id, customer, name, startDate, endDate, maxIdentities }) {
-      this.startRouteAction();
-      const mutation = updateCampaign;
-      const payload = {
-        customerId: get(customer || {}, 'id'),
-        name,
-        startDate: startDate ? startDate.valueOf() : undefined,
-        endDate: endDate ? endDate.valueOf() : undefined,
-        maxIdentities: parseInt(maxIdentities, 10),
-      };
-      const input = { id, payload };
-      const variables = { input };
+    async update({ id, customer, name, range, maxIdentities }) {
       try {
+        this.startRouteAction();
+        const customerId = get(customer || {}, 'id');
+        if (!customerId) throw new Error('A customer is required.');
+        if (!range || !range.start || !range.end) throw new Error('A date range is required.');
+        const mutation = updateCampaign;
+        const payload = {
+          customerId,
+          name,
+          startDate: range.start.valueOf(),
+          endDate: range.end.valueOf(),
+          maxIdentities: parseInt(maxIdentities, 10),
+        };
+        const input = { id, payload };
+        const variables = { input };
         await this.get('apollo').mutate({ mutation, variables }, 'updateCampaign');
         this.get('notify').info('Campaign successfully updated.');
       } catch (e) {
