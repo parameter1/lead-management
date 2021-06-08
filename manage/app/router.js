@@ -146,9 +146,6 @@ Router.map(function() {
         this.route('urls');
       });
     });
-    this.route('category', function() {
-      this.route('view', { path: ':id' });
-    });
     this.route('reporting');
     this.route('click-events');
   });

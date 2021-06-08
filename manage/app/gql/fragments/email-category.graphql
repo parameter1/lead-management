@@ -1,8 +1,0 @@
-#import 'leads-manage/gql/fragments/email-category-list'
-
-fragment EmailCategoryFragment on EmailCategory {
-  ...EmailCategoryListFragment
-  name
-  rollupMetrics
-  isNewsletter
-}

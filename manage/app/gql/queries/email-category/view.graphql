@@ -1,7 +1,0 @@
-#import 'leads-manage/gql/fragments/email-category'
-
-query ViewEmailCategory($input: ModelIdInput!) {
-  emailCategory(input: $input) {
-    ...EmailCategoryFragment
-  }
-}
