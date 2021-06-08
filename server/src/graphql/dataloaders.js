@@ -26,11 +26,21 @@ const createBatchFn = (Model) => async (ids) => {
   return ids.map((id) => map.get(`${id}`));
 };
 
+const createEntityBatchFn = (Model) => async (entities) => {
+  const docs = await Model.find({ entity: { $in: entities } });
+  const map = docs.reduce((m, doc) => {
+    m.set(doc.entity, doc);
+    return m;
+  }, new Map());
+  return entities.map((entity) => map.get(entity));
+};
+
 module.exports = {
   campaign: new DataLoader(createBatchFn(Campaign)),
   customer: new DataLoader(createBatchFn(Customer)),
   // emailCategory: new DataLoader(createBatchFn(EmailCategory)),
   emailDeployment: new DataLoader(createBatchFn(OmedaEmailDeployment)),
+  emailDeploymentEntity: new DataLoader(createEntityBatchFn(OmedaEmailDeployment)),
   extractedHost: new DataLoader(createBatchFn(ExtractedHost)),
   extractedUrl: new DataLoader(createBatchFn(ExtractedUrl)),
   // form: new DataLoader(createBatchFn(Form)),
