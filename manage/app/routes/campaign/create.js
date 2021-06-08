@@ -9,23 +9,29 @@ export default Route.extend(RouteQueryManager, FormMixin, {
   model() {
     return {
       maxIdentities: 200,
+      range: {
+        start: null,
+        end: null,
+      },
     };
   },
 
   actions: {
-    async create({ customer, name, startDate, endDate, maxIdentities }) {
-      this.startRouteAction();
-      const customerId = get(customer || {}, 'id');
-
-      const input = {
-        customerId,
-        name,
-        startDate: startDate ? startDate.valueOf() : undefined,
-        endDate: endDate ? endDate.valueOf() : undefined,
-        maxIdentities: parseInt(maxIdentities, 10),
-      };
-      const variables = { input };
+    async create({ customer, name, range, maxIdentities }) {
       try {
+        this.startRouteAction();
+        const customerId = get(customer || {}, 'id');
+        if (!customerId) throw new Error('A customer is required.');
+        if (!range || !range.start || !range.end) throw new Error('A date range is required');
+
+        const input = {
+          customerId,
+          name,
+          startDate: range.start.valueOf(),
+          endDate: range.end.valueOf(),
+          maxIdentities: parseInt(maxIdentities, 10),
+        };
+        const variables = { input };
         const response = await this.get('apollo').mutate({ mutation, variables }, 'createCampaign');
         await this.transitionTo('campaign.edit', response.id);
         this.get('notify').info('Campaign created successfully.');

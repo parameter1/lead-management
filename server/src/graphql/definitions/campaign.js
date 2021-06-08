@@ -56,8 +56,7 @@ type Campaign {
   name: String
   fullName: String!
   customer: Customer!
-  startDate: Date!
-  endDate: Date!
+  range: CampaignDateRange!
   maxIdentities: Int
   email: EmailCampaign
   forms: FormCampaign
@@ -72,6 +71,11 @@ type Campaign {
   gamLineItemReport: JSON
 
   brightcoveVideoReport: BrightcoveAnalyticsReport!
+}
+
+type CampaignDateRange {
+  start: Date!
+  end: Date!
 }
 
 type CampaignAdMetrics {

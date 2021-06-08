@@ -5,8 +5,10 @@ fragment CampaignViewFragment on Campaign {
   name
   hash
   maxIdentities
-  startDate
-  endDate
+  range {
+    start
+    end
+  }
   email {
     id
     enabled
