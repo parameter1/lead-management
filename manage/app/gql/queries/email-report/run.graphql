@@ -9,7 +9,7 @@ query RunEmailDeploymentReport($input: EmailDeploymentReportInput!) {
       starting
       ending
       lastRetrievedAt
-      categories {
+      types {
         id
         name
         deploymentCount

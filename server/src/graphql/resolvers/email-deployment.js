@@ -1,5 +1,7 @@
 const { Pagination, TypeAhead, paginationResolvers } = require('../pagination');
 const { OmedaEmailDeployment } = require('../../mongodb/models');
+const emailDeploymentReportService = require('../../services/email-deployment-report');
+const dayjs = require('../../dayjs');
 
 const metricMap = new Map([
   ['sent', 'RecipientCount'],
@@ -47,6 +49,26 @@ module.exports = {
   /**
    *
    */
+  EmailDeploymentReportWeek: {
+    id: ({ year, week }) => `${year}_${week}`,
+    number: ({ week }) => week,
+    starting: ({ year, week }) => dayjs().year(year).week(week).startOf('week')
+      .toDate(),
+    ending: ({ year, week }) => dayjs().year(year).week(week).endOf('week')
+      .toDate(),
+  },
+
+  /**
+   *
+   */
+  EmailDeploymentTypeReportDetail: {
+    id: ({ id, year, week }) => `${id}_${year}_${week}`,
+    deployments: ({ deploymentIds }) => OmedaEmailDeployment.find({ _id: { $in: deploymentIds } }),
+  },
+
+  /**
+   *
+   */
   EmailDeploymentSplit: {
     fromName: (split) => split.FromName,
     fromEmail: (split) => split.FromEmail,
@@ -71,6 +93,15 @@ module.exports = {
       const record = await OmedaEmailDeployment.findById(id);
       if (!record) throw new Error(`No email deployment record found for ID ${id}.`);
       return record;
+    },
+
+    /**
+     *
+     */
+    emailDeploymentReport: (_, { input }, { auth }) => {
+      auth.check();
+      const { start, end } = input;
+      return emailDeploymentReportService.create({ start, end });
     },
 
     /**
