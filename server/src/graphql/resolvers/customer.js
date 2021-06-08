@@ -26,7 +26,7 @@ module.exports = {
     /**
      *
      */
-    children: (customer) => Customer.find({ parentId: customer.id }),
+    children: (customer) => Customer.find({ parentId: customer.id, deleted: { $ne: true } }),
 
     /**
      *
