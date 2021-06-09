@@ -28,12 +28,11 @@ module.exports = {
     /**
      *
      */
-    // inactiveCampaigns: ((identity, _, { loaders }) => {
-    //   const { inactiveCampaignIds } = identity;
-    //   if (!isArray(inactiveCampaignIds) || !inactiveCampaignIds.length) return [];
-    //   return loaders.campaign.loadMany(inactiveCampaignIds);
-    // }),
-    inactiveCampaigns: () => [],
+    inactiveCampaigns: ((identity, _, { loaders }) => {
+      const { inactiveCampaignIds } = identity;
+      if (!isArray(inactiveCampaignIds) || !inactiveCampaignIds.length) return [];
+      return loaders.campaign.loadMany(inactiveCampaignIds);
+    }),
 
     /**
      *
@@ -44,15 +43,6 @@ module.exports = {
     //   return LineItem.find({ _id: { $in: inactiveLineItemIds } });
     // }),
     inactiveLineItems: () => [],
-
-    /**
-     *
-     */
-    domainExcluded: async (identity, _, { loaders }) => {
-      const doc = await loaders.excludedEmailDomains.load(identity.emailDomain);
-      if (!doc) return false;
-      return doc.domain === identity.emailDomain;
-    },
   },
 
   /**
