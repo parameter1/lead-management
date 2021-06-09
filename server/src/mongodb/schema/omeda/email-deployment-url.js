@@ -30,6 +30,8 @@ const schema = new Schema({
 
 schema.index({ 'url._id': 1, 'deployment.entity': 1 }, { unique: true });
 schema.index({ 'deployment.entity': 1 });
+schema.index({ 'deployment.sentDate': 1 });
 schema.index({ 'host._id': 1 });
+schema.index({ customerId: 1, 'host.customerId': 1 });
 
 module.exports = schema;

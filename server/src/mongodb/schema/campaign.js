@@ -25,7 +25,7 @@ const identityFilterSchema = new Schema({
 });
 
 /**
- * @todo evaluate if this should change.
+ *
  */
 const excludeUrlSchema = new Schema({
   urlId: {
@@ -39,11 +39,11 @@ const excludeUrlSchema = new Schema({
       message: 'No URL was found for {VALUE}',
     },
   },
-  deploymentId: {
-    type: Schema.Types.ObjectId,
+  deploymentEntity: {
+    type: String,
     validate: {
       async validator(v) {
-        const doc = await connection.model('omeda-email-deployment').findOne({ _id: v }, { _id: 1 });
+        const doc = await connection.model('omeda-email-deployment').findOne({ entity: v }, { entity: 1 });
         if (doc) return true;
         return false;
       },

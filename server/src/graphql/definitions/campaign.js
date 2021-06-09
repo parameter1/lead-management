@@ -136,8 +136,8 @@ type EmailCampaign {
   urls: [EmailCampaignUrl]
   urlCount: Int
   urlGroups: [EmailCampaignUrlGroup]
-  "Whether this email campaign has any eligible send/deployment data."
-  hasEmailSends: Boolean!
+  "Whether this email campaign has any eligible deployment data."
+  hasDeployments: Boolean!
 }
 
 type EmailCampaignExcludedUrl {

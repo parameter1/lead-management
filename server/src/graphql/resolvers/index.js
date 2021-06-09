@@ -6,6 +6,7 @@ const { ObjectId } = require('mongoose').SchemaTypes;
 
 const adCreativeTracker = require('./ad-creative-tracker');
 const brightcove = require('./brightcove');
+const campaign = require('./campaign');
 const customer = require('./customer');
 const emailDeployment = require('./email-deployment');
 const eventEmailClick = require('./event-email-click');
@@ -20,6 +21,7 @@ const user = require('./user');
 module.exports = merge(
   adCreativeTracker,
   brightcove,
+  campaign,
   customer,
   emailDeployment,
   eventEmailClick,
