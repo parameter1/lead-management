@@ -7,20 +7,18 @@ export default Component.extend({
 
   disabled: false,
 
-  allSendGroups: computed('urlGroup.deploymentGroups.[]', function() {
-    return this.get('urlGroup.deploymentGroups').reduce((acc, dep) => acc.concat(dep.sendGroups), []);
-  }),
+  deploymentGroups: computed.reads('urlGroup.deploymentGroups.[]'),
 
-  isUrlActive: computed('allSendGroups.@each.active', function() {
-    return this.get('allSendGroups').reduce((bool, sg) => sg.active ? true : bool, false);
+  isUrlActive: computed('deploymentGroups.@each.active', function() {
+    return this.get('deploymentGroups').reduce((bool, d) => d.active ? true : bool, false);
   }),
 
   actions: {
     toggleUrlGroupActive(event) {
       const { target } = event;
       const { checked } = target;
-      const sendGroups = this.get('allSendGroups');
-      sendGroups.forEach(sendGroup => set(sendGroup, 'active', checked));
+      const deploymentGroups = this.get('deploymentGroups');
+      deploymentGroups.forEach(deploymentGroup => set(deploymentGroup, 'active', checked));
       this.send('sendChange');
     },
     sendChange() {

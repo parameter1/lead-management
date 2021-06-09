@@ -304,7 +304,7 @@ input EmailCampaignExcludedUrlsInput {
 
 input EmailCampaignExcludedUrlInput {
   urlId: String!
-  sendId: String!
+  deploymentEntity: String!
   active: Boolean!
 }
 

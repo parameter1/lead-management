@@ -17,12 +17,10 @@ export default Controller.extend(ActionMixin, {
         this.get('model.urlGroups').forEach((urlGroup) => {
           const urlId = urlGroup.url.id;
           urlGroup.deploymentGroups.forEach((depGroup) => {
-            depGroup.sendGroups.forEach((sendGroup) => {
-              excludeUrls.push({
-                urlId,
-                sendId: sendGroup.send.id,
-                active: sendGroup.active,
-              })
+            excludeUrls.push({
+              urlId,
+              deploymentEntity: depGroup.deployment.entity,
+              active: depGroup.active,
             });
           });
         });

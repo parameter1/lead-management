@@ -12,9 +12,10 @@ fragment EmailCampaignLinksFragment on EmailCampaign {
       active
       deployment {
         id
+        entity
         name
+        typeDescription
         sentDate
-        subject
         metrics {
           sent
         }

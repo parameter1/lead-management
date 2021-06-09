@@ -9,7 +9,7 @@ export default Component.extend({
   selectAll(active) {
     this.get('groups').forEach((urlGroup) => {
       urlGroup.deploymentGroups.forEach((depGroup) => {
-        depGroup.sendGroups.forEach(sendGroup => set(sendGroup, 'active', active));
+        set(depGroup, 'active', active)
       });
     });
   },
