@@ -258,49 +258,6 @@ module.exports = {
     excludedGAMLineItemIds: ({ excludedGAMLineItemIds: ids }) => (isArray(ids) ? ids : []),
   },
 
-  EmailCampaignUrl: {
-    deployment: (sendUrl, _, { loaders }) => loaders.emailDeployment.load(sendUrl.deploymentId),
-    send: (sendUrl, _, { loaders }) => loaders.emailSend.load(sendUrl.sendId),
-    url: (sendUrl, _, { loaders }) => loaders.extractedUrl.load(sendUrl.urlId),
-    active: () => true,
-  },
-
-  EmailCampaignUrlGroup: {
-    id: (urlGroup) => urlGroup.urlId,
-    url: (urlGroup, _, { loaders }) => loaders.extractedUrl.load(urlGroup.urlId),
-    deploymentGroups: (urlGroup) => {
-      const { sendUrls, excludeUrls } = urlGroup;
-
-      const map = sendUrls.reduce((obj, emailSend) => {
-        const { deploymentId } = emailSend;
-        // eslint-disable-next-line no-param-reassign
-        if (!obj[deploymentId]) obj[deploymentId] = [];
-        obj[deploymentId].push({ emailSend, excludeUrls });
-        return obj;
-      }, {});
-      return Object.keys(map).reduce((arr, deploymentId) => {
-        arr.push({ deploymentId, sendUrls: map[deploymentId] });
-        return arr;
-      }, []);
-    },
-  },
-
-  EmailCampaignUrlDeploymentGroup: {
-    deployment: ({ deploymentId }, _, { loaders }) => loaders.emailDeployment.load(deploymentId),
-    sendGroups: (deploymentGroup) => deploymentGroup.sendUrls,
-  },
-
-  EmailCampaignUrlSendGroup: {
-    id: (sendGroup) => sendGroup.emailSend.id,
-    send: (sendGroup, _, { loaders }) => loaders.emailSend.load(sendGroup.emailSend.sendId),
-    active: (sendGroup) => {
-      const { emailSend, excludeUrls } = sendGroup;
-      const found = excludeUrls.find((e) => `${e.urlId}` === `${emailSend.urlId}` && `${e.sendId}` === `${emailSend.sendId}`);
-      if (found) return false;
-      return true;
-    },
-  },
-
   /**
    *
    */
@@ -311,22 +268,10 @@ module.exports = {
     /**
      * @todo find a way to not re-query the campaign here.
      */
-    urls: async (emailCampaign) => {
-      const { id } = emailCampaign;
-      const campaign = await Campaign.findOne({ 'email._id': id });
-      if (!campaign) return [];
-
-      return emailReportService.findAllUrlsForCampaign(campaign);
-    },
-
-    /**
-     * @todo find a way to not re-query the campaign here.
-     */
     urlCount: async (emailCampaign) => {
       const { id } = emailCampaign;
       const campaign = await Campaign.findOne({ 'email._id': id });
       if (!campaign) return 0;
-
       return emailReportService.getCampaignUrlCount(campaign);
     },
 
@@ -341,15 +286,16 @@ module.exports = {
       const excludeUrls = emailCampaign.excludeUrls || [];
       const deploymentUrls = await emailReportService.findAllDeploymentUrlsForCampaign(campaign);
       const map = deploymentUrls.reduce((m, deploymentUrl) => {
+        const { deployment } = deploymentUrl;
         const { _id: urlId } = deploymentUrl.url;
-        if (!m.has(`${urlId}`)) m.set(`${urlId}`, []);
-        m.get(`${urlId}`).push(deploymentUrl);
+        if (!m.has(`${urlId}`)) m.set(`${urlId}`, new Map());
+        m.get(`${urlId}`).set(deployment.entity, deployment);
         return m;
       }, new Map());
 
       const arr = [];
-      map.forEach((urls, urlId) => {
-        arr.push({ urlId, deploymentUrls: urls, excludeUrls });
+      map.forEach((deployments, urlId) => {
+        arr.push({ urlId, deployments, excludeUrls });
       });
       return arr;
     },
@@ -380,7 +326,34 @@ module.exports = {
    */
   EmailCampaignExcludedUrl: {
     url: (excluded, _, { loaders }) => loaders.extractedUrl.load(excluded.urlId),
-    send: (excluded, _, { loaders }) => loaders.emailSend.load(excluded.sendId),
+    deployment: (excluded, _, { loaders }) => loaders
+      .emailDeploymentEntity.load(excluded.deploymentEntity),
+  },
+
+  /**
+   *
+   */
+  EmailCampaignUrlGroup: {
+    url: (urlGroup, _, { loaders }) => loaders.extractedUrl.load(urlGroup.urlId),
+    deploymentGroups: ({ urlId, deployments, excludeUrls }) => {
+      const arr = [];
+      deployments.forEach((deployment) => {
+        const { entity } = deployment;
+        const excluded = excludeUrls.find((e) => `${e.urlId}` === `${urlId}` && e.deploymentEntity === entity);
+        arr.push({
+          entity,
+          active: !excluded,
+        });
+      });
+      return arr;
+    },
+  },
+
+  /**
+   *
+   */
+  EmailCampaignUrlDeploymentGroup: {
+    deployment: ({ entity }, _, { loaders }) => loaders.emailDeploymentEntity.load(entity)
   },
 
   /**

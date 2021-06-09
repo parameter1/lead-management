@@ -90,14 +90,6 @@ type CampaignVideoMetrics {
   excludedBrightcoveVideoIds: [String!]!
 }
 
-type EmailCampaignUrl {
-  id: String!
-  deployment: EmailDeployment!
-  send: EmailSend!
-  url: ExtractedUrl!
-  active: Boolean
-}
-
 type FormCampaign {
   id: String!
   enabled: Boolean!
@@ -133,34 +125,26 @@ type EmailCampaign {
   excludeUrls: [EmailCampaignExcludedUrl]
   restrictToSentDate: Boolean
   displayDeliveredMetrics: Boolean
-  urls: [EmailCampaignUrl]
-  urlCount: Int
-  urlGroups: [EmailCampaignUrlGroup]
+  urlCount: Int!
+  urlGroups: [EmailCampaignUrlGroup!]!
   "Whether this email campaign has any eligible deployment data."
   hasDeployments: Boolean!
+}
+
+type EmailCampaignUrlGroup {
+  url: ExtractedUrl!
+  deploymentGroups: [EmailCampaignUrlDeploymentGroup!]!
+}
+
+type EmailCampaignUrlDeploymentGroup {
+  deployment: EmailDeployment!
+  active: Boolean!
 }
 
 type EmailCampaignExcludedUrl {
   id: String!
   url: ExtractedUrl!
-  send: EmailSend!
-}
-
-type EmailCampaignUrlGroup {
-  id: String!
-  url: ExtractedUrl!
-  deploymentGroups: [EmailCampaignUrlDeploymentGroup!]
-},
-
-type EmailCampaignUrlDeploymentGroup {
   deployment: EmailDeployment!
-  sendGroups: [EmailCampaignUrlSendGroup]
-}
-
-type EmailCampaignUrlSendGroup {
-  id: String
-  send: EmailSend!
-  active: Boolean
 }
 
 type CampaignIdentityFilter {
