@@ -39,9 +39,9 @@ export default Service.extend({
       { key: 'postalCode', label: 'Postal Code' },
       { key: 'country', label: 'Country' },
       { key: 'phoneNumber', label: 'Phone #', adminOnly: true },
-      { key: 'attributes.Industry', label: 'Industry' },
-      { key: 'attributes.Job Function', label: 'Job Function' },
-      { key: 'attributes.NAICS Code', label: 'NAICS' },
+      // { key: 'attributes.Industry', label: 'Industry' },
+      // { key: 'attributes.Job Function', label: 'Job Function' },
+      // { key: 'attributes.NAICS Code', label: 'NAICS' },
     ]);
 
     this.set('cardBlocks', [
@@ -65,11 +65,12 @@ export default Service.extend({
       },
       {
         title: 'Attributes',
-        fields: [
-          { key: 'attributes.Industry', label: 'Industry' },
-          { key: 'attributes.Job Function', label: 'Job Function' },
-          { key: 'attributes.NAICS Code', label: 'NAICS' },
-        ]
+        fields: [],
+        // fields: [
+        //   { key: 'attributes.Industry', label: 'Industry' },
+        //   { key: 'attributes.Job Function', label: 'Job Function' },
+        //   { key: 'attributes.NAICS Code', label: 'NAICS' },
+        // ]
       },
     ]);
   },
