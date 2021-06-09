@@ -248,7 +248,7 @@ module.exports = {
 
     const customerIds = [campaign.customerId];
     const [childCustomerIds, excludedDomains] = await Promise.all([
-      Customer.distinct('_id', { parentId: campaign.customerId, deleted: { $ne: true } }, { _id: 1 }),
+      Customer.distinct('_id', { parentId: campaign.customerId, deleted: { $ne: true } }),
       ExcludedEmailDomain.distinct('domain'),
     ]);
     customerIds.push(...childCustomerIds);
