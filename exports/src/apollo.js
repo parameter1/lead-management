@@ -2,6 +2,7 @@ const fetch = require('node-fetch');
 const { ApolloClient } = require('apollo-client');
 const { InMemoryCache } = require('apollo-cache-inmemory');
 const { createHttpLink } = require('apollo-link-http');
+const { GRAPHQL_URL } = require('./env');
 const { name, version } = require('../package.json');
 
 const defaultConfig = {
@@ -30,7 +31,7 @@ module.exports = ({
     ssrMode: true,
     link: createHttpLink({
       ...linkConfig,
-      uri: 'http://server/graphql',
+      uri: GRAPHQL_URL,
       fetch,
     }),
     cache: new InMemoryCache(),
