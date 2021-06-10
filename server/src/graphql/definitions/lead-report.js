@@ -46,7 +46,7 @@ type ReportEmailIdentityExportEdge {
 type ReportEmailIdentityExportNode {
   identity: Identity!
   urls: [ExtractedUrl]!
-  sends: [EmailSend]!
+  deployments: [EmailDeployment]!
 }
 
 type ReportEmailActivityConnection {

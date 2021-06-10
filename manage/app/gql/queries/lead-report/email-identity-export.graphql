@@ -8,7 +8,7 @@ query LeadReportEmailIdentityExport($hash: String!, $pagination: PaginationInput
         identity {
           ...IdentityViewFragment
         }
-        sends {
+        deployments {
           id
           sentDate
           name

@@ -34,13 +34,13 @@ module.exports = {
       const edges = await paginated.getEdges();
       return edges.map((edge) => {
         const { node, cursor } = edge;
-        const row = paginated.meta.find((r) => `${r._id}` === `${node.id}`);
-        const { urlIds, sendIds } = row;
+        const row = paginated.meta.find((r) => r._id === node.entity);
+        const { urlIds, deploymentEntities } = row;
         return {
           node: {
             identity: node,
             urlIds,
-            sendIds,
+            deploymentEntities,
           },
           cursor,
         };
@@ -50,7 +50,8 @@ module.exports = {
 
   ReportEmailIdentityExportNode: {
     urls: (node, _, { loaders }) => loaders.extractedUrl.loadMany(node.urlIds),
-    sends: (node, _, { loaders }) => loaders.emailSend.loadMany(node.sendIds),
+    deployments: (node, _, { loaders }) => loaders
+      .emailDeploymentEntity.loadMany(node.deploymentEntities),
   },
 
   /**
@@ -152,10 +153,10 @@ module.exports = {
 
       // @todo This isn't as effecient as it could be.
       // The match phase could be limited by the incoming after cursor, as well as the first value.
-      const results = await EventEmailClick.aggregate(pipeline);
-      const identityIds = results.map((r) => r._id);
+      const results = await OmedaEmailClick.aggregate(pipeline);
+      const identityEntities = results.map((r) => r._id);
 
-      const criteria = { _id: { $in: identityIds } };
+      const criteria = { entity: { $in: identityEntities } };
       const projection = await emailReportService.identityFieldProjection(campaign);
       const paginated = new Pagination(Identity, {
         pagination,

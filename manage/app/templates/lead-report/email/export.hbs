@@ -39,8 +39,8 @@
                 {{/each}}
               </td>
               <td class="pt-0">
-                {{#each item.sends as |send|}}
-                  <p class="mb-0 mt-1">{{send.name}} (Sent {{moment-format send.sentDate "MMM Do, YYYY @ h:mma"}})</p>
+                {{#each item.deployments as |deployment|}}
+                  <p class="mb-0 mt-1">{{deployment.name}} (Sent {{moment-format deployment.sentDate "MMM Do, YYYY @ h:mma"}})</p>
                 {{/each}}
               </td>
             </tr>
@@ -61,4 +61,3 @@
     </div>
   {{/if}}
 {{/fetch-more}}
-
