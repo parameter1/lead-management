@@ -1,0 +1,39 @@
+{
+  "name": "@lead-management/export",
+  "version": "0.0.0",
+  "main": "src/index.js",
+  "repository": "https://github.com/parameter1/lead-management.git",
+  "author": "Jacob Bare <jacob@parameter1.com>",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "dev": "gulp",
+    "lint": "eslint --ext .js ./src",
+    "test": "yarn lint"
+  },
+  "dependencies": {
+    "@parameter1/joi": "^1.2.6",
+    "@parameter1/micro": "^1.1.19",
+    "@parameter1/terminus": "^1.7.0",
+    "@parameter1/utils": "^1.1.19",
+    "apollo-cache-inmemory": "^1.6.6",
+    "apollo-client": "^2.6.10",
+    "apollo-link-http": "^1.5.17",
+    "dayjs": "^1.10.5",
+    "envalid": "^7.1.0",
+    "graphql": "^15.5.0",
+    "graphql-tag": "^2.12.4",
+    "json2csv": "^5.0.6",
+    "newrelic": "^7.4.0",
+    "node-fetch": "^2.6.1"
+  },
+  "devDependencies": {
+    "@parameter1/gulp": "^1.1.17",
+    "eslint": "^7.27.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.23.3"
+  },
+  "engines": {
+    "node": ">=12"
+  }
+}

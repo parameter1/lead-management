@@ -95,6 +95,21 @@ services:
     depends_on:
       - server
 
+  exports:
+    tty: true
+    init: true
+    image: node:14.14-alpine
+    working_dir: /exports
+    volumes:
+      - ./exports:/exports:cached
+      - ./exports/node_modules:/exports/node_modules:delegated
+    entrypoint: ["yarn"]
+    command: ["dev"]
+    environment:
+      <<: *server-env
+    ports:
+      - "9290:80"
+
   server:
     <<: *server-node
     working_dir: /server
@@ -118,6 +133,7 @@ services:
     ports:
       - "9288:80"
     depends_on:
+      - exports
       - redis
       - mongo
       - google-ad-manager
