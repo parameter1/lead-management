@@ -17,6 +17,7 @@
     "@graphql-tools/wrap": "^7.0.8",
     "@parameter1/graphql-type-date": "^1.0.18",
     "@parameter1/graphql-type-objectid": "^1.0.16",
+    "@parameter1/micro": "^1.1.19",
     "@parameter1/mongodb": "^1.4.14",
     "@parameter1/terminus": "^1.7.0",
     "@parameter1/utils": "^1.1.19",

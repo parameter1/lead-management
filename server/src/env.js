@@ -10,6 +10,7 @@ module.exports = cleanEnv(process.env, {
   BRIGHTCOVE_APP_ID: str({ desc: 'The Brightcove API APP ID.' }),
   BRIGHTCOVE_SECRET: str({ desc: 'The Brightcove API secret.' }),
   EXPOSED_PORT: port({ desc: 'The exposed port that the server will run on.', default: 80 }),
+  EXPORTS_SERVICE_URL: str({ desc: 'The Exports microservice URL', default: 'http://exports' }),
   HOST: str({ desc: 'The host that the service will run on.', default: '0.0.0.0' }),
   HOST_NAME: str({ desc: 'The host name of the server.' }),
   GAM_GRAPHQL_URI: str({ desc: 'The GAM GraphQL API URI.' }),
