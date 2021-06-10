@@ -39,8 +39,8 @@ export default Service.extend({
       { key: 'postalCode', label: 'Postal Code' },
       { key: 'country', label: 'Country' },
       { key: 'phoneNumber', label: 'Phone #', adminOnly: true },
-      // { key: 'attributes.Industry', label: 'Industry' },
-      // { key: 'attributes.Job Function', label: 'Job Function' },
+      { key: 'attributes.Industry', label: 'Industry' },
+      { key: 'attributes.Job Function', label: 'Job Function' },
       // { key: 'attributes.NAICS Code', label: 'NAICS' },
     ]);
 
@@ -65,12 +65,11 @@ export default Service.extend({
       },
       {
         title: 'Attributes',
-        fields: [],
-        // fields: [
-        //   { key: 'attributes.Industry', label: 'Industry' },
-        //   { key: 'attributes.Job Function', label: 'Job Function' },
-        //   { key: 'attributes.NAICS Code', label: 'NAICS' },
-        // ]
+        fields: [
+          { key: 'attributes.Industry', label: 'Industry' },
+          { key: 'attributes.Job Function', label: 'Job Function' },
+          // { key: 'attributes.NAICS Code', label: 'NAICS' },
+        ],
       },
     ]);
   },

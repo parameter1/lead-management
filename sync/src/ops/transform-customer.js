@@ -1,5 +1,6 @@
 const { get } = require('@parameter1/utils');
 const getEmailDomain = require('../utils/get-email-domain');
+const demographicEntity = require('../utils/demographic-entity');
 
 const g = (obj, path, def = '') => {
   const value = get(obj, path);
@@ -7,6 +8,11 @@ const g = (obj, path, def = '') => {
 };
 
 const getFieldCount = (obj) => Object.keys(obj).filter((k) => obj[k]).length;
+
+const demoMap = new Map([
+  [85, 'Industry'],
+  [86, 'Job Function'],
+]);
 
 /**
  * Transforms an Omeda customer response into a DB bulk write operation.
@@ -20,6 +26,7 @@ module.exports = ({
   emails,
   phoneNumbers,
   postalAddresses,
+  demographics,
   legacyInactiveMap = new Map(),
   excludedDomainMap = new Map(),
 }) => {
@@ -43,7 +50,17 @@ module.exports = ({
     postalCode: g(primaryAddress, 'PostalCode'),
     country: g(primaryAddress, 'CountryCode') || g(primaryAddress, 'Country'),
   };
-  const attributes = {}; // @todo change this to use demographics
+
+  let attributes = {};
+  if (demographics) {
+    attributes = demographics.data
+      .filter(({ DemographicId, ValueId }) => demoMap.has(DemographicId) && ValueId)
+      .reduce((o, { DemographicId, ValueId }) => {
+        const label = demoMap.get(DemographicId);
+        const value = { entity: demographicEntity({ id: `${DemographicId}` }), value: ValueId };
+        return { ...o, [label]: value };
+      }, {});
+  }
 
   const emailDomain = getEmailDomain(fields.emailAddress);
 

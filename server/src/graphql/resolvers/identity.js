@@ -14,6 +14,22 @@ module.exports = {
    *
    */
   Identity: {
+    attributes: async ({ attributes }, _, { loaders }) => {
+      if (!attributes) return {};
+      const formatted = await Promise.all(Object.keys(attributes).filter((key) => {
+        const attr = attributes[key];
+        return attr && attr.entity && attr.value != null;
+      }).map(async (key) => {
+        const { entity, value } = attributes[key];
+        const demo = await loaders.omedaDemographicEntity.load(entity);
+        if (!demo) return null;
+        const demoValues = demo.get('data.DemographicValues');
+        if (!demoValues || !demoValues.length) return null;
+        const demoValue = demoValues.find((v) => v.Id === value);
+        return demoValue ? { key, label: demoValue.Description } : null;
+      }));
+      return formatted.filter((v) => v).reduce((o, { key, label }) => ({ ...o, [key]: label }), {});
+    },
     createdAt: (identity) => identity.get('omeda.SignUpDate'),
     updatedAt: (identity) => identity.get('omeda.ChangedDate'),
     /**

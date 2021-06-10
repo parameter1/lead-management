@@ -21,10 +21,11 @@ module.exports = async (params = {}) => {
     const { data } = response;
     const entity = customerEntity({ customerId: data.Id });
 
-    const [emails, phoneNumbers, postalAddresses] = await Promise.all([
+    const [emails, phoneNumbers, postalAddresses, demographics] = await Promise.all([
       response.emails(),
       response.phoneNumbers(),
       response.postalAddresses(),
+      response.demographics(),
     ]);
     return {
       customerId,
@@ -33,6 +34,7 @@ module.exports = async (params = {}) => {
       emails,
       phoneNumbers,
       postalAddresses,
+      demographics,
     };
   }));
   return items.reduce((map, item) => {

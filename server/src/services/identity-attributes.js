@@ -10,7 +10,7 @@ module.exports = [
   { key: 'postalCode', label: 'Postal Code' },
   { key: 'country', label: 'Country' },
   { key: 'phoneNumber', label: 'Phone #', adminOnly: true },
-  // { key: 'attributes.Industry', label: 'Industry' },
-  // { key: 'attributes.Job Function', label: 'Job Function' },
+  { key: 'attributes.Industry', label: 'Industry' },
+  { key: 'attributes.Job Function', label: 'Job Function' },
   // { key: 'attributes.NAICS Code', label: 'NAICS' },
 ];
