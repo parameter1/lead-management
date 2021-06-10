@@ -1,4 +1,3 @@
-const { get } = require('@parameter1/utils');
 const escapeRegex = require('escape-string-regexp');
 const {
   Customer,

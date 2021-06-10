@@ -173,9 +173,9 @@ module.exports = {
     reportEmailIdentities: async (root, { hash, pagination, sort }) => {
       const campaign = await Campaign.findByHash(hash);
 
-      const { identityIds } = await emailReportService.getClickEventIdentifiers(campaign);
+      const { identityEntities } = await emailReportService.getClickEventIdentifiers(campaign);
 
-      const criteria = { _id: { $in: identityIds } };
+      const criteria = { entity: { $in: identityEntities } };
       const projection = await emailReportService.identityFieldProjection(campaign);
       return new Pagination(Identity, {
         pagination,
