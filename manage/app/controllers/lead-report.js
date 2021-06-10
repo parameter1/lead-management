@@ -2,8 +2,8 @@ import Controller from '@ember/controller';
 import { computed } from '@ember/object';
 
 export default Controller.extend({
-  displayEmail: computed('model.{email.enabled,email.hasEmailSends}', function() {
-    return Boolean(this.get('model.email.enabled') && this.get('model.email.hasEmailSends'));
+  displayEmail: computed('model.{email.enabled,email.hasDeployments}', function() {
+    return Boolean(this.get('model.email.enabled') && this.get('model.email.hasDeployments'));
   }),
   displayAds: computed('model.{ads.enabled,ads.hasIdentities}', function() {
     return Boolean(this.get('model.ads.enabled') && this.get('model.ads.hasIdentities'));

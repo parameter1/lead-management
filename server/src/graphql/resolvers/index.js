@@ -13,6 +13,7 @@ const eventEmailClick = require('./event-email-click');
 const excludedEmailDomain = require('./excluded-email-domain');
 const gam = require('./gam');
 const identity = require('./identity');
+const leadReport = require('./lead-report');
 const order = require('./order');
 const tag = require('./tag');
 const url = require('./url');
@@ -28,6 +29,7 @@ module.exports = merge(
   excludedEmailDomain,
   gam,
   identity,
+  leadReport,
   order,
   tag,
   url,

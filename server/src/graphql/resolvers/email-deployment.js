@@ -3,17 +3,6 @@ const { OmedaEmailDeployment } = require('../../mongodb/models');
 const emailDeploymentReportService = require('../../services/email-deployment-report');
 const dayjs = require('../../dayjs');
 
-const metricMap = new Map([
-  ['sent', 'RecipientCount'],
-  ['delivered', 'SentCount'],
-  ['opens', 'TotalOpens'],
-  ['clicks', 'TotalClicks'],
-  ['uniqueOpens', 'UniqueOpens'],
-  ['uniqueClicks', 'UniqueClicks'],
-  ['unsubscribes', 'TotalUnsubscribe'],
-  ['bounces', 'BounceCount'],
-]);
-
 module.exports = {
   /**
    *
@@ -30,7 +19,7 @@ module.exports = {
     typeId: (dep) => dep.get('omeda.DeploymentTypeId'),
     metrics: async (dep) => {
       const metrics = {};
-      metricMap.forEach((omedaKey, ourKey) => {
+      OmedaEmailDeployment.metricMap().forEach((omedaKey, ourKey) => {
         const value = dep.get(`omeda.${omedaKey}`) || 0;
         metrics[ourKey] = value;
       });

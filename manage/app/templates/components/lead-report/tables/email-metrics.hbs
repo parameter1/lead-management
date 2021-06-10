@@ -18,26 +18,26 @@
   </tr>
 </thead>
 <tbody>
-  {{#each sends as |row|}}
+  {{#each deployments as |row|}}
     <tr>
       <td>
-        {{#if row.send.url}}
-          <a href="#" {{action "displayIframeModal" row.send}}>{{ row.send.name }}</a>
+        {{#if row.deployment.url}}
+          <a href="#" {{action "displayIframeModal" row.deployment}}>{{ row.deployment.name }}</a>
         {{else}}
-          {{ row.send.name }}
+          {{ row.deployment.name }}
         {{/if}}
       </td>
-      <td>{{moment-format row.send.sentDate "MMM Do, YYYY @ h:mma"}}</td>
+      <td>{{moment-format row.deployment.sentDate "MMM Do, YYYY @ h:mma"}}</td>
       {{#if displayDelivered}}
-        <td>{{ format-number row.send.metrics.delivered format="0,0" }}</td>
+        <td>{{ format-number row.deployment.metrics.delivered format="0,0" }}</td>
       {{/if}}
-      <td>{{ format-number row.send.metrics.uniqueOpens format="0,0" }}</td>
+      <td>{{ format-number row.deployment.metrics.uniqueOpens format="0,0" }}</td>
       {{#if displayUniqueClicks}}
-        <td>{{ format-number row.send.metrics.uniqueClicks format="0,0" }}</td>
+        <td>{{ format-number row.deployment.metrics.uniqueClicks format="0,0" }}</td>
       {{/if}}
-      <td>{{ format-number row.send.metrics.openRate format="00.0%" }}</td>
-      <td>{{ format-number row.send.metrics.clickToOpenRate format="00.0%" }}</td>
-      <td>{{ format-number row.send.metrics.clickToDeliveredRate format="00.0%" }}</td>
+      <td>{{ format-number row.deployment.metrics.openRate format="00.0%" }}</td>
+      <td>{{ format-number row.deployment.metrics.clickToOpenRate format="00.0%" }}</td>
+      <td>{{ format-number row.deployment.metrics.clickToDeliveredRate format="00.0%" }}</td>
       <td>{{ format-number row.advertiserClickRate format="0.00%" }}</td>
       <td>{{ format-number row.clicks format="0,0" }}</td>
       <td>{{ format-number row.identities format="0,0" }}</td>

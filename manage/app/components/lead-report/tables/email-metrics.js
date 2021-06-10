@@ -7,17 +7,17 @@ export default Component.extend({
 
   title: null,
 
-  displayDelivered: computed('displayDeliveredMetrics', 'sends.@each.send.isNewsletter', function() {
+  displayDelivered: computed('displayDeliveredMetrics', 'deployments.@each.deployment.designation', function() {
     if (this.get('displayDeliveredMetrics')) return true;
-    const sends = this.get('sends');
-    const hasNewsletters = sends.map(({ send }) => send.isNewsletter).some(v => v === true);
+    const deployments = this.get('deployments');
+    const hasNewsletters = deployments.map(({ deployment }) => deployment.designation === 'Newsletter').some(v => v === true);
     if (hasNewsletters) return false;
     return true;
   }),
 
-  displayUniqueClicks: computed('sends.@each.send.isNewsletter', function() {
-    const sends = this.get('sends');
-    return sends.every(({ send }) => send.isNewsletter);
+  displayUniqueClicks: computed('deployments.@each.deployment.designation', function() {
+    const deployments = this.get('deployments');
+    return deployments.every(({ deployment }) => deployment.designation === 'Newsletter');
   }),
 
   init() {

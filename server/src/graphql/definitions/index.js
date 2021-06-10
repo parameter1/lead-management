@@ -9,6 +9,7 @@ const eventEmailClick = require('./event-email-click');
 const excludedEmailDomain = require('./excluded-email-domain');
 const gam = require('./gam');
 const identity = require('./identity');
+const leadReport = require('./lead-report');
 const lineItem = require('./line-item');
 const order = require('./order');
 const tag = require('./tag');
@@ -86,6 +87,7 @@ ${eventEmailClick}
 ${excludedEmailDomain}
 ${gam}
 ${identity}
+${leadReport}
 ${lineItem}
 ${order}
 ${tag}

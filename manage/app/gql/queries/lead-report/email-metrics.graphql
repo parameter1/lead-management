@@ -1,17 +1,16 @@
-#import 'leads-manage/gql/fragments/email-send-metrics'
+#import 'leads-manage/gql/fragments/email-deployment-metrics'
 
 query LeadReportEmailMetrics($hash: String!, $sort: ReportEmailMetricsSortInput!) {
   reportEmailMetrics(hash: $hash, sort: $sort) {
-    sends {
-      send {
+    deployments {
+      deployment {
         id
-        url
         name
+        designation
         metrics {
-          ...EmailSendMetricsFragment
+          ...EmailDeploymentMetricsFragment
         }
         sentDate
-        isNewsletter
       }
       identities
       clicks
@@ -23,7 +22,7 @@ query LeadReportEmailMetrics($hash: String!, $sort: ReportEmailMetricsSortInput!
       clicks
       advertiserClickRate
       metrics {
-        ...EmailSendMetricsFragment
+        ...EmailDeploymentMetricsFragment
       }
     }
   }

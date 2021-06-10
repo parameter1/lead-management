@@ -31,21 +31,21 @@ fragment CampaignHashFragment on Campaign {
     enabled
     excludeFields
     displayDeliveredMetrics
-    hasEmailSends
+    hasDeployments
   }
-  forms {
-    id
-    enabled
-    forms(refreshEntries: false) {
-      id
-    }
-  }
-  ads {
-    id
-    enabled
-    excludeFields
-    hasIdentities
-  }
+  # forms {
+  #   id
+  #   enabled
+  #   forms(refreshEntries: false) {
+  #     id
+  #   }
+  # }
+  # ads {
+  #   id
+  #   enabled
+  #   excludeFields
+  #   hasIdentities
+  # }
   adMetrics {
     id
     enabled

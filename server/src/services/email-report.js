@@ -1,3 +1,4 @@
+const { get } = require('@parameter1/utils');
 const escapeRegex = require('escape-string-regexp');
 const {
   Customer,
@@ -6,6 +7,7 @@ const {
   Identity,
   OmedaEmailClick,
   OmedaEmailDeploymentUrl,
+  OmedaEmailDeployment,
 } = require('../mongodb/models');
 
 const { isArray } = Array;
@@ -277,110 +279,73 @@ module.exports = {
   },
 
   /**
-   * @todo restore or move
+   *
    */
-  // async buildEmailMetrics({ results, sort, deploymentEntities }) {
-  //   const deployments = await OmedaEmailDeployment.find({
-  //     entity: { $in: deploymentEntities },
-  //   }, {
-  //     _id: 1,
-  //     entity: 1,
-  //   });
+  async buildEmailMetrics({ results, sort, deploymentEntities }) {
+    const resultMap = results.reduce((map, result) => {
+      map.set(result._id, {
+        entity: result._id,
+        identities: result.identityEntities.length,
+        clicks: result.clicks,
+      });
+      return map;
+    }, new Map());
 
-  //   const groups = {};
-  //   deployments.forEach((send) => {
-  //     const {
-  //       deploymentId,
-  //       id,
-  //       metrics,
-  //       rollupMetrics,
-  //     } = send;
+    const metricMap = OmedaEmailDeployment.metricMap();
 
-  //     const dep = `${deploymentId}`;
-  //     const job = `${id}`;
+    const docs = await OmedaEmailDeployment.find({
+      entity: { $in: deploymentEntities },
+    }).sort({ [sort.field]: sort.order });
+    const reduced = docs.reduce((o, doc) => {
+      const data = resultMap.get(doc.entity);
+      const identities = data ? data.identities : 0;
+      const clicks = data ? data.clicks : 0;
 
-  //     const row = results.find((result) => `${result._id}` === `${id}`);
-  //     const identities = row ? row.identityIds.length : 0;
-  //     const clicks = row ? row.clicks : 0;
+      const uniqueOpens = doc.get('omeda.UniqueOpens');
+      const advertiserClickRate = data && uniqueOpens ? data.clicks / uniqueOpens : 0;
+      o.deployments.push({
+        identities,
+        clicks,
+        advertiserClickRate,
+        deployment: doc,
+      });
+      const totals = {
+        identities: o.totals.identities + identities,
+        clicks: o.totals.clicks + clicks,
+        sends: o.totals.sends + 1,
+        metrics: {},
+      };
+      metricMap.forEach((omedaKey, ourKey) => {
+        const value = doc.get(`omeda.${omedaKey}`) || 0;
+        totals.metrics[ourKey] = o.totals.metrics[ourKey] + value;
+      });
+      return { ...o, totals };
+    }, {
+      deployments: [],
+      totals: {
+        identities: 0,
+        sends: 0,
+        clicks: 0,
+        metrics: Array.from(metricMap, ([ourKey]) => ourKey).reduce((o, key) => ({
+          ...o,
+          [key]: 0,
+        }), {}),
+      },
+    });
+    const {
+      uniqueOpens,
+      sent,
+      delivered,
+      uniqueClicks,
+    } = reduced.totals.metrics;
+    reduced.totals.advertiserClickRate = uniqueOpens ? reduced.totals.clicks / uniqueOpens : 0;
 
-  //     const key = rollupMetrics ? dep : job;
-  //     if (!groups[key]) groups[key] = [];
-  //     groups[key].push({
-  //       id,
-  //       deploymentId,
-  //       metrics,
-  //       identities,
-  //       clicks,
-  //     });
-  //   });
-
-  //   const final = [];
-  //   Object.keys(groups).forEach((key) => {
-  //     const group = groups[key];
-  //     const item = {
-  //       sendId: group[0].id,
-  //       deploymentId: group[0].deploymentId,
-  //       identities: 0,
-  //       clicks: 0,
-  //       metrics: {
-  //         sent: 0,
-  //         delivered: 0,
-  //         uniqueOpens: 0,
-  //         uniqueClicks: 0,
-  //         unsubscribes: 0,
-  //         forwards: 0,
-  //         bounces: 0,
-  //       },
-  //     };
-  //     group.forEach((row) => {
-  //       item.identities += row.identities;
-  //       item.clicks += row.clicks;
-  //       item.metrics.sent += row.metrics.sent;
-  //       item.metrics.delivered += row.metrics.delivered;
-  //       item.metrics.uniqueOpens += row.metrics.uniqueOpens;
-  //       item.metrics.uniqueClicks += row.metrics.uniqueClicks;
-  //       item.metrics.unsubscribes += row.metrics.unsubscribes;
-  //       item.metrics.forwards += row.metrics.forwards;
-  //       item.metrics.bounces += row.metrics.bounces;
-  //     });
-  //     item.advertiserClickRate = item.metrics.uniqueOpens
-  //       ? (item.clicks / item.metrics.uniqueOpens) : 0;
-  //     final.push(item);
-  //   });
-  //   const finalIds = final.map((f) => f.sendId);
-
-  //   const sortedSends = await EmailSend.find({ _id: { $in: finalIds } }).sort({
-  //     [sort.field]: sort.order,
-  //   });
-
-  //   return sortedSends.map((send) => {
-  //     const row = final.find((f) => `${f.sendId}` === `${send.id}`);
-  //     const {
-  //       id,
-  //       name,
-  //       sentDate,
-  //       url,
-  //     } = send;
-  //     const {
-  //       metrics,
-  //       identities,
-  //       clicks,
-  //       advertiserClickRate,
-  //       deploymentId,
-  //     } = row;
-  //     return {
-  //       send: {
-  //         id,
-  //         deploymentId,
-  //         name,
-  //         sentDate,
-  //         url,
-  //         metrics,
-  //       },
-  //       identities,
-  //       clicks,
-  //       advertiserClickRate,
-  //     };
-  //   });
-  // },
+    reduced.totals.metrics.deliveryRate = sent ? delivered / sent : 0;
+    reduced.totals.metrics.openRate = delivered ? uniqueOpens / delivered : 0;
+    reduced.totals.metrics.clickToDeliveredRate = delivered
+      ? uniqueClicks / delivered : 0;
+    reduced.totals.metrics.clickToOpenRate = uniqueOpens
+      ? uniqueClicks / uniqueOpens : 0;
+    return reduced;
+  },
 };

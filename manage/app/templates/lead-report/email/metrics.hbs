@@ -1,12 +1,11 @@
 <div class="card-body">
-  {{#if model.sends.length}}
-
+  {{#if model.deployments.length}}
     <div class="row">
       <div class="col-12 col-md-6 mb-3">
         <div class="card">
           <div class="card-header font-weight-bold text-center">Activity For All Emails</div>
           <div class="card-body">
-            {{lead-report/charts/email-activity totals=model.totals.metrics count=model.sends.length}}
+            {{lead-report/charts/email-activity totals=model.totals.metrics count=model.deployments.length}}
           </div>
         </div>
       </div>
@@ -15,7 +14,7 @@
           <div class="card-header font-weight-bold text-center">Lead Acquisition Share</div>
           <div class="card-body">
             <div class="table-responsive">
-              {{lead-report/charts/lead-acquisition sends=model.sends totalIdentityCount=model.totals.identities}}
+              {{lead-report/charts/lead-acquisition deployments=model.deployments totalIdentityCount=model.totals.identities}}
             </div>
           </div>
         </div>
@@ -28,7 +27,7 @@
         <div class="table-responsive">
           {{lead-report/tables/email-metrics
             displayDeliveredMetrics=campaign.email.displayDeliveredMetrics
-            sends=model.sends
+            deployments=model.deployments
             totals=model.totals
             sortBy=sortBy
             ascending=ascending

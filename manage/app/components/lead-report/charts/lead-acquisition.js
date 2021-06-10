@@ -6,20 +6,20 @@ import numeral from 'numeral';
 export default Component.extend({
   totalIdentityCount: 0,
 
-  _series: computed('sends.[]', function() {
+  _series: computed('deployments.[]', function() {
     const series = {
       type: 'pie',
-      name: 'Leads from this send',
+      name: 'Leads from this deployment',
       data: [],
     };
 
     const count = this.get('totalIdentityCount');
-    this.get('sends').forEach((send) => {
-      const countForSend = get(send, 'identities');
+    this.get('deployments').forEach((deployment) => {
+      const countForSend = get(deployment, 'identities');
       if (countForSend && count) {
         series.data.pushObject({
           y: countForSend / count,
-          name: `${get(send, 'send.name')} (Sent: ${moment(get(send, 'send.sentDate')).format('MMM Do, YYYY @ h:mma')})`,
+          name: `${get(deployment, 'deployment.name')} (Sent: ${moment(get(deployment, 'deployment.sentDate')).format('MMM Do, YYYY @ h:mma')})`,
           dataLabels: { enabled: false },
         });
       }
