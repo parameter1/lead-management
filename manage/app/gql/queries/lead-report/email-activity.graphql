@@ -8,9 +8,8 @@ query LeadReportEmailActivity($hash: String!) {
         identity {
           ...IdentityViewFragment
         }
-        send {
+        deployment {
           id
-          url
           sentDate
           name
         }

@@ -3,7 +3,6 @@ const {
   Campaign,
   Identity,
   OmedaEmailClick,
-  OmedaEmailDeployment,
 } = require('../../mongodb/models');
 const emailReportService = require('../../services/email-report');
 // const adReportService = require('../../services/ad-report');
@@ -14,13 +13,13 @@ module.exports = {
     totalCount: (results) => results.length,
     edges: (results, _, { loaders }) => results.map((result) => ({
       node: () => ({
-        identity: () => loaders.identity.load(result._id.identityId),
-        send: () => loaders.emailSend.load(result._id.sendId),
+        identity: () => loaders.identityEntity.load(result._id.identityEntity),
+        deployment: () => loaders.emailDeploymentEntity.load(result._id.deploymentEntity),
         url: () => loaders.extractedUrl.load(result._id.urlId),
         last: () => result.last,
         clicks: () => result.clicks,
       }),
-      cursor: () => result._id.identityId,
+      cursor: () => result._id.identityEntity,
     })),
     pageInfo: () => ({
       hasNextPage: () => false,
@@ -100,43 +99,34 @@ module.exports = {
       const campaign = await Campaign.findByHash(hash);
 
       const {
-        identityIds,
+        identityEntities,
         urlIds,
-        sendIds,
+        deploymentEntities,
       } = await emailReportService.getClickEventIdentifiers(campaign);
 
       const $match = {
-        usr: { $in: identityIds },
+        idt: { $in: identityEntities },
         url: { $in: urlIds },
-        job: { $in: sendIds },
-        $or: [
-          { 'guids.0': { $exists: true } },
-          { n: { $gt: 0 } },
-        ],
+        dep: { $in: deploymentEntities },
+        date: { $gte: campaign.startDate },
       };
-      // @todo This is being shut off to allow events just after the sent date to
-      // display. Will still limit by the campaign start date.
-      // const dateCriteria = emailReportService.createDateCriteria(campaign);
-      // if (dateCriteria) $match.day = dateCriteria;
-      if (campaign.startDate) $match.day = { $gte: campaign.startDate };
 
       const pipeline = [];
       pipeline.push({ $match });
-      pipeline.push({ $addFields: { guidn: { $size: '$guids' } } });
       pipeline.push({
         $group: {
           _id: {
-            identityId: '$usr',
-            sendId: '$job',
+            identityEntity: '$idt',
+            deploymentEntity: '$dep',
             urlId: '$url',
           },
-          clicks: { $sum: { $add: ['$n', '$guidn'] } },
-          last: { $max: '$last' },
+          clicks: { $sum: '$n' },
+          last: { $max: '$date' },
         },
       });
       pipeline.push({ $sort: { last: -1 } });
       const [result, projection] = await Promise.all([
-        EventEmailClick.aggregate(pipeline),
+        OmedaEmailClick.aggregate(pipeline),
         emailReportService.identityFieldProjection(campaign),
       ]);
       result.projection = projection;

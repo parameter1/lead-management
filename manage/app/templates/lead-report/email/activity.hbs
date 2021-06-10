@@ -30,13 +30,13 @@
                 </a>
               </td>
               <td>
-                {{#if node.send.url}}
-                  <a href="#" {{action "displayIframeModal" node.send}}>{{ node.send.name }}</a>
+                {{#if node.deployment.url}}
+                  <a href="#" {{action "displayIframeModal" node.deployment}}>{{ node.deployment.name }}</a>
                 {{else}}
-                  {{ node.send.name }}
+                  {{ node.deployment.name }}
                 {{/if}}
               </td>
-              <td>{{moment-format node.send.sentDate "MMM Do, YYYY @ h:mma"}}</td>
+              <td>{{moment-format node.deployment.sentDate "MMM Do, YYYY @ h:mma"}}</td>
               <td>
                 <a href={{node.url.values.resolved}} target="_blank" rel="noopener noreferer">
                   {{#if node.url.title}}{{node.url.title}}{{else}}(No Title){{/if}}{{entypo-icon "popup" class="ml-1"}}

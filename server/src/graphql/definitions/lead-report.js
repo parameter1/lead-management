@@ -63,7 +63,7 @@ type ReportEmailActivityEdge {
 type ReportEmailActivityNode {
   identity: Identity!
   url: ExtractedUrl!
-  send: EmailSend!
+  deployment: EmailDeployment!
   last: Date
   clicks: Int
 }

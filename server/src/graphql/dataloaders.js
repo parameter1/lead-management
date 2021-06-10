@@ -46,6 +46,7 @@ module.exports = {
   // form: new DataLoader(createBatchFn(Form)),
   // formEntry: new DataLoader(createBatchFn(FormEntry)),
   identity: new DataLoader(createBatchFn(Identity)),
+  identityEntity: new DataLoader(createEntityBatchFn(Identity)),
   order: new DataLoader(createBatchFn(Order)),
   tag: new DataLoader(createBatchFn(Tag)),
   user: new DataLoader(createBatchFn(User)),
