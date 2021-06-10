@@ -1,3 +1,5 @@
+const pkg = require('./package.json');
+
 /**
  * New Relic agent configuration.
  *
@@ -8,7 +10,7 @@ exports.config = {
   /**
    * Array of application names.
    */
-  app_name: ['Leads Graph'],
+  app_name: [pkg.name],
   /**
    * Your New Relic license key.
    */
