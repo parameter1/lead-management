@@ -17,7 +17,7 @@ class Limit {
    * @param {number} [options.def=10] The default limit value, if not specified.
    * @param {number} [options.max=200] The maximum limit (page size).
    */
-  set options({ def = 10, max = 200 } = {}) {
+  set options({ def = 10, max = 500 } = {}) {
     this.opts = { def, max };
   }
 

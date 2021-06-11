@@ -265,6 +265,11 @@ module.exports = {
     tags: ({ tagIds }, _, { loaders }) => loaders.tag.loadMany(tagIds),
     excludedTags: ({ excludedTagIds }, _, { loaders }) => loaders.tag.loadMany(excludedTagIds),
 
+    identityAttributes: async (emailCampaign) => {
+      const excludedFields = await emailCampaign.getExcludeFields();
+      return identityAttributes.filter(({ key }) => !excludedFields.includes(key));
+    },
+
     /**
      * @todo find a way to not re-query the campaign here.
      */

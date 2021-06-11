@@ -120,6 +120,7 @@ type EmailCampaign {
   tags: [Tag]
   excludedTags: [Tag]
   excludeFields: [String]
+  identityAttributes: [IdentityAttribute!]!
   allowedLinkTypes: [String]
   identityFilters: [CampaignIdentityFilter]
   excludeUrls: [EmailCampaignExcludedUrl]
@@ -129,6 +130,11 @@ type EmailCampaign {
   urlGroups: [EmailCampaignUrlGroup!]!
   "Whether this email campaign has any eligible deployment data."
   hasDeployments: Boolean!
+}
+
+type IdentityAttribute {
+  key: String!
+  label: String!
 }
 
 type EmailCampaignUrlGroup {

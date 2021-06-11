@@ -37,6 +37,7 @@ module.exports = {
         const { urlIds, deploymentEntities } = row;
         return {
           node: {
+            clicks: row.clicks || 0,
             identity: node,
             urlIds,
             deploymentEntities,
