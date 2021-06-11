@@ -133,10 +133,10 @@ module.exports = {
       const setToCache = async (result) => {
         const data = JSON.stringify(result);
         // store for one hour
-        await redis.setexAsync(cacheKey, 60 * 60, data);
+        await redis.setex(cacheKey, 60 * 60, data);
       };
 
-      const fromCache = await redis.getAsync(cacheKey);
+      const fromCache = await redis.get(cacheKey);
       if (fromCache) return filterResponse(JSON.parse(fromCache));
 
       const { gamAdvertiserIds } = await loaders.customer.load(campaign.customerId);
