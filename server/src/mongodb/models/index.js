@@ -2,6 +2,7 @@ const AdCreativeTracker = require('./ad-creative-tracker');
 const AdCreative = require('./ad-creative');
 const Campaign = require('./campaign');
 const Customer = require('./customer');
+const EventAdCreative = require('./event-ad-creative');
 const ExcludedEmailDomain = require('./excluded-email-domain');
 const ExtractedHost = require('./extracted-host');
 const ExtractedUrl = require('./extracted-url');
@@ -21,6 +22,7 @@ module.exports = {
   AdCreative,
   Campaign,
   Customer,
+  EventAdCreative,
   ExcludedEmailDomain,
   ExtractedHost,
   ExtractedUrl,
