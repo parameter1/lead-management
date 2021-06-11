@@ -39,6 +39,7 @@
     "html-entities": "^2.3.2",
     "inflected": "^2.1.0",
     "ioredis": "^4.27.3",
+    "json2csv": "^5.0.6",
     "jsonwebtoken": "^8.5.1",
     "lodash.merge": "^4.6.2",
     "mongoose": "^5.12.11",

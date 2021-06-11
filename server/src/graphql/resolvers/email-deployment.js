@@ -51,7 +51,7 @@ module.exports = {
    *
    */
   EmailDeploymentTypeReportDetail: {
-    id: ({ id, year, week }) => `${id}_${year}_${week}`,
+    id: ({ name, year, week }) => `${name}_${year}_${week}`,
     deployments: ({ deploymentIds }) => OmedaEmailDeployment.find({ _id: { $in: deploymentIds } }),
   },
 

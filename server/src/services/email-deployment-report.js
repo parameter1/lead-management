@@ -14,17 +14,17 @@ module.exports = {
     const results = await this.create({ start, end });
     if (!isArray(results.weeks)) return [];
     return results.weeks.reduce((arr, week) => {
-      const { year, week: number, categories } = week;
+      const { year, week: weekNumber, types } = week;
       const row = {
         Year: year,
-        Week: number + 1,
-        Starting: dayjs().year(year).week(number + 1).startOf('week')
+        Week: weekNumber,
+        Starting: dayjs().year(year).week(weekNumber).startOf('week')
           .format('MMM D'),
       };
-      const categoryRows = categories.reduce((r, category) => {
+      const typeRows = types.reduce((r, type) => {
         const {
           name,
-          deploymentIds,
+          deploymentCount,
           totalSent,
           totalDelivered,
           totalUniqueOpens,
@@ -33,27 +33,26 @@ module.exports = {
           avgUniqueOpenRate,
           avgUniqueClickToDeliveredRate,
           avgUniqueClickToOpenRate,
-        } = category;
-        const numSent = deploymentIds.length;
+        } = type;
         r.push({
           ...row,
           Category: name,
-          '# Sent': numSent,
+          '# Sent': deploymentCount,
           'Total Sent': totalSent,
-          'Avg. Sent': parseInt((totalSent || 0) / numSent, 10),
-          'Avg. Delivered': parseInt((totalDelivered || 0) / numSent, 10),
+          'Avg. Sent': parseInt((totalSent || 0) / deploymentCount, 10),
+          'Avg. Delivered': parseInt((totalDelivered || 0) / deploymentCount, 10),
           'Avg. Delivery Rate': this.round(avgDeliveryRate, 3),
           'Total Unique Opens': totalUniqueOpens,
-          'Avg. Unique Opens': parseInt((totalUniqueOpens || 0) / numSent, 10),
+          'Avg. Unique Opens': parseInt((totalUniqueOpens || 0) / deploymentCount, 10),
           'Avg. Unq Open Rate': this.round(avgUniqueOpenRate, 3),
           'Total Unique Clicks': totalUniqueClicks,
-          'Avg. Unique Clicks': parseInt((totalUniqueClicks || 0) / numSent, 10),
+          'Avg. Unique Clicks': parseInt((totalUniqueClicks || 0) / deploymentCount, 10),
           'Avg. Unq CTR': this.round(avgUniqueClickToDeliveredRate, 3),
           'Avg. Unq CTOR': this.round(avgUniqueClickToOpenRate, 3),
         });
         return r;
       }, []);
-      return [...arr, ...categoryRows];
+      return [...arr, ...typeRows];
     }, []);
   },
 
@@ -127,6 +126,8 @@ module.exports = {
           types: {
             $push: {
               name: '$_id.type',
+              year: '$_id.year',
+              week: '$_id.week',
               deploymentIds: '$deploymentIds',
               deploymentCount: '$deploymentCount',
               totalSent: '$totalSent',
