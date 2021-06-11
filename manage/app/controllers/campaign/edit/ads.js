@@ -22,6 +22,10 @@ export default Controller.extend(FormMixin, {
     return this.get('identityAttributes.getViewableFields').filter(o => selected.includes(o.key));
   }),
 
+  trackerCount: computed('model.trackers.length', function () {
+    return this.get('model.trackers.length') || 0;
+  }),
+
   actions: {
     /**
      *
