@@ -108,6 +108,7 @@ type AdCampaign {
   tags: [Tag]
   excludeFields: [String]
   identityFilters: [CampaignIdentityFilter]
+  identityAttributes: [IdentityAttribute!]!
   trackers: [AdCreativeTracker]
   excludeTrackers: [AdCreativeTracker]
   "Whether this ad campaign has any identity/lead data."

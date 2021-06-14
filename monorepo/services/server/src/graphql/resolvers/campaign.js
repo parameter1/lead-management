@@ -372,6 +372,10 @@ module.exports = {
       if (!campaign) return [];
       return adReportService.findAllTrackersForCampaign(campaign);
     },
+    identityAttributes: (adCampaign) => {
+      const excludedFields = adCampaign.excludeFields || [];
+      return identityAttributes.filter(({ key }) => !excludedFields.includes(key));
+    },
     excludeTrackers: (adCampaign) => {
       const { excludeTrackerIds } = adCampaign;
       if (!Array.isArray(excludeTrackerIds)) return [];

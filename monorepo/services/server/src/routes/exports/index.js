@@ -4,7 +4,7 @@ const { Parser } = require('json2csv');
 
 const asyncRoute = require('../../utils/async-route');
 const micro = require('../../micro');
-const Campaign = require('../../mongodb/models/campaign');
+const { Campaign } = require('../../mongodb/models');
 const emailDeploymentReportService = require('../../services/email-deployment-report');
 
 const router = Router();
@@ -27,6 +27,11 @@ router.get('/campaign/:hash/leads', asyncRoute(async (req, res) => {
 router.get('/campaign/:hash/email/metrics', asyncRoute(async (req, res) => {
   const { hash } = req.params;
   await doExport(res, { hash, action: 'campaign.emailMetrics', name: 'Email Metrics' });
+}));
+
+router.get('/campaign/:hash/ad-leads', asyncRoute(async (req, res) => {
+  const { hash } = req.params;
+  await doExport(res, { hash, action: 'campaign.adLeads', name: 'Pre-Roll Leads' });
 }));
 
 router.get('/email-deployment-report', asyncRoute(async (req, res) => {

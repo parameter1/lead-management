@@ -1,0 +1,84 @@
+const Joi = require('@parameter1/joi');
+const { validateAsync } = require('@parameter1/joi/utils');
+const { get, getAsArray } = require('@parameter1/utils');
+const gql = require('graphql-tag');
+const { Parser } = require('json2csv');
+const getAllEdges = require('../../utils/get-all-edges');
+
+const CAMPAIGN_QUERY = gql`
+  query ExportAdCampaignExcludedFields($hash: String!) {
+    campaignByHash(hash: $hash) {
+      id
+      ads {
+        id
+        identityAttributes {
+          key
+          label
+        }
+      }
+    }
+  }
+`;
+
+const QUERY = gql`
+  query ExportCampaignAdLeads($hash: String!, $pagination: PaginationInput, $sort: IdentitySortInput) {
+    reportAdIdentities(hash: $hash, pagination: $pagination, sort: $sort) {
+      totalCount
+      edges {
+        node {
+          id
+          entity
+          emailAddress
+          givenName
+          familyName
+          title
+          companyName
+          street
+          city
+          region
+          postalCode
+          country
+          phoneNumber
+          attributes
+          fieldCount
+        }
+        cursor
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+    }
+  }
+`;
+
+module.exports = async (params = {}, { context }) => {
+  const { hash } = await validateAsync(Joi.object({
+    hash: Joi.string().trim().pattern(/[a-f0-9]{32}/).required(),
+  }).required(), params);
+
+  const { apollo } = context;
+  const variables = { hash, sort: { field: 'fieldCount', order: -1 }, pagination: { first: 500 } };
+
+  const { data } = await apollo.query({ query: CAMPAIGN_QUERY, variables: { hash } });
+  const identityAttributes = getAsArray(data, 'campaignByHash.ads.identityAttributes');
+
+  const edges = await getAllEdges(apollo, {
+    opName: 'reportAdIdentities',
+    query: QUERY,
+    variables,
+  });
+
+  const rows = edges.map(({ node: identity }) => {
+    const row = identityAttributes.reduce((o, { key, label }) => {
+      const value = get(identity, key) || '';
+      return { ...o, [label]: value };
+    }, {});
+    return row;
+  });
+  if (!rows.length) return '';
+  const parser = new Parser({
+    fields: Object.keys(rows[0]),
+  });
+  return parser.parse(rows);
+};
