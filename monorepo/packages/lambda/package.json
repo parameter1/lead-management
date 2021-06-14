@@ -1,0 +1,28 @@
+{
+  "name": "@lead-management/lambda",
+  "version": "0.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/parameter1/lead-management.git",
+  "author": "Jacob Bare <jacob@parameter1.com>",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "lint": "eslint --ext .js ./src",
+    "test": "yarn lint"
+  },
+  "dependencies": {
+    "@lead-management/mongodb": "^0.0.0",
+    "@lead-management/sync": "^0.0.0",
+    "aws-sdk": "^2.927.0",
+    "dayjs": "^1.10.5",
+    "envalid": "^7.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.28.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.23.3"
+  },
+  "engines": {
+    "node": ">=12"
+  }
+}
