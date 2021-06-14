@@ -11,23 +11,28 @@ class GAMGraphQLClient {
     this.client = create({ uri });
   }
 
-  async findByID({ id, type, fragment }) {
+  async findByID({
+    id,
+    type,
+    fragment,
+    strict = true,
+  } = {}) {
     if (!id) return null;
     const { spreadFragmentName, processedFragment } = extractFragmentData(fragment);
     try {
       const { data } = await this.client.query({
         query: gql`
-          query FindManyByIDs($id: BigInt!) {
+          query FindManyByIDs($id: BigInt!, $strict: Boolean!) {
             ${type}: _${type}(input: {
               id: $id,
-              strict: true,
+              strict: $strict,
             }) {
               ${spreadFragmentName}
             }
           }
           ${processedFragment}
         `,
-        variables: { id },
+        variables: { id, strict },
       });
       return data[type];
     } catch (e) {
