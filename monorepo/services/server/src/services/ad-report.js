@@ -48,19 +48,18 @@ module.exports = {
 
     if (!trackerIds.length) return [];
 
-    const eventCriteria = { action: 'click', trackerId: { $in: trackerIds } };
-    const dateCriteria = createDateCriteria(campaign);
-    if (dateCriteria) eventCriteria.day = dateCriteria;
-
-    const externalIds = await EventAdCreative.distinct('usr', eventCriteria);
-
-    if (!externalIds.length) return [];
+    const eventCriteria = {
+      action: 'click',
+      trackerId: { $in: trackerIds },
+      day: { $gte: campaign.startDate, $lte: campaign.endDate },
+    };
+    const entities = await EventAdCreative.distinct('idt', eventCriteria);
+    if (!entities.length) return [];
 
     // Must exclude by ineligible identities, then sort and set max limit.
     const exclusions = await this.buildIdentityExclusionCriteria(campaign, { suppressInactives });
     const criteria = {
-      'externalSource.namespace': 'FuelSOAP:Subscriber',
-      'externalSource.identifier': { $in: externalIds.map((id) => `${id}`) },
+      entity: { $in: entities },
       ...exclusions,
     };
 
@@ -82,11 +81,11 @@ module.exports = {
     const { identityFilters } = ads;
 
     const customerIds = [campaign.customerId];
-    const [childCustomers, excludedDomains] = await Promise.all([
-      Customer.find({ parentId: campaign.customerId }, { _id: 1 }),
+    const [childCustomerIds, excludedDomains] = await Promise.all([
+      Customer.distinct('_id', { parentId: campaign.customerId, deleted: { $ne: true } }),
       ExcludedEmailDomain.distinct('domain'),
     ]);
-    childCustomers.forEach((c) => customerIds.push(c._id));
+    customerIds.push(...childCustomerIds);
 
     const criteria = suppressInactives ? {
       inactive: false,

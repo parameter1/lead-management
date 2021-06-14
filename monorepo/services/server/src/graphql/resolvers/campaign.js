@@ -358,7 +358,7 @@ module.exports = {
    *
    */
   EmailCampaignUrlDeploymentGroup: {
-    deployment: ({ entity }, _, { loaders }) => loaders.emailDeploymentEntity.load(entity)
+    deployment: ({ entity }, _, { loaders }) => loaders.emailDeploymentEntity.load(entity),
   },
 
   /**
@@ -377,16 +377,13 @@ module.exports = {
       if (!Array.isArray(excludeTrackerIds)) return [];
       return AdCreativeTracker.find({ _id: { $in: excludeTrackerIds } });
     },
-    /**
-     * @todo restore
-     */
-    // hasIdentities: async (adCampaign) => {
-    //   const { id } = adCampaign;
-    //   const campaign = await Campaign.findOne({ 'ads._id': id });
-    //   if (!campaign) return false;
-    //   const identityIds = await adReportService.getEligibleIdentityIds(campaign);
-    //   return Boolean(identityIds.length);
-    // },
+    hasIdentities: async (adCampaign) => {
+      const { id } = adCampaign;
+      const campaign = await Campaign.findOne({ 'ads._id': id });
+      if (!campaign) return false;
+      const identityIds = await adReportService.getEligibleIdentityIds(campaign);
+      return Boolean(identityIds.length);
+    },
   },
 
   /**
@@ -547,41 +544,41 @@ module.exports = {
     },
 
     /**
-     * @todo restore
+     *
      */
-    // adCampaignIdentities: async (root, { id, pagination, sort }, { auth }) => {
-    //   auth.check();
-    //   const campaign = await findAdCampaign(id);
+    adCampaignIdentities: async (root, { id, pagination, sort }, { auth }) => {
+      auth.check();
+      const campaign = await findAdCampaign(id);
 
-    //   const identityIds = await adReportService.getEligibleIdentityIds(campaign, {
-    //     suppressInactives: false,
-    //   });
-    //   const criteria = { _id: { $in: identityIds } };
-    //   return new Pagination(Identity, { pagination, sort, criteria });
-    // },
+      const identityIds = await adReportService.getEligibleIdentityIds(campaign, {
+        suppressInactives: false,
+      });
+      const criteria = { _id: { $in: identityIds } };
+      return new Pagination(Identity, { pagination, sort, criteria });
+    },
 
     /**
-     * @todo restore
+     *
      */
-    // searchAdCampaignIdentities: async (root, {
-    //   id,
-    //   pagination,
-    //   search,
-    //   options,
-    // }, { auth }) => {
-    //   auth.check();
-    //   const { field, phrase } = search;
+    searchAdCampaignIdentities: async (root, {
+      id,
+      pagination,
+      search,
+      options,
+    }, { auth }) => {
+      auth.check();
+      const { field, phrase } = search;
 
-    //   const campaign = await findAdCampaign(id);
+      const campaign = await findAdCampaign(id);
 
-    //   const identityIds = await adReportService.getEligibleIdentityIds(campaign, {
-    //     suppressInactives: false,
-    //   });
-    //   const criteria = { _id: { $in: identityIds } };
+      const identityIds = await adReportService.getEligibleIdentityIds(campaign, {
+        suppressInactives: false,
+      });
+      const criteria = { _id: { $in: identityIds } };
 
-    //   const instance = new TypeAhead(field, phrase, criteria, options);
-    //   return instance.paginate(Identity, pagination);
-    // },
+      const instance = new TypeAhead(field, phrase, criteria, options);
+      return instance.paginate(Identity, pagination);
+    },
   },
 
   /**
