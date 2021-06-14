@@ -13,8 +13,8 @@ module.exports = {
     trackers: ({ id }, _, { host }) => {
       const baseUrl = `https://${host}/creative`;
       return {
-        click: `${baseUrl}/c/${id}?lid=%eaid!&cid=%ecid!&usr=%%PATTERN:et_usr%%`,
-        impression: `${baseUrl}/i/${id}?lid=%eaid!&cid=%ecid!&usr=%%PATTERN:et_usr%%`,
+        click: `${baseUrl}/c/${id}?lid=%eaid!&cid=%ecid!&idt=%%PATTERN:leads_idt%%`,
+        impression: `${baseUrl}/i/${id}?lid=%eaid!&cid=%ecid!&idt=%%PATTERN:leads_idt%%`,
       };
     },
   },
