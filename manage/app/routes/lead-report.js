@@ -10,7 +10,7 @@ export default Route.extend(RouteQueryManager, {
   },
 
   afterModel(model) {
-    if (model.get('email.enabled')) return;
+    if (model.get('email.enabled') && model.get('email.hasDeployments')) return;
     if (model.get('forms.enabled') && model.get('forms.forms.length')) return this.transitionTo('lead-report.forms');
     if (model.get('ads.enabled') && model.get('ads.hasIdentities')) return this.transitionTo('lead-report.ads');
     if (model.get('customer.linkedAdvertisers.googleAdManager.nodes.length') && model.get('adMetrics.enabled')) return this.transitionTo('lead-report.ad-metrics');
