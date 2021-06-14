@@ -14,7 +14,7 @@ const {
 } = require('../../mongodb/models');
 // const FormRepo = require('../../repos/form');
 const emailReportService = require('../../services/email-report');
-// const adReportService = require('../../services/ad-report');
+const adReportService = require('../../services/ad-report');
 const identityAttributes = require('../../services/identity-attributes');
 const redis = require('../../redis');
 const getBrightcoveReport = require('../utils/brightcove-get-report');
@@ -366,15 +366,12 @@ module.exports = {
    */
   AdCampaign: {
     tags: ({ tagIds }, _, { loaders }) => loaders.tag.loadMany(tagIds),
-    /**
-     * @todo restore
-     */
-    // trackers: async (adCampaign) => {
-    //   const { id } = adCampaign;
-    //   const campaign = await Campaign.findOne({ 'ads._id': id });
-    //   if (!campaign) return [];
-    //   return adReportService.findAllTrackersForCampaign(campaign);
-    // },
+    trackers: async (adCampaign) => {
+      const { id } = adCampaign;
+      const campaign = await Campaign.findOne({ 'ads._id': id });
+      if (!campaign) return [];
+      return adReportService.findAllTrackersForCampaign(campaign);
+    },
     excludeTrackers: (adCampaign) => {
       const { excludeTrackerIds } = adCampaign;
       if (!Array.isArray(excludeTrackerIds)) return [];

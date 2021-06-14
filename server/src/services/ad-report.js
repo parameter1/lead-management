@@ -13,22 +13,21 @@ module.exports = {
     const { tagIds } = ads;
 
     const customerIds = [customerId];
-    const childCustomers = await Customer.find({ parentId: customerId }, { _id: 1 });
-    childCustomers.forEach((c) => customerIds.push(c._id));
+    const childCustomerIds = await Customer.distinct('_id', { parentId: customerId, deleted: { $ne: true } });
+    customerIds.push(...childCustomerIds);
 
     const trackerCriteria = {
       customerId: { $in: customerIds },
+      ...(tagIds && tagIds.length && { tagIds: { $in: tagIds } }),
     };
-    if (tagIds && tagIds.length) trackerCriteria.tagIds = { $in: tagIds };
 
-    const trackers = await AdCreativeTracker.find(trackerCriteria, { _id: 1 });
-    const trackerIds = trackers.map((t) => t._id);
+    const trackerIds = await AdCreativeTracker.distinct('_id', trackerCriteria);
     if (!trackerIds.length) return [];
 
-    const eventCriteria = { trackerId: { $in: trackerIds } };
-    const dateCriteria = createDateCriteria(campaign);
-    if (dateCriteria) eventCriteria.day = dateCriteria;
-
+    const eventCriteria = {
+      trackerId: { $in: trackerIds },
+      day: { $gte: campaign.startDate, $lte: campaign.endDate },
+    };
     const eligibleTrackerIds = await EventAdCreative.distinct('trackerId', eventCriteria);
     if (!eligibleTrackerIds.length) return [];
 

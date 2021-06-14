@@ -27,8 +27,8 @@ const schema = new Schema({
     type: Schema.Types.ObjectId,
     required: true,
   },
-  usr: {
-    type: Number,
+  idt: {
+    type: String,
     required: true,
   },
   lid: {
@@ -53,7 +53,7 @@ schema.index({
   action: 1,
   day: 1,
   trackerId: 1,
-  usr: 1,
+  idt: 1,
   lid: 1,
   cid: 1,
 }, { unique: true });
@@ -64,7 +64,7 @@ schema.methods.aggregateSave = async function aggregateSave() {
     action: this.action,
     day: this.day,
     trackerId: this.trackerId,
-    usr: this.usr,
+    idt: this.idt,
     lid: this.lid,
     cid: this.cid,
   };
