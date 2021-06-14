@@ -1,5 +1,5 @@
 {
-  "name": "@lead-management/export",
+  "name": "@lead-management/exports-service",
   "version": "0.0.0",
   "main": "src/index.js",
   "repository": "https://github.com/parameter1/lead-management.git",
@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@parameter1/gulp": "^1.1.17",
-    "eslint": "^7.27.0",
+    "eslint": "^7.28.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.23.3"
   },
