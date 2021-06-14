@@ -21,22 +21,22 @@ exports.handler = async (event = {}, context = {}) => {
   }, new Set())];
   log(`Found ${trackIds.length} deployment(s) to process data for...`);
 
-  const [{ customerIds, identityRecords }] = await Promise.all([
+  const [{ encryptedCustomerIds, identityRecords }] = await Promise.all([
     upsertClicks({ trackIds }),
     upsertMetrics({ trackIds }),
   ]);
 
   const enqueuePromises = [];
-  if (customerIds.size) {
+  if (encryptedCustomerIds.size) {
     enqueuePromises.push(batchSend({
-      values: [...customerIds],
+      values: [...encryptedCustomerIds],
       queueName: 'customer-ids',
-      builder: (customerId) => ({
-        Id: `${customerId}`,
-        MessageBody: JSON.stringify({ customerId }),
+      builder: (encryptedCustomerId) => ({
+        Id: `${encryptedCustomerId}`,
+        MessageBody: JSON.stringify({ encryptedCustomerId }),
       }),
     }));
-    log('Enqueued customer IDs:', customerIds);
+    log('Enqueued customer IDs:', encryptedCustomerIds);
   }
   if (identityRecords.size) {
     enqueuePromises.push(batchSend({

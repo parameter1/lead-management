@@ -8,11 +8,11 @@ const createExcludedDomainMap = require('../ops/create-excluded-domain-map');
 const loadDB = require('../mongodb/load-db');
 
 module.exports = async (params = {}) => {
-  const { customerIds } = await validateAsync(Joi.object({
-    customerIds: Joi.array().items(Joi.number().min(1).required()).required(),
+  const { encryptedCustomerIds } = await validateAsync(Joi.object({
+    encryptedCustomerIds: Joi.array().items(Joi.string().trim().pattern(/[a-z0-9]{15}/i).required()).required(),
   }), params);
 
-  const customers = await loadCustomers({ customerIds });
+  const customers = await loadCustomers({ encryptedCustomerIds });
 
   const emails = [];
   customers.forEach((customer) => {

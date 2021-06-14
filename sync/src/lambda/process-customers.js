@@ -13,15 +13,17 @@ exports.handler = async (event = {}, context = {}) => {
   await Promise.all([mongodb.connect(), legacy.connect()]);
 
   const { Records = [] } = event;
-  const customerIds = [...Records.reduce((set, record) => {
-    const { customerId } = JSON.parse(record.body);
-    set.add(customerId);
+  const encryptedCustomerIds = [...Records.reduce((set, record) => {
+    const { encryptedCustomerId } = JSON.parse(record.body);
+    if (encryptedCustomerId) set.add(encryptedCustomerId);
     return set;
   }, new Set())];
-  log(`Found ${customerIds.length} customer(s) to upsert...`);
+  log(`Found ${encryptedCustomerIds.length} customer(s) to upsert...`);
 
-  await upsert({ customerIds });
-  log('Upsert complete:', customerIds);
+  if (encryptedCustomerIds.length) {
+    await upsert({ encryptedCustomerIds });
+    log('Upsert complete:', encryptedCustomerIds);
+  }
 
   if (!AWS_EXECUTION_ENV) await Promise.all([mongodb.close(), legacy.close()]);
   log('DONE');

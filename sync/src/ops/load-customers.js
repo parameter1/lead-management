@@ -11,15 +11,15 @@ const customerEntity = require('../utils/customer-entity');
  * @returns {Map} The customers mapped by customer ID.
  */
 module.exports = async (params = {}) => {
-  const { customerIds } = await validateAsync(Joi.object({
-    customerIds: Joi.array().items(Joi.number().min(1).required()).required(),
+  const { encryptedCustomerIds } = await validateAsync(Joi.object({
+    encryptedCustomerIds: Joi.array().items(Joi.string().trim().pattern(/[a-z0-9]{15}/i).required()).required(),
   }), params);
 
-  const ids = [...new Set(customerIds)];
-  const items = await Promise.all(ids.map(async (customerId) => {
-    const response = await omeda.resource('customer').lookupById({ customerId, reQueryOnInactive: true });
+  const ids = [...new Set(encryptedCustomerIds)];
+  const items = await Promise.all(ids.map(async (encryptedId) => {
+    const response = await omeda.resource('customer').lookupByEncryptedId({ encryptedId });
     const { data } = response;
-    const entity = customerEntity({ customerId: data.Id });
+    const entity = customerEntity({ encryptedCustomerId: data.EncryptedCustomerId });
 
     const [emails, phoneNumbers, postalAddresses, demographics] = await Promise.all([
       response.emails(),
@@ -28,7 +28,7 @@ module.exports = async (params = {}) => {
       response.demographics(),
     ]);
     return {
-      customerId,
+      encryptedId,
       entity,
       data,
       emails,
@@ -38,7 +38,7 @@ module.exports = async (params = {}) => {
     };
   }));
   return items.reduce((map, item) => {
-    map.set(item.customerId, item);
+    map.set(item.encryptedId, item);
     return map;
   }, new Map());
 };

@@ -10,7 +10,7 @@ const customerEntity = require('../utils/customer-entity');
 
 /**
  * Upserts deployment click event data for the provided deployment IDs.
- * Also returns the customer IDs and customer records associated with the click events
+ * Also returns the encrypted customer IDs and customer records associated with the click events
  * that can be used for customer upserting.
  *
  * @param {object} params
@@ -24,7 +24,7 @@ module.exports = async (params = {}) => {
   const items = await loadDeploymentClicks({ trackIds });
 
   const eventOps = [];
-  const customerIds = new Set();
+  const encryptedCustomerIds = new Set();
   const identityRecords = new Map();
   items.forEach(({ data, entity }) => {
     getAsArray(data, 'splits').forEach((split) => {
@@ -33,17 +33,17 @@ module.exports = async (params = {}) => {
         if (!urlId) return;
         getAsArray(link, 'clicks').forEach((click) => {
           const {
-            CustomerId: customerId,
+            EncryptedCustomerId: encryptedCustomerId,
             ClickDate,
             EmailAddress: emailAddress,
             FirstName,
             LastName,
           } = click;
-          const idt = customerId
-            ? customerEntity({ customerId }) : customerEntity({ emailAddress });
+          const idt = encryptedCustomerId
+            ? customerEntity({ encryptedCustomerId }) : customerEntity({ emailAddress });
 
-          if (customerId) {
-            customerIds.add(customerId);
+          if (encryptedCustomerId) {
+            encryptedCustomerIds.add(encryptedCustomerId);
           } else {
             identityRecords.set(idt, { EmailAddress: emailAddress, FirstName, LastName });
           }
@@ -64,5 +64,5 @@ module.exports = async (params = {}) => {
   });
   const db = await loadDB();
   if (eventOps.length) await db.collection('omeda-email-clicks').bulkWrite(eventOps);
-  return { eventOps, customerIds, identityRecords };
+  return { eventOps, encryptedCustomerIds, identityRecords };
 };
