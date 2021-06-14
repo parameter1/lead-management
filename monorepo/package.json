@@ -1,0 +1,20 @@
+{
+  "name": "lead-management",
+  "repository": "https://github.com/parameter1/lead-management.git",
+  "author": "Jacob Bare <jacob@parameter1.com>",
+  "license": "UNLICENSED",
+  "private": true,
+  "root": true,
+  "workspaces": [
+    "packages/*",
+    "services/*"
+  ],
+  "scripts": {
+    "lerna": "lerna",
+    "lint": "lerna run lint",
+    "test": "lerna run test"
+  },
+  "devDependencies": {
+    "lerna": "^4.0.0"
+  }
+}
