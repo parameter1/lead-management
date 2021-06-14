@@ -27,7 +27,7 @@ module.exports = {
       last: now,
       action,
       trackerId: tracker._id,
-      idt: ,
+      // idt: ,
       lid,
       cid,
     });

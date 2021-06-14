@@ -1,27 +1,15 @@
 version: '3.7'
 
-x-manage-env-defaults: &manage-env
-  NODE_ENV: development
-  YARN_CACHE_FOLDER: /.manage-yarn-cache
-
-x-server-env-defaults: &server-env
-  NEW_RELIC_ENABLED: ${NEW_RELIC_ENABLED-0}
-  NEW_RELIC_LICENSE_KEY: ${NEW_RELIC_LICENSE_KEY-(unset)}
-  NODE_ENV: development
-  TERMINUS_TIMEOUT: 1000
-  TERMINUS_SHUTDOWN_DELAY: 0
-  YARN_CACHE_FOLDER: /.server-yarn-cache
-
-x-server-node-defaults: &server-node
+x-node: &node
   tty: true
   init: true
   image: node:14.14-alpine
   entrypoint: ["node"]
-  working_dir: /server
+  working_dir: /monorepo
   volumes:
-    - ./server:/server:cached
-    - ./server/node_modules:/server/node_modules:delegated
-    - server-yarn-cache:/.server-yarn-cache
+    - ./monorepo:/monorepo:cached
+    - ./monorepo/node_modules:/monorepo/node_modules:delegated
+    - yarn-cache:/.yarn-cache
 
 x-ember-defaults: &ember
   tty: true
@@ -32,112 +20,31 @@ x-ember-defaults: &ember
   volumes:
     - ./manage:/myapp:cached
     - ./manage/node_modules:/myapp/node_modules:delegated
-    - manage-yarn-cache:/.manage-yarn-cache
-  environment:
-    <<: *manage-env
+    - ember-yarn-cache:/.ember-yarn-cache
+
+x-node-env: &node-env
+  NEW_RELIC_ENABLED: ${NEW_RELIC_ENABLED-0}
+  NEW_RELIC_LICENSE_KEY: ${NEW_RELIC_LICENSE_KEY-(unset)}
+  NODE_ENV: development
+  TERMINUS_TIMEOUT: 1000
+  TERMINUS_SHUTDOWN_DELAY: 0
+  YARN_CACHE_FOLDER: /.yarn-cache
+
+x-ember-env: &ember-env
+  NODE_ENV: development
+  YARN_CACHE_FOLDER: /.ember-yarn-cache
+
+x-omeda-env: &omeda-env
+  OMEDA_APP_ID: ${OMEDA_APP_ID}
+  OMEDA_BRAND_KEY: ${OMEDA_BRAND_KEY}
+
+x-mongodb-env: &mongodb-env
+  MONGO_DSN: ${MONGO_DSN-mongodb://mongo:27017/lead-management-indm}
+
+x-tenant-env: &tenant-env
+  TENANT_KEY: ${TENANT_KEY}
 
 services:
-  migrate:
-    tty: true
-    init: true
-    image: node:14.14-alpine
-    working_dir: /migrate
-    entrypoint: ["node"]
-    command: ["src/index.js"]
-    volumes:
-      - ./migrate:/migrate:cached
-    environment:
-      DESTINATION_MONGO_URI: ${MIGRATE_DESTINATION_MONGO_URI}
-      NODE_ENV: development
-      SOURCE_MONGO_URI: ${MIGRATE_SOURCE_MONGO_URI}
-
-  sync:
-    tty: true
-    init: true
-    image: node:14.14-alpine
-    working_dir: /sync
-    volumes:
-      - ./sync:/sync:cached
-      - ./sync/node_modules:/sync/node_modules:delegated
-    environment:
-      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
-      AWS_ACCOUNT_ID: ${AWS_ACCOUNT_ID}
-      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
-      LEGACY_MONGO_DSN: ${SYNC_LEGACY_MONGO_DSN}
-      MONGO_DSN: ${SYNC_MONGO_DSN}
-      NODE_ENV: development
-      OMEDA_APP_ID: ${OMEDA_APP_ID}
-      OMEDA_BRAND_KEY: ${OMEDA_BRAND_KEY}
-      TENANT_KEY: ${TENANT_KEY}
-
-  manage-commands:
-    <<: *ember
-    entrypoint: ["tail"]
-    command: ["-f", "/dev/null"]
-
-  server-commands:
-    <<: *server-node
-    working_dir: /server
-    entrypoint: ["tail"]
-    command: ["-f", "/dev/null"]
-    environment:
-      <<: *server-env
-
-  manage:
-    <<: *ember
-    entrypoint: ["node_modules/.bin/ember"]
-    command: ["serve", "--port", "9285", "--live-reload-port", "9286", "--proxy", "http://server"]
-    restart: on-failure
-    ports:
-      - "9285:9285"
-      - "9286:9286"
-      - "9287:9287"
-    depends_on:
-      - server
-
-  exports:
-    tty: true
-    init: true
-    image: node:14.14-alpine
-    working_dir: /exports
-    volumes:
-      - ./exports:/exports:cached
-      - ./exports/node_modules:/exports/node_modules:delegated
-    entrypoint: ["yarn"]
-    command: ["dev"]
-    environment:
-      <<: *server-env
-    ports:
-      - "9290:80"
-
-  server:
-    <<: *server-node
-    working_dir: /server
-    entrypoint: ["yarn"]
-    command: ["dev"]
-    environment:
-      <<: *server-env
-      # @todo need to determine how to port the GAM service below....
-      GAM_SERVICE_URL: ${GAM_SERVICE_URL-http://docker.for.mac.host.internal:9017}
-
-      BRIGHTCOVE_ACCOUNT_ID: ${BRIGHTCOVE_ACCOUNT_ID}
-      BRIGHTCOVE_APP_ID: ${BRIGHTCOVE_APP_ID}
-      BRIGHTCOVE_SECRET: ${BRIGHTCOVE_SECRET}
-      EXPOSED_PORT: 9288
-      HOST_NAME: ${HOST_NAME}
-      GAM_GRAPHQL_URI: ${GAM_GRAPHQL_URI-http://google-ad-manager}
-      MONGO_DSN: ${MONGO_DSN-mongodb://mongo:27017/leads-graph}
-      OMEDA_APP_ID: ${OMEDA_APP_ID}
-      OMEDA_BRAND_KEY: ${OMEDA_BRAND_KEY}
-      REDIS_DSN: ${REDIS_DSN-redis://redis:6379/0}
-    ports:
-      - "9288:80"
-    depends_on:
-      - exports
-      - redis
-      - mongo
-      - google-ad-manager
-
   google-ad-manager:
     tty: true
     image: parameter1/google-ad-manager-graphql-service:v0.3.0
@@ -162,7 +69,87 @@ services:
     restart: always
     image: redis:alpine
 
+  manage:
+    <<: *ember
+    entrypoint: ["node_modules/.bin/ember"]
+    command: ["serve", "--port", "9285", "--live-reload-port", "9286", "--proxy", "http://server"]
+    environment:
+      <<: *ember-env
+    ports:
+      - "9285:9285"
+      - "9286:9286"
+      - "9287:9287"
+    depends_on:
+      - server
+
+  exports:
+    <<: *node
+    working_dir: /monorepo/services/exports
+    entrypoint: ["yarn"]
+    command: ["dev"]
+    environment:
+      <<: *node-env
+    ports:
+      - "9290:80"
+
+  server:
+    <<: *node
+    working_dir: /monorepo/services/server
+    entrypoint: ["yarn"]
+    command: ["dev"]
+    environment:
+      <<: *node-env
+      <<: *omeda-env
+      <<: *mongodb-env
+      BRIGHTCOVE_ACCOUNT_ID: ${BRIGHTCOVE_ACCOUNT_ID}
+      BRIGHTCOVE_APP_ID: ${BRIGHTCOVE_APP_ID}
+      BRIGHTCOVE_SECRET: ${BRIGHTCOVE_SECRET}
+      EXPOSED_PORT: 9288
+      GAM_GRAPHQL_URI: ${GAM_GRAPHQL_URI-http://google-ad-manager}
+      HOST_NAME: ${HOST_NAME}
+      REDIS_DSN: ${REDIS_DSN-redis://redis:6379/0}
+    ports:
+      - "9288:80"
+    depends_on:
+      - exports
+      - redis
+      - mongo
+      - google-ad-manager
+
+  migrate:
+    <<: *node
+    working_dir: /monorepo/packages/migrate
+    entrypoint: ["node"]
+    command: ["index.js"]
+    environment:
+      <<: *node-env
+      DESTINATION_MONGO_URI: ${MIGRATE_DESTINATION_MONGO_URI}
+      SOURCE_MONGO_URI: ${MIGRATE_SOURCE_MONGO_URI}
+
+  sync:
+    <<: *node
+    working_dir: /monorepo/packages/sync
+    entrypoint: ["/bin/sh"]
+    environment:
+      <<: *node-env
+      <<: *omeda-env
+      <<: *mongodb-env
+      <<: *tenant-env
+
+  lambda:
+    <<: *node
+    working_dir: /monorepo/packages/lambda
+    entrypoint: ["/bin/sh"]
+    environment:
+      <<: *node-env
+      <<: *omeda-env
+      <<: *mongodb-env
+      <<: *tenant-env
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_ACCOUNT_ID: ${AWS_ACCOUNT_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+
 volumes:
   mongodb: {}
-  server-yarn-cache: {}
-  manage-yarn-cache: {}
+  yarn-cache: {}
+  ember-yarn-cache: {}
