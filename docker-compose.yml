@@ -140,13 +140,13 @@ services:
 
   google-ad-manager:
     tty: true
-    image: parameter1/google-ad-manager-graphql-service:v0.2.2
+    image: parameter1/google-ad-manager-graphql-service:v0.3.0
     volumes:
       - ./service-account.json:/service-account.json
     environment:
       JSON_KEY_FILE_PATH: /service-account.json
       NETWORK_CODE: 137873098
-      VERSION: v202102
+      VERSION: v202105
 
   mongo:
     tty: true
