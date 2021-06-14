@@ -1,4 +1,4 @@
-const mongodb = require('./index');
+const mongodb = require('./client');
 const { TENANT_KEY } = require('./env');
 
 module.exports = async () => {
