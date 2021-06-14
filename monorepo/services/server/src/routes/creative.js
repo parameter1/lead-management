@@ -21,23 +21,13 @@ router.get('/:type/:trackerId([a-f0-9]{24})', asyncRoute(async (req, res) => {
 
   // Track the creative action, but do not await.
   const action = type === 'c' ? 'click' : 'impression';
-
-  await creativeTracker.track({ tracker, action, query });
-  res.json({ ok: true });
-  // creativeTracker.track({
-  //   tracker,
-  //   action,
-  //   query,
-  // }).catch((e) => {
-  //   newrelic.noticeError(e);
-  // });
-
-  // if (action === 'click') {
-  //   res.redirect(301, url);
-  // } else {
-  //   res.set('Content-Type', 'image/gif');
-  //   res.send(emptyGif);
-  // }
+  creativeTracker.track({ tracker, action, query }).catch(newrelic.noticeError.bind(newrelic));
+  if (action === 'click') {
+    res.redirect(301, url);
+  } else {
+    res.set('Content-Type', 'image/gif');
+    res.send(emptyGif);
+  }
 }));
 
 module.exports = router;

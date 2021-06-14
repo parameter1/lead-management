@@ -1,3 +1,4 @@
+const customerEntity = require('@lead-management/omeda/entity-id/customer');
 const { AdCreative, EventAdCreative } = require('../mongodb/models');
 const creativeService = require('./ad-creative');
 
@@ -16,8 +17,6 @@ module.exports = {
     if (!shouldProcess) return null;
 
     const creative = await creativeService.getDetail({ cid, lid });
-    console.log(creative);
-
     if (!creative) return null;
 
     // Track the event.
@@ -27,7 +26,7 @@ module.exports = {
       last: now,
       action,
       trackerId: tracker._id,
-      // idt: ,
+      idt: customerEntity({ encryptedCustomerId: idt }),
       lid,
       cid,
     });

@@ -34,3 +34,6 @@
 - [ ] handle `LineItem.formLineItemLeads` query, and `LineItem.formLineItemChoiceFilters,createFormLineItem` mutations
 - [ ] restore `EmailCampaign.urls,hasEmailSends,urlCount,urlGroups`
 - [ ] restore or move `emailReportService.buildEmailMetrics`
+- [ ] test new ad click/impression trackers
+- [ ] add meta tags to website for scraping companies/tags
+- [ ] do not cache indm websites when crawling
