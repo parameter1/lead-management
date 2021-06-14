@@ -40,12 +40,12 @@ fragment CampaignHashFragment on Campaign {
   #     id
   #   }
   # }
-  # ads {
-  #   id
-  #   enabled
-  #   excludeFields
-  #   hasIdentities
-  # }
+  ads {
+    id
+    enabled
+    excludeFields
+    hasIdentities
+  }
   adMetrics {
     id
     enabled

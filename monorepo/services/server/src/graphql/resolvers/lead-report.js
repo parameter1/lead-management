@@ -5,7 +5,7 @@ const {
   OmedaEmailClick,
 } = require('../../mongodb/models');
 const emailReportService = require('../../services/email-report');
-// const adReportService = require('../../services/ad-report');
+const adReportService = require('../../services/ad-report');
 // const FormRepo = require('../../repos/form');
 
 module.exports = {
