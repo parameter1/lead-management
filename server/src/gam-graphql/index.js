@@ -1,5 +1,6 @@
 const { gql } = require('apollo-server-express');
 const { pluralize } = require('inflected');
+const { get } = require('@parameter1/utils');
 const create = require('./create-client');
 const extractFragmentData = require('../graphql/utils/extract-fragment-data');
 
@@ -93,7 +94,12 @@ class GAMGraphQLClient {
   }
 
   static formatError(e) {
-    return e;
+    const networkError = get(e, 'networkError.result.errors.0.message');
+    const graphQLError = get(e, 'graphQLErrors.0.message');
+    if (!networkError && !graphQLError) return e;
+    const err = new Error(networkError || graphQLError);
+    err.originalError = e;
+    return err;
   }
 }
 
