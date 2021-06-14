@@ -16,8 +16,6 @@ const { log } = console;
 
 const limit = 1000;
 const collections = [
-  'ad-creative-trackers',
-  'ad-creatives',
   'customers',
   'excluded-email-domains',
   'extracted-hosts',
