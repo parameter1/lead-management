@@ -10,6 +10,8 @@ const {
 const batch = require('./utils/batch');
 const transformers = require('./transformers');
 
+process.on('unhandledRejection', (e) => { throw e; });
+
 const { log } = console;
 
 const limit = 1000;
@@ -88,6 +90,39 @@ const run = async () => {
     log(`Processing for '${collName}' complete.`);
     log('');
   });
+
+  log('Migrating inactive identities....');
+  await (async () => {
+    const [fromColl, toColl] = await Promise.all([
+      source.collection({ dbName: SOURCE_DB_NAME, name: 'identities' }),
+      destination.collection({ dbName: DESTINATION_DB_NAME, name: 'legacy-inactive-identities' }),
+    ]);
+    const identities = await fromColl.find({
+      emailAddress: { $exists: true },
+      deleted: { $ne: true },
+      $or: [
+        { inactive: true },
+        { 'inactiveCustomerIds.0': { $exists: true } },
+      ],
+    }, { projection: { emailAddress: 1, inactive: 1, inactiveCustomerIds: 1 } }).toArray();
+
+    const bulkOps = [];
+    identities.forEach((identity) => {
+      if (!identity.emailAddress) return;
+      const filter = { _id: identity._id };
+      const update = {
+        $setOnInsert: filter,
+        $set: {
+          emailAddress: identity.emailAddress,
+          inactive: identity.inactive,
+          inactiveCustomerIds: identity.inactiveCustomerIds,
+        },
+      };
+      bulkOps.push({ updateOne: { filter, update, upsert: true } });
+    });
+    if (bulkOps.length) await toColl.bulkWrite(bulkOps);
+    log('Inactive identity migration complete!');
+  })();
 
   await Promise.all([
     source.close(),
