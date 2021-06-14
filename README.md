@@ -33,3 +33,4 @@
 - [ ] review campaign and line item resolvers
 - [ ] handle `LineItem.formLineItemLeads` query, and `LineItem.formLineItemChoiceFilters,createFormLineItem` mutations
 - [ ] restore `EmailCampaign.urls,hasEmailSends,urlCount,urlGroups`
+- [ ] restore or move `emailReportService.buildEmailMetrics`
