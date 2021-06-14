@@ -45,9 +45,9 @@ extend type Mutation {
   lineItemArchived(input: LineItemArchivedInput): LineItem!
 
   # form actions
-  formLineItemChoiceFilters(input: FormLineItemChoiceFiltersInput!): FormLineItem!
+  # formLineItemChoiceFilters(input: FormLineItemChoiceFiltersInput!): FormLineItem!
 
-  createFormLineItem(input: CreateFormLineItemInput!): FormLineItem!
+  # createFormLineItem(input: CreateFormLineItemInput!): FormLineItem!
 }
 
 interface LineItem {
