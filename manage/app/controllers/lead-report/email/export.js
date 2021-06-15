@@ -1,8 +1,8 @@
-import ListController from '../../abstract-list';
+import IdentityListController from 'leads-manage/controllers/identity-list';
 import { inject } from '@ember/service';
 import { computed } from '@ember/object';
 
-export default ListController.extend({
+export default IdentityListController.extend({
   identityAttributes: inject(),
 
   fields: computed('excludeFields.[]', function() {

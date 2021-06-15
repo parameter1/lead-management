@@ -1,13 +1,13 @@
 <thead>
   <tr>
-    <th>Name {{lead-report/tables/sort-field key="name" sortBy=sortBy ascending=ascending reset=false}}</th>
-    <th>Date {{lead-report/tables/sort-field key="sentDate" sortBy=sortBy ascending=ascending reset=false}}</th>
+    <th>Name {{lead-report/tables/sort-field key="Omeda.DeploymentName" sortBy=sortBy ascending=ascending reset=false}}</th>
+    <th>Date {{lead-report/tables/sort-field key="Omeda.SentDate" sortBy=sortBy ascending=ascending reset=false}}</th>
     {{#if displayDelivered}}
-      <th>Delivered {{lead-report/tables/sort-field key="metrics.delivered" sortBy=sortBy ascending=ascending reset=false}}</th>
+      <th>Delivered {{lead-report/tables/sort-field key="Omeda.SentCount" sortBy=sortBy ascending=ascending reset=false}}</th>
     {{/if}}
-    <th>Unique Opens {{lead-report/tables/sort-field key="metrics.uniqueOpens" sortBy=sortBy ascending=ascending reset=false}}</th>
+    <th>Unique Opens {{lead-report/tables/sort-field key="Omeda.UniqueOpens" sortBy=sortBy ascending=ascending reset=false}}</th>
     {{#if displayUniqueClicks}}
-      <th>Unique Clicks {{lead-report/tables/sort-field key="metrics.uniqueClicks" sortBy=sortBy ascending=ascending reset=false}}</th>
+      <th>Unique Clicks {{lead-report/tables/sort-field key="Omeda.UniqueClicks" sortBy=sortBy ascending=ascending reset=false}}</th>
     {{/if}}
     <th>Open Rate</th>
     <th>CTOR</th>

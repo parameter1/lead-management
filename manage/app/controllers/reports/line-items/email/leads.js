@@ -1,6 +1,6 @@
-import ListController from 'leads-manage/controllers/abstract-list';
+import IdentityListController from 'leads-manage/controllers/identity-list';
 
-export default ListController.extend({
+export default IdentityListController.extend({
   init() {
     this._super(...arguments);
     this.set('sortOptions', []);
