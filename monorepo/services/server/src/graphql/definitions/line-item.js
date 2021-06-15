@@ -19,7 +19,7 @@ extend type Query {
   emailLineItemInactiveIdentities(input: ModelIdInput!, pagination: PaginationInput = {}, sort: IdentitySortInput = {}): EmailLineItemIdentityConnection!
   searchEmailLineItemInactiveIdentities(input: ModelIdInput!, pagination: PaginationInput = {}, search: TypeAheadInput!, options: TypeAheadOptionsInput): EmailLineItemIdentityConnection!
 
-  formLineItem(input: ModelIdInput!): FormLineItem!
+  # formLineItem(input: ModelIdInput!): FormLineItem!
   # must be public - reports use this
   # formLineItemLeads(input: FormLineItemLeadsQueryInput!, pagination: PaginationInput = {}, sort: FormEntrySortInput = {}): FormLineItemLeadConnection!
 }
@@ -98,6 +98,7 @@ type EmailLineItem implements LineItem {
   identityFilters: [LineItemIdentityFilter]
   tags: [Tag]
   excludedTags: [Tag]
+  # @todo changeme
   categories: [EmailCategory]
 }
 
@@ -156,24 +157,17 @@ type LineItemScrubbed {
 type EmailLineItemExcludedUrl {
   id: String!
   url: ExtractedUrl!
-  send: EmailSend!
+  deployment: EmailDeployment!
 }
 
 type EmailLineItemUrlGroup {
-  id: String!
   url: ExtractedUrl!
-  deploymentGroups: [EmailLineItemUrlDeploymentGroup!]
+  deploymentGroups: [EmailLineItemUrlDeploymentGroup!]!
 }
 
 type EmailLineItemUrlDeploymentGroup {
   deployment: EmailDeployment!
-  sendGroups: [EmailLineItemUrlSendGroup]
-}
-
-type EmailLineItemUrlSendGroup {
-  id: String
-  send: EmailSend!
-  active: Boolean
+  active: Boolean!
 }
 
 enum LineItemStatus {

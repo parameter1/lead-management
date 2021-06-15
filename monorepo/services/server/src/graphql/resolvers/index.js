@@ -14,6 +14,7 @@ const excludedEmailDomain = require('./excluded-email-domain');
 const gam = require('./gam');
 const identity = require('./identity');
 const leadReport = require('./lead-report');
+const lineItem = require('./line-item');
 const order = require('./order');
 const tag = require('./tag');
 const url = require('./url');
@@ -30,6 +31,7 @@ module.exports = merge(
   gam,
   identity,
   leadReport,
+  lineItem,
   order,
   tag,
   url,

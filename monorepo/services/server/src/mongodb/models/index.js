@@ -2,12 +2,12 @@ const AdCreativeTracker = require('./ad-creative-tracker');
 const AdCreative = require('./ad-creative');
 const Campaign = require('./campaign');
 const Customer = require('./customer');
+const EmailLineItem = require('./line-item/email');
 const EventAdCreative = require('./event-ad-creative');
 const ExcludedEmailDomain = require('./excluded-email-domain');
 const ExtractedHost = require('./extracted-host');
 const ExtractedUrl = require('./extracted-url');
 const Identity = require('./identity');
-const LineItemEmail = require('./line-item/email');
 const OmedaDemographic = require('./omeda/demographic');
 const OmedaDeploymentType = require('./omeda/deployment-type');
 const OmedaEmailClick = require('./omeda/email-click');
@@ -23,12 +23,12 @@ module.exports = {
   AdCreative,
   Campaign,
   Customer,
+  EmailLineItem,
   EventAdCreative,
   ExcludedEmailDomain,
   ExtractedHost,
   ExtractedUrl,
   Identity,
-  LineItemEmail,
   OmedaDemographic,
   OmedaDeploymentType,
   OmedaEmailClick,
