@@ -56,7 +56,7 @@ jobs:
       script: scripts/deploy.js exports
 
     - <<: *monorepo-job
-      stage: build
+      stage: production
       name: Build exports
       install: skip
       script: scripts/deploy.js server
