@@ -13,8 +13,8 @@ const {
   Tag,
   User,
 } = require('../mongodb/models');
+const LineItem = require('../mongodb/models/line-item');
 
-// const EmailCategory = require('../models/email-category');
 // const Form = require('../models/form');
 // const FormEntry = require('../models/form-entry');
 
@@ -48,6 +48,7 @@ module.exports = {
   // formEntry: new DataLoader(createBatchFn(FormEntry)),
   identity: new DataLoader(createBatchFn(Identity)),
   identityEntity: new DataLoader(createEntityBatchFn(Identity)),
+  lineItem: new DataLoader(createBatchFn(LineItem)),
   omedaDemographicEntity: new DataLoader(createEntityBatchFn(OmedaDemographic)),
   order: new DataLoader(createBatchFn(Order)),
   tag: new DataLoader(createBatchFn(Tag)),
