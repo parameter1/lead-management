@@ -55,7 +55,7 @@
     "passport-http-bearer": "^1.0.1",
     "promise-retry": "^2.0.1",
     "slug": "^5.0.1",
-    "url-juicer": "https://github.com/limit-zero/url-juicer.git#0.3.0",
+    "url-juicer": "https://github.com/limit-zero/url-juicer.git#0.4.0",
     "uuid": "^8.3.2",
     "validator": "^13.6.0"
   },
