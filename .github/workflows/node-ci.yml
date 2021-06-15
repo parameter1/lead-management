@@ -12,6 +12,10 @@ on:
 jobs:
   manage:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: manage
+
     steps:
     - uses: actions/checkout@v2
 
@@ -20,23 +24,23 @@ jobs:
         node-version: 10.x
 
     - uses: actions/cache@v2
-      working-directory: manage
       id: yarn-cache
       with:
         path: '**/node_modules'
         key: ${{ runner.os }}-modules-${{ hashFiles('manage/yarn.lock') }}
 
     - name: Install dependencies
-      working-directory: manage
       if: steps.yarn-cache.outputs.cache-hit != 'true'
       run: yarn install --frozen-lockfile
 
     - name: Run tests
-      working-directory: manage
       run: yarn test
 
   monorepo:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: monorepo
 
     steps:
     - uses: actions/checkout@v2
@@ -46,17 +50,14 @@ jobs:
         node-version: 14.x
 
     - uses: actions/cache@v2
-      working-directory: monorepo
       id: yarn-cache
       with:
         path: '**/node_modules'
         key: ${{ runner.os }}-modules-${{ hashFiles('monorepo/yarn.lock') }}
 
     - name: Install dependencies
-      working-directory: monorepo
       if: steps.yarn-cache.outputs.cache-hit != 'true'
       run: yarn install --frozen-lockfile
 
     - name: Run tests
-      working-directory: monorepo
       run: yarn test
