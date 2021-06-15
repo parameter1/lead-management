@@ -5,15 +5,16 @@ const mergeVarMap = new Map([
   ['%%emailaddr%%', '@{delivery_email}@'],
   ['%%First Name%%', '@{first_name}@'],
   ['%%Last Name%%', '@{last_name}@'],
-  // the rest are temporary placeholders
   ['%%Company Name%%', '@{company_name}@'],
-  ['%%Title%%', '@{title}@'],
-  ['%%Phone Number%%', '@{phone}@'],
-  ['%%Address%%', '@{street1}@'],
+  ['%%Title%%', '@{job_title}@'],
+  ['%%Phone Number%%', '@{phone_number}@'],
+  ['%%Address%%', '@{street_address}@'],
   ['%%City%%', '@{city}@'],
-  ['%%State%%', '@{state_province_code}@'],
-  ['%%Zip%%', '@{Zip}@'],
-  ['%%Industry%%', '@{Industry}@'],
+  ['%%State%%', '@{region}@'],
+  ['%%Country%%', '@{country}@'],
+  ['%%Zip%%', '@{postal_code}@'],
+  ['%%Industry%%', '@{industry_code}@'],
+  ['%%Job Function%%', '@{title_code}@'],
 ]);
 
 const unqiueUrlParams = (doc) => {
