@@ -89,6 +89,10 @@ const schema = new Schema({
   meta: {
     type: metaSchema,
   },
+  headerDirectives: {
+    type: Schema.Types.Mixed,
+    default: () => ({}),
+  },
   resolvedHostId: {
     type: Schema.Types.ObjectId,
     required: true,

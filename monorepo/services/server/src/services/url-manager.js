@@ -1,6 +1,7 @@
 const Juicer = require('url-juicer');
 const { URL, URLSearchParams } = require('url');
 const promiseRetry = require('promise-retry');
+const { camelize, underscore } = require('inflected');
 const {
   Customer,
   ExtractedHost,
@@ -22,6 +23,22 @@ const crawl = (url) => Juicer.crawler.crawl(url, {
   },
 });
 
+const headerPattern = /^x-lead-management-/;
+
+const shouldCache = (url, cache) => {
+  if (/www\.ien\.com/i.test(url)
+    || /www\.foodmanufacturing\.com/i.test(url)
+    || /www\.mbtmag\.com/i.test(url)
+    || /www\.impomag\.com/i.test(url)
+    || /www\.inddist\.com/i.test(url)
+    || /www\.manufacturing\.net/i.test(url)
+    || /www\.designdevelopmenttoday\.com/i.test(url)
+  ) {
+    return false;
+  }
+  return cache;
+};
+
 module.exports = {
   /**
    *
@@ -32,7 +49,7 @@ module.exports = {
     const extractedUrl = await promiseRetry((retry) => this.upsertExtractedUrl(url)
       .catch((err) => checkDupe(retry, err)), retryOpts);
 
-    if (!extractedUrl.errorMessage && extractedUrl.lastCrawledDate && cache) {
+    if (!extractedUrl.errorMessage && extractedUrl.lastCrawledDate && shouldCache(url, cache)) {
       await this.applyTrackingRules(extractedUrl);
       return extractedUrl.save();
     }
@@ -40,10 +57,18 @@ module.exports = {
     const originalUrl = extractedUrl.values.original;
     try {
       const response = await crawl(originalUrl);
+      const { headers } = response.original;
 
       extractedUrl.title = response.title;
       extractedUrl.meta = response.meta;
       extractedUrl.errorMessage = undefined;
+      extractedUrl.headerDirectives = Object.keys(headers)
+        .filter((key) => headerPattern.test(key) && headers[key])
+        .reduce((o, key) => {
+          const v = headers[key];
+          const k = camelize(underscore(key.replace(headerPattern, '')), false);
+          return { ...o, [k]: v };
+        }, {});
 
       if (response.url.redirected) {
         extractedUrl.set('values.resolved', response.url.resolved);
@@ -111,57 +136,45 @@ module.exports = {
    */
   async applyTrackingRules(extractedUrl) {
     const parsed = new URL(extractedUrl.values.original);
-    const { hostname, pathname } = parsed;
+    const { hostname } = parsed;
 
-    const tags = await Tag.find({ name: { $in: ['Website Content', 'Video', 'PR', 'CPL Form'] } });
+    // handle auto link type
+    const autoLinkType = extractedUrl.get('headerDirectives.linkType');
+    if (autoLinkType) extractedUrl.set('linkType', autoLinkType);
+
+    // handle auto tagging
+    const tagSet = new Set();
+    tagSet.add('CPL Form');
+    const headerTags = extractedUrl.get('headerDirectives.tags');
+    const toAutoTag = headerTags ? headerTags.split(',').map((v) => v.trim()).filter((v) => v) : [];
+    toAutoTag.forEach((v) => tagSet.add(v));
+    const tags = await Tag.find({ name: { $in: [...tagSet] } });
     const tagMap = tags.reduce((m, tag) => {
       m.set(tag.name, tag.id);
       return m;
     }, new Map());
-
-    if (/www\.ien\.com/i.test(hostname)
-      || /www\.foodmanufacturing\.com/i.test(hostname)
-      || /www\.mbtmag\.com/i.test(hostname)
-      || /www\.impomag\.com/i.test(hostname)
-      || /www\.inddist\.com/i.test(hostname)
-      || /www\.manufacturing\.net/i.test(hostname)
-      || /www\.designdevelopmenttoday\.com/i.test(hostname)
-    ) {
-      // Tag ien.com (and related) hosts with Website Content.
-      if (tagMap.has('Website Content')) extractedUrl.tagIds.addToSet(tagMap.get('Website Content'));
-      // Set link type to editorial
-      extractedUrl.set('linkType', 'Editorial');
-      if (/\/video\//i.test(pathname) && tagMap.has('Video')) {
-        // Tag ien.com videos with Video.
-        extractedUrl.tagIds.addToSet(tagMap.get('Video'));
-      }
-      if (/\/product\//i.test(pathname) && tagMap.has('PR')) {
-        // Tag ien.com products with PR.
-        extractedUrl.tagIds.addToSet(tagMap.get('PR'));
-        const { title } = extractedUrl;
-        if (title) {
-          // Attempt to extract customer.
-          // @todo need to account for different formats of this.
-          // @todo or add a meta tag
-          const matches = /From:\s(.*?)\s\|/.exec(title);
-          if (matches && matches[1]) {
-            const key = nameSlug(matches[1]);
-            const customer = await Customer.findOneAndUpdate({ key }, {
-              $setOnInsert: {
-                deleted: false,
-                name: matches[1],
-                key,
-                hash: createHash(`${Date.now()}`),
-              },
-            }, { upsert: true, new: true });
-            extractedUrl.set('customerId', customer.id);
-          }
-        }
-      }
-    }
+    toAutoTag.forEach((value) => {
+      const tag = tagMap.get(value);
+      if (tag) extractedUrl.tagIds.addToSet(tag);
+    });
     if (tagMap.has('CPL Form') && (/ien\.wufoo\.com/i.test(hostname) || /ien\.formstack\.com/i.test(hostname))) {
       // Tag ien.wufoo.com and ien.formstack.com hosts with CPL Form.
       extractedUrl.tagIds.addToSet(tagMap.get('CPL Form'));
+    }
+
+    // handle auto customer tagging
+    const autoCustomer = extractedUrl.get('headerDirectives.customer');
+    if (autoCustomer) {
+      const customerSlug = nameSlug(autoCustomer);
+      const customer = await Customer.findOneAndUpdate({ key: customerSlug }, {
+        $setOnInsert: {
+          deleted: false,
+          name: autoCustomer.trim(),
+          key: customerSlug,
+          hash: createHash(`${Date.now()}`),
+        },
+      }, { upsert: true, new: true });
+      extractedUrl.set('customerId', customer.id);
     }
   },
 
