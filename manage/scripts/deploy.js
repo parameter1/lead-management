@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable import/no-dynamic-require */
 
 const { existsSync } = require('fs');
 const { join } = require('path');
@@ -6,9 +7,10 @@ const { spawnSync } = require('child_process');
 
 const { TRAVIS_TAG, DOCKER_PASSWORD, DOCKER_USERNAME } = process.env;
 const AWS_ECR_REGISTRY = process.env.AWS_ECR_REGISTRY || '598984531759.dkr.ecr.us-east-2.amazonaws.com';
+const serviceName = 'manage';
 const workspace = join('.');
-const notifyEnv = { ...process.env, TRAVIS_REPO_SLUG: `${process.env.TRAVIS_REPO_SLUG}-app` };
-const repository = process.env.AWS_ECR_REPOSITORY || `lead-management-manage`;
+const notifyEnv = { ...process.env, TRAVIS_REPO_SLUG: `${process.env.TRAVIS_REPO_SLUG}-${serviceName}` };
+const repository = process.env.AWS_ECR_REPOSITORY || `lead-management-${serviceName}`;
 const { log } = console;
 const version = TRAVIS_TAG;
 const imageTag = `${repository}:${version}`;
@@ -128,7 +130,7 @@ const main = async () => { // eslint-disable-line consistent-return
 
   await deploy({
     key: 'lead-management-service',
-    value: 'manage',
+    value: serviceName,
     image: `${AWS_ECR_REGISTRY}/${imageTag}`,
   });
   log('  Deploy complete.\n');
