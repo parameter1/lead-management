@@ -1,6 +1,5 @@
 const { Pagination, TypeAhead, paginationResolvers } = require('../pagination');
 const Identity = require('../../mongodb/models/identity');
-// const LineItem = require('../../models/line-item');
 
 const { isArray } = Array;
 
@@ -53,12 +52,11 @@ module.exports = {
     /**
      *
      */
-    // inactiveLineItems: ((identity) => {
-    //   const { inactiveLineItemIds } = identity;
-    //   if (!isArray(inactiveLineItemIds) || !inactiveLineItemIds.length) return [];
-    //   return LineItem.find({ _id: { $in: inactiveLineItemIds } });
-    // }),
-    inactiveLineItems: () => [],
+    inactiveLineItems: ((identity, _, { loaders }) => {
+      const { inactiveLineItemIds } = identity;
+      if (!isArray(inactiveLineItemIds) || !inactiveLineItemIds.length) return [];
+      return loaders.lineItem.loadMany(inactiveLineItemIds);
+    }),
   },
 
   /**
