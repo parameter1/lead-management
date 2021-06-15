@@ -11,6 +11,7 @@ const gam = require('./gam');
 const identity = require('./identity');
 const leadReport = require('./lead-report');
 const lineItem = require('./line-item');
+const lineItemReport = require('./line-item-report');
 const order = require('./order');
 const tag = require('./tag');
 const url = require('./url');
@@ -89,6 +90,7 @@ ${gam}
 ${identity}
 ${leadReport}
 ${lineItem}
+${lineItemReport}
 ${order}
 ${tag}
 ${url}
