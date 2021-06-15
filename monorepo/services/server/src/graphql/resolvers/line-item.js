@@ -334,39 +334,23 @@ module.exports = {
   },
 
   EmailLineItemUrlGroup: {
-    id: (urlGroup) => urlGroup.urlId,
     url: (urlGroup, _, { loaders }) => loaders.extractedUrl.load(urlGroup.urlId),
-    deploymentGroups: (urlGroup) => {
-      const { sendUrls, excludedUrls } = urlGroup;
-
-      const map = sendUrls.reduce((obj, emailSend) => {
-        const { deploymentId } = emailSend;
-        // eslint-disable-next-line no-param-reassign
-        if (!obj[deploymentId]) obj[deploymentId] = [];
-        obj[deploymentId].push({ emailSend, excludedUrls });
-        return obj;
-      }, {});
-      return Object.keys(map).reduce((arr, deploymentId) => {
-        arr.push({ deploymentId, sendUrls: map[deploymentId] });
-        return arr;
-      }, []);
+    deploymentGroups: ({ urlId, deployments, excludeUrls }) => {
+      const arr = [];
+      deployments.forEach((deployment) => {
+        const { entity } = deployment;
+        const excluded = excludeUrls.find((e) => `${e.urlId}` === `${urlId}` && e.deploymentEntity === entity);
+        arr.push({
+          entity,
+          active: !excluded,
+        });
+      });
+      return arr;
     },
   },
 
   EmailLineItemUrlDeploymentGroup: {
-    deployment: ({ deploymentId }, _, { loaders }) => loaders.emailDeployment.load(deploymentId),
-    sendGroups: (deploymentGroup) => deploymentGroup.sendUrls,
-  },
-
-  EmailLineItemUrlSendGroup: {
-    id: (sendGroup) => sendGroup.emailSend.id,
-    send: (sendGroup, _, { loaders }) => loaders.emailSend.load(sendGroup.emailSend.sendId),
-    active: (sendGroup) => {
-      const { emailSend, excludedUrls } = sendGroup;
-      const found = excludedUrls.find((e) => `${e.urlId}` === `${emailSend.urlId}` && `${e.sendId}` === `${emailSend.sendId}`);
-      if (found) return false;
-      return true;
-    },
+    deployment: ({ entity }, _, { loaders }) => loaders.emailDeploymentEntity.load(entity),
   },
 
   /**
