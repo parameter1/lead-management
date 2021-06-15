@@ -8,7 +8,7 @@ const {
 const LineItem = require('../../mongodb/models/line-item');
 // const Form = require('../../models/form');
 // const FormEntry = require('../../models/form-entry');
-// const emailReportService = require('../../services/line-item/email-report');
+const emailReportService = require('../../services/line-item/email-report');
 // const FormRepo = require('../../repos/form');
 
 const findLineItem = async (id) => {
@@ -67,14 +67,17 @@ const getEmailProgress = async (lineitem) => {
   const startDate = lineitem.get('range.start');
   const endDate = lineitem.get('range.end');
 
-  const { urlIds, sendIds } = await emailReportService.getEligibleUrlAndSendIds(lineitem);
+  const {
+    urlIds,
+    deploymentEntities,
+  } = await emailReportService.getEligibleUrlsAndDeployments(lineitem);
   const {
     qualified,
     scrubbed,
     total,
   } = await emailReportService.getQualifiedIdentityCount(lineitem, {
     urlIds,
-    sendIds,
+    deploymentEntities,
   });
 
   const pacing = calculatePacing({
@@ -479,10 +482,16 @@ module.exports = {
       auth.check();
       const { id } = input;
       const lineitem = await findEmailLineItem(id);
-      const { urlIds, sendIds } = await emailReportService.getEligibleUrlAndSendIds(lineitem);
+      const {
+        urlIds,
+        deploymentEntities,
+      } = await emailReportService.getEligibleUrlsAndDeployments(lineitem);
 
-      const ids = await emailReportService.getActiveIdentities(lineitem, { urlIds, sendIds });
-      const criteria = { _id: { $in: ids } };
+      const entities = await emailReportService.getActiveIdentityEntities(lineitem, {
+        urlIds,
+        deploymentEntities,
+      });
+      const criteria = { entity: { $in: entities } };
       return new Pagination(Identity, { pagination, sort, criteria });
     },
 
@@ -497,10 +506,16 @@ module.exports = {
       const { field, phrase } = search;
 
       const lineitem = await findEmailLineItem(id);
-      const { urlIds, sendIds } = await emailReportService.getEligibleUrlAndSendIds(lineitem);
+      const {
+        urlIds,
+        deploymentEntities,
+      } = await emailReportService.getEligibleUrlsAndDeployments(lineitem);
 
-      const ids = await emailReportService.getActiveIdentities(lineitem, { urlIds, sendIds });
-      const criteria = { _id: { $in: ids } };
+      const entities = await emailReportService.getActiveIdentityEntities(lineitem, {
+        urlIds,
+        deploymentEntities,
+      });
+      const criteria = { entity: { $in: entities } };
 
       const instance = new TypeAhead(field, phrase, criteria, options);
       return instance.paginate(Identity, pagination);
@@ -510,10 +525,16 @@ module.exports = {
       auth.check();
       const { id } = input;
       const lineitem = await findEmailLineItem(id);
-      const { urlIds, sendIds } = await emailReportService.getEligibleUrlAndSendIds(lineitem);
+      const {
+        urlIds,
+        deploymentEntities,
+      } = await emailReportService.getEligibleUrlsAndDeployments(lineitem);
 
-      const ids = await emailReportService.getInactiveIdentities(lineitem, { urlIds, sendIds });
-      const criteria = { _id: { $in: ids } };
+      const entities = await emailReportService.getInactiveIdentityEntities(lineitem, {
+        urlIds,
+        deploymentEntities,
+      });
+      const criteria = { entity: { $in: entities } };
       return new Pagination(Identity, { pagination, sort, criteria });
     },
 
@@ -528,10 +549,16 @@ module.exports = {
       const { field, phrase } = search;
 
       const lineitem = await findEmailLineItem(id);
-      const { urlIds, sendIds } = await emailReportService.getEligibleUrlAndSendIds(lineitem);
+      const {
+        urlIds,
+        deploymentEntities,
+      } = await emailReportService.getEligibleUrlsAndDeployments(lineitem);
 
-      const ids = await emailReportService.getInactiveIdentities(lineitem, { urlIds, sendIds });
-      const criteria = { _id: { $in: ids } };
+      const entities = await emailReportService.getInactiveIdentityEntities(lineitem, {
+        urlIds,
+        deploymentEntities,
+      });
+      const criteria = { entity: { $in: entities } };
 
       const instance = new TypeAhead(field, phrase, criteria, options);
       return instance.paginate(Identity, pagination);

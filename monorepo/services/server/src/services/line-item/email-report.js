@@ -53,11 +53,11 @@ module.exports = {
     ]);
     criteria.entity = { $in: identityEntities };
 
-    const docs = await Identity.find(criteria, { _id: 1 }).limit(requiredLeads);
-    return docs.map((doc) => doc._id);
+    const docs = await Identity.find(criteria, { entity: 1 }).limit(requiredLeads);
+    return docs.map((doc) => doc.entity);
   },
 
-  async getInactiveIdentities(lineitem, {
+  async getInactiveIdentityEntities(lineitem, {
     urlIds,
     deploymentEntities,
   }) {
@@ -74,7 +74,7 @@ module.exports = {
     };
     criteria.entity = { $in: identityEntities };
 
-    return Identity.distinct('_id', criteria);
+    return Identity.distinct('entity', criteria);
   },
 
   async getClickEventIdentifiers(lineitem) {
