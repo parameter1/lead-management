@@ -7,6 +7,10 @@ _manage-job: &manage-job
   env: [ENVIRONMENT=production]
   before_install: cd manage
 
+_monorepo-job: &monorepo-job
+  env: [ENVIRONMENT=production]
+  before_install: cd monorepo
+
 _npx-job: &npx-job
   install: skip
   env: [ENVIRONMENT=production]
@@ -44,6 +48,18 @@ jobs:
       name: Build manage
       install: skip
       script: scripts/deploy.js
+
+    - <<: *monorepo-job
+      stage: production
+      name: Build exports
+      install: skip
+      script: scripts/deploy.js exports
+
+    - <<: *monorepo-job
+      stage: build
+      name: Build exports
+      install: skip
+      script: scripts/deploy.js server
 
     #############################
     # ^^^ ADD SERVICES HERE ^^^ #
