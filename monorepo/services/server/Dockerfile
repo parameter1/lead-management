@@ -1,6 +1,8 @@
 FROM node:14.15-alpine as build
 WORKDIR /app
 ENV NODE_ENV production
+RUN apk update && apk upgrade && \
+  apk add --no-cache git
 ADD package.json yarn.lock /app/
 ADD services/server /app/services/server
 ADD packages /app/packages
