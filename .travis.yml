@@ -1,18 +1,18 @@
 language: node_js
-node_js: "10.13"
+node_js: 14
+
+_manage-job: &manage-job
+  language: node_js
+  node_js: "10.13"
+  env: [ENVIRONMENT=production]
+  before_install: cd manage
 
 _npx-job: &npx-job
-  language: node_js
-  node_js: 10.15
   install: skip
   env: [ENVIRONMENT=production]
 
 stages:
   - name: test
-
-  - name: build
-    if: tag =~ /^v\d+\.\d+\.\d+$/
-
   - name: production-started
     if: tag =~ /^v\d+\.\d+\.\d+$/
   - name: production
@@ -22,23 +22,32 @@ stages:
 
 jobs:
   include:
-    - stage: test
-      name: Test app
+    - <<: *manage-job
+      stage: test
+      name: Test manage
 
-    - stage: build
-      name: Build app
-      install: skip
-      script: scripts/build-image.sh
+    - <<: *monorepo-job
+      stage: test
+      name: Test monorepo
 
     - <<: *npx-job
       stage: production-started
       name: Deployment Started
       script: npx @base-cms/website-deployment-tool notify-started
 
-    - <<: *npx-job
+    #############################
+    # vvv ADD SERVICES HERE vvv #
+    #############################
+
+    - <<: *manage-job
       stage: production
-      name: Manage Service
-      script: npx @endeavorb2b/rancher2cli deploy l0-service leads-manage parameter1/leads-manage:$TRAVIS_TAG
+      name: Build manage
+      install: skip
+      script: scripts/deploy.js
+
+    #############################
+    # ^^^ ADD SERVICES HERE ^^^ #
+    #############################
 
     - <<: *npx-job
       stage: production-finished
