@@ -33,7 +33,6 @@ extend type Mutation {
   emailLineItemTags(input: EmailLineItemTagsInput): EmailLineItem!
   emailLineItemExcludedTags(input: EmailLineItemExcludedTagsInput): EmailLineItem!
   emailLineItemLinkTypes(input: EmailLineItemLinkTypesInput): EmailLineItem!
-  emailLineItemCategories(input: EmailLineItemCategoriesInput): EmailLineItem!
   emailLineItemExcludedUrls(input: EmailLineItemExcludedUrlsInput): EmailLineItem!
 
   # generic actions
@@ -98,8 +97,6 @@ type EmailLineItem implements LineItem {
   identityFilters: [LineItemIdentityFilter]
   tags: [Tag]
   excludedTags: [Tag]
-  # @todo changeme
-  categories: [EmailCategory]
 }
 
 type FormLineItem implements LineItem {
@@ -305,7 +302,7 @@ input CreateEmailLineItemInput {
   requiredFields: [String]
   linkTypes: [String]
   tagIds: [String]
-  categoryIds: [String]
+  deploymentTypeEntities: [String]
   identityFilters: [LineItemIdentityFilterInput]
   notes: String
 }
@@ -427,11 +424,6 @@ input EmailLineItemExcludedTagsInput {
 input EmailLineItemLinkTypesInput {
   id: String!
   linkTypes: [String!]!
-}
-
-input EmailLineItemCategoriesInput {
-  id: String!
-  categoryIds: [String!]!
 }
 
 input EmailLineItemExcludedUrlsInput {

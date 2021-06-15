@@ -10,9 +10,5 @@ query EditEmailLineItemDeployments($input: ModelIdInput!) {
       id
       name
     }
-    categories {
-      id
-      fullName
-    }
   }
 }

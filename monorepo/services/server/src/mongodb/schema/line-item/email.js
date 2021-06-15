@@ -46,7 +46,6 @@ const excludedUrlSchema = new Schema({
 });
 
 const schema = new Schema({
-  deploymentTypeEntities: [{ type: String }],
   tagIds: [
     {
       type: Schema.Types.ObjectId,

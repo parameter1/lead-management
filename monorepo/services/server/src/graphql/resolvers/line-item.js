@@ -285,7 +285,6 @@ module.exports = {
 
     tags: (lineItem, _, { loaders }) => loaders.tag.loadMany(lineItem.tagIds),
     excludedTags: (lineItem, _, { loaders }) => loaders.tag.loadMany(lineItem.excludedTagIds),
-    categories: (lineItem, _, { loaders }) => loaders.emailCategory.loadMany(lineItem.categoryIds),
     progress: async (lineitem) => {
       const {
         qualified,
@@ -558,7 +557,6 @@ module.exports = {
         requiredFields,
         linkTypes,
         tagIds,
-        categoryIds,
         identityFilters,
         notes,
       } = input;
@@ -573,7 +571,6 @@ module.exports = {
         requiredFields,
         linkTypes,
         tagIds,
-        categoryIds,
         identityFilters,
         notes,
       });
@@ -668,14 +665,6 @@ module.exports = {
       const { id, tagIds } = input;
       const lineItem = await findEmailLineItem(id);
       lineItem.set('excludedTagIds', tagIds);
-      return lineItem.save();
-    },
-
-    emailLineItemCategories: async (_, { input }, { auth }) => {
-      auth.check();
-      const { id, categoryIds } = input;
-      const lineItem = await findEmailLineItem(id);
-      lineItem.set('categoryIds', categoryIds);
       return lineItem.save();
     },
 
