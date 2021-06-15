@@ -1,9 +1,9 @@
 {
-  "name": "leads-manage",
-  "version": "1.15.0",
+  "name": "@lead-management/manage",
+  "version": "0.0.0",
   "private": true,
   "description": "Lead automation management application.",
-  "repository": "https://github.com/limit-zero/leads-manage.git",
+  "repository": "https://github.com/parameter1/lead-management.git",
   "license": "UNLICENSED",
   "author": "Jacob Bare <jacob@limit0.io>",
   "directories": {
