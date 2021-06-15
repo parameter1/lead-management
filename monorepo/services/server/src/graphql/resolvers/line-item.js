@@ -266,21 +266,21 @@ module.exports = {
 
     form: (lineItem, _, { loaders }) => loaders.form.load(lineItem.formId),
 
-    progress: async (lineItem) => {
-      const {
-        qualified,
-        scrubbed,
-        total,
-        qualRate,
-        pacing,
-      } = await getFormProgress(lineItem);
+    // progress: async (lineItem) => {
+    //   const {
+    //     qualified,
+    //     scrubbed,
+    //     total,
+    //     qualRate,
+    //     pacing,
+    //   } = await getFormProgress(lineItem);
 
-      return {
-        qualified: { total: qualified, rate: qualRate },
-        scrubbed: { total: scrubbed, rate: total ? scrubbed / total : 0 },
-        pacing,
-      };
-    },
+    //   return {
+    //     qualified: { total: qualified, rate: qualRate },
+    //     scrubbed: { total: scrubbed, rate: total ? scrubbed / total : 0 },
+    //     pacing,
+    //   };
+    // },
   },
 
   EmailLineItem: {

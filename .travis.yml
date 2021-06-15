@@ -1,0 +1,71 @@
+language: node_js
+node_js: 14
+
+_manage-job: &manage-job
+  language: node_js
+  node_js: "10.13"
+  env: [ENVIRONMENT=production]
+  before_install: cd manage
+
+_monorepo-job: &monorepo-job
+  env: [ENVIRONMENT=production]
+  before_install: cd monorepo
+
+_npx-job: &npx-job
+  install: skip
+  env: [ENVIRONMENT=production]
+
+stages:
+  - name: test
+  - name: production-started
+    if: tag =~ /^v\d+\.\d+\.\d+$/
+  - name: production
+    if: tag =~ /^v\d+\.\d+\.\d+$/
+  - name: production-finished
+    if: tag =~ /^v\d+\.\d+\.\d+$/
+
+jobs:
+  include:
+    - <<: *manage-job
+      stage: test
+      name: Test manage
+
+    - <<: *monorepo-job
+      stage: test
+      name: Test monorepo
+
+    - <<: *npx-job
+      stage: production-started
+      name: Deployment Started
+      script: npx @base-cms/website-deployment-tool notify-started
+
+    #############################
+    # vvv ADD SERVICES HERE vvv #
+    #############################
+
+    - <<: *manage-job
+      stage: production
+      name: Build manage
+      install: skip
+      script: scripts/deploy.js
+
+    - <<: *monorepo-job
+      stage: production
+      name: Build exports
+      install: skip
+      script: scripts/deploy.js exports
+
+    - <<: *monorepo-job
+      stage: production
+      name: Build exports
+      install: skip
+      script: scripts/deploy.js server
+
+    #############################
+    # ^^^ ADD SERVICES HERE ^^^ #
+    #############################
+
+    - <<: *npx-job
+      stage: production-finished
+      name: Deployment Finished
+      script: npx @base-cms/website-deployment-tool notify-finished

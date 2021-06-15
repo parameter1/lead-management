@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
-    "lint": "eslint --ext .js ./src",
+    "lint": "eslint --ext .js .",
     "test": "yarn lint"
   },
   "dependencies": {
