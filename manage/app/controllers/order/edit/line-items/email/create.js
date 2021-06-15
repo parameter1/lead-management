@@ -29,7 +29,6 @@ export default Controller.extend(FormMixin, {
           requiredFields,
           linkTypes,
           tags,
-          categories,
           identityFilters,
           notes,
         } = this.get('model');
@@ -54,7 +53,6 @@ export default Controller.extend(FormMixin, {
           requiredFields,
           linkTypes,
           tagIds: tags.map(t => t.id),
-          categoryIds: categories.map(c => c.id),
           identityFilters,
           notes,
         };

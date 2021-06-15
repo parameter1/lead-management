@@ -24,9 +24,5 @@ query EditEmailLineItemIndex($input: ModelIdInput!) {
       id
       name
     }
-    categories {
-      id
-      fullName
-    }
   }
 }
