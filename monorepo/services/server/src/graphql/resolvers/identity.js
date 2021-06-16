@@ -1,3 +1,4 @@
+const upsertCustomers = require('@lead-management/sync/commands/upsert-customers');
 const { Pagination, TypeAhead, paginationResolvers } = require('../pagination');
 const Identity = require('../../mongodb/models/identity');
 
@@ -163,6 +164,18 @@ module.exports = {
       }
       identity.inactiveLineItemIds = inactiveLineItemIds;
       return identity.save();
+    },
+
+    /**
+     *
+     */
+    refreshIdentity: async (_, { input }, { auth }) => {
+      auth.check();
+      const { id } = input;
+      const record = await Identity.findById(id);
+      if (!record) throw new Error(`No identity found for ID ${id}.`);
+      await upsertCustomers({ encryptedCustomerIds: [record.get('omeda.EncryptedCustomerId')] });
+      return Identity.findById(id);
     },
   },
 };

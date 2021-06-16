@@ -1,0 +1,7 @@
+#import 'leads-manage/gql/fragments/identity/view'
+
+mutation refreshIdentity($input: ModelIdInput!) {
+  refreshIdentity(input: $input) {
+    ...IdentityViewFragment
+  }
+}

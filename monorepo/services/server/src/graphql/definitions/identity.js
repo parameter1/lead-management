@@ -13,6 +13,7 @@ extend type Mutation {
   identityCustomerActivation(input: IdentityCustomerActivation!): Identity!
   identityCampaignActivation(input: IdentityCampaignActivation!): Identity!
   identityLineItemActivation(input: IdentityLineItemActivation!): Identity!
+  refreshIdentity(input: ModelIdInput!): Identity!
 }
 
 type Identity {
