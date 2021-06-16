@@ -13,11 +13,11 @@
   "dependencies": {
     "@lead-management/mongodb": "^0.0.0",
     "@lead-management/sync": "^0.0.0",
-    "aws-sdk": "^2.927.0",
     "dayjs": "^1.10.5",
     "envalid": "^7.1.0"
   },
   "devDependencies": {
+    "aws-sdk": "^2.927.0",
     "eslint": "^7.28.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.23.4"
