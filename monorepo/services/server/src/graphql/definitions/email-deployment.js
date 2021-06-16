@@ -24,6 +24,10 @@ extend type Query {
   ): EmailDeploymentTypeConnection!
 }
 
+extend type Mutation {
+  refreshEmailDeployment(input: ModelIdInput!): EmailDeployment!
+}
+
 type EmailDeployment {
   id: String!
   entity: String!

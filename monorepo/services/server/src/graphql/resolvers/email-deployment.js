@@ -1,3 +1,4 @@
+const upsertDeployments = require('@lead-management/sync/commands/upsert-deployments');
 const { Pagination, TypeAhead, paginationResolvers } = require('../pagination');
 const { OmedaEmailDeployment, OmedaDeploymentType } = require('../../mongodb/models');
 const emailDeploymentReportService = require('../../services/email-deployment-report');
@@ -157,6 +158,23 @@ module.exports = {
       const criteria = { 'data.StatusCode': 1 };
       const instance = new TypeAhead(field, phrase, criteria, options);
       return instance.paginate(OmedaDeploymentType, pagination);
+    },
+  },
+
+  /**
+   *
+   */
+  Mutation: {
+    /**
+     *
+     */
+    refreshEmailDeployment: async (_, { input }, { auth }) => {
+      auth.check();
+      const { id } = input;
+      const record = await OmedaEmailDeployment.findById(id);
+      if (!record) throw new Error(`No email deployment record found for ID ${id}.`);
+      await upsertDeployments({ trackIds: [record.get('omeda.TrackId')] });
+      return OmedaEmailDeployment.findById(id);
     },
   },
 };

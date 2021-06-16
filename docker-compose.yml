@@ -101,6 +101,7 @@ services:
       <<: *node-env
       <<: *omeda-env
       <<: *mongodb-env
+      <<: *tenant-env
       BRIGHTCOVE_ACCOUNT_ID: ${BRIGHTCOVE_ACCOUNT_ID}
       BRIGHTCOVE_APP_ID: ${BRIGHTCOVE_APP_ID}
       BRIGHTCOVE_SECRET: ${BRIGHTCOVE_SECRET}

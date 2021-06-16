@@ -2,7 +2,7 @@ import Controller from '@ember/controller';
 import { inject } from '@ember/service';
 import LoadingMixin from 'leads-manage/mixins/loading-mixin';
 
-// import mutation from 'leads-manage/gql/mutations/refresh-email-send';
+import mutation from 'leads-manage/gql/mutations/email-deployment/refresh';
 
 export default Controller.extend(LoadingMixin, {
   apollo: inject(),
@@ -10,17 +10,17 @@ export default Controller.extend(LoadingMixin, {
   isRefreshing: false,
 
   actions: {
-    // refresh(id) {
-    //   this.showLoading();
-    //   this.set('isRefreshing', true);
-    //   const variables = { input: { id } };
-    //   return this.get('apollo').mutate({ mutation, variables }, 'refreshEmailSend')
-    //     .catch(e => this.get('graphErrors').show(e))
-    //     .finally(() => {
-    //       this.set('isRefreshing', false);
-    //       this.hideLoading();
-    //     })
-    //   ;
-    // },
+    refresh(id) {
+      this.showLoading();
+      this.set('isRefreshing', true);
+      const variables = { input: { id } };
+      return this.get('apollo').mutate({ mutation, variables }, 'refreshEmailDeployment')
+        .catch(e => this.get('graphErrors').show(e))
+        .finally(() => {
+          this.set('isRefreshing', false);
+          this.hideLoading();
+        })
+      ;
+    },
   },
 });

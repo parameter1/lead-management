@@ -1,0 +1,7 @@
+#import 'leads-manage/gql/fragments/email-deployment-fragment'
+
+mutation refreshEmailDeployment($input: ModelIdInput!) {
+  refreshEmailDeployment(input: $input) {
+    ...EmailDeploymentFragment
+  }
+}
