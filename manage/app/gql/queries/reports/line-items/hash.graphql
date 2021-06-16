@@ -19,12 +19,12 @@ query LineItemReportHash($input: LineItemByHashInput!) {
     ... on EmailLineItem {
       excludedFields
     }
-    ... on FormLineItem {
-      form {
-        id
-        name
-        previewUrl
-      }
-    }
+    # ... on FormLineItem {
+    #   form {
+    #     id
+    #     name
+    #     previewUrl
+    #   }
+    # }
   }
 }
