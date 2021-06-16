@@ -12,6 +12,8 @@
       {{line-item/excluded-fields
         dropdownClass="in-modal-dropdown"
         excludedFields=model.excludedFields
+        tags=model.tags
+        linkTypes=model.linkTypes
         onChange=(action "setExcludedFields")
       }}
     </div>

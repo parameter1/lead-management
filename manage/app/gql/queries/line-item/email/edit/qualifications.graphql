@@ -10,5 +10,10 @@ query EditEmailLineItemQualifications($input: ModelIdInput!) {
       matchType
       terms
     }
+    linkTypes
+    tags {
+      id
+      name
+    }
   }
 }
