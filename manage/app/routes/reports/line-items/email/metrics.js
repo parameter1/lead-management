@@ -23,4 +23,9 @@ export default Route.extend(RouteQueryManager, {
     const variables = { hash, sort };
     return this.get('apollo').watchQuery({ query, variables, fetchPolicy: 'network-only' }, 'emailLineItemMetricsReport');
   },
+
+  setupController(controller, model) {
+    this._super(controller, model);
+    controller.set('lineItemHash', this.modelFor('reports.line-items').get('hash'));
+  },
 });

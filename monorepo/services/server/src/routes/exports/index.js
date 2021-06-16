@@ -45,6 +45,17 @@ router.get('/line-item/:hash/email/leads', asyncRoute(async (req, res) => {
   res.send(csv);
 }));
 
+router.get('/line-item/:hash/email/metrics', asyncRoute(async (req, res) => {
+  const { hash } = req.params;
+  const lineitem = await EmailLineItem.findByHash(hash);
+  const order = await Order.findById(lineitem.orderId);
+  const csv = await micro.exports.request('lineItem.emailMetrics', { hash });
+  const filename = `${order.name} - ${lineitem.name} Email Metrics.csv`;
+  res.header('content-type', 'text/csv');
+  res.attachment(filename);
+  res.send(csv);
+}));
+
 router.get('/email-deployment-report', asyncRoute(async (req, res) => {
   const start = new Date(parseInt(req.query.start, 10));
   const end = new Date(parseInt(req.query.end, 10));
