@@ -444,7 +444,7 @@ input EmailLineItemArchivedInput {
 
 input EmailLineItemExcludedUrlInput {
   urlId: String!
-  sendId: String!
+  deploymentEntity: String!
   active: Boolean!
 }
 

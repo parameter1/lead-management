@@ -36,12 +36,10 @@ export default Component.extend(ComponentQueryManager, ActionMixin, {
       this.get('results.urlGroups').forEach((urlGroup) => {
         const urlId = urlGroup.url.id;
         urlGroup.deploymentGroups.forEach((depGroup) => {
-          depGroup.sendGroups.forEach((sendGroup) => {
-            excludedUrls.push({
-              urlId,
-              sendId: sendGroup.send.id,
-              active: sendGroup.active,
-            })
+          excludedUrls.push({
+            urlId,
+            deploymentEntity: depGroup.deployment.entity,
+            active: depGroup.active,
           });
         });
       });

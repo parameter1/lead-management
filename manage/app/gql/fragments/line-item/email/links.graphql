@@ -1,7 +1,6 @@
 fragment EmailLineItemLinksFragment on EmailLineItem {
   id
   urlGroups {
-    id
     url {
       id
       title
@@ -10,20 +9,15 @@ fragment EmailLineItemLinksFragment on EmailLineItem {
       }
     }
     deploymentGroups {
+      active
       deployment {
         id
+        entity
         name
-      }
-      sendGroups {
-        id
-        active
-        send {
-          id
-          sentDate
-          subject
-          metrics {
-            sent
-          }
+        typeDescription
+        sentDate
+        metrics {
+          sent
         }
       }
     }

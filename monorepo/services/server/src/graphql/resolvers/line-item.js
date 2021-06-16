@@ -306,18 +306,20 @@ module.exports = {
 
     urlGroups: async (lineitem) => {
       const excludedUrls = lineitem.excludedUrls || [];
-      const emailSends = await emailReportService.findAllUrlSendsForLineItem(lineitem);
-      const map = emailSends.reduce((obj, emailSend) => {
-        const { urlId } = emailSend;
-        // eslint-disable-next-line no-param-reassign
-        if (!obj[urlId]) obj[urlId] = [];
-        obj[urlId].push(emailSend);
-        return obj;
-      }, {});
-      return Object.keys(map).reduce((arr, urlId) => {
-        arr.push({ urlId, sendUrls: map[urlId], excludedUrls });
-        return arr;
-      }, []);
+      const deploymentUrls = await emailReportService.findAllDeploymentUrlsForLineItem(lineitem);
+      const map = deploymentUrls.reduce((m, deploymentUrl) => {
+        const { deployment } = deploymentUrl;
+        const { _id: urlId } = deploymentUrl.url;
+        if (!m.has(`${urlId}`)) m.set(`${urlId}`, new Map());
+        m.get(`${urlId}`).set(deployment.entity, deployment);
+        return m;
+      }, new Map());
+
+      const arr = [];
+      map.forEach((deployments, urlId) => {
+        arr.push({ urlId, deployments, excludedUrls });
+      });
+      return arr;
     },
 
     excludedUrls: (lineitem) => {
@@ -337,11 +339,11 @@ module.exports = {
 
   EmailLineItemUrlGroup: {
     url: (urlGroup, _, { loaders }) => loaders.extractedUrl.load(urlGroup.urlId),
-    deploymentGroups: ({ urlId, deployments, excludeUrls }) => {
+    deploymentGroups: ({ urlId, deployments, excludedUrls }) => {
       const arr = [];
       deployments.forEach((deployment) => {
         const { entity } = deployment;
-        const excluded = excludeUrls.find((e) => `${e.urlId}` === `${urlId}` && e.deploymentEntity === entity);
+        const excluded = excludedUrls.find((e) => `${e.urlId}` === `${urlId}` && e.deploymentEntity === entity);
         arr.push({
           entity,
           active: !excluded,
