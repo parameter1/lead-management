@@ -124,7 +124,7 @@ const main = async () => { // eslint-disable-line consistent-return
   }
 
   await deploy({
-    key: 'base-browse-service',
+    key: 'lead-management-service',
     value: serviceName,
     image: `${AWS_ECR_REGISTRY}/${repository}:${version}`,
   });

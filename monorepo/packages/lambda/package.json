@@ -1,6 +1,6 @@
 {
   "name": "@lead-management/lambda",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "repository": "https://github.com/parameter1/lead-management.git",
   "author": "Jacob Bare <jacob@parameter1.com>",
   "license": "UNLICENSED",
@@ -10,8 +10,8 @@
     "test": "yarn lint"
   },
   "dependencies": {
-    "@lead-management/mongodb": "^0.0.0",
-    "@lead-management/sync": "^0.0.0",
+    "@lead-management/mongodb": "^0.0.1",
+    "@lead-management/sync": "^0.0.1",
     "dayjs": "^1.10.5",
     "envalid": "^7.1.0"
   },
