@@ -111,27 +111,26 @@ module.exports = {
 
   async buildExportPipeline(lineitem) {
     const {
-      identityIds,
+      identityEntities,
       urlIds,
-      sendIds,
+      deploymentEntities,
     } = await this.getClickEventIdentifiers(lineitem);
 
     const $match = {
-      usr: { $in: identityIds },
+      idt: { $in: identityEntities },
       url: { $in: urlIds },
-      job: { $in: sendIds },
-      day: this.createEventDateCriteria(lineitem),
+      dep: { $in: deploymentEntities },
+      date: { $gte: lineitem.range.start, $lte: this.getEndDate(lineitem) },
     };
 
     const pipeline = [];
     pipeline.push({ $match });
-    pipeline.push({ $addFields: { guidn: { $size: '$guids' } } });
     pipeline.push({
       $group: {
-        _id: '$usr',
+        _id: '$idt',
         urlIds: { $addToSet: '$url' },
-        sendIds: { $addToSet: '$job' },
-        clicks: { $sum: { $add: ['$n', '$guidn'] } },
+        deploymentEntities: { $addToSet: '$dep' },
+        clicks: { $sum: '$n' },
       },
     });
     return pipeline;

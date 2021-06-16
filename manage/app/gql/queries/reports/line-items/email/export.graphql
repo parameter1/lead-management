@@ -8,7 +8,7 @@ query EmailLineItemReportIdentityExport($hash: String!, $pagination: PaginationI
         identity {
           ...IdentityViewFragment
         }
-        sends {
+        deployments {
           id
           sentDate
           name
