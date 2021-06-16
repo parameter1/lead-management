@@ -1,7 +1,8 @@
 const { Schema } = require('mongoose');
 
-const schema = new Schema();
-
-schema.index({ entity: 1 }, { unique: true });
+const schema = new Schema({
+  entity: { type: String },
+  omeda: { type: Schema.Types.Mixed },
+});
 
 module.exports = schema;

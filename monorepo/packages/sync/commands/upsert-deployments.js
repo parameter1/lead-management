@@ -3,6 +3,7 @@ const { ObjectId } = require('@lead-management/mongodb');
 const { validateAsync } = require('@parameter1/joi/utils');
 const { get, getAsArray } = require('@parameter1/utils');
 const loadDB = require('@lead-management/mongodb/load-db');
+const deploymentTypeEntity = require('@lead-management/omeda/entity-id/deployment-type');
 
 const extractUrlId = require('../utils/extract-url-id');
 const loadDeployments = require('../ops/load-deployments');
@@ -95,6 +96,7 @@ module.exports = async (params = {}) => {
           'deployment.designation': data.DeploymentDesignation,
           'deployment.sentDate': data.SentDate,
           'deployment.typeId': data.DeploymentTypeId,
+          'deployment.typeEntity': deploymentTypeEntity({ id: data.DeploymentTypeId }),
         },
       };
       urlOps.push({ updateOne: { filter, update, upsert: true } });
@@ -109,6 +111,7 @@ module.exports = async (params = {}) => {
     const update = {
       $setOnInsert: { ...filter, createdAt: now },
       $set: {
+        typeEntity: deploymentTypeEntity({ id: data.DeploymentTypeId }),
         lastRetrievedAt: now,
         updatedAt: now,
         urlIds: verifedDeploymentUrlIds.get(TrackId) || [],

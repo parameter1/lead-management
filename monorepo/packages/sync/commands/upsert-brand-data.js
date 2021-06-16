@@ -1,14 +1,16 @@
 const omeda = require('@lead-management/omeda');
-const entityId = require('@lead-management/omeda/entity-id');
 const loadDB = require('@lead-management/mongodb/load-db');
+
+const deploymentTypeEntity = require('@lead-management/omeda/entity-id/deployment-type');
+const demographicEntity = require('@lead-management/omeda/entity-id/demographic');
+const productEntity = require('@lead-management/omeda/entity-id/product');
 
 const createOpFor = ({
   brand,
-  type,
+  entity,
   data,
   now,
 }) => {
-  const entity = entityId({ type, id: `${data.Id}` });
   const filter = { entity };
   const update = {
     $setOnInsert: {
@@ -42,7 +44,7 @@ module.exports = async () => {
     (async () => {
       const ops = Demographics.map((demographic) => createOpFor({
         brand,
-        type: 'demographic',
+        entity: demographicEntity({ id: demographic.Id }),
         data: demographic,
         now,
       }));
@@ -52,7 +54,7 @@ module.exports = async () => {
     (async () => {
       const ops = DeploymentTypes.map((type) => createOpFor({
         brand,
-        type: 'deployment-type',
+        entity: deploymentTypeEntity({ id: type.Id }),
         data: type,
         now,
       }));
@@ -62,7 +64,7 @@ module.exports = async () => {
     (async () => {
       const ops = Products.map((product) => createOpFor({
         brand,
-        type: 'product',
+        entity: productEntity({ id: product.Id }),
         data: product,
         now,
       }));

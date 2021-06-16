@@ -2,6 +2,7 @@ const { Schema } = require('mongoose');
 
 const schema = new Schema({
   entity: { type: String },
+  typeEntity: { type: String },
   urlIds: [{ type: Schema.Types.ObjectId }],
   omeda: { type: Schema.Types.Mixed },
   lastRetrievedAt: { type: Date },

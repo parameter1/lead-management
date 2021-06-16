@@ -2,10 +2,12 @@ const { Schema } = require('mongoose');
 
 const deploymentSchema = new Schema({
   entity: { type: String },
+  trackId: { type: String },
   name: { type: String },
   designation: { type: String },
   sentDate: { type: Date },
   typeId: { type: Number },
+  typeEntity: { type: String },
 }, { _id: false });
 
 const hostSchema = new Schema({
