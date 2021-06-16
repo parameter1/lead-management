@@ -94,6 +94,10 @@ const schema = new Schema({
     type: [excludedUrlSchema],
     default: () => [],
   },
+  deploymentTypeEntities: {
+    type: [String],
+    default: () => [],
+  },
 });
 
 schema.method('getExcludedFields', async function getEmailExcludedFields() {

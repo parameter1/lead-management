@@ -1,0 +1,16 @@
+query SearchEmailDeploymentTypes($pagination: PaginationInput, $search: TypeAheadInput!, $options: TypeAheadOptionsInput) {
+  searchEmailDeploymentTypes(pagination: $pagination, search: $search, options: $options) {
+    totalCount
+    edges {
+      node {
+        id
+        name
+        entity
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

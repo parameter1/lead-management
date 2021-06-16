@@ -34,6 +34,7 @@ extend type Mutation {
   emailLineItemExcludedTags(input: EmailLineItemExcludedTagsInput): EmailLineItem!
   emailLineItemLinkTypes(input: EmailLineItemLinkTypesInput): EmailLineItem!
   emailLineItemExcludedUrls(input: EmailLineItemExcludedUrlsInput): EmailLineItem!
+  emailLineItemDeploymentTypes(input: EmailLineItemDeploymentTypesInput): EmailLineItem!
 
   # generic actions
   lineItemDateRange(input: LineItemDateRangeInput): LineItem!
@@ -97,6 +98,7 @@ type EmailLineItem implements LineItem {
   identityFilters: [LineItemIdentityFilter]
   tags: [Tag]
   excludedTags: [Tag]
+  deploymentTypes: [EmailDeploymentType!]!
 }
 
 type FormLineItem implements LineItem {
@@ -298,12 +300,13 @@ input CreateEmailLineItemInput {
   requiredLeads: Int!
   totalValue: Float!
   range: LineItemRangeInput!
-  excludedFields: [String]
-  requiredFields: [String]
-  linkTypes: [String]
-  tagIds: [String]
-  deploymentTypeEntities: [String]
-  identityFilters: [LineItemIdentityFilterInput]
+  excludedFields: [String!] = []
+  requiredFields: [String!] = []
+  linkTypes: [String!] = []
+  tagIds: [String!] = []
+  deploymentTypeEntities: [String!] = []
+  identityFilters: [LineItemIdentityFilterInput!] = []
+  deploymentTypeEntities: [String!] = []
   notes: String
 }
 
@@ -361,6 +364,11 @@ input EmailLineItemNotesInput {
 input LineItemRequiredLeadsInput {
   id: String!
   requiredLeads: Int!
+}
+
+input EmailLineItemDeploymentTypesInput {
+  id: String!
+  entities: [String!]!
 }
 
 # deprecated

@@ -326,6 +326,12 @@ module.exports = {
       if (!Array.isArray(lineitem.excludedUrls)) return [];
       return lineitem.excludedUrls;
     },
+
+    deploymentTypes: (lineitem, _, { loaders }) => {
+      const { deploymentTypeEntities } = lineitem;
+      if (!Array.isArray(deploymentTypeEntities)) return [];
+      return loaders.deploymentTypeEntity.loadMany(deploymentTypeEntities);
+    },
   },
 
   /**
@@ -587,6 +593,7 @@ module.exports = {
         linkTypes,
         tagIds,
         identityFilters,
+        deploymentTypeEntities,
         notes,
       } = input;
 
@@ -601,6 +608,7 @@ module.exports = {
         linkTypes,
         tagIds,
         identityFilters,
+        deploymentTypeEntities,
         notes,
       });
       return record.save();
@@ -737,6 +745,17 @@ module.exports = {
       const { id, excludedUrls } = input;
       const lineItem = await findEmailLineItem(id);
       lineItem.set('excludedUrls', excludedUrls.filter((e) => e.active === false));
+      return lineItem.save();
+    },
+
+    /**
+     *
+     */
+    emailLineItemDeploymentTypes: async (_, { input }, { auth }) => {
+      auth.check();
+      const { id, entities } = input;
+      const lineItem = await findEmailLineItem(id);
+      lineItem.set('deploymentTypeEntities', entities);
       return lineItem.save();
     },
 

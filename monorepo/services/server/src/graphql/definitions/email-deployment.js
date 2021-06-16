@@ -16,6 +16,12 @@ extend type Query {
   ): EmailDeploymentConnection!
   emailDeployment(input: ModelIdInput!): EmailDeployment!
   emailDeploymentReport(input: EmailDeploymentReportInput = {}): EmailDeploymentReport
+
+  searchEmailDeploymentTypes(
+    pagination: PaginationInput = {}
+    search: TypeAheadInput!
+    options: TypeAheadOptionsInput
+  ): EmailDeploymentTypeConnection!
 }
 
 type EmailDeployment {
@@ -34,6 +40,15 @@ type EmailDeployment {
   createdAt: Date
   updatedAt: Date
   lastRetrievedAt: Date
+}
+
+type EmailDeploymentType {
+  id: String!
+  omedaId: Int!
+  entity: String!
+  name: String!
+  description: String
+  statusCode: Int
 }
 
 type EmailDeploymentMetrics {
@@ -103,6 +118,17 @@ type EmailDeploymentConnection {
 
 type EmailDeploymentEdge {
   node: EmailDeployment!
+  cursor: String!
+}
+
+type EmailDeploymentTypeConnection {
+  totalCount: Int!
+  edges: [EmailDeploymentTypeEdge]!
+  pageInfo: PageInfo!
+}
+
+type EmailDeploymentTypeEdge {
+  node: EmailDeploymentType!
   cursor: String!
 }
 

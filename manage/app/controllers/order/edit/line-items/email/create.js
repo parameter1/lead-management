@@ -29,6 +29,7 @@ export default Controller.extend(FormMixin, {
           requiredFields,
           linkTypes,
           tags,
+          deploymentTypes,
           identityFilters,
           notes,
         } = this.get('model');
@@ -53,6 +54,7 @@ export default Controller.extend(FormMixin, {
           requiredFields,
           linkTypes,
           tagIds: tags.map(t => t.id),
+          deploymentTypeEntities: deploymentTypes.map(t => t.entity),
           identityFilters,
           notes,
         };
@@ -89,8 +91,8 @@ export default Controller.extend(FormMixin, {
       this.set('model.tags', tags);
     },
 
-    setCategories(categories) {
-      this.set('model.categories', categories)
+    setDeploymentTypes(deploymentTypes) {
+      this.set('model.deploymentTypes', deploymentTypes)
     },
 
     setIdentityFilters(filters) {

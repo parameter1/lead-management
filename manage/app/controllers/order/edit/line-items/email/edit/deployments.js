@@ -6,7 +6,7 @@ import { computed } from '@ember/object';
 import linkTypesMutation from 'leads-manage/gql/mutations/line-item/email/link-types';
 import tagsMutation from 'leads-manage/gql/mutations/line-item/email/tags';
 import excludedTagsMutation from 'leads-manage/gql/mutations/line-item/email/excluded-tags';
-import categoriesMutation from 'leads-manage/gql/mutations/line-item/email/categories';
+import deploymentTypesMutation from 'leads-manage/gql/mutations/line-item/email/deployment-types';
 
 const refetchQueries = ['EditEmailLineItemDeploymentLinks'];
 
@@ -66,16 +66,16 @@ export default Controller.extend(FormMixin, {
       }
     },
 
-    async setCategories(categories) {
+    async setDeploymentTypes(deploymentTypes) {
       this.startAction();
       const id = this.get('model.id');
-      const categoryIds = categories.map(category => category.id);
-      const input = { id, categoryIds };
+      const entities = deploymentTypes.map(type => type.entity);
+      const input = { id, entities };
       const variables = { input };
 
       try {
-        await this.get('apollo').mutate({ mutation: categoriesMutation, variables, refetchQueries }, 'emailLineItemCategories');
-        this.get('notify').info('Email categories saved.');
+        await this.get('apollo').mutate({ mutation: deploymentTypesMutation, variables, refetchQueries }, 'emailLineItemDeploymentTypes');
+        this.get('notify').info('Deployment types saved.');
       } catch (e) {
         this.get('graphErrors').show(e);
       } finally {

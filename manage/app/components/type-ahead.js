@@ -6,6 +6,7 @@ import { task, timeout } from 'ember-concurrency';
 import { ComponentQueryManager } from 'ember-apollo-client';
 
 import customerQuery from 'leads-manage/gql/queries/customer/search';
+import emailDeploymentTypeQuery from 'leads-manage/gql/queries/email-deployment-type/search';
 import userQuery from 'leads-manage/gql/queries/user/search';
 import tagQuery from 'leads-manage/gql/queries/tag/search';
 
@@ -31,6 +32,8 @@ export default Component.extend(ComponentQueryManager, {
         return { query: tagQuery, resultKey: 'searchTags.edges' };
       case 'user':
         return { query: userQuery, resultKey: 'searchUsers.edges' };
+      case 'email-deployment-type':
+        return { query: emailDeploymentTypeQuery, resultKey: 'searchEmailDeploymentTypes.edges' };
     }
     this.get('errorProcessor').show(new Error(`The model type ${type} is not searchable.`));
   }),

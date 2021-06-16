@@ -5,7 +5,7 @@ import FormMixin from 'leads-manage/mixins/form-mixin';
 export default Route.extend(FormMixin, RouteQueryManager, {
   model() {
     return {
-      categories: [],
+      deploymentTypes: [],
       tags: [],
       range: {},
       linkTypes: ['(Not Set)', 'Advertising'],

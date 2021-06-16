@@ -1,5 +1,5 @@
 const { Pagination, TypeAhead, paginationResolvers } = require('../pagination');
-const { OmedaEmailDeployment } = require('../../mongodb/models');
+const { OmedaEmailDeployment, OmedaDeploymentType } = require('../../mongodb/models');
 const emailDeploymentReportService = require('../../services/email-deployment-report');
 const dayjs = require('../../dayjs');
 
@@ -38,6 +38,16 @@ module.exports = {
   /**
    *
    */
+  EmailDeploymentType: {
+    omedaId: (doc) => doc.get('data.Id'),
+    name: (doc) => doc.get('data.Name'),
+    description: (doc) => doc.get('data.Description'),
+    statusCode: (doc) => doc.get('data.StatusCode'),
+  },
+
+  /**
+   *
+   */
   EmailDeploymentReportWeek: {
     id: ({ year, week }) => `${year}_${week}`,
     number: ({ week }) => week,
@@ -68,6 +78,11 @@ module.exports = {
    *
    */
   EmailDeploymentConnection: paginationResolvers.connection,
+
+  /**
+   *
+   */
+  EmailDeploymentTypeConnection: paginationResolvers.connection,
 
   /**
    *
@@ -126,6 +141,22 @@ module.exports = {
       const { field, phrase } = search;
       const instance = new TypeAhead(field, phrase, criteria, options);
       return instance.paginate(OmedaEmailDeployment, pagination);
+    },
+
+    /**
+     *
+     */
+    searchEmailDeploymentTypes: (_, args, { auth }) => {
+      auth.check();
+      const {
+        pagination,
+        search,
+        options,
+      } = args;
+      const { field, phrase } = search;
+      const criteria = { 'data.StatusCode': 1 };
+      const instance = new TypeAhead(field, phrase, criteria, options);
+      return instance.paginate(OmedaDeploymentType, pagination);
     },
   },
 };

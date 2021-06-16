@@ -245,7 +245,7 @@ module.exports = {
 
   /**
    * Builds the criteria for finding OmedaEmailDeploymentUrls for the provided lineitem.
-   * This will restrict by the line item's customer, tags and link types.
+   * This will restrict by the line item's customer, tags, link types and deployment type entities.
    * It will _not_ restrict by the line item's excluded URLs.
    *
    * @param {LineItemEmail} lineitem
@@ -263,6 +263,7 @@ module.exports = {
       tagIds,
       excludedTagIds,
       linkTypes,
+      deploymentTypeEntities,
     } = lineitem;
 
     const $and = [];
@@ -298,6 +299,7 @@ module.exports = {
       $and,
       linkType: { $in: linkTypes },
       'deployment.sentDate': { $gte: lineitem.range.start, $lte: this.getEndDate(lineitem) },
+      ...(deploymentTypeEntities.length && { 'deployment.typeEntity': { $in: deploymentTypeEntities } }),
     };
   },
 

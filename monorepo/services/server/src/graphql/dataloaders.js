@@ -8,6 +8,7 @@ const {
   ExtractedUrl,
   Identity,
   OmedaDemographic,
+  OmedaDeploymentType,
   OmedaEmailDeployment,
   Order,
   Tag,
@@ -39,7 +40,7 @@ const createEntityBatchFn = (Model) => async (entities) => {
 module.exports = {
   campaign: new DataLoader(createBatchFn(Campaign)),
   customer: new DataLoader(createBatchFn(Customer)),
-  // emailCategory: new DataLoader(createBatchFn(EmailCategory)),
+  deploymentTypeEntity: new DataLoader(createEntityBatchFn(OmedaDeploymentType)),
   emailDeployment: new DataLoader(createBatchFn(OmedaEmailDeployment)),
   emailDeploymentEntity: new DataLoader(createEntityBatchFn(OmedaEmailDeployment)),
   extractedHost: new DataLoader(createBatchFn(ExtractedHost)),

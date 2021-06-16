@@ -1,0 +1,10 @@
+mutation EmailLineItemDeploymentTypes($input: EmailLineItemDeploymentTypesInput!) {
+  emailLineItemDeploymentTypes(input: $input) {
+    id
+    deploymentTypes {
+      id
+      name
+      entity
+    }
+  }
+}

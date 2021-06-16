@@ -10,5 +10,10 @@ query EditEmailLineItemDeployments($input: ModelIdInput!) {
       id
       name
     }
+    deploymentTypes {
+      id
+      name
+      entity
+    }
   }
 }
