@@ -285,7 +285,7 @@ module.exports = {
 
   EmailLineItem: {
     ...commonResolvers,
-
+    excludedFields: (lineItem) => lineItem.getExcludedFields(),
     tags: (lineItem, _, { loaders }) => loaders.tag.loadMany(lineItem.tagIds),
     excludedTags: (lineItem, _, { loaders }) => loaders.tag.loadMany(lineItem.excludedTagIds),
     progress: async (lineitem) => {
