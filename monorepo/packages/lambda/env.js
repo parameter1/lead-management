@@ -11,5 +11,5 @@ module.exports = cleanEnv(process.env, {
   AWS_REGION: str({ desc: 'The AWS region. This will be provided by the lambda runtime.', default: 'us-east-2' }),
   AWS_SECRET_ACCESS_KEY: str({ desc: 'This will be provided by the lambda runtime.' }),
 
-  TENANT_KEY: str({ desc: 'The lead management tenant key' });
+  TENANT_KEY: str({ desc: 'The lead management tenant key' }),
 });
