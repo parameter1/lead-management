@@ -2,7 +2,6 @@ const escapeRegex = require('escape-string-regexp');
 const dayjs = require('../../dayjs');
 const {
   Customer,
-  ExcludedEmailDomain,
   Identity,
   OmedaEmailClick,
   OmedaEmailDeploymentUrl,
@@ -49,7 +48,7 @@ module.exports = {
     const { requiredLeads } = lineitem;
     const [identityEntities, criteria] = await Promise.all([
       this.getEligibleIdentityEntities(lineitem, { urlIds, deploymentEntities }),
-      this.buildIdentityExclusionCriteria(lineitem),
+      this.buildIdentityExclusionCriteria(lineitem, false),
     ]);
     criteria.entity = { $in: identityEntities };
 
@@ -61,19 +60,11 @@ module.exports = {
     urlIds,
     deploymentEntities,
   }) {
-    const [identityEntities, customerIds] = await Promise.all([
+    const [identityEntities, criteria] = await Promise.all([
       this.getEligibleIdentityEntities(lineitem, { urlIds, deploymentEntities }),
-      this.findCustomerIdsFor(lineitem),
+      this.buildIdentityExclusionCriteria(lineitem, true),
     ]);
-    const criteria = {
-      $or: [
-        { inactive: true },
-        { inactiveCustomerIds: { $in: customerIds } },
-        { inactiveLineItemIds: { $in: [lineitem._id] } },
-      ],
-    };
     criteria.entity = { $in: identityEntities };
-
     return Identity.distinct('entity', criteria);
   },
 
@@ -152,24 +143,25 @@ module.exports = {
    *
    * @param {LineItemEmail} lineitem
    */
-  async buildIdentityExclusionCriteria(lineitem) {
-    const [customerIds, excludedDomains] = await Promise.all([
-      this.findCustomerIdsFor(lineitem),
-      ExcludedEmailDomain.distinct('domain'),
-    ]);
-
+  async buildIdentityExclusionCriteria(lineitem, active = false) {
+    const customerIds = await this.findCustomerIdsFor(lineitem);
+    const inOp = active ? '$in' : '$nin';
     const criteria = {
-      inactive: false,
-      inactiveCustomerIds: { $nin: customerIds },
-      inactiveLineItemIds: { $nin: [lineitem._id] },
-      ...(excludedDomains.length && { emailDomain: { $nin: excludedDomains } }),
+      inactive: active,
+      inactiveCustomerIds: { [inOp]: customerIds },
+      inactiveLineItemIds: { [inOp]: [lineitem._id] },
+      domainExcluded: active ? true : { $ne: true },
     };
 
-    const $and = this.createIdentityFilter(lineitem);
-    if ($and.length) {
-      criteria.$and = $and;
+    const $and = this.createIdentityFilter(lineitem, active);
+
+    if (active) {
+      const $or = Object.keys(criteria).map((key) => ({ [key]: criteria[key] }));
+      if ($and.length) $or.push(...$and);
+      return { $or };
     }
 
+    if ($and.length) criteria.$and = $and;
     return criteria;
   },
 
@@ -183,10 +175,11 @@ module.exports = {
     return customerIds;
   },
 
-  createIdentityFilter(lineitem) {
+  createIdentityFilter(lineitem, active = false) {
     const { identityFilters, requiredFields } = lineitem;
 
-    const $and = [];
+    const op = active ? '$in' : '$nin';
+    const ops = [];
     const filters = isArray(identityFilters) ? identityFilters : [];
     filters.forEach((filter) => {
       // Add identity filters
@@ -196,14 +189,14 @@ module.exports = {
         const suffix = matchType === 'matches' ? '$' : '';
         return new RegExp(`${prefix}${escapeRegex(term)}${suffix}`, 'i');
       });
-      $and.push({ [key]: { $nin: regexes } });
+      ops.push({ [key]: { [op]: regexes } });
     });
 
     const fields = isArray(requiredFields) ? requiredFields : [];
     fields.forEach((field) => {
-      $and.push({ [field]: { $ne: '' } });
+      ops.push({ [field]: { [op]: ['', null] } });
     });
-    return $and;
+    return ops;
   },
 
   /**
