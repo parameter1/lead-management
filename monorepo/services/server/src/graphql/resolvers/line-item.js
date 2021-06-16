@@ -10,6 +10,7 @@ const LineItem = require('../../mongodb/models/line-item');
 // const FormEntry = require('../../models/form-entry');
 const emailReportService = require('../../services/line-item/email-report');
 // const FormRepo = require('../../repos/form');
+const identityAttributes = require('../../services/identity-attributes');
 
 const findLineItem = async (id) => {
   const record = await LineItem.findOne({ _id: id || null, deleted: false });
@@ -331,6 +332,11 @@ module.exports = {
       const { deploymentTypeEntities } = lineitem;
       if (!Array.isArray(deploymentTypeEntities)) return [];
       return loaders.deploymentTypeEntity.loadMany(deploymentTypeEntities);
+    },
+
+    identityAttributes: async (lineitem) => {
+      const excludedFields = await lineitem.getExcludedFields();
+      return identityAttributes.filter(({ key }) => !excludedFields.includes(key));
     },
   },
 

@@ -26,6 +26,7 @@ type EmailLineItemIdentityExportReportEdge {
 }
 
 type EmailLineItemIdentityExportReportNode {
+  clicks: Int!
   identity: Identity!
   urls: [ExtractedUrl]!
   deployments: [EmailDeployment]!

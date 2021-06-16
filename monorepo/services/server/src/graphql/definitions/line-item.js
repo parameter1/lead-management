@@ -99,6 +99,7 @@ type EmailLineItem implements LineItem {
   tags: [Tag]
   excludedTags: [Tag]
   deploymentTypes: [EmailDeploymentType!]!
+  identityAttributes: [IdentityAttribute!]!
 }
 
 type FormLineItem implements LineItem {
