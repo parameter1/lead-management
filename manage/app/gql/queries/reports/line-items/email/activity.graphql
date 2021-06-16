@@ -8,9 +8,8 @@ query EmailLineItemReportActivity($hash: String!) {
         identity {
           ...IdentityViewFragment
         }
-        send {
+        deployment {
           id
-          url
           sentDate
           name
         }
