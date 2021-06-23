@@ -17,7 +17,7 @@ const { log } = console;
 const limit = 1000;
 const collections = [
   'customers',
-  'excluded-email-domains',
+  // 'excluded-email-domains',
   'extracted-hosts',
   'extracted-urls',
   'tags',
