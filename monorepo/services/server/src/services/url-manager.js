@@ -2,6 +2,7 @@ const Juicer = require('url-juicer');
 const { URL, URLSearchParams } = require('url');
 const promiseRetry = require('promise-retry');
 const { camelize, underscore } = require('inflected');
+const path = require('path');
 const {
   Customer,
   ExtractedHost,
@@ -14,6 +15,11 @@ const createHash = require('../utils/create-hash');
 
 const { isArray } = Array;
 const retryOpts = { retries: 1, minTimeout: 25, maxTimeout: 50 };
+
+const doNotScrape = ['.pdf'].reduce((map, ext) => {
+  map.set(ext, true);
+  return map;
+}, new Map());
 
 const crawl = (url) => Juicer.crawler.crawl(url, {
   jar: true,
@@ -56,25 +62,28 @@ module.exports = {
 
     const originalUrl = extractedUrl.values.original;
     try {
-      const response = await crawl(originalUrl);
-      const { headers } = response.original;
+      const extension = path.extname(url);
+      if (!doNotScrape.has(extension)) {
+        const response = await crawl(originalUrl);
+        const { headers } = response.original;
 
-      extractedUrl.title = response.title;
-      extractedUrl.meta = response.meta;
-      extractedUrl.errorMessage = undefined;
-      extractedUrl.headerDirectives = Object.keys(headers)
-        .filter((key) => headerPattern.test(key) && headers[key])
-        .reduce((o, key) => {
-          const v = headers[key];
-          const k = camelize(underscore(key.replace(headerPattern, '')), false);
-          return { ...o, [k]: v };
-        }, {});
+        extractedUrl.title = response.title;
+        extractedUrl.meta = response.meta;
+        extractedUrl.errorMessage = undefined;
+        extractedUrl.headerDirectives = Object.keys(headers)
+          .filter((key) => headerPattern.test(key) && headers[key])
+          .reduce((o, key) => {
+            const v = headers[key];
+            const k = camelize(underscore(key.replace(headerPattern, '')), false);
+            return { ...o, [k]: v };
+          }, {});
 
-      if (response.url.redirected) {
-        extractedUrl.set('values.resolved', response.url.resolved);
-        const host = await promiseRetry((retry) => this.upsertExtractedHost(response.host)
-          .catch((err) => checkDupe(retry, err)), retryOpts);
-        extractedUrl.resolvedHostId = host.id;
+        if (response.url.redirected) {
+          extractedUrl.set('values.resolved', response.url.resolved);
+          const host = await promiseRetry((retry) => this.upsertExtractedHost(response.host)
+            .catch((err) => checkDupe(retry, err)), retryOpts);
+          extractedUrl.resolvedHostId = host.id;
+        }
       }
     } catch (e) {
       const { response } = e;
