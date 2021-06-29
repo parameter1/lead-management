@@ -55,6 +55,11 @@ module.exports = {
     const extractedUrl = await promiseRetry((retry) => this.upsertExtractedUrl(url)
       .catch((err) => checkDupe(retry, err)), retryOpts);
 
+    // use the url pathname for parsing the extension, not the full url
+    // otherwise, query params will result in a non-matching extension... e.g. `.pdf?foo=bar`
+    const parsed = new URL(extractedUrl.get('values.original'));
+    const extension = path.extname(parsed.pathname);
+
     if (!extractedUrl.errorMessage && extractedUrl.lastCrawledDate && shouldCache(url, cache)) {
       await this.applyTrackingRules(extractedUrl);
       return extractedUrl.save();
@@ -62,7 +67,6 @@ module.exports = {
 
     const originalUrl = extractedUrl.values.original;
     try {
-      const extension = path.extname(url);
       if (!doNotScrape.has(extension)) {
         const response = await crawl(originalUrl);
         const { headers } = response.original;
