@@ -1,5 +1,5 @@
 const mongodb = require('@lead-management/mongodb/client');
-const upsert = require('@lead-management/sync/commands/upsert-customers');
+const scaffold = require('@lead-management/sync/commands/scaffold-customers');
 const { AWS_EXECUTION_ENV } = require('../env');
 
 const { log } = console;
@@ -17,11 +17,11 @@ exports.handler = async (event = {}, context = {}) => {
     if (encryptedCustomerId) set.add(encryptedCustomerId);
     return set;
   }, new Set())];
-  log(`Found ${encryptedCustomerIds.length} customer(s) to upsert...`);
+  log(`Found ${encryptedCustomerIds.length} customer(s) to scaffold...`);
 
   if (encryptedCustomerIds.length) {
-    await upsert({ encryptedCustomerIds });
-    log('Upsert complete:', encryptedCustomerIds);
+    await scaffold({ encryptedCustomerIds });
+    log('Scaffolding complete:', encryptedCustomerIds);
   }
 
   if (!AWS_EXECUTION_ENV) await mongodb.close();
