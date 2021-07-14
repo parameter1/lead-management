@@ -19,7 +19,9 @@ module.exports = async (params = {}) => {
   const items = await Promise.all(ids.map(async (encryptedId) => {
     const response = await omeda.resource('customer').lookupByEncryptedId({ encryptedId });
     const { data } = response;
-    const entity = customerEntity({ encryptedCustomerId: data.EncryptedCustomerId });
+    // use incoming ID for entity, not the response
+    // this is due to customers being merged
+    const entity = customerEntity({ encryptedCustomerId: encryptedId });
 
     const [emails, phoneNumbers, postalAddresses, demographics] = await Promise.all([
       response.emails(),
