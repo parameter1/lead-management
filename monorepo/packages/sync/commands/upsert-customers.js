@@ -8,8 +8,9 @@ const createInactiveMap = require('../ops/legacy-inactive-map');
 const createExcludedDomainMap = require('../ops/create-excluded-domain-map');
 
 module.exports = async (params = {}) => {
-  const { encryptedCustomerIds } = await validateAsync(Joi.object({
+  const { encryptedCustomerIds, $set } = await validateAsync(Joi.object({
     encryptedCustomerIds: Joi.array().items(Joi.string().trim().pattern(/[a-z0-9]{15}/i).required()).required(),
+    $set: Joi.object().default({}),
   }), params);
 
   const customers = await loadCustomers({ encryptedCustomerIds });
@@ -27,7 +28,12 @@ module.exports = async (params = {}) => {
   const db = await loadDB();
   const bulkOps = [];
   customers.forEach((customer) => {
-    bulkOps.push(transform({ ...customer, legacyInactiveMap, excludedDomainMap }));
+    bulkOps.push(transform({
+      ...customer,
+      legacyInactiveMap,
+      excludedDomainMap,
+      additionalSet: $set,
+    }));
   });
   if (bulkOps.length) await db.collection('identities').bulkWrite(bulkOps);
   return bulkOps;
