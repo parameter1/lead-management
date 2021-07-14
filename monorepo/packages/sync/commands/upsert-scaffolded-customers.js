@@ -22,7 +22,11 @@ module.exports = async () => {
       const [encryptedCustomerId] = id.split('~');
       return encryptedCustomerId;
     });
-    await upsert({ encryptedCustomerIds, $set: { '_sync.scaffoldOnly': false, '_sync.scaffoldProcessed': true } });
+    await upsert({
+      encryptedCustomerIds,
+      $set: { '_sync.scaffoldOnly': false, '_sync.scaffoldProcessed': true },
+      errorOnNotFound: false,
+    });
   };
 
   await batch({
