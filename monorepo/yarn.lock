@@ -1143,15 +1143,15 @@
     async "^3.2.0"
     mongodb "^3.6.8"
 
-"@parameter1/omeda-api-client@^0.3.9":
-  version "0.3.9"
-  resolved "https://registry.yarnpkg.com/@parameter1/omeda-api-client/-/omeda-api-client-0.3.9.tgz#221b1f2ba14e12f05c6189c2bf69d0438e61be96"
-  integrity sha512-d2p3z7bNrbWsjBNY9gbAyrE8p/H7IEAS0ruJqn2tVXCklfx36z3Y8nyISdz3VDt3PsdfpBs9i0tP+fZ9QV5pvg==
+"@parameter1/omeda-api-client@^0.5.2":
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/@parameter1/omeda-api-client/-/omeda-api-client-0.5.2.tgz#d357e90df0cc9190b4375efb0d62df7caed30bdd"
+  integrity sha512-dOGBQJeDHhJ5L5HQEIZAugjdwgtPe4REXQxD6HNJbjBQm6yr3m+f9Z70Ji/9jvrMnyi6qqbidlH/tF0XXYKa1w==
   dependencies:
     "@parameter1/joi" "^1.2.6"
     "@parameter1/utils" "^1.1.19"
-    cheerio "^1.0.0-rc.9"
-    dayjs "^1.10.4"
+    cheerio "^1.0.0-rc.10"
+    dayjs "^1.10.5"
     node-fetch "^2.6.1"
 
 "@parameter1/terminus@^1.7.0":
@@ -2429,7 +2429,7 @@ cheerio-select@^1.5.0:
     domhandler "^4.2.0"
     domutils "^2.7.0"
 
-cheerio@^1.0.0-rc.10, cheerio@^1.0.0-rc.2, cheerio@^1.0.0-rc.9:
+cheerio@^1.0.0-rc.10, cheerio@^1.0.0-rc.2:
   version "1.0.0-rc.10"
   resolved "https://registry.yarnpkg.com/cheerio/-/cheerio-1.0.0-rc.10.tgz#2ba3dcdfcc26e7956fc1f440e61d51c643379f3e"
   integrity sha512-g0J0q/O6mW8z5zxQ3A8E8J1hUgp4SMOvEoW/x84OwyHKe/Zccz83PVT4y5Crcr530FV6NgmKI1qvGTKVl9XXVw==
@@ -2935,7 +2935,7 @@ dateformat@^3.0.0:
   resolved "https://registry.yarnpkg.com/dateformat/-/dateformat-3.0.3.tgz#a6e37499a4d9a9cf85ef5872044d62901c9889ae"
   integrity sha512-jyCETtSl3VMZMWeRo7iY1FL19ges1t55hMo5yaam4Jrsm5EPL89UQkoQRyiI+Yf4k8r2ZpdngkV8hr1lIdjb3Q==
 
-dayjs@^1.10.4, dayjs@^1.10.5:
+dayjs@^1.10.5:
   version "1.10.5"
   resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.10.5.tgz#5600df4548fc2453b3f163ebb2abbe965ccfb986"
   integrity sha512-BUFis41ikLz+65iH6LHQCDm4YPMj5r1YFLdupPIyM4SGcXMmtiLQ7U37i+hGS8urIuqe7I/ou3IS1jVc4nbN4g==
