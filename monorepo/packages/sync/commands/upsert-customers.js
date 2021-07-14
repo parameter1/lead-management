@@ -8,12 +8,13 @@ const createInactiveMap = require('../ops/legacy-inactive-map');
 const createExcludedDomainMap = require('../ops/create-excluded-domain-map');
 
 module.exports = async (params = {}) => {
-  const { encryptedCustomerIds, $set } = await validateAsync(Joi.object({
+  const { encryptedCustomerIds, errorOnNotFound, $set } = await validateAsync(Joi.object({
     encryptedCustomerIds: Joi.array().items(Joi.string().trim().pattern(/[a-z0-9]{15}/i).required()).required(),
+    errorOnNotFound: Joi.boolean().default(true),
     $set: Joi.object().default({}),
   }), params);
 
-  const customers = await loadCustomers({ encryptedCustomerIds });
+  const customers = await loadCustomers({ encryptedCustomerIds, errorOnNotFound });
 
   const emails = [];
   customers.forEach((customer) => {

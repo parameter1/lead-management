@@ -11,14 +11,17 @@ const customerEntity = require('@lead-management/omeda/entity-id/customer');
  * @returns {Map} The customers mapped by customer ID.
  */
 module.exports = async (params = {}) => {
-  const { encryptedCustomerIds } = await validateAsync(Joi.object({
+  const { encryptedCustomerIds, errorOnNotFound } = await validateAsync(Joi.object({
     encryptedCustomerIds: Joi.array().items(Joi.string().trim().pattern(/[a-z0-9]{15}/i).required()).required(),
+    errorOnNotFound: Joi.boolean().default(true),
   }), params);
 
   const ids = [...new Set(encryptedCustomerIds)];
   const items = await Promise.all(ids.map(async (encryptedId) => {
-    const response = await omeda.resource('customer').lookupByEncryptedId({ encryptedId });
+    const response = await omeda.resource('customer').lookupByEncryptedId({ encryptedId, errorOnNotFound, reQueryOnInactive: true });
     const { data } = response;
+    if (!data.Id) return null; // no customer found. return empty result (will be filtered later)
+
     // use incoming ID for entity, not the response
     // this is due to customers being merged
     const entity = customerEntity({ encryptedCustomerId: encryptedId });
@@ -39,7 +42,7 @@ module.exports = async (params = {}) => {
       demographics,
     };
   }));
-  return items.reduce((map, item) => {
+  return items.filter((item) => item).reduce((map, item) => {
     map.set(item.encryptedId, item);
     return map;
   }, new Map());
