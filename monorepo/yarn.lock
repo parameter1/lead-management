@@ -1150,10 +1150,10 @@
     async "^3.2.0"
     mongodb "^3.6.8"
 
-"@parameter1/omeda-api-client@^0.5.4":
-  version "0.5.4"
-  resolved "https://registry.yarnpkg.com/@parameter1/omeda-api-client/-/omeda-api-client-0.5.4.tgz#13a9e3de077788742081f36f09eb7a7398c13893"
-  integrity sha512-S1MQQjNzaF8X+e2j2sZ67Q9pGA/P64xHaioHyvmES2uGt9Yb74wdL8XNvZDRzySo/W3Sr+HYoznFzIuVQAKHzQ==
+"@parameter1/omeda-api-client@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@parameter1/omeda-api-client/-/omeda-api-client-0.6.0.tgz#b8120e148913a590b60da2a0c660b0b1f229d01a"
+  integrity sha512-9UAR1+GEFSruThqZ1Iy3Di6cKX7W5t++b6OlbxwxbrUM3N3AXAlMCAqmpAsOFXsxJipxO+iHp+4VehadW0RljQ==
   dependencies:
     "@parameter1/joi" "^1.2.8"
     "@parameter1/utils" "^1.1.21"
