@@ -17,6 +17,7 @@ router.get('/', asyncRoute(async (req, res) => {
       slug: 1,
     },
     projection: {
+      emailId: 1,
       entity: 1,
       'client.name': 1,
       'dataFolder.name': 1,
@@ -27,20 +28,49 @@ router.get('/', asyncRoute(async (req, res) => {
   });
 
   const headers = '<tr><th>Business Unit</th><th>Folder</th><th>Email Name</th><th>Created</th><th>Modified</th></tr>';
-  const rows = [];
+
+  const map = new Map();
+
+  const html = ['<html><body>'];
   await iterateCursor(cursor, (doc) => {
-    const items = [
-      doc.client.name,
-      doc.dataFolder.name,
-      `<a href="/exact-target-email-export/${doc.entity}">${doc.name}</a>`,
-      dayjs(doc.createdDate).format('YYYY-MM-DD HH:mm:ss'),
-      dayjs(doc.modifiedDate).format('YYYY-MM-DD HH:mm:ss'),
-    ];
-    rows.push(`<tr><td>${items.join('</td><td>')}</td></tr>`);
+    const { name: clientName } = doc.client;
+    const { name: folderName } = doc.dataFolder;
+    if (!map.has(clientName)) map.set(clientName, new Map());
+
+    const clientMap = map.get(clientName);
+    if (!clientMap.has(folderName)) clientMap.set(folderName, []);
+
+    const emailArr = clientMap.get(folderName);
+    emailArr.push(doc);
+
+    // emailArr.push([
+    //   doc.emailId,
+    //   `<a href="/exact-target-email-export/${doc.entity}">${doc.name}</a>`,
+    //   dayjs(doc.createdDate).format('YYYY-MM-DD HH:mm:ss'),
+    //   dayjs(doc.modifiedDate).format('YYYY-MM-DD HH:mm:ss'),
+    // ]);
+
+    // rows.push(`<tr><td>${items.join('</td><td>')}</td></tr>`);
   });
-  const html = `<html><body><table>${headers}${rows.join('')}</table></body></html>`;
+
+  map.forEach((folders, bu) => {
+    html.push(`<h2>${bu}</h2><hr>`);
+    folders.forEach((emails, folder) => {
+      html.push(`<h3>${folder}</h3><ul>`);
+      emails.forEach((email) => {
+        html.push(`<li><a href="/exact-target-email-export/${email.entity}">${email.name}</a> (ID: ${email.emailId})</li>`);
+      });
+      html.push('</ul>');
+    });
+    console.log(bu);
+  });
+
+  html.push('</body></html>');
+
+
+  // const html = `<html><body><table border="1">${headers}${rows.join('')}</table></body></html>`;
   res.set('content-type', 'text/html');
-  res.send(html);
+  res.send(html.join(''));
 }));
 
 router.get('/:entity', asyncRoute(async (req, res) => {
