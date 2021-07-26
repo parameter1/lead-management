@@ -1,5 +1,4 @@
 const { Router } = require('express');
-const dayjs = require('dayjs');
 const { iterateCursor } = require('@parameter1/mongodb/utils');
 const asyncRoute = require('../utils/async-route');
 const connection = require('../mongodb/connection');
@@ -27,10 +26,7 @@ router.get('/', asyncRoute(async (req, res) => {
     },
   });
 
-  const headers = '<tr><th>Business Unit</th><th>Folder</th><th>Email Name</th><th>Created</th><th>Modified</th></tr>';
-
   const map = new Map();
-
   const html = ['<html><body>'];
   await iterateCursor(cursor, (doc) => {
     const { name: clientName } = doc.client;
@@ -42,15 +38,6 @@ router.get('/', asyncRoute(async (req, res) => {
 
     const emailArr = clientMap.get(folderName);
     emailArr.push(doc);
-
-    // emailArr.push([
-    //   doc.emailId,
-    //   `<a href="/exact-target-email-export/${doc.entity}">${doc.name}</a>`,
-    //   dayjs(doc.createdDate).format('YYYY-MM-DD HH:mm:ss'),
-    //   dayjs(doc.modifiedDate).format('YYYY-MM-DD HH:mm:ss'),
-    // ]);
-
-    // rows.push(`<tr><td>${items.join('</td><td>')}</td></tr>`);
   });
 
   map.forEach((folders, bu) => {
@@ -62,13 +49,9 @@ router.get('/', asyncRoute(async (req, res) => {
       });
       html.push('</ul>');
     });
-    console.log(bu);
   });
 
   html.push('</body></html>');
-
-
-  // const html = `<html><body><table border="1">${headers}${rows.join('')}</table></body></html>`;
   res.set('content-type', 'text/html');
   res.send(html.join(''));
 }));
