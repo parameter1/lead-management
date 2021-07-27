@@ -5,7 +5,11 @@ const connection = require('../mongodb/connection');
 
 const router = Router();
 
-router.get('/', asyncRoute(async (req, res) => {
+router.get('/', (req, res) => {
+  res.redirect(301, '/exact-target-email-export.html');
+});
+
+router.get('/__build', asyncRoute(async (req, res) => {
   await connection;
   const collection = connection.db.collection('exact-target-email-export');
 
