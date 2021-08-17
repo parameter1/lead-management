@@ -29,6 +29,7 @@ module.exports = ({
   demographics,
   legacyInactiveMap = new Map(),
   excludedDomainMap = new Map(),
+  additionalSet,
 }) => {
   const now = new Date();
   const primaryEmail = emails ? emails.getPrimary() : null;
@@ -66,6 +67,7 @@ module.exports = ({
 
   const filter = { entity };
   const $set = {
+    ...additionalSet,
     ...fields,
     emailDomain,
     domainExcluded: excludedDomainMap.has(emailDomain),

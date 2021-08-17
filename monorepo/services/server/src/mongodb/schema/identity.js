@@ -47,6 +47,7 @@ schema.index({ emailAddress: 1 });
 schema.index({ inactive: 1 });
 schema.index({ inactiveCustomerIds: 1 });
 schema.index({ inactiveCampaignIds: 1 });
+schema.index({ '_sync.scaffoldOnly': 1 });
 
 schema.pre('save', function calcFieldCount(done) {
   let count = 0;
