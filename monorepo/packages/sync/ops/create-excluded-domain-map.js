@@ -1,10 +1,18 @@
-const loadDB = require('@lead-management/mongodb/load-db');
 const getEmailDomain = require('../utils/get-email-domain');
 
-module.exports = async ({ emails = [] } = {}) => {
+/**
+ *
+ * @param {object} params
+ * @param {string[]} params.emails
+ * @param {object} tenant
+ * @param {object} tenant.doc
+ * @param {object} tenant.db
+ * @param {object} tenant.omeda
+ * @returns {Map}
+ */
+module.exports = async ({ emails = [] } = {}, { db } = {}) => {
   const domainSet = new Set(emails.map(getEmailDomain).filter((v) => v));
   if (!domainSet.size) return new Map();
-  const db = await loadDB();
   const domains = await db.collection('excluded-email-domains').distinct('domain', {
     domain: { $in: [...domainSet] },
   });

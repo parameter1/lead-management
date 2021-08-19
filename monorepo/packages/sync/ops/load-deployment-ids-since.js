@@ -1,6 +1,5 @@
 const Joi = require('@parameter1/joi');
 const { validateAsync } = require('@parameter1/joi/utils');
-const omeda = require('@lead-management/omeda');
 const dayjs = require('../dayjs');
 
 /**
@@ -9,9 +8,13 @@ const dayjs = require('../dayjs');
  * @param {object} params
  * @param {Date} params.onOrAfter
  * @param {number} [params.clockDriftMinutes=60]
+ * @param {object} tenant
+ * @param {object} tenant.doc
+ * @param {object} tenant.db
+ * @param {object} tenant.omeda
  * @returns {string[]}
  */
-module.exports = async (params = {}) => {
+module.exports = async (params = {}, { omeda } = {}) => {
   const { onOrAfter, clockDriftMinutes } = await validateAsync(Joi.object({
     onOrAfter: Joi.date().required(),
     clockDriftMinutes: Joi.number().min(0).default(60),

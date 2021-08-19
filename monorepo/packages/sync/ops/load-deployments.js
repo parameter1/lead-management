@@ -1,16 +1,18 @@
 const Joi = require('@parameter1/joi');
 const { validateAsync } = require('@parameter1/joi/utils');
-const omeda = require('@lead-management/omeda');
-const deploymentEntity = require('@lead-management/omeda/entity-id/deployment');
 
 /**
  * Loads Omeda deployment(s).
  *
  * @param {object} params
  * @param {string} params.trackIds
+ * @param {object} tenant
+ * @param {object} tenant.doc
+ * @param {object} tenant.db
+ * @param {object} tenant.omeda
  * @returns {Map} The deployments mapped by track ID.
  */
-module.exports = async (params = {}) => {
+module.exports = async (params = {}, { omeda } = {}) => {
   const { trackIds } = await validateAsync(Joi.object({
     trackIds: Joi.array().items(Joi.string().trim().required()).required(),
   }), params);
@@ -18,7 +20,7 @@ module.exports = async (params = {}) => {
   const ids = [...new Set(trackIds)];
   const items = await Promise.all(ids.map(async (trackId) => {
     const { data } = await omeda.resource('email').lookupDeploymentById({ trackId });
-    const entity = deploymentEntity({ trackId: data.TrackId });
+    const entity = omeda.entity.deployment({ trackId: data.TrackId });
     return {
       trackId,
       entity,

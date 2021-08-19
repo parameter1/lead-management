@@ -1,5 +1,4 @@
 const { get } = require('@parameter1/utils');
-const demographicEntity = require('@lead-management/omeda/entity-id/demographic');
 const getEmailDomain = require('../utils/get-email-domain');
 
 const g = (obj, path, def = '') => {
@@ -19,6 +18,10 @@ const demoMap = new Map([
  *
  * @param {object} params
  * @param {string} params.entity
+ * @param {object} tenant
+ * @param {object} tenant.doc
+ * @param {object} tenant.db
+ * @param {object} tenant.omeda
  */
 module.exports = ({
   entity,
@@ -30,7 +33,7 @@ module.exports = ({
   legacyInactiveMap = new Map(),
   excludedDomainMap = new Map(),
   additionalSet,
-}) => {
+} = {}, { omeda } = {}) => {
   const now = new Date();
   const primaryEmail = emails ? emails.getPrimary() : null;
   const primaryPhone = phoneNumbers ? phoneNumbers.getPrimary() : null;
@@ -58,7 +61,7 @@ module.exports = ({
       .filter(({ DemographicId, ValueId }) => demoMap.has(DemographicId) && ValueId)
       .reduce((o, { DemographicId, ValueId }) => {
         const label = demoMap.get(DemographicId);
-        const value = { entity: demographicEntity({ id: `${DemographicId}` }), value: ValueId };
+        const value = { entity: omeda.entity.demographic({ id: `${DemographicId}` }), value: ValueId };
         return { ...o, [label]: value };
       }, {});
   }

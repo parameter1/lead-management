@@ -1,16 +1,19 @@
-const omeda = require('@lead-management/omeda');
+// const omeda = require('@lead-management/omeda');
 const Joi = require('@parameter1/joi');
 const { validateAsync } = require('@parameter1/joi/utils');
-const customerEntity = require('@lead-management/omeda/entity-id/customer');
 
 /**
  * Loads Omeda customer(s) with email, phone number, and address data.
  *
  * @param {object} params
  * @param {number[]} params.customerIds
+ * @param {object} tenant
+ * @param {object} tenant.doc
+ * @param {object} tenant.db
+ * @param {object} tenant.omeda
  * @returns {Map} The customers mapped by customer ID.
  */
-module.exports = async (params = {}) => {
+module.exports = async (params = {}, { omeda } = {}) => {
   const { encryptedCustomerIds, errorOnNotFound } = await validateAsync(Joi.object({
     encryptedCustomerIds: Joi.array().items(Joi.string().trim().pattern(/[a-z0-9]{15}/i).required()).required(),
     errorOnNotFound: Joi.boolean().default(true),
@@ -24,7 +27,7 @@ module.exports = async (params = {}) => {
 
     // use incoming ID for entity, not the response
     // this is due to customers being merged
-    const entity = customerEntity({ encryptedCustomerId: encryptedId });
+    const entity = omeda.customer.entity({ encryptedCustomerId: encryptedId });
 
     const [emails, phoneNumbers, postalAddresses, demographics] = await Promise.all([
       response.emails(),

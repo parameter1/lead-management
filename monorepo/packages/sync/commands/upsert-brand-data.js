@@ -1,9 +1,6 @@
-const omeda = require('@lead-management/omeda');
-const loadDB = require('@lead-management/mongodb/load-db');
-
-const deploymentTypeEntity = require('@lead-management/omeda/entity-id/deployment-type');
-const demographicEntity = require('@lead-management/omeda/entity-id/demographic');
-const productEntity = require('@lead-management/omeda/entity-id/product');
+const Joi = require('@parameter1/joi');
+const { validateAsync } = require('@parameter1/joi/utils');
+const loadTenant = require('@lead-management/tenant-loader');
 
 const createOpFor = ({
   brand,
@@ -25,11 +22,13 @@ const createOpFor = ({
   return { updateOne: { filter, update, upsert: true } };
 };
 
-module.exports = async () => {
-  const [db, { data }] = await Promise.all([
-    loadDB(),
-    omeda.resource('brand').comprehensiveLookup(),
-  ]);
+module.exports = async (params = {}) => {
+  const { tenantKey } = await validateAsync(Joi.object({
+    tenantKey: Joi.string().trim().required(),
+  }).required(), params);
+
+  const { db, omeda } = await loadTenant({ key: tenantKey });
+  const { data } = await omeda.resource('brand').comprehensiveLookup();
 
   const {
     BrandAbbrev: brand,
@@ -44,7 +43,7 @@ module.exports = async () => {
     (async () => {
       const ops = Demographics.map((demographic) => createOpFor({
         brand,
-        entity: demographicEntity({ id: demographic.Id }),
+        entity: omeda.entity.demographic({ id: demographic.Id }),
         data: demographic,
         now,
       }));
@@ -54,7 +53,7 @@ module.exports = async () => {
     (async () => {
       const ops = DeploymentTypes.map((type) => createOpFor({
         brand,
-        entity: deploymentTypeEntity({ id: type.Id }),
+        entity: omeda.entity.deploymentType({ id: type.Id }),
         data: type,
         now,
       }));
@@ -64,7 +63,7 @@ module.exports = async () => {
     (async () => {
       const ops = Products.map((product) => createOpFor({
         brand,
-        entity: productEntity({ id: product.Id }),
+        entity: omeda.entity.product({ id: product.Id }),
         data: product,
         now,
       }));
