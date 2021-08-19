@@ -1,8 +1,7 @@
 const mongodb = require('./client');
-const { TENANT_KEY } = require('./env');
 
-module.exports = async () => {
-  if (!TENANT_KEY) throw new Error('The database tenant key is required.');
-  const db = await mongodb.db({ name: `lead-management-${TENANT_KEY}` });
+module.exports = async ({ tenantKey } = {}) => {
+  if (!tenantKey) throw new Error('The database tenant key is required.');
+  const db = await mongodb.db({ name: `lead-management-${tenantKey}` });
   return db;
 };

@@ -11,8 +11,7 @@
     "test": "yarn lint"
   },
   "dependencies": {
-    "@parameter1/omeda-api-client": "^0.6.0",
-    "envalid": "^7.1.0"
+    "@parameter1/omeda-api-client": "^0.6.0"
   },
   "devDependencies": {
     "eslint": "^7.28.0",
