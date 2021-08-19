@@ -1,4 +1,5 @@
 const mongodb = require('@lead-management/mongodb/client');
+const loadTenantKeys = require('@lead-management/tenant-loader/keys');
 const upsert = require('@lead-management/sync/commands/upsert-scaffolded-customers');
 const { AWS_EXECUTION_ENV } = require('../env');
 
@@ -11,7 +12,13 @@ exports.handler = async (event, context = {}) => {
   context.callbackWaitsForEmptyEventLoop = false;
   await mongodb.connect();
 
-  await upsert();
+  // load all tenant keys
+  const tenantKeys = await loadTenantKeys();
+
+  // upsert for all tenants
+  await Promise.all(tenantKeys.map(async (tenantKey) => {
+    await upsert({ tenantKey });
+  }));
 
   if (!AWS_EXECUTION_ENV) await mongodb.close();
   log('DONE');

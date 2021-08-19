@@ -12,17 +12,23 @@ exports.handler = async (event = {}, context = {}) => {
   await mongodb.connect();
 
   const { Records = [] } = event;
-  const encryptedCustomerIds = [...Records.reduce((set, record) => {
-    const { encryptedCustomerId } = JSON.parse(record.body);
-    if (encryptedCustomerId) set.add(encryptedCustomerId);
-    return set;
-  }, new Set())];
-  log(`Found ${encryptedCustomerIds.length} customer(s) to scaffold...`);
+  // needs to split by tenant key
+  const perTenant = Records.reduce((map, record) => {
+    const { tenantKey, encryptedCustomerId } = JSON.parse(record.body);
+    if (!map.has(tenantKey)) map.set(tenantKey, new Set());
+    if (encryptedCustomerId) map.get(tenantKey).add(encryptedCustomerId);
+    return map;
+  }, new Map());
 
-  if (encryptedCustomerIds.length) {
-    await scaffold({ encryptedCustomerIds });
-    log('Scaffolding complete:', encryptedCustomerIds);
-  }
+  await Promise.all([...perTenant.keys()].map(async (tenantKey) => {
+    const [...encryptedCustomerIds] = perTenant.get(tenantKey);
+    log(`Found ${encryptedCustomerIds.length} ${tenantKey} customer(s) to scaffold...`);
+
+    if (encryptedCustomerIds.length) {
+      await scaffold({ tenantKey, encryptedCustomerIds });
+      log(`Scaffolding for ${tenantKey} complete:`, encryptedCustomerIds);
+    }
+  }));
 
   if (!AWS_EXECUTION_ENV) await mongodb.close();
   log('DONE');

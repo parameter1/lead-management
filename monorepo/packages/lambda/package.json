@@ -12,6 +12,7 @@
   "dependencies": {
     "@lead-management/mongodb": "^0.1.0",
     "@lead-management/sync": "^0.1.0",
+    "@lead-management/tenant-loader": "^0.1.4",
     "dayjs": "^1.10.5",
     "envalid": "^7.1.0"
   },

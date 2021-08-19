@@ -12,10 +12,18 @@ exports.handler = async (event = {}, context = {}) => {
   await mongodb.connect();
 
   const { Records = [] } = event;
-  const records = Records.map((record) => JSON.parse(record.body));
-  log(`Found ${records.length} identity records to process...`);
+  const perTenant = Records.reduce((map, record) => {
+    const { tenantKey, body } = JSON.parse(record.body);
+    if (!map.has(tenantKey)) map.set(tenantKey, []);
+    map.get(tenantKey).push(body);
+    return map;
+  }, new Map());
 
-  await upsert({ records });
+  await Promise.all([...perTenant.keys()].map(async (tenantKey) => {
+    const records = perTenant.get(tenantKey);
+    log(`Found ${records.length} ${tenantKey} identity records to process...`);
+    await upsert({ tenantKey, records });
+  }));
 
   if (!AWS_EXECUTION_ENV) await mongodb.close();
   log('DONE');
