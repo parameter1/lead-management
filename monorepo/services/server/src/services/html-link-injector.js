@@ -14,24 +14,25 @@ module.exports = {
    * @param {string} html
    */
   async injectInto(html) {
-    if (!html) return '';
-    const cleanedHtml = await this.replaceDoubleTrackedUrls(html);
+    const original = html || '';
+    if (!original) return { original, replaced: original };
+    const cleanedHtml = await this.replaceDoubleTrackedUrls(original);
 
     const raw = this.rawExtract(cleanedHtml);
-    if (!raw.length) return html;
+    if (!raw.length) return { original, replaced: original };
 
     const mapped = this.rawCleanMap(raw);
     const clean = this.getCleanUrlsFrom(mapped);
-    if (!clean.length) return html;
+    if (!clean.length) return { original, replaced: original };
 
     const urls = await ExtractedUrl.find({ 'values.original': { $in: clean } });
-    if (!urls.length) return html;
+    if (!urls.length) return { original, replaced: original };
 
     const tracked = await this.createDirectlyTrackedUrls(urls);
 
     const replacements = this.replacementMap(mapped, tracked);
     const replaced = this.replaceUrls(cleanedHtml, replacements);
-    return replaced;
+    return { original, replaced };
   },
 
   /**

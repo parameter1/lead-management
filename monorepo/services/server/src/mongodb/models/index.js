@@ -16,6 +16,7 @@ const OmedaEmailDeploymentUrl = require('./omeda/email-deployment-url');
 const OmedaProduct = require('./omeda/product');
 const Order = require('./order');
 const Tag = require('./tag');
+const TrackedHtml = require('./tracked-html');
 const User = require('./user');
 
 module.exports = {
@@ -37,5 +38,6 @@ module.exports = {
   OmedaProduct,
   Order,
   Tag,
+  TrackedHtml,
   User,
 };
