@@ -1,6 +1,6 @@
 {
   "name": "@lead-management/sync",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "main": "index.js",
   "repository": "https://github.com/parameter1/lead-management.git",
   "author": "Jacob Bare <jacob@parameter1.com>",
@@ -11,8 +11,8 @@
     "test": "yarn lint"
   },
   "dependencies": {
-    "@lead-management/mongodb": "^0.1.0",
-    "@lead-management/tenant-loader": "^0.1.4",
+    "@lead-management/mongodb": "^0.2.0",
+    "@lead-management/tenant-loader": "^0.2.0",
     "@parameter1/joi": "^1.2.6",
     "@parameter1/utils": "^1.1.19",
     "dayjs": "^1.10.5"
