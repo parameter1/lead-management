@@ -7,6 +7,7 @@ const {
   OmedaEmailDeployment,
   Customer,
   Tag,
+  TrackedHtml,
 } = require('../../mongodb/models');
 
 const { isArray } = Array;
@@ -94,9 +95,16 @@ module.exports = {
     /**
      *
      */
-    generateTrackedHtml: (root, { html }, { auth }) => {
+    generateTrackedHtml: async (root, { html }, { auth }) => {
       auth.checkAdmin();
-      return LinkInjector.injectInto(html);
+      const { original, replaced } = await LinkInjector.injectInto(html);
+      await TrackedHtml.create({
+        date: new Date(),
+        userId: auth.user._id,
+        original,
+        processed: replaced,
+      });
+      return replaced;
     },
 
     /**
