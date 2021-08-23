@@ -1125,12 +1125,12 @@
   dependencies:
     joi "^17.4.0"
 
-"@parameter1/joi@^1.2.8":
-  version "1.2.8"
-  resolved "https://registry.yarnpkg.com/@parameter1/joi/-/joi-1.2.8.tgz#96759f051bef410cc2d831ed8f1215752376597a"
-  integrity sha512-es6y8kReTKFGRXtOJ1PNfjWR9bIhrqWVPCQyyetIsAVM2EAm8QbIUq2AGHmXCuo7Aqg6HU0Ai5TZbeFKPANxdg==
+"@parameter1/joi@^1.2.9":
+  version "1.2.9"
+  resolved "https://registry.yarnpkg.com/@parameter1/joi/-/joi-1.2.9.tgz#04ad0272a7c6a221983d117f73fe7bd4060acbcd"
+  integrity sha512-+7QLcw20PSUxnC+mhdJkEVwTa0mOhF/uFu/Gt7Bp+j/xY32HjKSu8YtzWCov12mfqjk/iT1L1LPs/CefPzpsXQ==
   dependencies:
-    joi "^17.4.0"
+    joi "^17.4.2"
 
 "@parameter1/micro@^1.1.19":
   version "1.1.19"
@@ -1150,13 +1150,13 @@
     async "^3.2.0"
     mongodb "^3.6.8"
 
-"@parameter1/omeda-api-client@^0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@parameter1/omeda-api-client/-/omeda-api-client-0.6.0.tgz#b8120e148913a590b60da2a0c660b0b1f229d01a"
-  integrity sha512-9UAR1+GEFSruThqZ1Iy3Di6cKX7W5t++b6OlbxwxbrUM3N3AXAlMCAqmpAsOFXsxJipxO+iHp+4VehadW0RljQ==
+"@parameter1/omeda-api-client@^0.6.8":
+  version "0.6.8"
+  resolved "https://registry.yarnpkg.com/@parameter1/omeda-api-client/-/omeda-api-client-0.6.8.tgz#8512adb13c7e85668a59f63acdca7fed3314cd77"
+  integrity sha512-0uNU/vidobovZpgj8FPhKefUQorLpxQujnYLPQxTtDDoAxnCpm4AEA7ctbI3Hu1v4pA/X5QMo7ECeXle9oAKzg==
   dependencies:
-    "@parameter1/joi" "^1.2.8"
-    "@parameter1/utils" "^1.1.21"
+    "@parameter1/joi" "^1.2.9"
+    "@parameter1/utils" "^1.1.22"
     cheerio "^1.0.0-rc.10"
     dayjs "^1.10.6"
     node-fetch "^2.6.1"
@@ -1176,10 +1176,10 @@
   dependencies:
     object-path "^0.11.5"
 
-"@parameter1/utils@^1.1.21":
-  version "1.1.21"
-  resolved "https://registry.yarnpkg.com/@parameter1/utils/-/utils-1.1.21.tgz#2a34b1aca14226b5d7bb4f62b76b3aa3dee90c90"
-  integrity sha512-yq41MDGigfYa4rdzBwKSACFut0eBrRUQsFppdNK3exKGNtetdfRWOf8EzkKswP5f78mzr18u6rlErDjmR5HOzQ==
+"@parameter1/utils@^1.1.22":
+  version "1.1.22"
+  resolved "https://registry.yarnpkg.com/@parameter1/utils/-/utils-1.1.22.tgz#6d80566d3e1e64a120cd79e17076ccb8b821da39"
+  integrity sha512-iKI2bGB9C3Cr3r8FQJQenkprM2ZlnjzCRGauVdJfJDaeopzNsAp3PeGUjE/ej87PPSUAywHV1r48QYO12R3VlA==
   dependencies:
     object-path "^0.11.5"
 
@@ -5061,6 +5061,17 @@ joi@^17.4.0:
   version "17.4.0"
   resolved "https://registry.yarnpkg.com/joi/-/joi-17.4.0.tgz#b5c2277c8519e016316e49ababd41a1908d9ef20"
   integrity sha512-F4WiW2xaV6wc1jxete70Rw4V/VuMd6IN+a5ilZsxG4uYtUXWu2kq9W5P2dz30e7Gmw8RCbY/u/uk+dMPma9tAg==
+  dependencies:
+    "@hapi/hoek" "^9.0.0"
+    "@hapi/topo" "^5.0.0"
+    "@sideway/address" "^4.1.0"
+    "@sideway/formula" "^3.0.0"
+    "@sideway/pinpoint" "^2.0.0"
+
+joi@^17.4.2:
+  version "17.4.2"
+  resolved "https://registry.yarnpkg.com/joi/-/joi-17.4.2.tgz#02f4eb5cf88e515e614830239379dcbbe28ce7f7"
+  integrity sha512-Lm56PP+n0+Z2A2rfRvsfWVDXGEWjXxatPopkQ8qQ5mxCEhwHG+Ettgg5o98FFaxilOxozoa14cFhrE/hOzh/Nw==
   dependencies:
     "@hapi/hoek" "^9.0.0"
     "@hapi/topo" "^5.0.0"
