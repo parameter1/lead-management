@@ -27,7 +27,7 @@ module.exports = async (params = {}, { omeda } = {}) => {
 
     // use incoming ID for entity, not the response
     // this is due to customers being merged
-    const entity = omeda.customer.entity({ encryptedCustomerId: encryptedId });
+    const entity = omeda.entity.customer({ encryptedCustomerId: encryptedId });
 
     const [emails, phoneNumbers, postalAddresses, demographics] = await Promise.all([
       response.emails(),
