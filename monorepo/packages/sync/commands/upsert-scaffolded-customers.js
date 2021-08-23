@@ -1,9 +1,15 @@
-const loadDB = require('@lead-management/mongodb/load-db');
+const Joi = require('@parameter1/joi');
+const { validateAsync } = require('@parameter1/joi/utils');
+const loadTenant = require('@lead-management/tenant-loader');
 const batch = require('../utils/batch');
 const upsert = require('./upsert-customers');
 
-module.exports = async () => {
-  const db = await loadDB();
+module.exports = async (params = {}) => {
+  const { tenantKey } = await validateAsync(Joi.object({
+    tenantKey: Joi.string().trim().required(),
+  }).required(), params);
+
+  const { db } = await loadTenant({ key: tenantKey });
 
   const limit = 50;
   const query = { '_sync.scaffoldOnly': true };
@@ -23,6 +29,7 @@ module.exports = async () => {
       return encryptedCustomerId;
     });
     await upsert({
+      tenantKey,
       encryptedCustomerIds,
       $set: { '_sync.scaffoldOnly': false, '_sync.scaffoldProcessed': true },
       errorOnNotFound: false,

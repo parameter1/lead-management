@@ -2,19 +2,22 @@ const Joi = require('@parameter1/joi');
 const { ObjectId } = require('@lead-management/mongodb');
 const { validateAsync } = require('@parameter1/joi/utils');
 const { get, getAsArray } = require('@parameter1/utils');
-const loadDB = require('@lead-management/mongodb/load-db');
-const deploymentTypeEntity = require('@lead-management/omeda/entity-id/deployment-type');
+const loadTenant = require('@lead-management/tenant-loader');
 
 const extractUrlId = require('../utils/extract-url-id');
 const loadDeployments = require('../ops/load-deployments');
 
 module.exports = async (params = {}) => {
-  const { trackIds } = await validateAsync(Joi.object({
+  const { tenantKey, trackIds } = await validateAsync(Joi.object({
+    tenantKey: Joi.string().trim().required(),
     trackIds: Joi.array().items(Joi.string().trim().required()).required(),
-  }), params);
+  }).required(), params);
+
+  const tenant = await loadTenant({ key: tenantKey });
+  const { db, omeda } = tenant;
 
   const now = new Date();
-  const deployments = await loadDeployments({ trackIds });
+  const deployments = await loadDeployments({ trackIds }, tenant);
 
   const allUrlIds = new Set();
   const deploymentUrlIds = new Map();
@@ -29,7 +32,6 @@ module.exports = async (params = {}) => {
     });
   });
 
-  const db = await loadDB();
   const urls = await db.collection('extracted-urls').find({
     _id: { $in: [...allUrlIds].map((id) => new ObjectId(id)) },
   }, {
@@ -96,7 +98,7 @@ module.exports = async (params = {}) => {
           'deployment.designation': data.DeploymentDesignation,
           'deployment.sentDate': data.SentDate,
           'deployment.typeId': data.DeploymentTypeId,
-          'deployment.typeEntity': deploymentTypeEntity({ id: data.DeploymentTypeId }),
+          'deployment.typeEntity': omeda.entity.deploymentType({ id: data.DeploymentTypeId }),
         },
       };
       urlOps.push({ updateOne: { filter, update, upsert: true } });
@@ -111,7 +113,7 @@ module.exports = async (params = {}) => {
     const update = {
       $setOnInsert: { ...filter, createdAt: now },
       $set: {
-        typeEntity: deploymentTypeEntity({ id: data.DeploymentTypeId }),
+        typeEntity: omeda.entity.deploymentType({ id: data.DeploymentTypeId }),
         lastRetrievedAt: now,
         updatedAt: now,
         urlIds: verifedDeploymentUrlIds.get(TrackId) || [],

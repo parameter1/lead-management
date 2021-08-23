@@ -3,6 +3,7 @@ const http = require('http');
 const bootService = require('@parameter1/terminus/boot-service');
 const { log } = require('@parameter1/terminus/utils');
 const newrelic = require('./newrelic');
+const loadTenant = require('./load-tenant');
 const createSchema = require('./graphql/schema');
 const graphql = require('./graphql/server');
 const server = require('./server');
@@ -30,14 +31,23 @@ bootService({
   exposedPort: EXPOSED_PORT,
   onError: newrelic.noticeError.bind(newrelic),
   onStart: async () => {
-    const [schema] = await Promise.all([
+    const [schema, tenant, mongoClient] = await Promise.all([
       createSchema().then((s) => {
         log('GraphQL remote schemas created.');
         return s;
       }),
-      mongoose.then((m) => log(`MongoDB connected ${m.client.s.url}`)),
+      loadTenant(),
+      mongoose.then((m) => {
+        log(`MongoDB connected ${m.client.s.url}`);
+        return m.client;
+      }),
       redis.connect().then(() => log('Redis connected')),
     ]);
+    const { dbName } = mongoClient.s.options;
+    const expectedDbName = `lead-management-${tenant.doc.zone}`;
+    if (dbName !== expectedDbName) {
+      throw new Error(`Database to tenant zone mismatch. Expected DB name to be ${expectedDbName} but got ${dbName}`);
+    }
     graphql({ app: server, schema, path: '/graphql' });
   },
   onSignal: () => Promise.all([

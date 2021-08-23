@@ -2,8 +2,7 @@ const Joi = require('@parameter1/joi');
 const { ObjectId } = require('@lead-management/mongodb');
 const { getAsArray } = require('@parameter1/utils');
 const { validateAsync } = require('@parameter1/joi/utils');
-const loadDB = require('@lead-management/mongodb/load-db');
-const customerEntity = require('@lead-management/omeda/entity-id/customer');
+const loadTenant = require('@lead-management/tenant-loader');
 
 const loadDeploymentClicks = require('../ops/load-deployment-clicks');
 const extractUrlId = require('../utils/extract-url-id');
@@ -17,11 +16,15 @@ const extractUrlId = require('../utils/extract-url-id');
  * @param {string[]} params.trackIds
  */
 module.exports = async (params = {}) => {
-  const { trackIds } = await validateAsync(Joi.object({
+  const { tenantKey, trackIds } = await validateAsync(Joi.object({
+    tenantKey: Joi.string().trim().required(),
     trackIds: Joi.array().items(Joi.string().trim().required()).required(),
-  }), params);
+  }).required(), params);
 
-  const items = await loadDeploymentClicks({ trackIds });
+  const tenant = await loadTenant({ key: tenantKey });
+  const { db, omeda } = tenant;
+
+  const items = await loadDeploymentClicks({ trackIds }, tenant);
 
   const eventOps = [];
   const encryptedCustomerIds = new Set();
@@ -40,7 +43,8 @@ module.exports = async (params = {}) => {
             LastName,
           } = click;
           const idt = encryptedCustomerId
-            ? customerEntity({ encryptedCustomerId }) : customerEntity({ emailAddress });
+            ? omeda.entity.customer({ encryptedCustomerId })
+            : omeda.entity.customer({ emailAddress });
 
           if (encryptedCustomerId) {
             encryptedCustomerIds.add(encryptedCustomerId);
@@ -62,7 +66,6 @@ module.exports = async (params = {}) => {
       });
     });
   });
-  const db = await loadDB();
   if (eventOps.length) await db.collection('omeda-email-clicks').bulkWrite(eventOps);
   return { eventOps, encryptedCustomerIds, identityRecords };
 };

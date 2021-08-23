@@ -1,10 +1,18 @@
 const { getAsArray } = require('@parameter1/utils');
-const loadDB = require('@lead-management/mongodb/load-db');
 
-module.exports = async ({ emails = [] } = {}) => {
+/**
+ *
+ * @param {object} params
+ * @param {string[]} params.emails
+ * @param {object} tenant
+ * @param {object} tenant.doc
+ * @param {object} tenant.db
+ * @param {object} tenant.omeda
+ * @returns {Map}
+ */
+module.exports = async ({ emails = [] } = {}, { db } = {}) => {
   const emailSet = new Set(emails.filter((v) => v).map((v) => v.toLowerCase().trim()));
   if (!emailSet.size) return new Map();
-  const db = await loadDB();
   const docs = await db.collection('legacy-inactive-identities').find({
     emailAddress: { $in: [...emailSet] },
   }).toArray();

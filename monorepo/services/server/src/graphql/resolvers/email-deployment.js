@@ -168,12 +168,12 @@ module.exports = {
     /**
      *
      */
-    refreshEmailDeployment: async (_, { input }, { auth }) => {
+    refreshEmailDeployment: async (_, { input }, { auth, tenant }) => {
       auth.check();
       const { id } = input;
       const record = await OmedaEmailDeployment.findById(id);
       if (!record) throw new Error(`No email deployment record found for ID ${id}.`);
-      await upsertDeployments({ trackIds: [record.get('omeda.TrackId')] });
+      await upsertDeployments({ tenantKey: tenant.key, trackIds: [record.get('omeda.TrackId')] });
       return OmedaEmailDeployment.findById(id);
     },
   },

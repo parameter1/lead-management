@@ -14,42 +14,51 @@ exports.handler = async (event = {}, context = {}) => {
   await mongodb.connect();
 
   const { Records = [] } = event;
-  const trackIds = [...Records.reduce((set, record) => {
-    const { trackId } = JSON.parse(record.body);
-    set.add(trackId);
-    return set;
-  }, new Set())];
-  log(`Found ${trackIds.length} deployment(s) to process data for...`);
 
-  const [{ encryptedCustomerIds, identityRecords }] = await Promise.all([
-    upsertClicks({ trackIds }),
-    upsertMetrics({ trackIds }),
-  ]);
+  // group by tenant
+  const perTenant = Records.reduce((map, record) => {
+    const { tenantKey, trackId } = JSON.parse(record.body);
+    if (!map.has(tenantKey)) map.set(tenantKey, new Set());
+    map.get(tenantKey).add(trackId);
+    return map;
+  }, new Map());
 
-  const enqueuePromises = [];
-  if (encryptedCustomerIds.size) {
-    enqueuePromises.push(batchSend({
-      values: [...encryptedCustomerIds],
-      queueName: 'customer-ids',
-      builder: (encryptedCustomerId) => ({
-        Id: `${encryptedCustomerId}`,
-        MessageBody: JSON.stringify({ encryptedCustomerId }),
-      }),
-    }));
-    log('Enqueued customer IDs:', encryptedCustomerIds);
-  }
-  if (identityRecords.size) {
-    enqueuePromises.push(batchSend({
-      values: Array.from(identityRecords, ([id, body]) => ({ id, body })),
-      queueName: 'identity-records',
-      builder: ({ id, body }) => ({
-        Id: id.replace('~hashed-email', '').replace(/[.*]/g, '-'),
-        MessageBody: JSON.stringify(body),
-      }),
-    }));
-    log('Enqueued identity records:', identityRecords);
-  }
-  if (enqueuePromises.length) await Promise.all(enqueuePromises);
+  // process track IDs for each tenant
+  await Promise.all([...perTenant.keys()].map(async (tenantKey) => {
+    const trackIds = [...perTenant.get(tenantKey)];
+    log(`Found ${trackIds.length} ${tenantKey} deployment(s) to process data for...`);
+
+    const [{ encryptedCustomerIds, identityRecords }] = await Promise.all([
+      upsertClicks({ tenantKey, trackIds }),
+      upsertMetrics({ tenantKey, trackIds }),
+    ]);
+
+    const enqueuePromises = [];
+    if (encryptedCustomerIds.size) {
+      enqueuePromises.push(batchSend({
+        values: [...encryptedCustomerIds],
+        queueName: 'customer-ids',
+        builder: (encryptedCustomerId) => ({
+          Id: `${encryptedCustomerId}`,
+          MessageBody: JSON.stringify({ tenantKey, encryptedCustomerId }),
+        }),
+      }));
+      log(`Enqueued ${tenantKey} customer IDs:`, encryptedCustomerIds);
+    }
+    if (identityRecords.size) {
+      enqueuePromises.push(batchSend({
+        values: Array.from(identityRecords, ([id, body]) => ({ id, body })),
+        queueName: 'identity-records',
+        builder: ({ id, body }) => ({
+          Id: id.replace('~hashed-email', '').replace(/[.*]/g, '-'),
+          MessageBody: JSON.stringify({ tenantKey, body }),
+        }),
+      }));
+      log(`Enqueued ${tenantKey} identity records:`, identityRecords);
+    }
+    if (enqueuePromises.length) await Promise.all(enqueuePromises);
+  }));
+
   if (!AWS_EXECUTION_ENV) await mongodb.close();
   log('DONE');
 };

@@ -1,6 +1,6 @@
 const mongodb = require('@lead-management/mongodb/client');
-const loadDB = require('@lead-management/mongodb/load-db');
-const dayjs = require('../dayjs');
+const loadTenantKeys = require('@lead-management/tenant-loader/keys');
+const find = require('@lead-management/sync/commands/get-latest-deployments');
 const { AWS_EXECUTION_ENV } = require('../env');
 const batchSend = require('../utils/sqs/batch-send');
 
@@ -12,27 +12,27 @@ exports.handler = async (event, context = {}) => {
   // see https://docs.atlas.mongodb.com/best-practices-connecting-to-aws-lambda/
   context.callbackWaitsForEmptyEventLoop = false;
   await mongodb.connect();
-  const db = await loadDB();
 
-  // find all deployments in the leads database over the last 7 days...
-  const onOrAfter = dayjs().subtract(7, 'days').toDate();
-  const trackIds = await db.collection('omeda-email-deployments').distinct('omeda.TrackId', {
-    'omeda.Status': { $in: ['Sent', 'Sending'] },
-    'omeda.SentDate': { $gte: onOrAfter },
-  });
-  log(`Found ${trackIds.length} deployment(s) to queue data for...`);
+  // load all tenant keys
+  const tenantKeys = await loadTenantKeys();
 
-  if (trackIds.length) {
-    await batchSend({
-      values: trackIds,
-      queueName: 'deployment-data',
-      builder: (trackId) => ({
-        Id: trackId,
-        MessageBody: JSON.stringify({ trackId }),
-      }),
-    });
-    log('Deployments enqueued successfully.', trackIds);
-  }
+  // find deployments for the last seven days and queue for all tenants
+  await Promise.all(tenantKeys.map(async (tenantKey) => {
+    const trackIds = await find({ tenantKey });
+    log(`Found ${trackIds.length} ${tenantKey} deployment(s) to queue data for...`);
+
+    if (trackIds.length) {
+      await batchSend({
+        values: trackIds,
+        queueName: 'deployment-data',
+        builder: (trackId) => ({
+          Id: trackId,
+          MessageBody: JSON.stringify({ tenantKey, trackId }),
+        }),
+      });
+      log(`Deployments enqueued successfully for ${tenantKey}.`, trackIds);
+    }
+  }));
 
   if (!AWS_EXECUTION_ENV) await mongodb.close();
   log('DONE');

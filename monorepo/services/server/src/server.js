@@ -3,6 +3,8 @@ const helmet = require('helmet');
 const passport = require('passport');
 const authStrategies = require('./auth-strategies');
 const routes = require('./routes');
+const loadTenant = require('./load-tenant');
+const asyncRoute = require('./utils/async-route');
 const { TRUSTED_PROXIES } = require('./env');
 
 // Set the auth strategies
@@ -17,6 +19,11 @@ if (TRUSTED_PROXIES) {
 server.set('trust proxy', proxies);
 server.use(passport.initialize());
 server.use(helmet({ contentSecurityPolicy: false }));
+
+server.use(asyncRoute(async (req, res, next) => {
+  req.$tenant = await loadTenant();
+  next();
+}));
 
 routes(server);
 

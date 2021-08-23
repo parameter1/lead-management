@@ -13,5 +13,5 @@ const trackIds = [
   'IMCD210614002',
 ];
 
-run(command, { trackIds })
+run(command, { tenantKey: 'indm', trackIds })
   .catch((e) => setImmediate(() => { throw e; }));
