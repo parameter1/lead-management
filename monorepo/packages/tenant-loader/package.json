@@ -1,6 +1,6 @@
 {
   "name": "@lead-management/tenant-loader",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "main": "index.js",
   "repository": "https://github.com/parameter1/lead-management.git",
   "author": "Jacob Bare <jacob@parameter1.com>",
@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@lead-management/mongodb": "^0.2.0",
-    "@lead-management/omeda": "^0.2.0",
+    "@lead-management/omeda": "^0.2.1",
     "@parameter1/utils": "^1.1.19"
   },
   "devDependencies": {
