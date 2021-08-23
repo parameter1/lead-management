@@ -10,6 +10,7 @@ module.exports = async ({ key } = {}) => {
   if (!tenant) throw new Error(`No tenant found for key '${key}'`);
   const tenantDb = await loadDB({ tenantKey: key });
   return {
+    key,
     doc: tenant,
     db: tenantDb,
     omeda: createOmeda({
