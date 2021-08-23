@@ -1,9 +1,9 @@
-const customerEntity = require('@lead-management/omeda/entity-id/customer');
 const { AdCreative, EventAdCreative } = require('../mongodb/models');
 const creativeService = require('./ad-creative');
 
 module.exports = {
   async track({
+    omeda,
     tracker,
     action,
     query,
@@ -26,7 +26,7 @@ module.exports = {
       last: now,
       action,
       trackerId: tracker._id,
-      idt: customerEntity({ encryptedCustomerId: idt }),
+      idt: omeda.entity.customer({ encryptedCustomerId: idt }),
       lid,
       cid,
     });

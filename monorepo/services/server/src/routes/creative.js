@@ -21,7 +21,12 @@ router.get('/:type/:trackerId([a-f0-9]{24})', asyncRoute(async (req, res) => {
 
   // Track the creative action, but do not await.
   const action = type === 'c' ? 'click' : 'impression';
-  creativeTracker.track({ tracker, action, query }).catch(newrelic.noticeError.bind(newrelic));
+  creativeTracker.track({
+    omeda: req.$tenant.omeda,
+    tracker,
+    action,
+    query,
+  }).catch(newrelic.noticeError.bind(newrelic));
   if (action === 'click') {
     res.redirect(301, url);
   } else {

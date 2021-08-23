@@ -34,10 +34,6 @@ x-ember-env: &ember-env
   NODE_ENV: development
   YARN_CACHE_FOLDER: /.ember-yarn-cache
 
-x-omeda-env: &omeda-env
-  OMEDA_APP_ID: ${OMEDA_APP_ID}
-  OMEDA_BRAND_KEY: ${OMEDA_BRAND_KEY}
-
 x-mongodb-env: &mongodb-env
   MONGO_DSN: ${MONGO_DSN-mongodb://mongo:27017/lead-management-indm}
 
@@ -99,7 +95,6 @@ services:
     command: ["dev"]
     environment:
       <<: *node-env
-      <<: *omeda-env
       <<: *mongodb-env
       <<: *tenant-env
       BRIGHTCOVE_ACCOUNT_ID: ${BRIGHTCOVE_ACCOUNT_ID}

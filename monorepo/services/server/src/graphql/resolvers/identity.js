@@ -169,12 +169,12 @@ module.exports = {
     /**
      *
      */
-    refreshIdentity: async (_, { input }, { auth }) => {
+    refreshIdentity: async (_, { input }, { auth, tenant }) => {
       auth.check();
       const { id } = input;
       const record = await Identity.findById(id);
       if (!record) throw new Error(`No identity found for ID ${id}.`);
-      await upsertCustomers({ encryptedCustomerIds: [record.get('omeda.EncryptedCustomerId')] });
+      await upsertCustomers({ tenantKey: tenant.key, encryptedCustomerIds: [record.get('omeda.EncryptedCustomerId')] });
       return Identity.findById(id);
     },
   },
