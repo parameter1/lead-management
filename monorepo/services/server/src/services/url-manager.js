@@ -39,6 +39,7 @@ const shouldCache = (url, cache) => {
     || /www\.inddist\.com/i.test(url)
     || /www\.manufacturing\.net/i.test(url)
     || /www\.designdevelopmenttoday\.com/i.test(url)
+    || /www\.cannabisequipmentnews\.com/i.test(url)
   ) {
     return false;
   }
@@ -123,6 +124,7 @@ module.exports = {
       || /www\.impomag\.com/i.test(value)
       || /www\.inddist\.com/i.test(value)
       || /www\.manufacturing\.net/i.test(value)
+      || /www\.cannabisequipmentnews\.com/i.test(value)
     ) {
       map.set('lt.usr', '@{encrypted_customer_id}@');
       map.set('utm_source', '@{track_id}@');
