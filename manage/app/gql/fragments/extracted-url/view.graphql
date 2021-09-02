@@ -4,6 +4,7 @@ fragment ExtractedUrlViewFragment on ExtractedUrl {
   lastCrawledDate
   errorMessage
   linkType
+  trackingDisabled
   values {
     original
     resolved

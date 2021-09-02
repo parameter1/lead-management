@@ -42,7 +42,7 @@ module.exports = {
    * @param {ExtractedUrl[]} urls
    */
   createDirectlyTrackedUrls(urls, ack) {
-    return Promise.all(urls.map(async (url) => {
+    return Promise.all(urls.filter((url) => !url.trackingDisabled).map(async (url) => {
       const { original } = url.values;
       const redirect = await this.createDirectlyTrackedUrl(url, ack);
       return { original, redirect };
