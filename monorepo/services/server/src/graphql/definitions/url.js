@@ -86,6 +86,7 @@ type ExtractedUrl {
   customer: Customer
   tags: [Tag]
   urlParams: [UrlParameter]
+  trackingDisabled: Boolean
 }
 
 type ExtractedUrlValues {

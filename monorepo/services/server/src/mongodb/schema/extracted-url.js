@@ -89,6 +89,10 @@ const schema = new Schema({
   meta: {
     type: metaSchema,
   },
+  trackingDisabled: {
+    type: Boolean,
+    default: false,
+  },
   headerDirectives: {
     type: Schema.Types.Mixed,
     default: () => ({}),
