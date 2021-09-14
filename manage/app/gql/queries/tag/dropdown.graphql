@@ -1,0 +1,10 @@
+query TagsDropdown($pagination: PaginationInput, $sort: TagSortInput) {
+  allTags(pagination: $pagination, sort: $sort) {
+    edges {
+      node {
+        id
+        name
+      }
+    }
+  }
+}
