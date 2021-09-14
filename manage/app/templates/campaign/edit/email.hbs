@@ -18,9 +18,10 @@
           <div class="card-body">
             <div class="form-group">
               <label for="tags">Only Include Links Tagged With...</label>
-              {{type-ahead
-                placeholder="Begin typing to find a tag..."
+              {{select-find-all
+                placeholder="Open to select one or more tags..."
                 type="tag"
+                closeOnSelect=false
                 multiple=true
                 selected=model.tags
                 onChange=(action "updateTags")
@@ -30,9 +31,10 @@
 
             <div class="form-group">
               <label for="excludedTags"><em>Exclude</em> Links Tagged With...</label>
-              {{type-ahead
-                placeholder="Begin typing to find a tag..."
+              {{select-find-all
+                placeholder="Open to select one or more tags..."
                 type="tag"
+                closeOnSelect=false
                 multiple=true
                 selected=model.excludedTags
                 onChange=(action "updateExcludedTags")

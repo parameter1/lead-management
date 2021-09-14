@@ -25,9 +25,10 @@
     <div class="col-lg-6">
       <div class="form-group">
         <label>Where links are tagged with...</label>
-        {{type-ahead
-          placeholder="Begin typing to find a tag... e.g. pr or video"
+        {{select-find-all
+          placeholder="Open to select one or more tags..."
           type="tag"
+          closeOnSelect=false
           multiple=true
           dropdownClass="in-modal-dropdown"
           selected=model.tags
@@ -39,9 +40,10 @@
     <div class="col-lg-6">
       <div class="form-group">
         <label>Exclude links that are tagged with...</label>
-        {{type-ahead
-          placeholder="Begin typing to find a tag... e.g. pr or video"
+        {{select-find-all
+          placeholder="Open to select one or more tags..."
           type="tag"
+          closeOnSelect=false
           multiple=true
           dropdownClass="in-modal-dropdown"
           selected=model.excludedTags
