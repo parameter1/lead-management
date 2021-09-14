@@ -19,9 +19,10 @@
 
             <div class="form-group">
               <label for="tags">Only Include Ads Tagged With...</label>
-              {{type-ahead
-                placeholder="Begin typing to find a tag..."
+              {{select-find-all
+                placeholder="Open to select one or more tags..."
                 type="tag"
+                closeOnSelect=false
                 multiple=true
                 selected=model.tags
                 onChange=(action "updateTags")
