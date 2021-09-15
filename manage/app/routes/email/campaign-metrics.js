@@ -34,8 +34,8 @@ export default Route.extend(ListRouteMixin, {
       customerIds: customers.map((customer) => customer.id),
       mustHaveEmailEnabled: true,
       dateRange: {
-        start: rangeStart,
-        end: rangeEnd,
+        start: rangeStart.valueOf(),
+        end: rangeEnd.valueOf(),
       },
     };
 
