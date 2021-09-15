@@ -10,6 +10,7 @@ export default Component.extend({
   label: 'Dates',
   start: null,
   end: null,
+  disabled: true,
   canClear: true,
 
   range: computed('start', 'end', function() {
