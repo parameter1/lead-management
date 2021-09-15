@@ -2,7 +2,7 @@ const merge = require('lodash.merge');
 const GraphQLJSON = require('graphql-type-json');
 const GraphQLDate = require('@parameter1/graphql-type-date');
 const GraphQLObjectID = require('@parameter1/graphql-type-objectid');
-const { ObjectId } = require('mongoose').SchemaTypes;
+const { ObjectId } = require('mongoose').Types;
 
 const adCreativeTracker = require('./ad-creative-tracker');
 const brightcove = require('./brightcove');
