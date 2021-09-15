@@ -54,6 +54,9 @@ export default ListController.extend({
     ]);
     this.set('sortBy', 'fullName');
     this.set('ascending', true);
+
+    this.set('limitOptions', [10, 20]);
+    this.set('first', 10);
   },
 
   actions: {

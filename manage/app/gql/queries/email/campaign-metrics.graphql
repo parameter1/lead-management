@@ -7,10 +7,6 @@ query EmailCampaignMetrics($input: AllCampaignsQueryInput = {}, $pagination: Pag
         fullName
         hash
         maxIdentities
-        range {
-          start
-          end
-        }
         email {
           id
           allowedLinkTypes
@@ -27,6 +23,7 @@ query EmailCampaignMetrics($input: AllCampaignsQueryInput = {}, $pagination: Pag
           }
         }
       }
+      cursor
     }
     pageInfo {
       hasNextPage
