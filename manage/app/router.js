@@ -148,7 +148,7 @@ Router.map(function() {
     });
     this.route('reporting');
     this.route('click-events');
-    this.route('campaign-reporting');
+    this.route('campaign-metrics');
   });
   this.route('video', function() {
     this.route('edit', { path: ':id' });
