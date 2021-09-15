@@ -148,30 +148,30 @@ class Pagination {
    */
   getQueryCriteria() {
     const run = async () => {
-      const { field, order } = this.sort;
-
       const filter = merge({}, this.criteria);
+      if (!this.after) return filter;
+
+      const { field, order } = this.sort;
       const limits = {};
       const ors = [];
 
-      if (this.after) {
-        let doc;
-        const op = order === 1 ? '$gt' : '$lt';
-        if (field === '_id') {
-          // Sort by ID only.
-          doc = await this.findCursorModel(this.after, { _id: 1 });
-          filter._id = { [op]: doc.id };
-        } else {
-          doc = await this.findCursorModel(this.after, { [field]: 1 });
-          limits[op] = doc.get(field);
-          ors.push({
-            [field]: doc.get(field),
-            _id: { [op]: doc.id },
-          });
-          filter.$or = [{ [field]: limits }, ...ors];
-        }
+      let doc;
+      const cursorCriteria = {};
+      const op = order === 1 ? '$gt' : '$lt';
+      if (field === '_id') {
+        // Sort by ID only.
+        doc = await this.findCursorModel(this.after, { _id: 1 });
+        cursorCriteria._id = { [op]: doc.id };
+      } else {
+        doc = await this.findCursorModel(this.after, { [field]: 1 });
+        limits[op] = doc.get(field);
+        ors.push({
+          [field]: doc.get(field),
+          _id: { [op]: doc.id },
+        });
+        cursorCriteria.$or = [{ [field]: limits }, ...ors];
       }
-      return filter;
+      return { $and: [filter, cursorCriteria] };
     };
 
     if (!this.promises.criteria) {
