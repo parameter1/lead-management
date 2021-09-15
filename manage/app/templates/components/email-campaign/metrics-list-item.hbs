@@ -1,12 +1,23 @@
 <div class="mb-3">
-  <h4 class="mb-0">{{item.fullName}}</h4>
+  <h4 class="mb-2">{{item.fullName}}</h4>
+
+  <p>Maximum Leads: <strong>{{item.maxIdentities}}</strong></p>
+
+  <div class="d-flex flex-column">
+    <small>Only Include Links Tagged With: <strong>{{tags}}</strong></small>
+    <small><em>Exclude</em> Links Tagged With: <strong>{{excludedTags}}</strong></small>
+    <small>Only Include Links Set As: <strong>{{allowedLinkTypes}}</strong></small>
+    <small>Hide The Selected Fields: <strong>{{excludeFields}}</strong></small>
+    <small>Restrict to Email Sent Dates? <strong>{{restrictToSentDate}}</strong></small>
+    <small>Include delivered metrics? <strong>{{displayDeliveredMetrics}}</strong></small>
+  </div>
 </div>
 {{#if isLoading}}
   <small class="text-muted">Loading email metrics...</small>
   {{progress-bar show=true}}
 {{/if}}
 {{#if hasLoaded}}
-  <div>
+  <div class="mb-3">
     <h5>Statistics per Email</h5>
     <div class="table-responsive relative">
       {{#if isRefreshing}}

@@ -24,6 +24,36 @@ export default Component.extend(ComponentQueryManager, {
     this.refresh();
   }),
 
+  displayDeliveredMetrics: computed('item.email.displayDeliveredMetrics', function() {
+    const value = this.get('item.email.displayDeliveredMetrics');
+    return value ? 'Yes' : 'No';
+  }),
+
+  restrictToSentDate: computed('item.email.restrictToSentDate', function() {
+    const value = this.get('item.email.restrictToSentDate');
+    return value ? 'Yes' : 'No';
+  }),
+
+  allowedLinkTypes: computed('item.email.allowedLinkTypes', function() {
+    const value = this.get('item.email.allowedLinkTypes');
+    return value.join(', ') || '(none selected)';
+  }),
+
+  tags: computed('item.email.tags', function() {
+    const value = this.get('item.email.tags');
+    return value.map((tag) => tag.name).join(', ') || '(none selected)';
+  }),
+
+  excludedTags: computed('item.email.excludedTags', function() {
+    const value = this.get('item.email.excludedTags');
+    return value.map((tag) => tag.name).join(', ') || '(none selected)';
+  }),
+
+  excludeFields: computed('item.email.excludeFields', function() {
+    const value = this.get('item.email.excludeFields');
+    return value.join(', ') || '(none selected)';
+  }),
+
   init() {
     this._super(...arguments);
     this.load();

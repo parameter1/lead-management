@@ -6,9 +6,25 @@ query EmailCampaignMetrics($input: AllCampaignsQueryInput = {}, $pagination: Pag
         id
         fullName
         hash
+        maxIdentities
+        range {
+          start
+          end
+        }
         email {
           id
+          allowedLinkTypes
           displayDeliveredMetrics
+          excludeFields
+          excludedTags {
+            id
+            name
+          }
+          restrictToSentDate
+          tags {
+            id
+            name
+          }
         }
       }
     }
