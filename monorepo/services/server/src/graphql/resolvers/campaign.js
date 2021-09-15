@@ -1,4 +1,4 @@
-const { gql } = require('apollo-server-express');
+const { gql, UserInputError } = require('apollo-server-express');
 const { get } = require('@parameter1/utils');
 const fetch = require('node-fetch');
 const csvToJson = require('csvtojson');
@@ -459,7 +459,20 @@ module.exports = {
      */
     allCampaigns: (root, { input, pagination, sort }, { auth }) => {
       auth.check();
-      const { customerIds, starting, ending } = input;
+      const {
+        customerIds,
+        dateRange: range,
+        starting,
+        ending,
+        mustHaveEmailEnabled,
+      } = input;
+
+      const hasStartingDates = starting.before || starting.after;
+      const hasEndingDates = ending.before || ending.after;
+
+      if (range && (hasStartingDates || hasEndingDates)) {
+        throw new UserInputError('You cannot specify a date range with starting or ending dates');
+      }
 
       const startDate = {
         ...(starting.before && { $lte: starting.before }),
@@ -475,6 +488,14 @@ module.exports = {
         ...(customerIds.length && { customerId: { $in: customerIds } }),
         ...(hasKeys(startDate) && { startDate }),
         ...(hasKeys(endDate) && { endDate }),
+        ...(range && {
+          $or: [
+            { startDate: { $lte: range.start }, endDate: { $gte: range.start } },
+            { startDate: { $lte: range.end }, endDate: { $gte: range.end } },
+            { startDate: { $gte: range.start }, endDate: { $lte: range.end } },
+          ],
+        }),
+        ...(mustHaveEmailEnabled != null && { 'email.enabled': mustHaveEmailEnabled }),
       };
       return new Pagination(Campaign, { pagination, sort, criteria });
     },
