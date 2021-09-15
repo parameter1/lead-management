@@ -10,7 +10,7 @@ export default Component.extend({
   label: 'Dates',
   start: null,
   end: null,
-  disabled: false,
+  canClear: true,
 
   range: computed('start', 'end', function() {
     const { start, end } = this;
@@ -18,6 +18,13 @@ export default Component.extend({
       start,
       end,
     };
+  }),
+
+  selectedLabel: computed('start', 'end', function() {
+    const { start, end } = this;
+    if (!end) return '';
+    const format = 'MMM Do, YYYY';
+    return `Selected: ${start.format(format)} - ${end.format(format)}`;
   }),
 
   hasSelected: computed.or('start', 'end'),
@@ -36,7 +43,7 @@ export default Component.extend({
       });
     },
     clear() {
-      this.onChange({ start: null, end: null });
+      if (this.canClear) this.onChange({ start: null, end: null });
     },
   },
 });

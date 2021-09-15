@@ -10,7 +10,12 @@
     {{calendar.nav}}
     {{calendar.days}}
   {{/power-calendar-range}}
-  <button class="btn btn-secondary btn-sm mt-2" disabled={{noDatesSelected}} {{action "clear"}}>
-    {{entypo-icon name="cross"}} Clear
-  </button>
+  {{#if selectedLabel}}
+    <small class="mt-2 text-muted">{{selectedLabel}}</small>
+  {{/if}}
+  {{#if canClear}}
+    <button class="btn btn-secondary btn-sm mt-2" disabled={{noDatesSelected}} {{action "clear"}}>
+      {{entypo-icon name="cross"}} Clear
+    </button>
+  {{/if}}
 </fieldset>
