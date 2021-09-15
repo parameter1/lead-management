@@ -48,9 +48,11 @@ export default ListController.extend({
     this.set('internalRange', { start, end });
 
     this.set('sortOptions', [
+      { key: 'fullName', label: 'Name' },
+      { key: 'startDate', label: 'Start Date' },
+      { key: 'endDate', label: 'End Date' },
       { key: 'createdAt', label: 'Created' },
       { key: 'updatedAt', label: 'Updated' },
-      { key: 'fullName', label: 'Name' },
     ]);
     this.set('sortBy', 'fullName');
     this.set('ascending', true);

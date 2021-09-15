@@ -368,6 +368,8 @@ enum CampaignSortField {
   fullName
   createdAt
   updatedAt
+  startDate
+  endDate
 }
 
 `;
