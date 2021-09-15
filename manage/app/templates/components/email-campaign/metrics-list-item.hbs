@@ -1,0 +1,33 @@
+<div class="mb-3">
+  <h4 class="mb-0">{{item.fullName}}</h4>
+</div>
+{{#if isLoading}}
+  <small class="text-muted">Loading email metrics...</small>
+  {{progress-bar show=true}}
+{{/if}}
+{{#if hasLoaded}}
+  <div>
+    <h5>Statistics per Email</h5>
+    <div class="table-responsive relative">
+      {{#if isRefreshing}}
+        <div class="metrics-table-overlay">
+          <div class="metrics-table-overlay-loading">
+            {{progress-bar show=true}}
+          </div>
+        </div>
+      {{/if}}
+      {{lead-report/tables/email-metrics
+        displayDeliveredMetrics=item.email.displayDeliveredMetrics
+        deployments=data.deployments
+        totals=data.totals
+        sortBy=sortBy
+        ascending=ascending
+        class="mb-0"
+      }}
+    </div>
+  </div>
+{{/if}}
+{{#if didError}}
+  {{entypo-icon "warning" class="text-danger"}}
+  {{errorMessage}}
+{{/if}}

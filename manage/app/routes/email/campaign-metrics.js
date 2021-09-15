@@ -1,7 +1,7 @@
 import Route from '@ember/routing/route';
 import ListRouteMixin from 'leads-manage/mixins/list-route-mixin';
 
-import query from 'leads-manage/gql/queries/campaign/list';
+import query from 'leads-manage/gql/queries/email/campaign-metrics';
 
 export default Route.extend(ListRouteMixin, {
   init() {
