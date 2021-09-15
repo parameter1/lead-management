@@ -228,6 +228,13 @@ input AllCampaignsQueryInput {
   customerIds: [ObjectID!] = []
   starting: CampaignDateFilterInput = {}
   ending: CampaignDateFilterInput = {}
+  dateRange: AllCampaignsQueryDateRangeInput
+  mustHaveEmailEnabled: Boolean
+}
+
+input AllCampaignsQueryDateRangeInput {
+  start: Date!
+  end: Date!
 }
 
 input SearchCampaignsQueryInput {
@@ -361,6 +368,8 @@ enum CampaignSortField {
   fullName
   createdAt
   updatedAt
+  startDate
+  endDate
 }
 
 `;

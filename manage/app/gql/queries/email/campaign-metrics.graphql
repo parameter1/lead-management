@@ -1,0 +1,33 @@
+query EmailCampaignMetrics($input: AllCampaignsQueryInput = {}, $pagination: PaginationInput, $sort: CampaignSortInput) {
+  allCampaigns(input: $input, pagination: $pagination, sort: $sort) {
+    totalCount
+    edges {
+      node {
+        id
+        fullName
+        hash
+        maxIdentities
+        email {
+          id
+          allowedLinkTypes
+          displayDeliveredMetrics
+          excludeFields
+          excludedTags {
+            id
+            name
+          }
+          restrictToSentDate
+          tags {
+            id
+            name
+          }
+        }
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

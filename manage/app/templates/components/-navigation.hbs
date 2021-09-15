@@ -58,6 +58,9 @@
           {{/if}}
           {{#link-to "email.reporting" class="dropdown-item d-flex justify-content-between"}}Reporting {{entypo-icon "bar-graph"}}{{/link-to}}
           {{#link-to "email.click-events" class="dropdown-item d-flex justify-content-between"}}Click Events {{entypo-icon "mouse-pointer"}}{{/link-to}}
+          {{#if user.isAdmin}}
+            {{#link-to "email.campaign-metrics" class="dropdown-item d-flex justify-content-between"}}Campaign Metrics {{entypo-icon "pie-chart"}}{{/link-to}}
+          {{/if}}
         </div>
       </li>
 

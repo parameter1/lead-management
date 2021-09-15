@@ -83,9 +83,9 @@ module.exports = {
     const { maxIdentities } = campaign;
 
     const $match = {
+      date: { $gte: campaign.startDate },
       url: { $in: urlIds },
       dep: { $in: deploymentEntities },
-      date: { $gte: campaign.startDate },
     };
 
     const pipeline = [];
