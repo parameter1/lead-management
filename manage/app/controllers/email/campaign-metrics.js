@@ -5,10 +5,9 @@ import moment from 'moment';
 export default ListController.extend({
   center: moment(),
 
-  activeFilterCount: computed('customers.length', 'dateRange.{start,end}', function() {
+  activeFilterCount: computed('customers.length', 'dateRange.end', function() {
     let filters = 0;
     if (this.get('customers.length')) filters += 1;
-    if (this.get('dateRange.start')) filters += 1;
     if (this.get('dateRange.end')) filters += 1;
     return filters;
   }),
