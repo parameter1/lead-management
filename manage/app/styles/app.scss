@@ -76,6 +76,10 @@ a[data-ember-action]:not(:disabled),
   border: none !important;
 }
 
+.dropdown-item .entypo {
+  margin-left: .5rem;
+}
+
 .card.list-index {
   box-shadow: $z-depth-1;
   border: none !important;
