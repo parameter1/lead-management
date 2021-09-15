@@ -16,4 +16,10 @@ schema.index({
   split: 1,
 }, { unique: true });
 
+schema.index({
+  date: 1,
+  url: 1,
+  dep: 1,
+});
+
 module.exports = schema;
