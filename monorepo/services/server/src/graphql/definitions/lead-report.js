@@ -6,7 +6,7 @@ extend type Query {
   reportEmailIdentities(hash: String! pagination: PaginationInput = {}, sort: IdentitySortInput = {}): IdentityConnection!
   reportEmailIdentityExport(hash: String! pagination: PaginationInput = {}, sort: IdentitySortInput = {}): ReportEmailIdentityExportConnection!
   reportEmailActivity(hash: String!): ReportEmailActivityConnection!
-  reportEmailMetrics(hash: String!, sort: ReportEmailMetricsSortInput!): ReportEmailMetrics!
+  reportEmailMetrics(hash: String!, sort: ReportEmailMetricsSortInput!, starting: Date, ending: Date): ReportEmailMetrics!
   # reportForms(hash: String!): [Form]!
 
   reportAdIdentities(hash: String! pagination: PaginationInput = {}, sort: IdentitySortInput = {}): IdentityConnection!

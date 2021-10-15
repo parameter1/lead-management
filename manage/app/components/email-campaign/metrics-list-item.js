@@ -61,7 +61,13 @@ export default Component.extend(ComponentQueryManager, {
 
   query() {
     const sort = { field: this.sortBy, order: this.ascending ? 1 : -1 };
-    const variables = { hash: this.get('item.hash'), sort };
+    const { starting, ending } = this;
+    const variables = {
+      hash: this.get('item.hash'),
+      sort,
+      ...(starting && { starting }),
+      ...(ending && { ending }),
+    };
     return this.get('apollo').watchQuery({ query, variables }, 'reportEmailMetrics');
   },
 

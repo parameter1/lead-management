@@ -1,7 +1,7 @@
 #import 'leads-manage/gql/fragments/email-deployment-metrics'
 
-query LeadReportEmailMetrics($hash: String!, $sort: ReportEmailMetricsSortInput!) {
-  reportEmailMetrics(hash: $hash, sort: $sort) {
+query LeadReportEmailMetrics($hash: String!, $sort: ReportEmailMetricsSortInput!, $starting: Date, $ending: Date) {
+  reportEmailMetrics(hash: $hash, sort: $sort, starting: $starting, ending: $ending) {
     deployments {
       deployment {
         id
