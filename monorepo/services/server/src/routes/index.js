@@ -24,12 +24,10 @@ module.exports = (app) => {
     });
     const html = response.getBody();
     if (!html) return res.send('');
-    await OmedaEmailDeploymentHtml.create({
-      entity,
-      split: splitNumber,
-      html,
-      lastRetrievedAt: new Date(),
-    });
+    await OmedaEmailDeploymentHtml.updateOne({ entity, split: splitNumber }, {
+      $setOnInsert: { entity, split: splitNumber },
+      $set: { html, lastRetrievedAt: new Date() },
+    }, { upsert: true });
     return res.send(html);
   }));
   app.use('/export', exportData);
