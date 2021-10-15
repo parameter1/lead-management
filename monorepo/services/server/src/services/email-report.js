@@ -17,15 +17,19 @@ module.exports = {
    * @param {object} options
    * @param {boolean} [options.suppressInactives=true]
    * @param {boolean} [options.enforceMaxIdentities=true]
+   * @param {Date} [options.starting]
+   * @param {Date} [options.ending]
    */
   async getClickEventIdentifiers(campaign, {
     suppressInactives = true,
     enforceMaxIdentities = true,
+    starting,
+    ending,
   } = {}) {
     const {
       urlIds,
       deploymentEntities,
-    } = await this.getEligibleUrlsAndDeployments(campaign);
+    } = await this.getEligibleUrlsAndDeployments(campaign, { starting, ending });
 
     const identityEntities = await this.getEligibleIdentityEntities(campaign, {
       suppressInactives,
@@ -113,14 +117,16 @@ module.exports = {
    *
    * @param {Campaign} campaign
    * @param {object} options
+   * @param {Date} [options.starting]
+   * @param {Date} [options.ending]
    */
-  async getEligibleUrlsAndDeployments(campaign) {
+  async getEligibleUrlsAndDeployments(campaign, { starting, ending } = {}) {
     const { email } = campaign;
     const { excludeUrls } = email;
 
     // Create the criteria for finding all deployment urls
     // This initially will not be restricted by the campaign's excluded urls.
-    const criteria = await this.buildEmailDeploymentUrlCriteria(campaign);
+    const criteria = await this.buildEmailDeploymentUrlCriteria(campaign, { starting, ending });
 
     const deploymentUrls = await OmedaEmailDeploymentUrl.find(criteria, {
       'deployment.entity': 1,
@@ -146,8 +152,10 @@ module.exports = {
    *
    * @param {Campaign} campaign
    * @param {object} options
+   * @param {Date} [options.starting]
+   * @param {Date} [options.ending]
    */
-  async buildEmailDeploymentUrlCriteria(campaign) {
+  async buildEmailDeploymentUrlCriteria(campaign, { starting, ending } = {}) {
     const { customerId, email } = campaign;
 
     // account for all child customers
@@ -195,8 +203,19 @@ module.exports = {
       linkType: { $in: allowedLinkTypes },
     };
 
+    if (starting || ending) {
+      // Find the send URLs where the `deployment.sentDate` is between the provided range
+      return {
+        ...criteria,
+        'deployment.sentDate': {
+          ...(starting && { $gte: starting }),
+          ...(ending && { $lte: ending }),
+        },
+      };
+    }
+
     if (restrictToSentDate) {
-      // Find the send URLs based on `deployment.startDate`.
+      // Find the send URLs based on `deployment.sentDate`.
       return {
         ...criteria,
         'deployment.sentDate': { $gte: campaign.startDate, $lte: campaign.endDate },
@@ -206,7 +225,14 @@ module.exports = {
     const urlIds = await OmedaEmailDeploymentUrl.distinct('url._id', criteria);
     const $match = {
       url: { $in: urlIds },
-      date: { $gte: campaign.startDate, $lte: campaign.endDate },
+      // use the provided starting/ending date range.
+      // if not provided, use the campaign start/end date
+      ...((starting || ending) && {
+        date: { ...(starting && { $gte: starting }), ...(ending && { $lte: ending }) },
+      }),
+      ...((!starting && !ending) && {
+        date: { $gte: campaign.startDate, $lte: campaign.endDate },
+      }),
     };
     const pipeline = [
       { $match },
@@ -219,19 +245,19 @@ module.exports = {
     };
   },
 
-  async findAllUrlsForCampaign(campaign) {
-    const criteria = await this.buildEmailDeploymentUrlCriteria(campaign);
+  async findAllUrlsForCampaign(campaign, { starting, ending } = {}) {
+    const criteria = await this.buildEmailDeploymentUrlCriteria(campaign, { starting, ending });
     const urlIds = await OmedaEmailDeploymentUrl.distinct('url._id', criteria);
     return ExtractedUrl.find({ _id: { $in: urlIds } });
   },
 
-  async getCampaignUrlCount(campaign) {
-    const criteria = await this.buildEmailDeploymentUrlCriteria(campaign);
+  async getCampaignUrlCount(campaign, { starting, ending } = {}) {
+    const criteria = await this.buildEmailDeploymentUrlCriteria(campaign, { starting, ending });
     return OmedaEmailDeploymentUrl.countDocuments(criteria);
   },
 
-  async findAllDeploymentUrlsForCampaign(campaign) {
-    const criteria = await this.buildEmailDeploymentUrlCriteria(campaign);
+  async findAllDeploymentUrlsForCampaign(campaign, { starting, ending } = {}) {
+    const criteria = await this.buildEmailDeploymentUrlCriteria(campaign, { starting, ending });
     return OmedaEmailDeploymentUrl.find(criteria).sort({ 'deployment.sentDate': 1 });
   },
 

@@ -61,7 +61,12 @@ module.exports = {
     /**
      *
      */
-    reportEmailMetrics: async (root, { hash, sort }) => {
+    reportEmailMetrics: async (root, {
+      hash,
+      sort,
+      starting,
+      ending,
+    }) => {
       const campaign = await Campaign.findByHash(hash);
 
       const {
@@ -71,6 +76,8 @@ module.exports = {
       } = await emailReportService.getClickEventIdentifiers(campaign, {
         // allows all idenities to be considered, not just the max of 200.
         enforceMaxIdentities: false,
+        starting,
+        ending,
       });
 
       const $match = {
