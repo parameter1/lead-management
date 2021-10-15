@@ -1,4 +1,10 @@
 const upsertDeployments = require('@lead-management/sync/commands/upsert-deployments');
+const {
+  EXPOSED_PORT,
+  HOST,
+  HOST_NAME,
+  isDevelopment,
+} = require('../../env');
 const { Pagination, TypeAhead, paginationResolvers } = require('../pagination');
 const { OmedaEmailDeployment, OmedaDeploymentType } = require('../../mongodb/models');
 const emailDeploymentReportService = require('../../services/email-deployment-report');
@@ -34,6 +40,10 @@ module.exports = {
       return metrics;
     },
     splits: (dep) => dep.get('omeda.Splits') || [],
+    url: (dep) => {
+      const uri = isDevelopment ? `http://${HOST}:${EXPOSED_PORT}` : `https://${HOST_NAME}`;
+      return `${uri}/email-deployment-html/${dep.entity}`;
+    },
   },
 
   /**

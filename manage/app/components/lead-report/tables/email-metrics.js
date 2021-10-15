@@ -30,9 +30,9 @@ export default Component.extend({
   },
 
   actions: {
-    displayIframeModal(send) {
-      this.set('iframe.title', get(send, 'name'));
-      this.set('iframe.src', get(send, 'url'));
+    displayIframeModal(deployment) {
+      this.set('iframe.title', get(deployment, 'name'));
+      this.set('iframe.src', get(deployment, 'url'));
       this.set('iframe.show', true);
     },
   },

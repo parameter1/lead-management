@@ -32,6 +32,7 @@ type EmailDeployment {
   id: String!
   entity: String!
   name: String!
+  url: String!
   sentDate: Date
   splitCount: Int!
   subject: String
