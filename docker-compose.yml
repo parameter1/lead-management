@@ -43,7 +43,7 @@ x-tenant-env: &tenant-env
 services:
   google-ad-manager:
     tty: true
-    image: parameter1/google-ad-manager-graphql-service:v0.3.0
+    image: parameter1/google-ad-manager-graphql-service:v1.0.0
     volumes:
       - ./service-account.json:/service-account.json
     environment:
