@@ -27,6 +27,7 @@ const crawl = (url) => Juicer.crawler.crawl(url, {
     Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36',
   },
+  timeout: 5000,
 });
 
 const headerPattern = /^x-lead-management-/;
@@ -91,12 +92,15 @@ module.exports = {
         }
       }
     } catch (e) {
-      const { response } = e;
-      if (response) {
-        const { statusCode, statusMessage } = response;
-        extractedUrl.errorMessage = `${statusMessage} (${statusCode})`;
-      } else {
-        extractedUrl.errorMessage = e.message;
+      // only process additional handling when not timed out.
+      if (!e.cause || !/timedout/i.test(e.cause.code)) {
+        const { response } = e;
+        if (response) {
+          const { statusCode, statusMessage } = response;
+          extractedUrl.errorMessage = `${statusMessage} (${statusCode})`;
+        } else {
+          extractedUrl.errorMessage = e.message;
+        }
       }
     }
     extractedUrl.lastCrawledDate = new Date();
