@@ -32,20 +32,15 @@ const crawl = (url) => Juicer.crawler.crawl(url, {
 
 const headerPattern = /^x-lead-management-/;
 
-const shouldCache = (url, cache) => {
-  if (/www\.ien\.com/i.test(url)
-    || /www\.foodmanufacturing\.com/i.test(url)
-    || /www\.mbtmag\.com/i.test(url)
-    || /www\.impomag\.com/i.test(url)
-    || /www\.inddist\.com/i.test(url)
-    || /www\.manufacturing\.net/i.test(url)
-    || /www\.designdevelopmenttoday\.com/i.test(url)
-    || /www\.cannabisequipmentnews\.com/i.test(url)
-  ) {
-    return false;
-  }
-  return cache;
-};
+const isInternalUrl = (url) => (/www\.ien\.com/i.test(url)
+  || /www\.foodmanufacturing\.com/i.test(url)
+  || /www\.mbtmag\.com/i.test(url)
+  || /www\.impomag\.com/i.test(url)
+  || /www\.inddist\.com/i.test(url)
+  || /www\.manufacturing\.net/i.test(url)
+  || /www\.designdevelopmenttoday\.com/i.test(url)
+  || /www\.cannabisequipmentnews\.com/i.test(url)
+);
 
 module.exports = {
   /**
@@ -62,9 +57,8 @@ module.exports = {
     const parsed = new URL(extractedUrl.get('values.original'));
     const extension = path.extname(parsed.pathname);
 
-    if (!extractedUrl.errorMessage && extractedUrl.lastCrawledDate && shouldCache(url, cache)) {
-      await this.applyTrackingRules(extractedUrl);
-      return extractedUrl.save();
+    if (!extractedUrl.errorMessage && extractedUrl.lastCrawledDate && cache) {
+      return extractedUrl;
     }
 
     const originalUrl = extractedUrl.values.original;
@@ -103,8 +97,10 @@ module.exports = {
         }
       }
     }
+    // only apply tracking rules on first crawl
+    // this prevents overwriting changes to the URL on subsequent crawls.
+    if (!extractedUrl.lastCrawledDate) await this.applyTrackingRules(extractedUrl);
     extractedUrl.lastCrawledDate = new Date();
-    await this.applyTrackingRules(extractedUrl);
     return extractedUrl.save();
   },
 
@@ -121,15 +117,7 @@ module.exports = {
       return m;
     }, new Map());
 
-    if (/www\.ien\.com/i.test(value)
-      || /www\.designdevelopmenttoday\.com/i.test(value)
-      || /www\.foodmanufacturing\.com/i.test(value)
-      || /www\.mbtmag\.com/i.test(value)
-      || /www\.impomag\.com/i.test(value)
-      || /www\.inddist\.com/i.test(value)
-      || /www\.manufacturing\.net/i.test(value)
-      || /www\.cannabisequipmentnews\.com/i.test(value)
-    ) {
+    if (isInternalUrl(value)) {
       map.set('lt.usr', '@{encrypted_customer_id}@');
       map.set('utm_source', '@{track_id}@');
       map.set('utm_medium', 'email');
