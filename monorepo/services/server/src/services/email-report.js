@@ -1,5 +1,6 @@
 const escapeRegex = require('escape-string-regexp');
 const {
+  Campaign,
   Customer,
   ExcludedEmailDomain,
   ExtractedUrl,
@@ -143,6 +144,18 @@ module.exports = {
       o.deploymentEntities.push(deployment.entity);
       return o;
     }, { urlIds: [], deploymentEntities: [] });
+  },
+
+  async getCampaignIdsWithDeployments(criteria, { starting, ending } = {}) {
+    const campaigns = await Campaign.find(criteria);
+    const campaignIds = await Promise.all(campaigns.map(async (campaign) => {
+      const { deploymentEntities } = await this.getEligibleUrlsAndDeployments(campaign, {
+        starting,
+        ending,
+      });
+      return deploymentEntities.length ? campaign._id : null;
+    }));
+    return campaignIds.filter((id) => id);
   },
 
   /**

@@ -457,7 +457,7 @@ module.exports = {
     /**
      *
      */
-    allCampaigns: (root, { input, pagination, sort }, { auth }) => {
+    allCampaigns: async (root, { input, pagination, sort }, { auth }) => {
       auth.check();
       const {
         customerIds,
@@ -465,6 +465,7 @@ module.exports = {
         starting,
         ending,
         mustHaveEmailEnabled,
+        mustHaveEmailDeployments,
       } = input;
 
       const hasStartingDates = starting.before || starting.after;
@@ -472,6 +473,10 @@ module.exports = {
 
       if (range && (hasStartingDates || hasEndingDates)) {
         throw new UserInputError('You cannot specify a date range with starting or ending dates');
+      }
+
+      if (mustHaveEmailDeployments && !range) {
+        throw new UserInputError('A date range must be specified when requiring email deployments.');
       }
 
       const startDate = {
@@ -495,8 +500,16 @@ module.exports = {
             { startDate: { $gte: range.start }, endDate: { $lte: range.end } },
           ],
         }),
-        ...(mustHaveEmailEnabled != null && { 'email.enabled': mustHaveEmailEnabled }),
+        ...((mustHaveEmailDeployments === true || mustHaveEmailEnabled != null) && { 'email.enabled': mustHaveEmailEnabled }),
       };
+
+      if (mustHaveEmailDeployments) {
+        const campaignIds = await emailReportService.getCampaignIdsWithDeployments(criteria, {
+          starting: range.start,
+          ending: range.end,
+        });
+        criteria._id = { $in: campaignIds };
+      }
       return new Pagination(Campaign, { pagination, sort, criteria });
     },
 

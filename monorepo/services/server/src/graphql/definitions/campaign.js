@@ -230,6 +230,7 @@ input AllCampaignsQueryInput {
   ending: CampaignDateFilterInput = {}
   dateRange: AllCampaignsQueryDateRangeInput
   mustHaveEmailEnabled: Boolean
+  mustHaveEmailDeployments: Boolean = false
 }
 
 input AllCampaignsQueryDateRangeInput {
