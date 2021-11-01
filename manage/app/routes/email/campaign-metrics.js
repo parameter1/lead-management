@@ -33,6 +33,7 @@ export default Route.extend(ListRouteMixin, {
     const input = {
       customerIds: customers.map((customer) => customer.id),
       mustHaveEmailEnabled: true,
+      mustHaveEmailDeployments: true,
       dateRange: {
         start: rangeStart.valueOf(),
         end: rangeEnd.valueOf(),
