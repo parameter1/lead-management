@@ -35,6 +35,7 @@ extend type Mutation {
   emailLineItemLinkTypes(input: EmailLineItemLinkTypesInput): EmailLineItem!
   emailLineItemExcludedUrls(input: EmailLineItemExcludedUrlsInput): EmailLineItem!
   emailLineItemDeploymentTypes(input: EmailLineItemDeploymentTypesInput): EmailLineItem!
+  emailLineItemEnforceMaxEmailDomains(input: MutateEmailLineItemEnforceMaxEmailDomainsInput!): EmailLineItem!
 
   # generic actions
   lineItemDateRange(input: LineItemDateRangeInput): LineItem!
@@ -100,6 +101,7 @@ type EmailLineItem implements LineItem {
   excludedTags: [Tag]
   deploymentTypes: [EmailDeploymentType!]!
   identityAttributes: [IdentityAttribute!]!
+  enforceMaxEmailDomains: Boolean
 }
 
 type FormLineItem implements LineItem {
@@ -408,6 +410,11 @@ input EmailLineItemExcludedFieldsInput {
 input EmailLineItemRequiredFieldsInput {
   id: String!
   requiredFields: [String!]!
+}
+
+input MutateEmailLineItemEnforceMaxEmailDomainsInput {
+  id: String!
+  value: Boolean!
 }
 
 input EmailLineItemIdentityFiltersInput {

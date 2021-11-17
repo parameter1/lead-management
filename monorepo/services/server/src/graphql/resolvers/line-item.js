@@ -766,6 +766,17 @@ module.exports = {
     },
 
     /**
+     *
+     */
+    emailLineItemEnforceMaxEmailDomains: async (_, { input }, { auth }) => {
+      auth.check();
+      const { id, value } = input;
+      const lineItem = await findEmailLineItem(id);
+      lineItem.set('enforceMaxEmailDomains', value);
+      return lineItem.save();
+    },
+
+    /**
      * @todo restore
      */
     // formLineItemChoiceFilters: async (_, { input }, { auth }) => {
