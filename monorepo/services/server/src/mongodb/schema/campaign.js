@@ -176,6 +176,10 @@ const emailSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  enforceMaxEmailDomains: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 emailSchema.method('getExcludeFields', async function getEmailExcludeFields() {
