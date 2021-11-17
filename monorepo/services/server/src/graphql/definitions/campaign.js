@@ -33,6 +33,7 @@ extend type Mutation {
   emailCampaignStatus(input: CampaignStatusInput!): EmailCampaign!
   emailCampaignRestrictSentDate(input: CampaignRestrictSentDateInput!): EmailCampaign!
   emailCampaignDisplayDeliveredMetrics(input: CampaignDisplayDeliveredMetricsInput!): EmailCampaign!
+  emailCampaignEnforceMaxEmailDomains(input: MutateEmailCampaignEnforceMaxEmailDomainsInput!): EmailCampaign!
 
   formCampaignStatus(input: CampaignStatusInput!): FormCampaign!
   formCampaignExcludedForms(input: FormCampaignExcludedFormsInput): FormCampaign!
@@ -127,6 +128,7 @@ type EmailCampaign {
   excludeUrls: [EmailCampaignExcludedUrl]
   restrictToSentDate: Boolean
   displayDeliveredMetrics: Boolean
+  enforceMaxEmailDomains: Boolean
   urlCount: Int!
   urlGroups: [EmailCampaignUrlGroup!]!
   "Whether this email campaign has any eligible deployment data."
@@ -298,6 +300,11 @@ input CampaignRestrictSentDateInput {
 input CampaignDisplayDeliveredMetricsInput {
   id: String!
   displayDeliveredMetrics: Boolean!
+}
+
+input MutateEmailCampaignEnforceMaxEmailDomainsInput {
+  id: String!
+  value: Boolean!
 }
 
 input EmailCampaignIdentityFiltersInput {

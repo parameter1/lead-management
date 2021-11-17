@@ -878,6 +878,18 @@ module.exports = {
     /**
      *
      */
+    emailCampaignEnforceMaxEmailDomains: async (_, { input }, { auth }) => {
+      auth.check();
+      const { id, value } = input;
+      const campaign = await findEmailCampaign(id);
+      campaign.set('email.enforceMaxEmailDomains', value);
+      await campaign.save();
+      return campaign.email;
+    },
+
+    /**
+     *
+     */
     formCampaignStatus: async (root, { input }, { auth }) => {
       auth.check();
       const { id, enabled } = input;
