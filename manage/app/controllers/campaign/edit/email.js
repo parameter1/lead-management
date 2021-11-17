@@ -11,6 +11,7 @@ import emailCampaignIdentityFilters from 'leads-manage/gql/mutations/campaign/em
 import emailCampaignStatus from 'leads-manage/gql/mutations/campaign/email/status';
 import emailCampaignRestrictSentDate from 'leads-manage/gql/mutations/campaign/email/restrict-sent-date';
 import emailCampaignDisplayDeliveredMetrics from 'leads-manage/gql/mutations/campaign/email/display-delivered-metrics';
+import emailCampaignEnforceMaxEmailDomains from 'leads-manage/gql/mutations/campaign/email/enforce-max-email-domains';
 
 export default Controller.extend(FormMixin, {
   apollo: inject(),
@@ -199,6 +200,26 @@ export default Controller.extend(FormMixin, {
       try {
         await this.get('apollo').mutate({ mutation: emailCampaignDisplayDeliveredMetrics, variables }, 'emailCampaignDisplayDeliveredMetrics');
         this.get('notify').info('Campaign delivered metrics rule successfully applied.');
+      } catch (e) {
+        this.get('graphErrors').show(e);
+      } finally {
+        this.endAction();
+      }
+    },
+
+    /**
+     *
+     */
+    async updateEnforceMaxEmailDomains(event) {
+      try {
+        this.startAction();
+        const { target } = event;
+        const { checked } = target;
+        const id = this.get('model.id');
+        const input = { id, value: checked }
+        const variables = { input };
+        await this.get('apollo').mutate({ mutation: emailCampaignEnforceMaxEmailDomains, variables }, 'emailCampaignEnforceMaxEmailDomains');
+        this.get('notify').info('Campaign maximum email domain settings applied.');
       } catch (e) {
         this.get('graphErrors').show(e);
       } finally {

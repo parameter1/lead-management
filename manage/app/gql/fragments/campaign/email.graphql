@@ -13,6 +13,7 @@ fragment EmailCampaignFragment on EmailCampaign {
   excludeFields
   restrictToSentDate
   displayDeliveredMetrics
+  enforceMaxEmailDomains
   allowedLinkTypes
   identityFilters {
     id

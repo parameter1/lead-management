@@ -1,0 +1,7 @@
+mutation CampaignEditEmailEnforceMaxEmailDomains($input: MutateEmailCampaignEnforceMaxEmailDomainsInput!) {
+  emailCampaignEnforceMaxEmailDomains(input: $input) {
+    id
+    enforceMaxEmailDomains
+    urlCount
+  }
+}

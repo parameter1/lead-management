@@ -68,6 +68,13 @@
               </div>
             </div>
 
+            <div class="form-group">
+              <div class="custom-control custom-checkbox">
+                {{input type="checkbox" checked=model.enforceMaxEmailDomains class="custom-control-input" id="enforce-max-email-domains" change=(action "updateEnforceMaxEmailDomains")}}
+                <label class="custom-control-label" for="enforce-max-email-domains">Enforce maximum of three unique clicks per email domain?</label>
+              </div>
+            </div>
+
             <div class="d-flex justify-content-between">
               {{#link-to "campaign.edit.email.links" class="btn btn-primary" role="button"}}
                 {{entypo-icon "link"}} Manage Links ({{model.urlCount}})
