@@ -1,0 +1,6 @@
+mutation EmailLineItemEnforceMaxEmailDomains($input: MutateEmailLineItemEnforceMaxEmailDomainsInput!) {
+  emailLineItemEnforceMaxEmailDomains(input: $input) {
+    id
+    enforceMaxEmailDomains
+  }
+}

@@ -34,6 +34,11 @@ export default Component.extend(ComponentQueryManager, {
     return value ? 'Yes' : 'No';
   }),
 
+  enforceMaxEmailDomains: computed('item.email.enforceMaxEmailDomains', function() {
+    const value = this.get('item.email.enforceMaxEmailDomains');
+    return value ? 'Yes' : 'No';
+  }),
+
   allowedLinkTypes: computed('item.email.allowedLinkTypes', function() {
     const value = this.get('item.email.allowedLinkTypes');
     return value.join(', ') || '(none selected)';

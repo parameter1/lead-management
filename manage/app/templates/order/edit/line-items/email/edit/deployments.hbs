@@ -66,5 +66,16 @@
     </div>
   </div>
 
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <div class="custom-control custom-checkbox">
+          {{input type="checkbox" checked=model.enforceMaxEmailDomains class="custom-control-input" id="enforce-max-email-domains" change=(action "updateEnforceMaxEmailDomains")}}
+          <label class="custom-control-label" for="enforce-max-email-domains">Enforce maximum of three unique clicks per email domain?</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
   {{line-item-links lineItemId=model.id isActionRunning=isActionRunning}}
 {{/bs-modal/body}}

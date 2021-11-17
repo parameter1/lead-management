@@ -86,6 +86,7 @@ module.exports = {
     enforceMaxIdentities = true,
   } = {}) {
     const { maxIdentities } = campaign;
+    const { enforceMaxEmailDomains } = campaign.email;
 
     const $match = {
       date: { $gte: campaign.startDate },
@@ -95,14 +96,15 @@ module.exports = {
 
     const pipeline = [];
     pipeline.push({ $match });
-    pipeline.push({ $group: { _id: '$idt' } });
+    if (enforceMaxEmailDomains) pipeline.push(...this.getEmailDomainAggregationStages());
+    pipeline.push({ $group: { _id: null, entities: { $addToSet: '$idt' } } });
 
-    const results = await OmedaEmailClick.aggregate(pipeline);
+    const [result] = await OmedaEmailClick.aggregate(pipeline);
 
     // Must exclude by ineligible identities, then sort and set max limit.
     const exclusions = await this.buildIdentityExclusionCriteria(campaign, { suppressInactives });
     const criteria = {
-      entity: { $in: results.map((r) => r._id) },
+      entity: { $in: result && result.entities ? result.entities : [] },
       ...exclusions,
     };
 
@@ -110,6 +112,59 @@ module.exports = {
     const identities = await Identity.find(criteria, { entity: 1 })
       .sort({ fieldCount: -1 }).limit(limit);
     return identities.map((o) => o.entity);
+  },
+
+  getEmailDomainAggregationStages() {
+    return [
+      // get each unique url clicked per deployment for each identity
+      { $group: { _id: { idt: '$idt', url: '$url', dep: '$dep' } } },
+      // group by all unique deployment url clicks by identity
+      {
+        $group: {
+          _id: '$_id.idt',
+          unqClicks: { $push: { dep: '$_id.dep', url: '$_id.url' } },
+        },
+      },
+      // lookup each identity and pull each email domain
+      {
+        $lookup: {
+          from: 'identities',
+          localField: '_id',
+          foreignField: 'entity',
+          as: 'identity',
+        },
+      },
+      { $unwind: '$identity' },
+      { $project: { unqClicks: 1, emailDomain: '$identity.emailDomain' } },
+      { $unwind: '$unqClicks' },
+      // group unique deployment url click for each email domain and track unique identites
+      // with the matching domain
+      {
+        $group: {
+          _id: { emailDomain: '$emailDomain', dep: '$unqClicks.dep', url: '$unqClicks.url' },
+          identities: { $addToSet: '$_id' },
+        },
+      },
+      // count total number of unique entites per email domain
+      { $addFields: { identityCount: { $size: '$identities' } } },
+      // if more than 3 identities of the same domain were found, only include the first identity
+      // otherwise include all identities
+      {
+        $project: {
+          idt: {
+            $cond: {
+              if: { $lte: ['$identityCount', 3] },
+              then: '$identities',
+              else: [{ $arrayElemAt: ['$identities', 0] }],
+            },
+          },
+          identityCount: 1,
+        },
+      },
+
+      // return the unique set of identities
+      { $unwind: '$idt' },
+    ];
   },
 
   /**

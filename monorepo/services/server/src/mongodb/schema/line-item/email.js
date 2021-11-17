@@ -98,6 +98,10 @@ const schema = new Schema({
     type: [String],
     default: () => [],
   },
+  enforceMaxEmailDomains: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 schema.method('getExcludedFields', async function getEmailExcludedFields() {

@@ -15,5 +15,6 @@ query EditEmailLineItemDeployments($input: ModelIdInput!) {
       name
       entity
     }
+    enforceMaxEmailDomains
   }
 }

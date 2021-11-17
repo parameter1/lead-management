@@ -7,6 +7,7 @@ import linkTypesMutation from 'leads-manage/gql/mutations/line-item/email/link-t
 import tagsMutation from 'leads-manage/gql/mutations/line-item/email/tags';
 import excludedTagsMutation from 'leads-manage/gql/mutations/line-item/email/excluded-tags';
 import deploymentTypesMutation from 'leads-manage/gql/mutations/line-item/email/deployment-types';
+import emailLineItemEnforceMaxEmailDomains from 'leads-manage/gql/mutations/line-item/email/enforce-max-email-domains';
 
 const refetchQueries = ['EditEmailLineItemDeploymentLinks'];
 
@@ -76,6 +77,23 @@ export default Controller.extend(FormMixin, {
       try {
         await this.get('apollo').mutate({ mutation: deploymentTypesMutation, variables, refetchQueries }, 'emailLineItemDeploymentTypes');
         this.get('notify').info('Deployment types saved.');
+      } catch (e) {
+        this.get('graphErrors').show(e);
+      } finally {
+        this.endAction();
+      }
+    },
+
+     async updateEnforceMaxEmailDomains(event) {
+      try {
+        this.startAction();
+        const { target } = event;
+        const { checked } = target;
+        const id = this.get('model.id');
+        const input = { id, value: checked }
+        const variables = { input };
+        await this.get('apollo').mutate({ mutation: emailLineItemEnforceMaxEmailDomains, variables }, 'emailLineItemEnforceMaxEmailDomains');
+        this.get('notify').info('Maximum email domain settings applied.');
       } catch (e) {
         this.get('graphErrors').show(e);
       } finally {

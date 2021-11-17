@@ -11,6 +11,7 @@ query EmailCampaignMetrics($input: AllCampaignsQueryInput = {}, $pagination: Pag
           id
           allowedLinkTypes
           displayDeliveredMetrics
+          enforceMaxEmailDomains
           excludeFields
           excludedTags {
             id
