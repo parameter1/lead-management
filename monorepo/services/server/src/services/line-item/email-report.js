@@ -95,6 +95,7 @@ module.exports = {
     urlIds,
     deploymentEntities,
   } = {}) {
+    const { enforceMaxEmailDomains } = lineitem;
     const $match = {
       url: { $in: urlIds },
       dep: { $in: deploymentEntities },
@@ -103,10 +104,14 @@ module.exports = {
 
     const pipeline = [];
     pipeline.push({ $match });
+    if (enforceMaxEmailDomains) {
+      pipeline.push(...emailCampaignReport.getEmailDomainAggregationStages());
+    }
+
     pipeline.push({ $group: { _id: '$idt' } });
 
-    const results = await OmedaEmailClick.aggregate(pipeline);
-    return results.map((r) => r._id);
+    const [result] = await OmedaEmailClick.aggregate(pipeline);
+    return result && result.entities ? result.entities : [];
   },
 
   async buildExportPipeline(lineitem) {
