@@ -115,6 +115,17 @@ module.exports = {
   },
 
   getEmailDomainAggregationStages() {
+    const publicDomains = [
+      'gmail.com',
+      'googlemail.com',
+      'yahoo.com',
+      'hotmail.com',
+      'msn.com',
+      'outlook.com',
+      'icloud.com',
+      'aol.com',
+    ];
+
     return [
       // get each unique url clicked per deployment for each identity
       { $group: { _id: { idt: '$idt', url: '$url', dep: '$dep' } } },
@@ -155,7 +166,13 @@ module.exports = {
             $cond: {
               if: { $lte: ['$identityCount', 3] },
               then: '$identities',
-              else: [{ $arrayElemAt: ['$identities', 0] }],
+              else: {
+                $cond: {
+                  if: { $in: ['$_id.emailDomain', publicDomains] },
+                  then: '$identities',
+                  else: [{ $arrayElemAt: ['$identities', 0] }],
+                },
+              },
             },
           },
           identityCount: 1,
