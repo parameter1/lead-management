@@ -9,6 +9,7 @@ export default Route.extend(ListRouteMixin, {
     this.set('queryParams.customers', { refreshModel: true });
     this.set('queryParams.rangeStart', { refreshModel: true });
     this.set('queryParams.rangeEnd', { refreshModel: true });
+    this.set('queryParams.mustHaveEmailDeployments', { refreshModel: true });
   },
 
   beforeModel(transition) {
@@ -29,11 +30,12 @@ export default Route.extend(ListRouteMixin, {
     customers,
     rangeStart,
     rangeEnd,
+    mustHaveEmailDeployments,
   }) {
     const input = {
       customerIds: customers.map((customer) => customer.id),
       mustHaveEmailEnabled: true,
-      mustHaveEmailDeployments: true,
+      mustHaveEmailDeployments,
       dateRange: {
         start: rangeStart.valueOf(),
         end: rangeEnd.valueOf(),

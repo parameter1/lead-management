@@ -42,6 +42,17 @@
                     </div>
                   </div>
 
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                          {{input type="checkbox" checked=mustHaveEmailDeployments class="custom-control-input" id="must-have-email-deployments" change=(action "setMustHaveEmailDeployments")}}
+                          <label class="custom-control-label" for="must-have-email-deployments">Campaigns must have email deployments</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
                 <div class="card-footer d-flex justify-content-end">
                   <button class="btn btn-primary" disabled={{clearButtonDisabled}} {{action "clearFilters"}}>Reset All</button>

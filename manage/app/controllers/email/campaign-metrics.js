@@ -36,6 +36,9 @@ export default ListController.extend({
     this.get('queryParams').pushObject('customers');
     this.get('queryParams').pushObject('rangeStart');
     this.get('queryParams').pushObject('rangeEnd');
+    this.get('queryParams').pushObject('mustHaveEmailDeployments');
+
+    this.set('mustHaveEmailDeployments', false);
 
     this.set('customers', []);
     const now = new Date();
@@ -74,6 +77,10 @@ export default ListController.extend({
       if (!end) return;
       this.set('rangeStart', start);
       this.set('rangeEnd', end);
+    },
+
+    setMustHaveEmailDeployments(event) {
+      this.set('mustHaveEmailDeployments', event.target.checked);
     },
 
     clearFilters() {
