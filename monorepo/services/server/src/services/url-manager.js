@@ -118,7 +118,7 @@ module.exports = {
     }, new Map());
 
     if (isInternalUrl(value)) {
-      map.set('lt.usr', '@{encrypted_customer_id}@');
+      map.set('__lt-usr', '@{encrypted_customer_id}@');
       map.set('utm_source', '@{track_id}@');
       map.set('utm_medium', 'email');
       map.set('utm_campaign', '@{mv_date_MMddyyyy}@');

@@ -62,7 +62,7 @@ module.exports = {
     const params = new URLSearchParams(parsed.searchParams);
 
     // Inject the link ID on all URLs.
-    params.set('lt.lid', id);
+    params.set('__lt-lid', id);
 
     // Get parameters to inject.
     const injectParams = await UrlManager.getMergedUrlParams(url);
