@@ -62,7 +62,7 @@ module.exports = {
     const params = new URLSearchParams(parsed.searchParams);
 
     // Inject the link ID on all URLs.
-    params.set('lt.lid', id);
+    params.set('__lt-lid', id);
 
     // Get parameters to inject.
     const injectParams = await UrlManager.getMergedUrlParams(url);
@@ -257,6 +257,20 @@ module.exports = {
         return null;
       }
     }
+    const match4 = /lt\.lid=([a-f0-9]{24})/i.exec(clean);
+    if (match4 && match4[1]) return match4[1];
+
+    const match5 = /__lt-lid=([a-f0-9]{24})/i.exec(clean);
+    if (match5 && match5[1]) return match5[1];
+
+    const match6 = /%3C\.lid=([a-f0-9]{24})/i.exec(clean);
+    if (match6 && match6[1]) return match6[1];
+
+    const match7 = /&lt;\.lid=([a-f0-9]{24})/i.exec(clean);
+    if (match7 && match7[1]) return match7[1];
+
+    const match8 = /<\.lid=([a-f0-9]{24})/i.exec(clean);
+    if (match8 && match8[1]) return match8[1];
     return null;
   },
 

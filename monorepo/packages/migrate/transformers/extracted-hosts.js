@@ -12,7 +12,7 @@ const unqiueUrlParams = (doc) => {
   }, new Map());
 
   if (isOwnedSite(hostname)) {
-    paramMap.set('lt.usr', '@{encrypted_customer_id}@');
+    paramMap.set('__lt-usr', '@{encrypted_customer_id}@');
     paramMap.set('utm_source', '@{track_id}@');
     paramMap.set('utm_medium', 'email');
     paramMap.set('utm_campaign', '@{mv_date_MMddyyyy}@');

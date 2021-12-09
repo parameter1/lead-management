@@ -1,6 +1,7 @@
 const patterns = [
   /lt\.lid=([a-f0-9]{24})/,
   /&lt;\.lid=([a-f0-9]{24})/,
+  /__lt-lid=([a-f0-9]{24})/,
 ];
 
 /**
