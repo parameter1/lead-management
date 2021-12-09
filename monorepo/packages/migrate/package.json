@@ -1,6 +1,6 @@
 {
   "name": "@lead-management/migrate",
-  "version": "1.0.0",
+  "version": "1.4.0",
   "main": "index.js",
   "repository": "https://github.com/parameter1/lead-management.git",
   "author": "Jacob Bare <jacob@parameter1.com>",
