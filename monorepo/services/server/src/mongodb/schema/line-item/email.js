@@ -100,7 +100,9 @@ const schema = new Schema({
   },
   enforceMaxEmailDomains: {
     type: Boolean,
-    default: false,
+    default() {
+      return this.isNew;
+    },
   },
 });
 
