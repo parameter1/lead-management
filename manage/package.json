@@ -1,6 +1,6 @@
 {
   "name": "leads-manage",
-  "version": "1.3.0",
+  "version": "1.5.1",
   "private": true,
   "description": "Lead automation management application.",
   "repository": "https://github.com/parameter1/lead-management.git",
