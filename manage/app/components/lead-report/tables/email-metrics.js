@@ -20,6 +20,8 @@ export default Component.extend({
     return deployments.every(({ deployment }) => deployment.designation === 'Newsletter');
   }),
 
+  displayTotalUniqueClicks: false,
+
   init() {
     this._super(...arguments);
     this.set('iframe', {
