@@ -14,7 +14,9 @@
     <th>CTR</th>
     <th>Advertiser CTOR</th>
     <th>Total Ad Clicks per Day</th>
-    <th>Total Unique Clicks</th>
+    {{#if displayTotalUniqueClicks}}
+      <th>Total Unique Clicks</th>
+    {{/if}}
   </tr>
 </thead>
 <tbody>
@@ -40,7 +42,9 @@
       <td>{{ format-number row.deployment.metrics.clickToDeliveredRate format="00.0%" }}</td>
       <td>{{ format-number row.advertiserClickRate format="0.00%" }}</td>
       <td>{{ format-number row.clicks format="0,0" }}</td>
-      <td>{{ format-number row.identities format="0,0" }}</td>
+      {{#if displayTotalUniqueClicks}}
+        <td>{{ format-number row.identities format="0,0" }}</td>
+      {{/if}}
     </tr>
   {{/each}}
 </tbody>
@@ -60,7 +64,9 @@
     <th>{{ format-number totals.metrics.clickToDeliveredRate format="00.0%" }}</th>
     <th>{{ format-number totals.advertiserClickRate format="0.00%" }}</th>
     <th>{{ format-number totals.clicks format="0,0" }}</th>
-    <th>{{ format-number totals.identities format="0,0" }}</th>
+    {{#if displayTotalUniqueClicks}}
+      <th>{{ format-number totals.identities format="0,0" }}</th>
+    {{/if}}
   </tr>
 </tfoot>
 
