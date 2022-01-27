@@ -73,7 +73,7 @@ module.exports = {
         extractedUrl.headerDirectives = Object.keys(headers)
           .filter((key) => headerPattern.test(key) && headers[key])
           .reduce((o, key) => {
-            const v = headers[key];
+            const v = decodeURIComponent(headers[key]).trim();
             const k = camelize(underscore(key.replace(headerPattern, '')), false);
             return { ...o, [k]: v };
           }, {});
@@ -172,11 +172,12 @@ module.exports = {
     // handle auto customer tagging
     const autoCustomer = extractedUrl.get('headerDirectives.customer');
     if (autoCustomer) {
-      const customerSlug = nameSlug(autoCustomer);
+      const name = decodeURIComponent(autoCustomer).trim();
+      const customerSlug = nameSlug(name);
       const customer = await Customer.findOneAndUpdate({ key: customerSlug }, {
         $setOnInsert: {
           deleted: false,
-          name: autoCustomer.trim(),
+          name,
           key: customerSlug,
           hash: createHash(`${Date.now()}`),
         },
