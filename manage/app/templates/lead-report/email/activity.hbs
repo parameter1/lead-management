@@ -25,9 +25,13 @@
             <tr>
               <td>{{moment-format node.last "MMM Do, YYYY @ h:mma"}}</td>
               <td>
-                <a href="#" {{action "displayIdentityModal" node.identity}}>
-                  {{#if showEmail}}{{node.identity.emailAddress}}{{else}}(email redacted){{/if}}
-                </a>
+                {{#if showEmail}}
+                  <a href="#" {{action "displayIdentityModal" node.identity}}>
+                    {{node.identity.emailAddress}}
+                  </a>
+                {{else}}
+                  <span>(email redacted)</span>
+                {{/if}}
               </td>
               <td>
                 {{#if node.deployment.url}}
