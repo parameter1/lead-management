@@ -229,6 +229,7 @@ input CampaignDateFilterInput {
 
 input AllCampaignsQueryInput {
   customerIds: [ObjectID!] = []
+  salesRepIds: [ObjectID!] = []
   starting: CampaignDateFilterInput = {}
   ending: CampaignDateFilterInput = {}
   dateRange: AllCampaignsQueryDateRangeInput

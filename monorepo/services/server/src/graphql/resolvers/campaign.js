@@ -466,6 +466,7 @@ module.exports = {
       auth.check();
       const {
         customerIds,
+        salesRepIds,
         dateRange: range,
         starting,
         ending,
@@ -496,6 +497,7 @@ module.exports = {
       const criteria = {
         deleted: false,
         ...(customerIds.length && { customerId: { $in: customerIds } }),
+        ...(salesRepIds.length && { salesRepId: { $in: salesRepIds } }),
         ...(hasKeys(startDate) && { startDate }),
         ...(hasKeys(endDate) && { endDate }),
         ...(range && {
