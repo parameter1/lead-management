@@ -23,6 +23,22 @@
     </div>
 
     <div class="form-group">
+      <label>Sales Rep {{required-field-label}}</label>
+      {{#type-ahead
+        placeholder="Begin typing to find a user..."
+        type="user"
+        field="givenName"
+        selected=model.salesRep
+        allowClear=false
+        onChange=(action (mut model.salesRep))
+        as |user|
+      }}
+        {{user.givenName}} {{user.familyName}}
+      {{/type-ahead}}
+      <small class="form-text text-muted">Required. The sales representative for the campaign.</small>
+    </div>
+
+    <div class="form-group">
       <label for="campaign-name">Name</label>
       {{input type="text" value=model.name class="form-control" id="campaign-name" aria-describedby="campaign-name-help" placeholder="Campaign name"}}
       <small id="campaign-name-help" class="form-text text-muted hide">Optional. The campaign name - should be descriptive.</small>
