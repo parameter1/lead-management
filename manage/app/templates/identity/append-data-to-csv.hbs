@@ -1,0 +1,21 @@
+{{#nav-breadcrumbs as |crumbs|}}
+  {{#crumbs.item active=true}}{{entypo-icon "users"}} Append Lead Data{{/crumbs.item}}
+{{/nav-breadcrumbs}}
+
+<div class="row">
+  <div class="col">
+    <div class="card list-index">
+      <div class="card-body">
+        <form enctype="multipart/form-data" onsubmit={{action "append"}}>
+          <div class="form-group">
+            <label for="csv-file">Upload CSV</label>
+            <input class="form-control" name="file" type="file" id="csv-file" accept="text/csv" disabled={{isActionRunning}} required>
+          </div>
+          <button type="submit" class="btn btn-success" disabled={{isActionRunning}}>
+            Append and Download
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

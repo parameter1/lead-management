@@ -68,6 +68,7 @@ Router.map(function() {
   });
   this.route('identity', function() {
     this.route('view', { path: ':id' });
+    this.route('append-data-to-csv');
     this.route('excluded-domains', function() {
       this.route('edit', { path: ':excluded_domain_id' });
       this.route('create');

@@ -11,9 +11,9 @@ module.exports = server({
   onError: ({ e, status }) => {
     if (status >= 500) newrelic.noticeError(e);
   },
-  context: async ({ input }) => {
+  context: async ({ input, req }) => {
     const { action } = input;
     newrelic.setTransactionName(action);
-    return { apollo: apollo() };
+    return { apollo: apollo(), authorization: req.headers.authorization };
   },
 });

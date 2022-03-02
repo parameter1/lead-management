@@ -5,6 +5,7 @@ module.exports = gql`
 extend type Query {
   identity(input: ModelIdInput!): Identity!
   allIdentities(pagination: PaginationInput = {}, sort: IdentitySortInput = {}): IdentityConnection!
+  identityExport(input: QueryIdentityExportInput!): [Identity!]!
   searchIdentities(pagination: PaginationInput = {}, search: TypeAheadInput!, options: TypeAheadOptionsInput): IdentityConnection!
 }
 
@@ -82,6 +83,10 @@ input IdentityLineItemActivation {
 input IdentitySortInput {
   field: String! = emailAddress
   order: Int! = 1
+}
+
+input QueryIdentityExportInput {
+  emails: [String!]!
 }
 
 `;
