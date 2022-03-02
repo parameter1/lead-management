@@ -77,6 +77,7 @@ router.post('/', upload.single('file'), asyncRoute(async (req, res) => {
   }
   const filename = `Appended - ${file.originalname}`;
   res.header('content-type', 'text/csv');
+  res.header('x-filename', filename);
   res.attachment(filename);
   res.send(csv);
 }));
