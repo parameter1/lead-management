@@ -17,15 +17,18 @@ export default Route.extend(RouteQueryManager, FormMixin, {
   },
 
   actions: {
-    async create({ customer, name, range, maxIdentities }) {
+    async create({ customer, salesRep, name, range, maxIdentities }) {
       try {
         this.startRouteAction();
         const customerId = get(customer || {}, 'id');
+        const salesRepId = get(salesRep || {}, 'id');
         if (!customerId) throw new Error('A customer is required.');
+        if (!salesRepId) throw new Error('A sales rep is required.');
         if (!range || !range.start || !range.end) throw new Error('A date range is required');
 
         const input = {
           customerId,
+          salesRepId,
           name,
           startDate: range.start.valueOf(),
           endDate: range.end.valueOf(),

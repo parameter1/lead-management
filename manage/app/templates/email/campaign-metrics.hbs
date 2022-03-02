@@ -27,6 +27,22 @@
                     }}
                   </div>
 
+                  <div class="form-group">
+                    <label for="filter.sales-reps">Sales Rep(s)</label>
+                    {{#type-ahead
+                      placeholder="Begin typing to find a user..."
+                      type="user"
+                      field="givenName"
+                      multiple=true
+                      selected=users
+                      disabled=routeLoading
+                      onChange=(action "setSalesReps")
+                      as |user|
+                    }}
+                      {{user.givenName}} {{user.familyName}}
+                    {{/type-ahead}}
+                  </div>
+
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group">

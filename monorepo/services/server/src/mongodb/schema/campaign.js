@@ -209,6 +209,18 @@ const schema = new Schema({
       message: 'No customer found for ID {VALUE}',
     },
   },
+  salesRepId: {
+    type: Schema.Types.ObjectId,
+    ref: 'user',
+    validate: {
+      async validator(v) {
+        const doc = await connection.model('user').findById(v, { _id: 1 });
+        if (doc) return true;
+        return false;
+      },
+      message: 'No user found for ID {VALUE}',
+    },
+  },
   fullName: {
     type: String,
     required: true,

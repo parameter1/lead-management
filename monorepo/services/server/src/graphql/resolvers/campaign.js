@@ -97,6 +97,11 @@ module.exports = {
   Campaign: {
     customer: (campaign, _, { loaders }) => loaders.customer.load(campaign.customerId),
 
+    salesRep: ({ salesRepId }, _, { loaders }) => {
+      if (!salesRepId) return null;
+      return loaders.user.load(salesRepId);
+    },
+
     range: ({ startDate, endDate }) => ({ start: startDate, end: endDate }),
 
     gamLineItems: async (campaign, { input }, context, info) => {
@@ -461,6 +466,7 @@ module.exports = {
       auth.check();
       const {
         customerIds,
+        salesRepIds,
         dateRange: range,
         starting,
         ending,
@@ -491,6 +497,7 @@ module.exports = {
       const criteria = {
         deleted: false,
         ...(customerIds.length && { customerId: { $in: customerIds } }),
+        ...(salesRepIds.length && { salesRepId: { $in: salesRepIds } }),
         ...(hasKeys(startDate) && { startDate }),
         ...(hasKeys(endDate) && { endDate }),
         ...(range && {
@@ -678,6 +685,7 @@ module.exports = {
       auth.check();
       const {
         customerId,
+        salesRepId,
         name,
         startDate,
         endDate,
@@ -686,6 +694,7 @@ module.exports = {
 
       const record = new Campaign({
         customerId,
+        salesRepId,
         name,
         startDate,
         endDate,
@@ -724,6 +733,7 @@ module.exports = {
       const { id, payload } = input;
       const {
         customerId,
+        salesRepId,
         name,
         startDate,
         endDate,
@@ -734,6 +744,7 @@ module.exports = {
       if (!record) throw new Error(`No campaign record found for ID ${id}.`);
       record.set({
         customerId,
+        salesRepId,
         name,
         startDate,
         endDate,

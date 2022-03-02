@@ -29,4 +29,9 @@ fragment CampaignViewFragment on Campaign {
       name
     }
   }
+  salesRep {
+    id
+    givenName
+    familyName
+  }
 }

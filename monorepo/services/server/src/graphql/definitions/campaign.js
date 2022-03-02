@@ -57,6 +57,7 @@ type Campaign {
   name: String
   fullName: String!
   customer: Customer!
+  salesRep: User
   range: CampaignDateRange!
   maxIdentities: Int
   email: EmailCampaign
@@ -228,6 +229,7 @@ input CampaignDateFilterInput {
 
 input AllCampaignsQueryInput {
   customerIds: [ObjectID!] = []
+  salesRepIds: [ObjectID!] = []
   starting: CampaignDateFilterInput = {}
   ending: CampaignDateFilterInput = {}
   dateRange: AllCampaignsQueryDateRangeInput
@@ -254,6 +256,7 @@ input CampaignSortInput {
 input CreateCampaignInput {
   name: String
   customerId: String!
+  salesRepId: String!
   maxIdentities: Int
   startDate: Date
   endDate: Date
@@ -262,6 +265,7 @@ input CreateCampaignInput {
 input UpdateCampaignPayloadInput {
   name: String
   customerId: String!
+  salesRepId: String!
   maxIdentities: Int
   startDate: Date
   endDate: Date

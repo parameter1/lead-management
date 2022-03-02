@@ -7,6 +7,11 @@ query EmailCampaignMetrics($input: AllCampaignsQueryInput = {}, $pagination: Pag
         fullName
         hash
         maxIdentities
+        salesRep {
+          id
+          givenName
+          familyName
+        }
         email {
           id
           allowedLinkTypes
