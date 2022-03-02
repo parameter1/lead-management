@@ -255,6 +255,7 @@ input CampaignSortInput {
 input CreateCampaignInput {
   name: String
   customerId: String!
+  salesRepId: String!
   maxIdentities: Int
   startDate: Date
   endDate: Date

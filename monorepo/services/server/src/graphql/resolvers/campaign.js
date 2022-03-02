@@ -683,6 +683,7 @@ module.exports = {
       auth.check();
       const {
         customerId,
+        salesRepId,
         name,
         startDate,
         endDate,
@@ -691,6 +692,7 @@ module.exports = {
 
       const record = new Campaign({
         customerId,
+        salesRepId,
         name,
         startDate,
         endDate,
