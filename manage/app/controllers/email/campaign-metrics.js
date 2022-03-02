@@ -5,9 +5,10 @@ import moment from 'moment';
 export default ListController.extend({
   center: moment(),
 
-  activeFilterCount: computed('customers.length', 'dateRange.end', function() {
+  activeFilterCount: computed('customers.length', 'salesReps.length', 'dateRange.end', function() {
     let filters = 0;
     if (this.get('customers.length')) filters += 1;
+    if (this.get('salesReps.length')) filters += 1;
     if (this.get('dateRange.end')) filters += 1;
     return filters;
   }),
@@ -34,6 +35,7 @@ export default ListController.extend({
   init() {
     this._super(...arguments);
     this.get('queryParams').pushObject('customers');
+    this.get('queryParams').pushObject('salesReps');
     this.get('queryParams').pushObject('rangeStart');
     this.get('queryParams').pushObject('rangeEnd');
     this.get('queryParams').pushObject('mustHaveEmailDeployments');
@@ -41,6 +43,7 @@ export default ListController.extend({
     this.set('mustHaveEmailDeployments', false);
 
     this.set('customers', []);
+    this.set('salesReps', []);
     const now = new Date();
     const start = moment(now).startOf('week');
     const end = moment(now).endOf('week');
@@ -69,6 +72,10 @@ export default ListController.extend({
       this.set('customers', customers.map((customer) => ({ id: customer.id, name: customer.name })))
     },
 
+    setSalesReps(salesReps) {
+      this.set('salesReps', salesReps.map((user) => ({ id: user.id, givenName: user.givenName, familyName: user.familyName })))
+    },
+
     setRange({ start, end } ) {
       this.set('internalRange', {
         start: start ? moment(start) : null,
@@ -85,6 +92,7 @@ export default ListController.extend({
 
     clearFilters() {
       this.set('customers', []);
+      this.set('salesReps', []);
       const { start, end } = this.defaultRange;
       this.set('internalRange', { start, end });
       this.set('rangeStart', start);
