@@ -6,6 +6,11 @@ fragment CampaignListFragment on Campaign {
     id
     name
   }
+  salesRep {
+    id
+    givenName
+    familyName
+  }
   email {
     id
   }
