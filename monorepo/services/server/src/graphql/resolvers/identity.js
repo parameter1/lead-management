@@ -78,6 +78,15 @@ module.exports = {
     /**
      *
      */
+    identityExport: async (_, { input }, { auth }) => {
+      auth.check();
+      const { emails } = input;
+      return Identity.find({ emailAddress: { $in: emails } });
+    },
+
+    /**
+     *
+     */
     allIdentities: (root, { pagination, sort }, { auth }) => {
       auth.check();
       return new Pagination(Identity, { pagination, sort });
