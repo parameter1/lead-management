@@ -1,7 +1,13 @@
 <div class="mb-3">
-  <h4 class="mb-2">{{item.fullName}}</h4>
+  <h4 class="mb-3">{{item.fullName}}</h4>
 
-  <p>Maximum Leads: <strong>{{item.maxIdentities}}</strong></p>
+  <div class="mb-3">
+    <p class="mb-0">Maximum Leads: <strong>{{item.maxIdentities}}</strong></p>
+    {{#if item.salesRep.id}}
+      <p class="mb-0">Sales Rep: <strong>{{item.salesRep.givenName}} {{item.salesRep.familyName}}</strong></p>
+    {{/if}}
+  </div>
+
 
   <div class="d-flex flex-column">
     <small>Only Include Links Tagged With: <strong>{{tags}}</strong></small>
@@ -11,6 +17,7 @@
     <small>Restrict to Email Sent Dates? <strong>{{restrictToSentDate}}</strong></small>
     <small>Include delivered metrics? <strong>{{displayDeliveredMetrics}}</strong></small>
     <small>Enforce maximum of three unique clicks per email domain? <strong>{{enforceMaxEmailDomains}}</strong></small>
+    <small>ID: {{item.id}}</small>
   </div>
 </div>
 {{#if isLoading}}
