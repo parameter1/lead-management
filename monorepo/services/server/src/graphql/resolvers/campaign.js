@@ -731,6 +731,7 @@ module.exports = {
       const { id, payload } = input;
       const {
         customerId,
+        salesRepId,
         name,
         startDate,
         endDate,
@@ -741,6 +742,7 @@ module.exports = {
       if (!record) throw new Error(`No campaign record found for ID ${id}.`);
       record.set({
         customerId,
+        salesRepId,
         name,
         startDate,
         endDate,

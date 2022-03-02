@@ -264,6 +264,7 @@ input CreateCampaignInput {
 input UpdateCampaignPayloadInput {
   name: String
   customerId: String!
+  salesRepId: String!
   maxIdentities: Int
   startDate: Date
   endDate: Date
