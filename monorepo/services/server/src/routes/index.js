@@ -1,6 +1,7 @@
 const express = require('express');
 const asyncRoute = require('../utils/async-route');
 
+const appendLeadData = require('./append-lead-data-to-csv');
 const creative = require('./creative');
 const exactTargetEmails = require('./exact-target-email-export');
 const exportData = require('./exports');
@@ -8,6 +9,7 @@ const exportData = require('./exports');
 const { OmedaEmailDeploymentHtml } = require('../mongodb/models');
 
 module.exports = (app) => {
+  app.use('/append-lead-data-to-csv', appendLeadData);
   app.use('/creative', creative);
   app.get('/email-deployment-html/:entity', asyncRoute(async (req, res) => {
     const { $tenant } = req;
