@@ -128,6 +128,18 @@ const emailSchema = new Schema({
     required: true,
     default: true,
   },
+  salesRepId: {
+    type: Schema.Types.ObjectId,
+    ref: 'user',
+    validate: {
+      async validator(v) {
+        const doc = await connection.model('user').findById(v, { _id: 1 });
+        if (doc) return true;
+        return false;
+      },
+      message: 'No user found for ID {VALUE}',
+    },
+  },
   tagIds: [
     {
       type: Schema.Types.ObjectId,

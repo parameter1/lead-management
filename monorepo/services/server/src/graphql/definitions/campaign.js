@@ -57,6 +57,7 @@ type Campaign {
   name: String
   fullName: String!
   customer: Customer!
+  salesRep: User
   range: CampaignDateRange!
   maxIdentities: Int
   email: EmailCampaign

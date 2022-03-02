@@ -97,6 +97,11 @@ module.exports = {
   Campaign: {
     customer: (campaign, _, { loaders }) => loaders.customer.load(campaign.customerId),
 
+    salesRep: ({ salesRepId }, _, { loaders }) => {
+      if (!salesRepId) return null;
+      return loaders.user.load(salesRepId);
+    },
+
     range: ({ startDate, endDate }) => ({ start: startDate, end: endDate }),
 
     gamLineItems: async (campaign, { input }, context, info) => {
