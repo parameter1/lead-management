@@ -2,6 +2,7 @@ require('./newrelic');
 const http = require('http');
 const bootService = require('@parameter1/terminus/boot-service');
 const { log } = require('@parameter1/terminus/utils');
+const { filterUri } = require('@parameter1/mongodb/utils');
 const newrelic = require('./newrelic');
 const loadTenant = require('./load-tenant');
 const createSchema = require('./graphql/schema');
@@ -38,7 +39,7 @@ bootService({
       }),
       loadTenant(),
       mongoose.then((m) => {
-        log(`MongoDB connected ${m.client.s.url}`);
+        log(`MongoDB connected ${filterUri(m.client)}`);
         return m.client;
       }),
       redis.connect().then(() => log('Redis connected')),
