@@ -7,6 +7,7 @@ const customer = require('./customer');
 const emailDeployment = require('./email-deployment');
 const eventEmailClick = require('./event-email-click');
 const excludedEmailDomain = require('./excluded-email-domain');
+const exportDefs = require('./exports');
 const gam = require('./gam');
 const identity = require('./identity');
 const leadReport = require('./lead-report');
@@ -86,6 +87,7 @@ ${customer}
 ${emailDeployment}
 ${eventEmailClick}
 ${excludedEmailDomain}
+${exportDefs}
 ${gam}
 ${identity}
 ${leadReport}
