@@ -94,9 +94,7 @@ services:
     entrypoint: ["yarn"]
     command: ["dev"]
     environment:
-      <<: *node-env
-      <<: *mongodb-env
-      <<: *tenant-env
+      <<: [*node-env, *mongodb-env, *tenant-env]
       BRIGHTCOVE_ACCOUNT_ID: ${BRIGHTCOVE_ACCOUNT_ID}
       BRIGHTCOVE_APP_ID: ${BRIGHTCOVE_APP_ID}
       BRIGHTCOVE_SECRET: ${BRIGHTCOVE_SECRET}
@@ -104,6 +102,9 @@ services:
       GAM_GRAPHQL_URI: ${GAM_GRAPHQL_URI-http://google-ad-manager}
       HOST_NAME: ${HOST_NAME}
       REDIS_DSN: ${REDIS_DSN-redis://redis:6379/0}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      EXPORTS_S3_BUCKET: ${EXPORTS_S3_BUCKET-lead-management-exports}
     ports:
       - "9288:80"
     depends_on:
