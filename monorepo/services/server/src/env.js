@@ -21,4 +21,8 @@ module.exports = cleanEnv(process.env, {
   REDIS_DSN: str({ desc: 'The Redis DSN to connect to.' }),
   TENANT_KEY: str({ desc: 'The active tenant key' }),
   TRUSTED_PROXIES: str({ desc: 'A comma seperated list of trusted proxy IP addresses.', default: '' }),
+  AWS_REGION: str({ desc: 'The AWS region to access', default: 'us-east-1' }),
+  AWS_ACCESS_KEY_ID: str({ desc: 'The AWS access key to use.' }),
+  AWS_SECRET_ACCESS_KEY: str({ desc: 'The AWS secret access key to use.' }),
+  EXPORTS_S3_BUCKET: str({ desc: 'The S3 bucket to store exports.', default: 'lead-management-exports' }),
 });
