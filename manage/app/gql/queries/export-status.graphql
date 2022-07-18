@@ -1,0 +1,7 @@
+query ExportStatus($id: String!) {
+  exportStatus(id: $id) {
+    id
+    status
+    url
+  }
+}
