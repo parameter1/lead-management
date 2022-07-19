@@ -24,7 +24,7 @@ const schema = new Schema({
 }, { timestamps: true });
 
 schema.pre('save', async function setKey() {
-  this.key = `exports/${TENANT_KEY}/${this.campaign}/${this.filename}`;
+  this.key = `exports/${TENANT_KEY}/${this.hash}/${this.filename}`;
 });
 
 module.exports = schema;
