@@ -19,18 +19,23 @@ export default Component.extend(ComponentQueryManager, ActionMixin, {
   classNames: ["btn btn-lg btn-success"],
   classNameBindings: ['isActionRunning:btn-disabled'],
   role: 'button',
+  attributeBindings: ['disabled', 'role'],
+
+  openUrl(url) {
+    const link = document.createElement('a');
+    link.href = url;
+    link.click();
+  },
 
   abort(url) {
     clearInterval(this.interval);
     if (url) {
-      this.url = url;
       this.get('notify').success('Report ready. If download does not begin automatically, click here to access.', {
-        onClick: () => window.open(url),
+        onClick: () => this.openUrl(url),
         autoClear: true,
         clearDuration: 15 * 60 * 1000, // 15m
       });
-      window.open(url);
-
+      this.openUrl(url);
     }
     this.hideLoading();
     this.endAction();
@@ -38,7 +43,7 @@ export default Component.extend(ComponentQueryManager, ActionMixin, {
 
   async click() {
     if (this.isActionRunning) return;
-    if (this.url) return window.open(this.url);
+    this.get('notify').clear();
 
     this.startAction();
     const variables = {
@@ -53,12 +58,12 @@ export default Component.extend(ComponentQueryManager, ActionMixin, {
 
     this.interval = setInterval(async () => {
       try {
-        const { status, url } = await this.get('apollo').watchQuery({
+        const { status, url: nurl } = await this.get('apollo').watchQuery({
           query,
           variables: { id },
           fetchPolicy: 'network-only',
         }, 'exportStatus');
-        if (url) this.abort(url);
+        if (nurl) this.abort(nurl);
         if (status === 'errored') throw new Error('Unable to generate export. Please try again!');
       } catch (e) {
         this.get('graphErrors').show(e);
