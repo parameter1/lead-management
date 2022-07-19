@@ -11,6 +11,7 @@ const customer = require('./customer');
 const emailDeployment = require('./email-deployment');
 const eventEmailClick = require('./event-email-click');
 const excludedEmailDomain = require('./excluded-email-domain');
+const exportResolver = require('./exports');
 const gam = require('./gam');
 const identity = require('./identity');
 const leadReport = require('./lead-report');
@@ -29,6 +30,7 @@ module.exports = merge(
   emailDeployment,
   eventEmailClick,
   excludedEmailDomain,
+  exportResolver,
   gam,
   identity,
   leadReport,

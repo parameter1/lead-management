@@ -1,0 +1,7 @@
+mutation CreateExportRequest($input: CreateExportMutationInput!) {
+  createExport(input: $input) {
+    id
+    status
+    url
+  }
+}

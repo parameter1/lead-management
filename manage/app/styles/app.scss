@@ -215,3 +215,16 @@ form .progress {
   // left: 62.7027%; // this needs to be computed!
   background-color: #5f6368;
 }
+
+.spin-icon {
+  display: inline-block;
+  animation: spin 1s ease-in-out infinite;
+  -webkit-animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}

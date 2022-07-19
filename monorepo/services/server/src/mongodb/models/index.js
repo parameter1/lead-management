@@ -5,6 +5,7 @@ const Customer = require('./customer');
 const EmailLineItem = require('./line-item/email');
 const EventAdCreative = require('./event-ad-creative');
 const ExcludedEmailDomain = require('./excluded-email-domain');
+const Export = require('./export');
 const ExtractedHost = require('./extracted-host');
 const ExtractedUrl = require('./extracted-url');
 const Identity = require('./identity');
@@ -28,6 +29,7 @@ module.exports = {
   EmailLineItem,
   EventAdCreative,
   ExcludedEmailDomain,
+  Export,
   ExtractedHost,
   ExtractedUrl,
   Identity,

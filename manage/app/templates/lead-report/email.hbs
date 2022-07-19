@@ -1,7 +1,7 @@
 <div class="row mb-3">
   <div class="col">
     <p class="mb-0">
-      <a class="btn btn-lg btn-success" role="button" href="/export/campaign/{{model.hash}}/leads">{{entypo-icon "download"}} Download Email Leads</a>
+      {{lead-report-download action="campaign.emailLeads" hash=model.hash name="Email Leads"}}
     </p>
     <small class="text-muted">
       Note: Metrics reflect total clicks. Employee clicks for testing purposes and bad email addresses are removed from customer lead reports.
