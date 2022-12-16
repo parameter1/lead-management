@@ -18,10 +18,7 @@ process.on('unhandledRejection', (e) => {
   throw e;
 });
 
-const pingMongo = () => Promise.all([
-  mongoose.db.command({ ping: 1 }),
-  mongoose.db.collection('pings').updateOne({ _id: pkg.name }, { $set: { last: new Date() } }, { upsert: true }),
-]);
+const pingMongo = () => mongoose.db.command({ ping: 1 });
 
 bootService({
   name: pkg.name,
