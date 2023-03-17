@@ -115,8 +115,20 @@ module.exports = {
      */
     emailDeploymentReport: (_, { input }, { auth }) => {
       auth.check();
-      const { start, end } = input;
-      return emailDeploymentReportService.create({ start, end });
+      const {
+        start,
+        end,
+        includeDeploymentTypeEntities = [],
+        excludeDeploymentTypeEntities = [],
+      } = input;
+      const includeOmedaDeploymentTypeIds = includeDeploymentTypeEntities.map((e) => parseInt(e.split('*')[1], 10));
+      const excludeOmedaDeploymentTypeIds = excludeDeploymentTypeEntities.map((e) => parseInt(e.split('*')[1], 10));
+      return emailDeploymentReportService.create({
+        start,
+        end,
+        includeOmedaDeploymentTypeIds,
+        excludeOmedaDeploymentTypeIds,
+      });
     },
 
     /**

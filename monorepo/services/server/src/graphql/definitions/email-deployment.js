@@ -140,6 +140,10 @@ type EmailDeploymentTypeEdge {
 input EmailDeploymentReportInput {
   start: Date
   end: Date
+
+  "The EmailDeploymentType entities that should be included/excluded from the query."
+  includeDeploymentTypeEntities: [String!]! = []
+  excludeDeploymentTypeEntities: [String!]! = []
 }
 
 input EmailDeploymentSortInput {

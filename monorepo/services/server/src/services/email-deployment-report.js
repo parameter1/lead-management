@@ -56,7 +56,12 @@ module.exports = {
     }, []);
   },
 
-  async create({ start, end }) {
+  async create({
+    start,
+    end,
+    includeOmedaDeploymentTypeIds = [],
+    excludeOmedaDeploymentTypeIds = [],
+  }) {
     const now = new Date();
 
     const starting = start
@@ -82,6 +87,12 @@ module.exports = {
         $match: {
           'omeda.SentDate': { $gte: starting, $lte: ending },
           'omeda.DeploymentDesignation': 'Newsletter',
+          ...((includeOmedaDeploymentTypeIds.length || excludeOmedaDeploymentTypeIds.length) && {
+            'omeda.DeploymentTypeId': {
+              ...(includeOmedaDeploymentTypeIds.length && { $in: includeOmedaDeploymentTypeIds }),
+              ...(excludeOmedaDeploymentTypeIds.length && { $nin: excludeOmedaDeploymentTypeIds }),
+            },
+          }),
         },
       },
       {
