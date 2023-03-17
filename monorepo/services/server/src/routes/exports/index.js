@@ -59,8 +59,17 @@ router.get('/line-item/:hash/email/metrics', asyncRoute(async (req, res) => {
 router.get('/email-deployment-report', asyncRoute(async (req, res) => {
   const start = new Date(parseInt(req.query.start, 10));
   const end = new Date(parseInt(req.query.end, 10));
+  const includeDeploymentTypeEntities = (req.query.includeDeploymentTypeEntities && req.query.includeDeploymentTypeEntities.split(',')) || [];
+  const excludeDeploymentTypeEntities = (req.query.excludeDeploymentTypeEntities && req.query.excludeDeploymentTypeEntities.split(',')) || [];
+  const includeOmedaDeploymentTypeIds = includeDeploymentTypeEntities.map((e) => parseInt(e.split('*')[1], 10));
+  const excludeOmedaDeploymentTypeIds = excludeDeploymentTypeEntities.map((e) => parseInt(e.split('*')[1], 10));
 
-  const rows = await emailDeploymentReportService.export({ start, end });
+  const rows = await emailDeploymentReportService.export({
+    start,
+    end,
+    includeOmedaDeploymentTypeIds,
+    excludeOmedaDeploymentTypeIds,
+  });
 
   let csv;
   if (rows.length) {
