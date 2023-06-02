@@ -37,7 +37,7 @@ const extractUrlId = require('../utils/extract-url-id');
  * @prop {UpsertClickFilter} filter
  * @prop {Date} date
  * @prop {number} n
- * @prop {Map<OmailUnrealClickReason, InvalidMappedClick>} invalid
+ * @prop {Map<OmailUnrealClickReason, InvalidMappedClick>} [invalid]
  *
  * @typedef InvalidMappedClick
  * @prop {Date} date
@@ -63,7 +63,7 @@ const createUpsertOpFrom = (mapped) => {
         $set: {
           date: mapped.date,
           n: mapped.n,
-          invalid: [...invalid].map(([code, click]) => ({ code, ...click })),
+          ...(invalid && { invalid: [...invalid].map(([code, click]) => ({ code, ...click })) }),
         },
       },
       upsert: true,
@@ -169,10 +169,12 @@ module.exports = async (params = {}) => {
           addCustomer(click);
 
           /** @type {MappedClick} */
-          const mapped = clickMap.get(getClickKey(click)) || {};
+          const key = getClickKey(click);
+          const mapped = clickMap.get(key) || {};
           mapped.filter = getUpsertFilter(click);
           mapped.date = click.ClickDate;
           mapped.n = click.NumberOfClicks;
+          clickMap.set(key, mapped);
         });
 
         /** @type {OmailUnrealClick[]} */
@@ -181,7 +183,8 @@ module.exports = async (params = {}) => {
           addCustomer(click);
 
           /** @type {MappedClick} */
-          const mapped = clickMap.get(getClickKey(click)) || {};
+          const key = getClickKey(click);
+          const mapped = clickMap.get(key) || {};
           mapped.filter = getUpsertFilter(click);
           if (!mapped.n) mapped.n = 0;
           if (!mapped.date) {
@@ -196,6 +199,8 @@ module.exports = async (params = {}) => {
               n: detail.NumberOfUnrealClicks,
             });
           });
+          mapped.invalid = invalid;
+          clickMap.set(key, mapped);
         });
 
         clickMap.forEach((mapped) => {
