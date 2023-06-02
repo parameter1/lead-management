@@ -100,9 +100,7 @@ module.exports = {
       url: { $in: urlIds },
       dep: { $in: deploymentEntities },
       date: { $gte: lineitem.range.start, $lte: this.getEndDate(lineitem) },
-      // ensure invalid clicks are excluded.
-      n: { $gt: 0 },
-      'invalid.0': { $exists: false },
+      ...emailCampaignReport.getValidClickCriteria(),
     };
 
     const pipeline = [];

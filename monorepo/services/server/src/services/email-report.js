@@ -12,7 +12,25 @@ const {
 
 const { isArray } = Array;
 
+const getValidClickCriteria = () => {
+  const allow = false;
+  if (allow) {
+    return {
+      $or: [
+        { 'invalid.0': { $exists: false } },
+        { 'invalid.code': { $in: ['2', '4', '5', '6', '7', '8', '9'] } },
+      ],
+    };
+  }
+  return {
+    n: { $gt: 0 },
+    'invalid.0': { $exists: false },
+  };
+};
+
 module.exports = {
+  getValidClickCriteria,
+
   /**
    * @param {Campaign} campaign
    * @param {object} options
@@ -92,9 +110,7 @@ module.exports = {
       date: { $gte: campaign.startDate },
       url: { $in: urlIds },
       dep: { $in: deploymentEntities },
-      // ensure invalid clicks are excluded.
-      n: { $gt: 0 },
-      'invalid.0': { $exists: false },
+      ...getValidClickCriteria(),
     };
 
     const pipeline = [];
