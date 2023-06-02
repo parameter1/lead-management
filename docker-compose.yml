@@ -128,16 +128,14 @@ services:
     working_dir: /monorepo/packages/sync
     entrypoint: ["/bin/sh"]
     environment:
-      <<: *node-env
-      <<: *mongodb-env
+      <<: [*node-env, *mongodb-env]
 
   lambda:
     <<: *node
     working_dir: /monorepo/packages/lambda
     entrypoint: ["/bin/sh"]
     environment:
-      <<: *node-env
-      <<: *mongodb-env
+      <<: [*node-env, *mongodb-env]
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_ACCOUNT_ID: ${AWS_ACCOUNT_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
