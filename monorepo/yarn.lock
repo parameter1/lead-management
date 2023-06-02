@@ -2066,16 +2066,16 @@
     async "^3.2.0"
     mongodb "^3.6.8"
 
-"@parameter1/omeda-api-client@^0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@parameter1/omeda-api-client/-/omeda-api-client-0.7.0.tgz#339961a48000170cf48cf7c0474303aa0470c2fb"
-  integrity sha512-8Rk61lAkbWVHPs8f+ZdEJ/WDBzT8mK3TU9/Daq+9UgglPUB34J3cyj/pZFw+TLuQFdd9D3n3c8UwhWbiZQrrPQ==
+"@parameter1/omeda-api-client@^1.6.0":
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/@parameter1/omeda-api-client/-/omeda-api-client-1.6.0.tgz#ed42cbc543dbadccff7f4c40b5beb854da0c3150"
+  integrity sha512-XSLF54cIdKOJvfMRbKJCyt1Nm0E6DBxb8O1pDz757LTJDa2FubLG6pX/ISOoq58/KfkC+iU0I/WOIi6MiBZTwA==
   dependencies:
     "@parameter1/joi" "^1.2.10"
     "@parameter1/utils" "^1.1.24"
     cheerio "^1.0.0-rc.10"
     dayjs "^1.10.7"
-    node-fetch "^2.6.5"
+    node-fetch "^2.6.7"
 
 "@parameter1/terminus@^1.7.0":
   version "1.7.0"
@@ -7036,10 +7036,10 @@ node-fetch@^2.6.1:
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.1.tgz#045bd323631f76ed2e2b55573394416b639a0052"
   integrity sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==
 
-node-fetch@^2.6.5:
-  version "2.6.5"
-  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.5.tgz#42735537d7f080a7e5f78b6c549b7146be1742fd"
-  integrity sha512-mmlIVHJEu5rnIxgEgez6b9GgWXbkZj5YZ7fx+2r94a2E+Uirsp6HsPTPlomfdHtpt/B0cdKviwkoaM6pyvUOpQ==
+node-fetch@^2.6.7:
+  version "2.6.11"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.11.tgz#cde7fc71deef3131ef80a738919f999e6edfff25"
+  integrity sha512-4I6pdBY1EthSqDmJkiNk3JIT8cswwR9nfeW/cPdUagJYEQG7R95WRH74wpz7ma8Gh/9dI9FP+OU+0E4FvtA55w==
   dependencies:
     whatwg-url "^5.0.0"
 
