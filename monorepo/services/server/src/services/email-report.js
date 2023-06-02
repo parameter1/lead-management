@@ -92,6 +92,9 @@ module.exports = {
       date: { $gte: campaign.startDate },
       url: { $in: urlIds },
       dep: { $in: deploymentEntities },
+      // ensure invalid clicks are excluded.
+      n: { $gt: 0 },
+      'invalid.0': { $exists: false },
     };
 
     const pipeline = [];
