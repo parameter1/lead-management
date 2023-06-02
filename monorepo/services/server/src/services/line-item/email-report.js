@@ -138,7 +138,7 @@ module.exports = {
         _id: '$idt',
         urlIds: { $addToSet: '$url' },
         deploymentEntities: { $addToSet: '$dep' },
-        clicks: { $sum: '$n' },
+        clicks: { $sum: { $cond: [{ $gt: ['$n', 0] }, '$n', 1] } },
       },
     });
     return pipeline;

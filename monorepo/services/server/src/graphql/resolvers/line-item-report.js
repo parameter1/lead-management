@@ -81,7 +81,7 @@ module.exports = {
         $group: {
           _id: '$dep',
           identityEntities: { $addToSet: '$idt' },
-          clicks: { $sum: '$n' },
+          clicks: { $sum: { $cond: [{ $gt: ['$n', 0] }, '$n', 1] } },
         },
       });
       const results = await OmedaEmailClick.aggregate(pipeline);
@@ -159,7 +159,7 @@ module.exports = {
             deploymentEntity: '$dep',
             urlId: '$url',
           },
-          clicks: { $sum: '$n' },
+          clicks: { $sum: { $cond: [{ $gt: ['$n', 0] }, '$n', 1] } },
           last: { $max: '$date' },
         },
       });
