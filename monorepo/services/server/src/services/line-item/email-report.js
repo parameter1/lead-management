@@ -100,6 +100,7 @@ module.exports = {
       url: { $in: urlIds },
       dep: { $in: deploymentEntities },
       date: { $gte: lineitem.range.start, $lte: this.getEndDate(lineitem) },
+      ...emailCampaignReport.getValidClickCriteria(),
     };
 
     const pipeline = [];
@@ -135,7 +136,7 @@ module.exports = {
         _id: '$idt',
         urlIds: { $addToSet: '$url' },
         deploymentEntities: { $addToSet: '$dep' },
-        clicks: { $sum: '$n' },
+        clicks: { $sum: { $cond: [{ $gt: ['$n', 0] }, '$n', 1] } },
       },
     });
     return pipeline;

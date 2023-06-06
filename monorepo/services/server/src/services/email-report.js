@@ -9,10 +9,29 @@ const {
   OmedaEmailDeploymentUrl,
   OmedaEmailDeployment,
 } = require('../mongodb/models');
+const { ALLOW_UNREAL_CLICK_CODES } = require('../env');
 
 const { isArray } = Array;
 
+const getValidClickCriteria = () => {
+  const allow = ALLOW_UNREAL_CLICK_CODES;
+  if (allow) {
+    return {
+      $or: [
+        { 'invalid.0': { $exists: false } },
+        { 'invalid.code': { $nin: [2, 4, 5, 6, 7, 8, 9] } },
+      ],
+    };
+  }
+  return {
+    n: { $gt: 0 },
+    'invalid.0': { $exists: false },
+  };
+};
+
 module.exports = {
+  getValidClickCriteria,
+
   /**
    * @param {Campaign} campaign
    * @param {object} options
@@ -73,7 +92,7 @@ module.exports = {
         _id: '$idt',
         urlIds: { $addToSet: '$url' },
         deploymentEntities: { $addToSet: '$dep' },
-        clicks: { $sum: '$n' },
+        clicks: { $sum: { $cond: [{ $gt: ['$n', 0] }, '$n', 1] } },
       },
     });
     return pipeline;
@@ -92,6 +111,7 @@ module.exports = {
       date: { $gte: campaign.startDate },
       url: { $in: urlIds },
       dep: { $in: deploymentEntities },
+      ...getValidClickCriteria(),
     };
 
     const pipeline = [];
