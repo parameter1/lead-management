@@ -83,7 +83,7 @@ module.exports = async (params = {}) => {
   const { tenantKey, trackIds, unrealDeploymentDate } = await validateAsync(Joi.object({
     tenantKey: Joi.string().trim().required(),
     trackIds: Joi.array().items(Joi.string().trim().required()).required(),
-    unrealDeploymentDate: Joi.date().default(new Date('2023-06-01T00:00:00-05:00')),
+    unrealDeploymentDate: Joi.date().default(new Date('2023-06-07T00:00:00-05:00')),
   }).required(), params);
 
   const tenant = await loadTenant({ key: tenantKey });
