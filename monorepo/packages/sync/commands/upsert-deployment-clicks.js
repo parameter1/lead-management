@@ -80,9 +80,10 @@ const createUpsertOpFrom = (mapped) => {
  * @param {string[]} params.trackIds
  */
 module.exports = async (params = {}) => {
-  const { tenantKey, trackIds } = await validateAsync(Joi.object({
+  const { tenantKey, trackIds, unrealDeploymentDate } = await validateAsync(Joi.object({
     tenantKey: Joi.string().trim().required(),
     trackIds: Joi.array().items(Joi.string().trim().required()).required(),
+    unrealDeploymentDate: Joi.date().default(new Date('2023-06-01T00:00:00-05:00')),
   }).required(), params);
 
   const tenant = await loadTenant({ key: tenantKey });
@@ -177,31 +178,33 @@ module.exports = async (params = {}) => {
           clickMap.set(key, mapped);
         });
 
-        /** @type {OmailUnrealClick[]} */
-        const unrealClicks = getAsArray(link, 'unrealClicks');
-        unrealClicks.forEach((click) => {
-          addCustomer(click);
+        if (data.SentDate >= unrealDeploymentDate) {
+          /** @type {OmailUnrealClick[]} */
+          const unrealClicks = getAsArray(link, 'unrealClicks');
+          unrealClicks.forEach((click) => {
+            addCustomer(click);
 
-          /** @type {MappedClick} */
-          const key = getClickKey(click);
-          const mapped = clickMap.get(key) || {};
-          mapped.filter = getUpsertFilter(click);
-          if (!mapped.n) mapped.n = 0;
-          if (!mapped.date) {
-            const [mostRecent] = click.UnrealClicks.sort((a, b) => b.ClickDate - a.ClickDate);
-            mapped.date = mostRecent.ClickDate;
-          }
-          const invalid = mapped.invalid || new Map();
-          click.UnrealClicks.forEach((detail) => {
-            const { Reason: code } = detail;
-            invalid.set(code, {
-              date: detail.ClickDate,
-              n: detail.NumberOfUnrealClicks,
+            /** @type {MappedClick} */
+            const key = getClickKey(click);
+            const mapped = clickMap.get(key) || {};
+            mapped.filter = getUpsertFilter(click);
+            if (!mapped.n) mapped.n = 0;
+            if (!mapped.date) {
+              const [mostRecent] = click.UnrealClicks.sort((a, b) => b.ClickDate - a.ClickDate);
+              mapped.date = mostRecent.ClickDate;
+            }
+            const invalid = mapped.invalid || new Map();
+            click.UnrealClicks.forEach((detail) => {
+              const { Reason: code } = detail;
+              invalid.set(code, {
+                date: detail.ClickDate,
+                n: detail.NumberOfUnrealClicks,
+              });
             });
+            mapped.invalid = invalid;
+            clickMap.set(key, mapped);
           });
-          mapped.invalid = invalid;
-          clickMap.set(key, mapped);
-        });
+        }
 
         clickMap.forEach((mapped) => {
           eventOps.push(createUpsertOpFrom(mapped));
