@@ -9,11 +9,12 @@ const {
   OmedaEmailDeploymentUrl,
   OmedaEmailDeployment,
 } = require('../mongodb/models');
+const { ALLOW_UNREAL_CLICK_CODES } = require('../env');
 
 const { isArray } = Array;
 
 const getValidClickCriteria = () => {
-  const allow = false;
+  const allow = ALLOW_UNREAL_CLICK_CODES;
   if (allow) {
     return {
       $or: [

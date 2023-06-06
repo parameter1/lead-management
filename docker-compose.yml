@@ -105,6 +105,7 @@ services:
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       EXPORTS_S3_BUCKET: ${EXPORTS_S3_BUCKET-lead-management-exports}
+      ALLOW_UNREAL_CLICK_CODES: ${ALLOW_UNREAL_CLICK_CODES-0}
     ports:
       - "9288:80"
     depends_on:
