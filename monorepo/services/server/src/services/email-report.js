@@ -18,7 +18,7 @@ const getValidClickCriteria = () => {
     return {
       $or: [
         { 'invalid.0': { $exists: false } },
-        { 'invalid.code': { $in: ['2', '4', '5', '6', '7', '8', '9'] } },
+        { 'invalid.code': { $nin: [2, 4, 5, 6, 7, 8, 9] } },
       ],
     };
   }
