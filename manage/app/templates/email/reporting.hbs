@@ -8,89 +8,130 @@
       <div class="card-header"></div>
       <div class="card-body">
 
-        {{#power-calendar-range
-          center=center
-          selected=range
-          onCenterChange=(action (mut center) value="moment")
-          onSelect=(action "setRange" value="moment")
-          as |calendar|
-        }}
-          {{calendar.nav}}
-          {{calendar.days}}
-        {{/power-calendar-range}}
-
-        <div class="mt-3">
-          <button class="btn btn-success" disabled={{eq canSubmit false}} {{action "runReport"}}>{{entypo-icon "pie-chart"}} Run Report</button>
-          {{#if result}}
-            <a class="btn btn-success" role="button" href="/export/email-deployment-report?start={{start}}&end={{end}}">{{entypo-icon "download"}} Export Report</a>
-          {{/if}}
-        </div>
-
-        {{#if result}}
-          <div class="row mt-3">
-            <div class="col">
-              <h5>{{moment-format result.start "MMM Do, YYYY"}} through {{moment-format result.end "MMM Do, YYYY"}}</h5>
-
-              {{#each result.weeks as |week|}}
-                <div class="table-responsive">
-                  <table class="table table-sm table-striped">
-                    <thead>
-                      <tr>
-                        <th>Year</th>
-                        <th>Week</th>
-                        <th>Starting</th>
-                        <th>Category</th>
-                        <th># Sent</th>
-                        <th>Total Sent</th>
-                        <th>Avg. Sent</th>
-                        <th>Avg. Delivered</th>
-                        <th>Avg. Delivery Rate</th>
-                        <th>Total Unique Opens</th>
-                        <th>Avg. Unique Opens</th>
-                        <th>Avg. Unq Open Rate</th>
-                        <th>Total Unique Clicks</th>
-                        <th>Avg. Unique Clicks</th>
-                        <th>Avg. Unq CTR</th>
-                        <th>Avg. Unq CTOR</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {{#each week.types as |c|}}
-                        <tr>
-                          <td>{{week.year}}</td>
-                          <td>{{week.number}}</td>
-                          <td>{{moment-format week.starting "MMM D"}}</td>
-                          <td>{{c.name}}</td>
-                          <td>{{c.deploymentCount}}</td>
-                          <td>{{format-number c.totalSent format="0,0"}}</td>
-                          <td>{{format-number c.avgSent format="0,0"}}</td>
-                          <td>{{format-number c.avgDelivered format="0,0"}}</td>
-                          <td>{{format-number c.avgDeliveryRate format="00.0%"}}</td>
-                          <td>{{format-number c.totalUniqueOpens format="0,0"}}</td>
-                          <td>{{format-number c.avgUniqueOpens format="0,0"}}</td>
-                          <td>{{format-number c.avgUniqueOpenRate format="00.0%"}}</td>
-                          <td>{{format-number c.totalUniqueClicks format="0,0"}}</td>
-                          <td>{{format-number c.avgUniqueClicks format="0,0"}}</td>
-                          <td>{{format-number c.avgUniqueClickToDeliveredRate format="00.0%"}}</td>
-                          <td>{{format-number c.avgUniqueClickToOpenRate format="00.0%"}}</td>
-                        </tr>
-                      {{/each}}
-                    </tbody>
-                  </table>
-                </div>
-              {{else}}
-                <tr>
-                  <td class="text-center text-muted" colspan="17">No results found.</td>
-                </tr>
-              {{/each}}
-
+        <div class="row">
+          <div class="col-lg-4 col-xl-5">
+            <div class="form-group">
+              <label>Deployment Types</label>
+              {{type-ahead
+                placeholder="Begin typing to find a deployment type..."
+                type="email-deployment-type"
+                field="data.Name"
+                selected=deploymentTypeEntities
+                multiple=true
+                allowClear=true
+                onChange=(action (mut deploymentTypeEntities))
+              }}
+              <div class="custom-control custom-checkbox mt-1">
+                {{input type="checkbox" checked=excludeDeploymentTypeEntities class="custom-control-input" id="exclude-deployment-type-ids"}}
+                <label class="custom-control-label" for="exclude-deployment-type-ids">Exclude?</label>
+              </div>
+              <small class="form-text text-muted">Optional. The deployment types to {{#if excludeDeploymentTypeEntities}}exclude from{{else}}include in{{/if}} this report.</small>
             </div>
           </div>
-
-        {{/if}}
-
+          <div class="col-lg-8 col-xl-7">
+            <div class="row">
+              <div class="form-group mb-0">
+                <label>Date Range {{required-field-label}}</label>
+                {{#power-calendar-range
+                  center=center
+                  selected=range
+                  onCenterChange=(action (mut center) value="moment")
+                  onSelect=(action "setRange" value="moment")
+                  as |calendar|
+                }}
+                  {{calendar.nav}}
+                  {{calendar.days}}
+                {{/power-calendar-range}}
+                <p class="form-text mb-0 text-muted">
+                  {{#if (and range.start range.end)}}
+                    {{moment-format range.start "MMM Do, YYYY"}}
+                    -
+                    {{moment-format range.end "MMM Do, YYYY"}}
+                  {{else}}
+                    Select a date range...
+                  {{/if}}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="card-footer"></div>
+
+      <div class="card-footer d-flex justify-content-between">
+        <button class="btn btn-success" disabled={{eq canSubmit false}} {{action "runReport"}}>{{entypo-icon "pie-chart"}} Run Report</button>
+        {{#if result}}
+          {{!-- @todo include new parameters! --}}
+          <a class="btn btn-success" role="button" href={{ exportUrl }}>{{entypo-icon "download"}} Export Report</a>
+        {{/if}}
+      </div>
     </div>
   </div>
 </div>
+
+{{#if result}}
+  <div class="row mt-4">
+    <div class="col">
+      <div class="card list-index">
+        <div class="card-header"></div>
+        <div class="card-body">
+          <h5>{{moment-format result.start "MMM Do, YYYY"}} through {{moment-format result.end "MMM Do, YYYY"}}</h5>
+
+          {{#each result.weeks as |week|}}
+            <div class="table-responsive">
+              <table class="table table-sm table-striped">
+                <thead>
+                  <tr>
+                    <th>Year</th>
+                    <th>Week</th>
+                    <th>Starting</th>
+                    <th>Category</th>
+                    <th># Sent</th>
+                    <th>Total Sent</th>
+                    <th>Avg. Sent</th>
+                    <th>Avg. Delivered</th>
+                    <th>Avg. Delivery Rate</th>
+                    <th>Total Unique Opens</th>
+                    <th>Avg. Unique Opens</th>
+                    <th>Avg. Unq Open Rate</th>
+                    <th>Total Unique Clicks</th>
+                    <th>Avg. Unique Clicks</th>
+                    <th>Avg. Unq CTR</th>
+                    <th>Avg. Unq CTOR</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each week.types as |c|}}
+                    <tr>
+                      <td>{{week.year}}</td>
+                      <td>{{week.number}}</td>
+                      <td>{{moment-format week.starting "MMM D"}}</td>
+                      <td>{{c.name}}</td>
+                      <td>{{c.deploymentCount}}</td>
+                      <td>{{format-number c.totalSent format="0,0"}}</td>
+                      <td>{{format-number c.avgSent format="0,0"}}</td>
+                      <td>{{format-number c.avgDelivered format="0,0"}}</td>
+                      <td>{{format-number c.avgDeliveryRate format="00.0%"}}</td>
+                      <td>{{format-number c.totalUniqueOpens format="0,0"}}</td>
+                      <td>{{format-number c.avgUniqueOpens format="0,0"}}</td>
+                      <td>{{format-number c.avgUniqueOpenRate format="00.0%"}}</td>
+                      <td>{{format-number c.totalUniqueClicks format="0,0"}}</td>
+                      <td>{{format-number c.avgUniqueClicks format="0,0"}}</td>
+                      <td>{{format-number c.avgUniqueClickToDeliveredRate format="00.0%"}}</td>
+                      <td>{{format-number c.avgUniqueClickToOpenRate format="00.0%"}}</td>
+                    </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+            </div>
+          {{else}}
+            <tr>
+              <td class="text-center text-muted" colspan="17">No results found.</td>
+            </tr>
+          {{/each}}
+
+        </div>
+        <div class="card-footer"></div>
+      </div>
+    </div>
+  </div>
+{{/if}}

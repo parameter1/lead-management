@@ -9,6 +9,7 @@ import query from 'leads-manage/gql/queries/email-report/run';
 export default Controller.extend(ComponentQueryManager, LoadingMixin, {
   center: moment(),
   isRunning: false,
+  excludeDeploymentTypeEntities: false,
 
   canSubmit: computed('isRunning', 'range.{start,end}', function() {
     if (this.get('isRunning')) return false;
@@ -28,12 +29,31 @@ export default Controller.extend(ComponentQueryManager, LoadingMixin, {
     return end.valueOf();
   }),
 
+  exportUrl: computed('range.{start,end}', 'excludeDeploymentTypeEntities', 'deploymentTypeEntities.[]', function() {
+    const { start, end } = this.getProperties('start', 'end');
+    const types = this.get('deploymentTypeEntities');
+    const exclude = this.get('excludeDeploymentTypeEntities');
+    const entities = (types || []).map(type => encodeURIComponent(type.entity)).join(',');
+    const params = new URLSearchParams();
+    params.set('start', start);
+    params.set('end', end);
+    if (entities) {
+      if (exclude) {
+        params.set('excludeDeploymentTypeEntities', entities);
+      } else {
+        params.set('includeDeploymentTypeEntities', entities);
+      }
+    }
+    return `/export/email-deployment-report?${params}`;
+  }),
+
   init() {
     this._super(...arguments);
     this.set('range', {
       start: moment().startOf('week'),
       end: moment().endOf('week'),
     });
+    this.set('deploymentTypeEntities', []);
   },
 
   actions: {
@@ -50,9 +70,16 @@ export default Controller.extend(ComponentQueryManager, LoadingMixin, {
         this.set('isRunning', true);
         this.showLoading();
 
+        const types = this.get('deploymentTypeEntities');
+        const exclude = this.get('excludeDeploymentTypeEntities');
+        const entities = (types || []).map(type => type.entity);
+
         const input = {
           start: this.get('range.start').valueOf(),
           end: this.get('range.end').valueOf(),
+          ...(entities.length && {
+            ...(exclude ? { excludeDeploymentTypeEntities: entities } : { includeDeploymentTypeEntities: entities })
+          })
         }
         const variables = { input };
 

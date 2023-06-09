@@ -10,8 +10,18 @@ module.exports = {
     return parseFloat((Math.round((num * Math.pow(10, dec)) + (sign * 0.0001)) / Math.pow(10, dec)).toFixed(dec));
   },
 
-  async export({ start, end }) {
-    const results = await this.create({ start, end });
+  async export({
+    start,
+    end,
+    includeOmedaDeploymentTypeIds = [],
+    excludeOmedaDeploymentTypeIds = [],
+  }) {
+    const results = await this.create({
+      start,
+      end,
+      includeOmedaDeploymentTypeIds,
+      excludeOmedaDeploymentTypeIds,
+    });
     if (!isArray(results.weeks)) return [];
     return results.weeks.reduce((arr, week) => {
       const { year, week: weekNumber, types } = week;
@@ -56,7 +66,12 @@ module.exports = {
     }, []);
   },
 
-  async create({ start, end }) {
+  async create({
+    start,
+    end,
+    includeOmedaDeploymentTypeIds = [],
+    excludeOmedaDeploymentTypeIds = [],
+  }) {
     const now = new Date();
 
     const starting = start
@@ -82,6 +97,12 @@ module.exports = {
         $match: {
           'omeda.SentDate': { $gte: starting, $lte: ending },
           'omeda.DeploymentDesignation': 'Newsletter',
+          ...((includeOmedaDeploymentTypeIds.length || excludeOmedaDeploymentTypeIds.length) && {
+            'omeda.DeploymentTypeId': {
+              ...(includeOmedaDeploymentTypeIds.length && { $in: includeOmedaDeploymentTypeIds }),
+              ...(excludeOmedaDeploymentTypeIds.length && { $nin: excludeOmedaDeploymentTypeIds }),
+            },
+          }),
         },
       },
       {
