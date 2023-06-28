@@ -190,7 +190,7 @@ module.exports = {
                 $cond: {
                   if: { $in: ['$_id.emailDomain', publicDomains] },
                   then: '$identities',
-                  else: [{ $arrayElemAt: ['$identities', 0] }],
+                  else: { $slice: ['$identities', 3] },
                 },
               },
             },
