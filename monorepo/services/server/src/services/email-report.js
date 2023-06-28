@@ -172,7 +172,7 @@ module.exports = {
       // with the matching domain
       {
         $group: {
-          _id: { emailDomain: '$emailDomain', dep: '$unqClicks.dep', url: '$unqClicks.url' },
+          _id: { emailDomain: '$emailDomain' },
           identities: { $addToSet: '$_id' },
         },
       },

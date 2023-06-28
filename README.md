@@ -20,3 +20,9 @@
 - [x] test new ad click/impression trackers
 - [x] add meta tags to website for scraping companies/tags
 - [x] do not cache indm websites when crawling
+
+## Onboarding
+1. Duplicate an existing namespace and reconfigure containers. Use new GAM, Omeda, Brightcove credentials
+2. Add tenant to `lead-management.tenants` on Aquaria
+3. Add permissions to LM user `db.grantRolesToUser('lead-management', [{ role: 'readWrite', db: 'lead-management-TENANTKEY' }])`
+4. Generate DB/Indexes: Set tenant key and boot dev instance to auto-index
