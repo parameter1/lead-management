@@ -184,13 +184,13 @@ module.exports = {
         $project: {
           idt: {
             $cond: {
-              if: { $lte: ['$identityCount', 3] },
+              if: { $lte: ['$identityCount', 2] },
               then: '$identities',
               else: {
                 $cond: {
                   if: { $in: ['$_id.emailDomain', publicDomains] },
                   then: '$identities',
-                  else: { $slice: ['$identities', 3] },
+                  else: { $slice: ['$identities', 2] },
                 },
               },
             },
