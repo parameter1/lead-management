@@ -1,0 +1,6 @@
+query LeadManagementAppConfig {
+  currentAppConfig {
+    zone
+    modules { key enabled }
+  }
+}

@@ -3,6 +3,7 @@ const { gql } = require('apollo-server-express');
 const adCreativeTracker = require('./ad-creative-tracker');
 const brightcove = require('./brightcove');
 const campaign = require('./campaign');
+const config = require('./config');
 const customer = require('./customer');
 const emailDeployment = require('./email-deployment');
 const eventEmailClick = require('./event-email-click');
@@ -83,6 +84,7 @@ input TypeAheadOptionsInput {
 ${adCreativeTracker}
 ${brightcove}
 ${campaign}
+${config}
 ${customer}
 ${emailDeployment}
 ${eventEmailClick}

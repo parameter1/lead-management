@@ -18,6 +18,7 @@ const unqiueUrlParams = (doc) => {
     paramMap.set('utm_campaign', '@{mv_date_MMddyyyy}@');
     paramMap.set('utm_term', '@{track_id}@');
   } else {
+    // @todo bring this in from the tenant config
     paramMap.set('utm_source', 'Industrial Media');
     paramMap.set('utm_medium', 'email');
     paramMap.set('utm_campaign', '@{mv_date_MMddyyyy}@');

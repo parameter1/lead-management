@@ -125,6 +125,7 @@ module.exports = {
       map.set('utm_campaign', '@{mv_date_MMddyyyy}@');
       map.set('utm_term', '@{track_id}@');
     } else {
+      // @todo bring this in from the tenant config
       map.set('utm_source', 'Industrial Media');
       map.set('utm_medium', 'email');
       map.set('utm_campaign', '@{mv_date_MMddyyyy}@');
