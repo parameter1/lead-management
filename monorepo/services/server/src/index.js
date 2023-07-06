@@ -29,13 +29,13 @@ bootService({
   exposedPort: EXPOSED_PORT,
   onError: newrelic.noticeError.bind(newrelic),
   onStart: async () => {
-    const [schema, tenant, mongoClient] = await Promise.all([
-      createSchema().then((s) => {
+    const tenant = await loadTenant();
+    const [schema, mongoClient] = await Promise.all([
+      createSchema(tenant).then((s) => {
         log('GraphQL remote schemas created.');
         return s;
       }),
-      loadTenant(),
-      mongoose.then((m) => {
+      Promise.resolve(mongoose).then((m) => {
         log(`MongoDB connected ${filterUri(m.client)}`);
         return m.client;
       }),

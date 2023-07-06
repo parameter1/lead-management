@@ -18,7 +18,7 @@ const tag = require('./tag');
 const url = require('./url');
 const user = require('./user');
 
-module.exports = gql`
+module.exports = ({ includeGAM = false }) => gql`
 
 directive @apiValue(path: String, as: ApiValueDirectiveAsEnum) on FIELD_DEFINITION
 
@@ -88,7 +88,7 @@ ${emailDeployment}
 ${eventEmailClick}
 ${excludedEmailDomain}
 ${exportDefs}
-${gam}
+${includeGAM ? `${gam}` : ''}
 ${identity}
 ${leadReport}
 ${lineItem}

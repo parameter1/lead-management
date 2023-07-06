@@ -22,7 +22,7 @@ const tag = require('./tag');
 const url = require('./url');
 const user = require('./user');
 
-module.exports = merge(
+module.exports = ({ includeGAM = false }) => merge(
   adCreativeTracker,
   brightcove,
   campaign,
@@ -31,7 +31,7 @@ module.exports = merge(
   eventEmailClick,
   excludedEmailDomain,
   exportResolver,
-  gam,
+  includeGAM ? gam : {},
   identity,
   leadReport,
   lineItem,
