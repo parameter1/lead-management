@@ -1,10 +1,13 @@
 import Route from '@ember/routing/route';
+import { inject } from '@ember/service';
 import { RouteQueryManager } from 'ember-apollo-client';
-
-import query from 'leads-manage/gql/queries/campaign/hash';
+import queryBuilder from 'leads-manage/gql/queries/campaign/hash';
 
 export default Route.extend(RouteQueryManager, {
+  config: inject(),
   model({ hash }) {
+    const enableGAM = this.config.isModuleEnabled('gam');
+    const query = queryBuilder({ enableGAM });
     const variables = { hash };
     return this.get('apollo').watchQuery({ query, variables, fetchPolicy: 'network-only' }, 'campaignByHash');
   },

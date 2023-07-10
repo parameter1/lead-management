@@ -1,3 +1,6 @@
+import gql from 'graphql-tag';
+
+export default gql`
 fragment CampaignHashFragment on Campaign {
   id
   fullName
@@ -10,14 +13,6 @@ fragment CampaignHashFragment on Campaign {
   customer {
     id
     name
-    linkedAdvertisers {
-      googleAdManager {
-        nodes {
-          id
-          name
-        }
-      }
-    }
     linkedVideos {
       brightcove {
         nodes {
@@ -55,3 +50,4 @@ fragment CampaignHashFragment on Campaign {
     enabled
   }
 }
+`;

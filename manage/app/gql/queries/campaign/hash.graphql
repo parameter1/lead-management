@@ -1,7 +1,0 @@
-#import 'leads-manage/gql/fragments/campaign/hash'
-
-query ViewCampaignByHash($hash: String!) {
-  campaignByHash(hash: $hash) {
-    ...CampaignHashFragment
-  }
-}
