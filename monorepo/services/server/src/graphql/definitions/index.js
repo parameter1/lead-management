@@ -10,6 +10,7 @@ const eventEmailClick = require('./event-email-click');
 const excludedEmailDomain = require('./excluded-email-domain');
 const exportDefs = require('./exports');
 const gam = require('./gam');
+const gamMock = require('./gam/mock');
 const identity = require('./identity');
 const leadReport = require('./lead-report');
 const lineItem = require('./line-item');
@@ -90,7 +91,8 @@ ${emailDeployment}
 ${eventEmailClick}
 ${excludedEmailDomain}
 ${exportDefs}
-${includeGAM ? `${gam}` : ''}
+${gam}
+${gamMock(includeGAM)}
 ${identity}
 ${leadReport}
 ${lineItem}
