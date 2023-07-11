@@ -1,4 +1,3 @@
-const loadTenant = require('@lead-management/tenant-loader');
 const { get, getAsArray, getAsObject } = require('@parameter1/utils');
 const { Pagination, TypeAhead, paginationResolvers } = require('../pagination');
 const UrlManager = require('../../services/url-manager');
