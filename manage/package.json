@@ -73,8 +73,5 @@
   },
   "engines": {
     "node": "6.* || 8.* || >= 10.*"
-  },
-  "dependencies": {
-    "graphql-tag": "^2.12.6"
   }
 }
