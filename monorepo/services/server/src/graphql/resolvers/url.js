@@ -1,3 +1,5 @@
+const loadTenant = require('@lead-management/tenant-loader');
+const { get, getAsArray, getAsObject } = require('@parameter1/utils');
 const { Pagination, TypeAhead, paginationResolvers } = require('../pagination');
 const UrlManager = require('../../services/url-manager');
 const LinkInjector = require('../../services/html-link-injector');
@@ -110,9 +112,13 @@ module.exports = {
     /**
      * @todo Pass the requesting user agent and headers to the URL crawler.
      */
-    crawlUrl: (root, { url, cache }, { auth }) => {
+    crawlUrl: (root, { url, cache }, { auth, tenant }) => {
       auth.checkAdmin();
-      return UrlManager.crawl(url, cache);
+      const name = get(tenant, 'doc.name');
+      const domains = getAsArray(tenant, 'doc.internalHosts');
+      const tagMap = getAsObject(tenant, 'doc.hostTagMap');
+      const instance = new UrlManager(name, domains, tagMap);
+      return instance.crawl(url, cache);
     },
 
     /**
