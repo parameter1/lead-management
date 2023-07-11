@@ -25,5 +25,4 @@ module.exports = cleanEnv(process.env, {
   AWS_ACCESS_KEY_ID: str({ desc: 'The AWS access key to use.' }),
   AWS_SECRET_ACCESS_KEY: str({ desc: 'The AWS secret access key to use.' }),
   EXPORTS_S3_BUCKET: str({ desc: 'The S3 bucket to store exports.', default: 'lead-management-exports' }),
-  ALLOW_UNREAL_CLICK_CODES: bool({ desc: 'If enabled, include certain unreal clicks in lead reports.', default: false }),
 });

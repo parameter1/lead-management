@@ -1,3 +1,5 @@
+const loadTenant = require('@lead-management/tenant-loader');
+const { getAsArray } = require('@parameter1/utils');
 const escapeRegex = require('escape-string-regexp');
 const {
   Campaign,
@@ -9,17 +11,18 @@ const {
   OmedaEmailDeploymentUrl,
   OmedaEmailDeployment,
 } = require('../mongodb/models');
-const { ALLOW_UNREAL_CLICK_CODES } = require('../env');
+const { TENANT_KEY } = require('../env');
 
 const { isArray } = Array;
 
-const getValidClickCriteria = () => {
-  const allow = ALLOW_UNREAL_CLICK_CODES;
-  if (allow) {
+const getValidClickCriteria = async () => {
+  const tenant = await loadTenant({ key: TENANT_KEY });
+  const codes = getAsArray(tenant, 'doc.omeda.disallowedUnrealClickCodes');
+  if (codes.length) {
     return {
       $or: [
         { 'invalid.0': { $exists: false } },
-        { 'invalid.code': { $nin: [2, 4, 5, 6, 7, 8, 9] } },
+        { 'invalid.code': { $nin: codes } },
       ],
     };
   }
@@ -111,7 +114,7 @@ module.exports = {
       date: { $gte: campaign.startDate },
       url: { $in: urlIds },
       dep: { $in: deploymentEntities },
-      ...getValidClickCriteria(),
+      ...await getValidClickCriteria(),
     };
 
     const pipeline = [];
