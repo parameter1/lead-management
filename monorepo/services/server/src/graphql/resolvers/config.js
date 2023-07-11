@@ -1,4 +1,6 @@
 const { get } = require('@parameter1/utils');
+const loadTenant = require('@lead-management/tenant-loader');
+const { TENANT_KEY } = require('../../env');
 
 module.exports = {
   /**
@@ -8,7 +10,8 @@ module.exports = {
     /**
      *
      */
-    currentAppConfig: async (root, _, { tenant }) => {
+    currentAppConfig: async () => {
+      const tenant = await loadTenant({ key: TENANT_KEY });
       const { doc } = tenant;
       const modules = doc.modules || {};
       return {
