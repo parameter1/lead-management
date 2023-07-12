@@ -96,9 +96,9 @@ module.exports = {
     /**
      *
      */
-    generateTrackedHtml: async (root, { html }, { auth }) => {
+    generateTrackedHtml: async (root, { html }, { auth, tenant }) => {
       auth.checkAdmin();
-      const { original, replaced } = await LinkInjector.injectInto(html);
+      const { original, replaced } = await LinkInjector.injectInto(html, tenant);
       await TrackedHtml.create({
         date: new Date(),
         userId: auth.user._id,

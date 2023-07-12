@@ -1,3 +1,4 @@
+const { get, getAsArray, getAsObject } = require('@parameter1/utils');
 const jwt = require('jsonwebtoken');
 const escapeRegex = require('escape-string-regexp');
 const { URL, URLSearchParams } = require('url');
@@ -13,7 +14,7 @@ module.exports = {
    *
    * @param {string} html
    */
-  async injectInto(html) {
+  async injectInto(html, tenant) {
     const original = html || '';
     if (!original) return { original, replaced: original };
     const cleanedHtml = await this.replaceDoubleTrackedUrls(original);
@@ -28,7 +29,7 @@ module.exports = {
     const urls = await ExtractedUrl.find({ 'values.original': { $in: clean } });
     if (!urls.length) return { original, replaced: original };
 
-    const tracked = await this.createDirectlyTrackedUrls(urls);
+    const tracked = await this.createDirectlyTrackedUrls(urls, tenant);
 
     const replacements = this.replacementMap(mapped, tracked);
     const replaced = this.replaceUrls(cleanedHtml, replacements);
@@ -41,10 +42,10 @@ module.exports = {
    * @private
    * @param {ExtractedUrl[]} urls
    */
-  createDirectlyTrackedUrls(urls, ack) {
+  createDirectlyTrackedUrls(urls, tenant, ack) {
     return Promise.all(urls.filter((url) => !url.trackingDisabled).map(async (url) => {
       const { original } = url.values;
-      const redirect = await this.createDirectlyTrackedUrl(url, ack);
+      const redirect = await this.createDirectlyTrackedUrl(url, tenant, ack);
       return { original, redirect };
     }));
   },
@@ -55,7 +56,7 @@ module.exports = {
    * @private
    * @param {ExtractedUrl} url
    */
-  async createDirectlyTrackedUrl(url) {
+  async createDirectlyTrackedUrl(url, tenant) {
     const { id } = url;
     const { original } = url.values;
     const parsed = new URL(original);
@@ -65,7 +66,11 @@ module.exports = {
     params.set('__lt-lid', id);
 
     // Get parameters to inject.
-    const injectParams = await UrlManager.getMergedUrlParams(url);
+    const name = get(tenant, 'doc.name');
+    const domains = getAsArray(tenant, 'doc.internalHosts');
+    const tagMap = getAsObject(tenant, 'doc.hostTagMap');
+    const instance = new UrlManager(name, domains, tagMap);
+    const injectParams = await instance.getMergedUrlParams(url);
     if (injectParams && injectParams.length) {
       // Process parameter values.
       if (/wufoo\.com\/forms/i.test(original)) {
