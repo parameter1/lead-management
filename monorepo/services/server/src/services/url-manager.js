@@ -1,3 +1,4 @@
+const esr = require('escape-string-regexp');
 const Juicer = require('url-juicer');
 const { URL, URLSearchParams } = require('url');
 const promiseRetry = require('promise-retry');
@@ -39,7 +40,7 @@ const crawl = (url) => Juicer.crawler.crawl(url, {
  * @returns Boolean
  */
 const matchesHosts = (value, hosts = []) => hosts
-  .map((hostname) => new RegExp(hostname.replace(/\./, '\\.')))
+  .map((hostname) => new RegExp(esr(hostname)))
   .some((pattern) => pattern.test(value));
 
 const headerPattern = /^x-lead-management-/;
