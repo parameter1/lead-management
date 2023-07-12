@@ -36,7 +36,7 @@ const crawl = (url) => Juicer.crawler.crawl(url, {
  *
  * @param {String} value The value to check
  * @param {String[]} hosts The domains to check against
- * @returns Boolan
+ * @returns Boolean
  */
 const matchesHosts = (value, hosts = []) => hosts
   .map((hostname) => new RegExp(hostname.replace(/\./, '\\.')))
