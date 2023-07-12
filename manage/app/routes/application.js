@@ -1,11 +1,22 @@
 import Route from '@ember/routing/route';
 import { inject } from '@ember/service';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
+import { RouteQueryManager } from 'ember-apollo-client';
 import ActionMixin from 'leads-manage/mixins/action-mixin';
 import { get } from '@ember/object';
+import query from 'leads-manage/gql/queries/application-config';
 
-export default Route.extend(ApplicationRouteMixin, ActionMixin, {
+export default Route.extend(ApplicationRouteMixin, ActionMixin, RouteQueryManager, {
   session: inject(),
+  config: inject(),
+
+  model() {
+    return this.apollo.query({ query }, 'currentAppConfig');
+  },
+
+  afterModel(model) {
+    this.config.load(model);
+  },
 
   setupController(controller, model) {
     controller.set('session', this.get('session'));

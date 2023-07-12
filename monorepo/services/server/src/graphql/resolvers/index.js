@@ -7,6 +7,7 @@ const { ObjectId } = require('mongoose').Types;
 const adCreativeTracker = require('./ad-creative-tracker');
 const brightcove = require('./brightcove');
 const campaign = require('./campaign');
+const config = require('./config');
 const customer = require('./customer');
 const emailDeployment = require('./email-deployment');
 const eventEmailClick = require('./event-email-click');
@@ -22,16 +23,17 @@ const tag = require('./tag');
 const url = require('./url');
 const user = require('./user');
 
-module.exports = merge(
+module.exports = ({ includeGAM = false }) => merge(
   adCreativeTracker,
   brightcove,
   campaign,
+  config,
   customer,
   emailDeployment,
   eventEmailClick,
   excludedEmailDomain,
   exportResolver,
-  gam,
+  includeGAM ? gam : {},
   identity,
   leadReport,
   lineItem,

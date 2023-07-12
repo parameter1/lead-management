@@ -12,8 +12,12 @@
           <li class="nav-item">{{#link-to "campaign.edit.email" class="nav-link" role="tab"}}Email{{/link-to}}</li>
           {{!-- <li class="nav-item">{{#link-to "campaign.edit.forms" class="nav-link" role="tab"}}Forms{{/link-to}}</li> --}}
           <li class="nav-item">{{#link-to "campaign.edit.ads" class="nav-link" role="tab"}}Ads{{/link-to}}</li>
-          <li class="nav-item">{{#link-to "campaign.edit.ad-metrics" class="nav-link" role="tab"}}Ad Metrics{{/link-to}}</li>
-          <li class="nav-item">{{#link-to "campaign.edit.video-metrics" class="nav-link" role="tab"}}Video Metrics{{/link-to}}</li>
+          {{#if (config-is-module-enabled "gam") }}
+            <li class="nav-item">{{#link-to "campaign.edit.ad-metrics" class="nav-link" role="tab"}}Ad Metrics{{/link-to}}</li>
+          {{/if}}
+          {{#if (config-is-module-enabled "brightcove") }}
+            <li class="nav-item">{{#link-to "campaign.edit.video-metrics" class="nav-link" role="tab"}}Video Metrics{{/link-to}}</li>
+          {{/if}}
         </ul>
       </div>
       {{outlet}}

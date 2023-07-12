@@ -1,3 +1,4 @@
+const esr = require('escape-string-regexp');
 const Juicer = require('url-juicer');
 const { URL, URLSearchParams } = require('url');
 const promiseRetry = require('promise-retry');
@@ -31,19 +32,28 @@ const crawl = (url) => Juicer.crawler.crawl(url, {
   timeout: 5000,
 });
 
+/**
+ * Determines if the supplied value belongs to one of the supplied hosts
+ *
+ * @param {String} value The value to check
+ * @param {String[]} hosts The domains to check against
+ * @returns Boolean
+ */
+const matchesHosts = (value, hosts = []) => hosts
+  .map((hostname) => new RegExp(esr(hostname)))
+  .some((pattern) => pattern.test(value));
+
 const headerPattern = /^x-lead-management-/;
+class UrlManager {
+  /**
+   * @param {String[]} domains
+   */
+  constructor(name, domains = [], tagMap = {}) {
+    this.name = name;
+    this.domains = domains || [];
+    this.tagMap = tagMap || {};
+  }
 
-const isInternalUrl = (url) => (/www\.ien\.com/i.test(url)
-  || /www\.foodmanufacturing\.com/i.test(url)
-  || /www\.mbtmag\.com/i.test(url)
-  || /www\.impomag\.com/i.test(url)
-  || /www\.inddist\.com/i.test(url)
-  || /www\.manufacturing\.net/i.test(url)
-  || /www\.designdevelopmenttoday\.com/i.test(url)
-  || /www\.cannabisequipmentnews\.com/i.test(url)
-);
-
-module.exports = {
   /**
    *
    * @param {string} url
@@ -103,7 +113,7 @@ module.exports = {
     if (!extractedUrl.lastCrawledDate) await this.applyTrackingRules(extractedUrl);
     extractedUrl.lastCrawledDate = new Date();
     return extractedUrl.save();
-  },
+  }
 
   /**
    *
@@ -118,14 +128,14 @@ module.exports = {
       return m;
     }, new Map());
 
-    if (isInternalUrl(value)) {
+    if (matchesHosts(value, this.domains)) {
       map.set('__lt-usr', '@{encrypted_customer_id}@');
       map.set('utm_source', '@{track_id}@');
       map.set('utm_medium', 'email');
       map.set('utm_campaign', '@{mv_date_MMddyyyy}@');
       map.set('utm_term', '@{track_id}@');
     } else {
-      map.set('utm_source', 'Industrial Media');
+      map.set('utm_source', this.name);
       map.set('utm_medium', 'email');
       map.set('utm_campaign', '@{mv_date_MMddyyyy}@');
       map.set('utm_term', '@{track_id}@');
@@ -134,7 +144,7 @@ module.exports = {
     map.forEach((v, key) => newParams.push({ key, value: v }));
     extractedHost.set('urlParams', newParams);
     return extractedHost;
-  },
+  }
 
   /**
    *
@@ -165,10 +175,13 @@ module.exports = {
       const tag = tagMap.get(value);
       if (tag) extractedUrl.tagIds.addToSet(tag);
     });
-    if (tagMap.has('CPL Form') && (/ien\.wufoo\.com/i.test(hostname) || /ien\.formstack\.com/i.test(hostname))) {
-      // Tag ien.wufoo.com and ien.formstack.com hosts with CPL Form.
-      extractedUrl.tagIds.addToSet(tagMap.get('CPL Form'));
-    }
+
+    // handle auto host tagging
+    Object.keys(this.tagMap).forEach((key) => {
+      if (tagMap.has(key) && matchesHosts(hostname, this.tagMap[key])) {
+        extractedUrl.tagIds.addToSet(tagMap.get(key));
+      }
+    });
 
     // handle auto customer tagging
     const autoCustomer = extractedUrl.get('headerDirectives.customer');
@@ -185,7 +198,7 @@ module.exports = {
       }, { upsert: true, new: true });
       extractedUrl.set('customerId', customer.id);
     }
-  },
+  }
 
   /**
    *
@@ -206,8 +219,9 @@ module.exports = {
       if (!current && value) parsed.searchParams.set(key, value);
     });
     return parsed.href;
-  },
+  }
 
+  // eslint-disable-next-line class-methods-use-this
   injectWufooParams(url, params) {
     const cleaned = url.replace(/\/+$/, '').replace(/\/def$/, '');
     const searchParams = new URLSearchParams();
@@ -216,7 +230,7 @@ module.exports = {
       searchParams.set(key, value);
     });
     return `${cleaned}/def/${searchParams}`;
-  },
+  }
 
   /**
    *
@@ -241,7 +255,7 @@ module.exports = {
     const $setOnInsert = extracted.toObject();
     const options = { new: true, upsert: true };
     return ExtractedUrl.findOneAndUpdate(criteria, { $setOnInsert }, options);
-  },
+  }
 
   /**
    *
@@ -258,7 +272,7 @@ module.exports = {
     const update = { $setOnInsert, $set: { urlParams: host.urlParams } };
     const options = { new: true, upsert: true };
     return ExtractedHost.findOneAndUpdate({ value: host.value }, update, options);
-  },
+  }
 
   /**
    *
@@ -271,7 +285,7 @@ module.exports = {
     const hostParams = extractedHost ? extractedHost.urlParams : [];
 
     return this.mergeUrlParams(hostParams, urlParams);
-  },
+  }
 
   /**
    *
@@ -279,6 +293,7 @@ module.exports = {
    * @param {array} urlParams
    * @returns {object[]} An array of objects containing `key` and `value` properties.
    */
+  // eslint-disable-next-line class-methods-use-this
   mergeUrlParams(hostParams, urlParams) {
     const params = {};
     if (isArray(hostParams)) {
@@ -292,5 +307,7 @@ module.exports = {
       });
     }
     return Object.values(params);
-  },
-};
+  }
+}
+
+module.exports = UrlManager;

@@ -43,15 +43,17 @@
       }}
     </div>
   </div>
-  <div class="col-md-6">
-    <div class="form-group">
-      <label>Linked GAM Advertiser(s)</label>
-      {{gam/advertiser-typeahead
-        multiple=true
-        placeholder="Begin typing to find an advertiser..."
-        selected=model.linkedAdvertisers.googleAdManager.nodes
-        onChange=(action (mut model.linkedAdvertisers.googleAdManager.nodes))
-      }}
+  {{#if (config-is-module-enabled "gam") }}
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Linked GAM Advertiser(s)</label>
+        {{gam/advertiser-typeahead
+          multiple=true
+          placeholder="Begin typing to find an advertiser..."
+          selected=model.linkedAdvertisers.googleAdManager.nodes
+          onChange=(action (mut model.linkedAdvertisers.googleAdManager.nodes))
+        }}
+      </div>
     </div>
-  </div>
+  {{/if}}
 </div>

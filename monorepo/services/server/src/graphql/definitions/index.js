@@ -3,12 +3,14 @@ const { gql } = require('apollo-server-express');
 const adCreativeTracker = require('./ad-creative-tracker');
 const brightcove = require('./brightcove');
 const campaign = require('./campaign');
+const config = require('./config');
 const customer = require('./customer');
 const emailDeployment = require('./email-deployment');
 const eventEmailClick = require('./event-email-click');
 const excludedEmailDomain = require('./excluded-email-domain');
 const exportDefs = require('./exports');
 const gam = require('./gam');
+const gamMock = require('./gam/mock');
 const identity = require('./identity');
 const leadReport = require('./lead-report');
 const lineItem = require('./line-item');
@@ -18,7 +20,7 @@ const tag = require('./tag');
 const url = require('./url');
 const user = require('./user');
 
-module.exports = gql`
+module.exports = ({ includeGAM = false }) => gql`
 
 directive @apiValue(path: String, as: ApiValueDirectiveAsEnum) on FIELD_DEFINITION
 
@@ -83,12 +85,14 @@ input TypeAheadOptionsInput {
 ${adCreativeTracker}
 ${brightcove}
 ${campaign}
+${config}
 ${customer}
 ${emailDeployment}
 ${eventEmailClick}
 ${excludedEmailDomain}
 ${exportDefs}
 ${gam}
+${gamMock(includeGAM)}
 ${identity}
 ${leadReport}
 ${lineItem}

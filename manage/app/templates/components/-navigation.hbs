@@ -65,9 +65,11 @@
       </li>
 
       {{#if user.isAdmin}}
-        <li class="nav-item">
-          {{#link-to "video" class="nav-link"}}{{entypo-icon "video-camera"}} Videos{{/link-to}}
-        </li>
+        {{#if (config-is-module-enabled "brightcove") }}
+          <li class="nav-item">
+            {{#link-to "video" class="nav-link"}}{{entypo-icon "video-camera"}} Videos{{/link-to}}
+          </li>
+        {{/if}}
       {{/if}}
       {{#if user.isAdmin}}
         <li class="nav-item">
