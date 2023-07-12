@@ -63,7 +63,7 @@ const calculatePacing = ({
   };
 };
 
-const getEmailProgress = async (lineitem) => {
+const getEmailProgress = async (lineitem, tenant) => {
   const { requiredLeads } = lineitem;
   const startDate = lineitem.get('range.start');
   const endDate = lineitem.get('range.end');
@@ -76,7 +76,7 @@ const getEmailProgress = async (lineitem) => {
     qualified,
     scrubbed,
     total,
-  } = await emailReportService.getQualifiedIdentityCount(lineitem, {
+  } = await emailReportService.getQualifiedIdentityCount(lineitem, tenant, {
     urlIds,
     deploymentEntities,
   });
@@ -289,14 +289,14 @@ module.exports = {
     excludedFields: (lineItem) => lineItem.getExcludedFields(),
     tags: (lineItem, _, { loaders }) => loaders.tag.loadMany(lineItem.tagIds),
     excludedTags: (lineItem, _, { loaders }) => loaders.tag.loadMany(lineItem.excludedTagIds),
-    progress: async (lineitem) => {
+    progress: async (lineitem, _, { tenant }) => {
       const {
         qualified,
         scrubbed,
         total,
         qualRate,
         pacing,
-      } = await getEmailProgress(lineitem);
+      } = await getEmailProgress(lineitem, tenant);
 
       return {
         qualified: { total: qualified, rate: qualRate },
@@ -492,7 +492,7 @@ module.exports = {
       return instance.paginate(LineItem, pagination);
     },
 
-    emailLineItemActiveIdentities: async (_, { input, pagination, sort }, { auth }) => {
+    emailLineItemActiveIdentities: async (_, { input, pagination, sort }, { auth, tenant }) => {
       auth.check();
       const { id } = input;
       const lineitem = await findEmailLineItem(id);
@@ -501,7 +501,7 @@ module.exports = {
         deploymentEntities,
       } = await emailReportService.getEligibleUrlsAndDeployments(lineitem);
 
-      const entities = await emailReportService.getActiveIdentityEntities(lineitem, {
+      const entities = await emailReportService.getActiveIdentityEntities(lineitem, tenant, {
         urlIds,
         deploymentEntities,
       });
@@ -514,7 +514,7 @@ module.exports = {
       pagination,
       search,
       options,
-    }, { auth }) => {
+    }, { auth, tenant }) => {
       auth.check();
       const { id } = input;
       const { field, phrase } = search;
@@ -525,7 +525,7 @@ module.exports = {
         deploymentEntities,
       } = await emailReportService.getEligibleUrlsAndDeployments(lineitem);
 
-      const entities = await emailReportService.getActiveIdentityEntities(lineitem, {
+      const entities = await emailReportService.getActiveIdentityEntities(lineitem, tenant, {
         urlIds,
         deploymentEntities,
       });

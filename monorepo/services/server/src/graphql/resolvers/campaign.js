@@ -555,11 +555,13 @@ module.exports = {
     /**
      *
      */
-    emailCampaignIdentities: async (_, { id, pagination, sort }, { auth }) => {
+    emailCampaignIdentities: async (_, { id, pagination, sort }, { auth, tenant }) => {
       auth.check();
       const campaign = await findEmailCampaign(id);
 
-      const { identityEntities } = await emailReportService.getClickEventIdentifiers(campaign, {
+      const {
+        identityEntities,
+      } = await emailReportService.getClickEventIdentifiers(campaign, tenant, {
         suppressInactives: false,
       });
       const criteria = { entity: { $in: identityEntities } };
@@ -574,13 +576,15 @@ module.exports = {
       pagination,
       search,
       options,
-    }, { auth }) => {
+    }, { auth, tenant }) => {
       auth.check();
       const { field, phrase } = search;
 
       const campaign = await findEmailCampaign(id);
 
-      const { identityEntities } = await emailReportService.getClickEventIdentifiers(campaign, {
+      const {
+        identityEntities,
+      } = await emailReportService.getClickEventIdentifiers(campaign, tenant, {
         suppressInactives: false,
       });
       const criteria = { entity: { $in: identityEntities } };

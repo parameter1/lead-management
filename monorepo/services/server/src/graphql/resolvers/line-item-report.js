@@ -59,14 +59,14 @@ module.exports = {
     /**
      *
      */
-    emailLineItemMetricsReport: async (root, { hash, sort }) => {
+    emailLineItemMetricsReport: async (root, { hash, sort }, { tenant }) => {
       const lineitem = await EmailLineItem.findByHash(hash);
 
       const {
         identityEntities,
         urlIds,
         deploymentEntities,
-      } = await emailReportService.getClickEventIdentifiers(lineitem);
+      } = await emailReportService.getClickEventIdentifiers(lineitem, tenant);
 
       const $match = {
         idt: { $in: identityEntities },
@@ -91,10 +91,12 @@ module.exports = {
     /**
      *
      */
-    emailLineItemIdentitiesReport: async (root, { hash, pagination, sort }) => {
+    emailLineItemIdentitiesReport: async (root, { hash, pagination, sort }, { tenant }) => {
       const lineitem = await EmailLineItem.findByHash(hash);
 
-      const { identityEntities } = await emailReportService.getClickEventIdentifiers(lineitem);
+      const {
+        identityEntities,
+      } = await emailReportService.getClickEventIdentifiers(lineitem, tenant);
 
       const criteria = { entity: { $in: identityEntities } };
       const projection = await emailReportService.identityFieldProjection(lineitem);
@@ -109,10 +111,10 @@ module.exports = {
     /**
      *
      */
-    emailLineItemIdentityExportReport: async (root, { hash, pagination, sort }) => {
+    emailLineItemIdentityExportReport: async (root, { hash, pagination, sort }, { tenant }) => {
       const lineitem = await EmailLineItem.findByHash(hash);
 
-      const pipeline = await emailReportService.buildExportPipeline(lineitem);
+      const pipeline = await emailReportService.buildExportPipeline(lineitem, tenant);
 
       // @todo This isn't as effecient as it could be.
       // The match phase could be limited by the incoming after cursor, as well as the first value.
@@ -134,14 +136,14 @@ module.exports = {
     /**
      *
      */
-    emailLineItemActivityReport: async (root, { hash }) => {
+    emailLineItemActivityReport: async (root, { hash }, { tenant }) => {
       const lineitem = await EmailLineItem.findByHash(hash);
 
       const {
         identityEntities,
         urlIds,
         deploymentEntities,
-      } = await emailReportService.getClickEventIdentifiers(lineitem);
+      } = await emailReportService.getClickEventIdentifiers(lineitem, tenant);
 
       const $match = {
         idt: { $in: identityEntities },

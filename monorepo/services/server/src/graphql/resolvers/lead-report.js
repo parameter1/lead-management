@@ -66,14 +66,14 @@ module.exports = {
       sort,
       starting,
       ending,
-    }) => {
+    }, { tenant }) => {
       const campaign = await Campaign.findByHash(hash);
 
       const {
         identityEntities,
         urlIds,
         deploymentEntities,
-      } = await emailReportService.getClickEventIdentifiers(campaign, {
+      } = await emailReportService.getClickEventIdentifiers(campaign, tenant, {
         // allows all idenities to be considered, not just the max of 200.
         enforceMaxIdentities: false,
         starting,
@@ -103,14 +103,14 @@ module.exports = {
     /**
      *
      */
-    reportEmailActivity: async (root, { hash }) => {
+    reportEmailActivity: async (root, { hash }, { tenant }) => {
       const campaign = await Campaign.findByHash(hash);
 
       const {
         identityEntities,
         urlIds,
         deploymentEntities,
-      } = await emailReportService.getClickEventIdentifiers(campaign);
+      } = await emailReportService.getClickEventIdentifiers(campaign, tenant);
 
       const $match = {
         idt: { $in: identityEntities },
@@ -144,10 +144,10 @@ module.exports = {
     /**
      *
      */
-    reportEmailIdentityExport: async (root, { hash, pagination, sort }) => {
+    reportEmailIdentityExport: async (root, { hash, pagination, sort }, { tenant }) => {
       const campaign = await Campaign.findByHash(hash);
 
-      const pipeline = await emailReportService.buildExportPipeline(campaign);
+      const pipeline = await emailReportService.buildExportPipeline(campaign, tenant);
 
       // @todo This isn't as effecient as it could be.
       // The match phase could be limited by the incoming after cursor, as well as the first value.
@@ -169,10 +169,12 @@ module.exports = {
     /**
      *
      */
-    reportEmailIdentities: async (root, { hash, pagination, sort }) => {
+    reportEmailIdentities: async (root, { hash, pagination, sort }, { tenant }) => {
       const campaign = await Campaign.findByHash(hash);
 
-      const { identityEntities } = await emailReportService.getClickEventIdentifiers(campaign);
+      const {
+        identityEntities,
+      } = await emailReportService.getClickEventIdentifiers(campaign, tenant);
 
       const criteria = { entity: { $in: identityEntities } };
       const projection = await emailReportService.identityFieldProjection(campaign);

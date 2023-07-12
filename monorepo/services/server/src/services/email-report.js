@@ -1,4 +1,3 @@
-const loadTenant = require('@lead-management/tenant-loader');
 const { getAsArray } = require('@parameter1/utils');
 const escapeRegex = require('escape-string-regexp');
 const {
@@ -11,12 +10,11 @@ const {
   OmedaEmailDeploymentUrl,
   OmedaEmailDeployment,
 } = require('../mongodb/models');
-const { TENANT_KEY } = require('../env');
 
 const { isArray } = Array;
 
-const getValidClickCriteria = async () => {
-  const tenant = await loadTenant({ key: TENANT_KEY });
+const getValidClickCriteria = (tenant) => {
+  if (!tenant) throw new Error('Tenant configuration was not passed!');
   const codes = getAsArray(tenant, 'doc.omeda.disallowedUnrealClickCodes');
   if (codes.length) {
     return {
@@ -43,7 +41,7 @@ module.exports = {
    * @param {Date} [options.starting]
    * @param {Date} [options.ending]
    */
-  async getClickEventIdentifiers(campaign, {
+  async getClickEventIdentifiers(campaign, tenant, {
     suppressInactives = true,
     enforceMaxIdentities = true,
     starting,
@@ -54,7 +52,7 @@ module.exports = {
       deploymentEntities,
     } = await this.getEligibleUrlsAndDeployments(campaign, { starting, ending });
 
-    const identityEntities = await this.getEligibleIdentityEntities(campaign, {
+    const identityEntities = await this.getEligibleIdentityEntities(campaign, tenant, {
       suppressInactives,
       enforceMaxIdentities,
       urlIds,
@@ -74,12 +72,12 @@ module.exports = {
     return excludeFields.reduce((acc, key) => ({ ...acc, [key]: 0 }), {});
   },
 
-  async buildExportPipeline(campaign) {
+  async buildExportPipeline(campaign, tenant) {
     const {
       identityEntities,
       urlIds,
       deploymentEntities,
-    } = await this.getClickEventIdentifiers(campaign);
+    } = await this.getClickEventIdentifiers(campaign, tenant);
 
     const $match = {
       idt: { $in: identityEntities },
@@ -101,7 +99,7 @@ module.exports = {
     return pipeline;
   },
 
-  async getEligibleIdentityEntities(campaign, {
+  async getEligibleIdentityEntities(campaign, tenant, {
     urlIds,
     deploymentEntities,
     suppressInactives = true,
@@ -114,7 +112,7 @@ module.exports = {
       date: { $gte: campaign.startDate },
       url: { $in: urlIds },
       dep: { $in: deploymentEntities },
-      ...await getValidClickCriteria(),
+      ...getValidClickCriteria(tenant),
     };
 
     const pipeline = [];

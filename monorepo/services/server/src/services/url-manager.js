@@ -59,7 +59,6 @@ class UrlManager {
    * @param {booleam} [cache=true]
    */
   async crawl(url, cache = true) {
-    console.log('crawl', url, cache, this.domains, this.name, this.tagMap);
     const extractedUrl = await promiseRetry((retry) => this.upsertExtractedUrl(url)
       .catch((err) => checkDupe(retry, err)), retryOpts);
 

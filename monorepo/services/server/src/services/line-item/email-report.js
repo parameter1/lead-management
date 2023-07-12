@@ -23,12 +23,12 @@ module.exports = {
    * @param {*} lineitem
    * @param {*} params
    */
-  async getQualifiedIdentityCount(lineitem, {
+  async getQualifiedIdentityCount(lineitem, tenant, {
     urlIds,
     deploymentEntities,
   }) {
     const [identityEntities, criteria] = await Promise.all([
-      this.getEligibleIdentityEntities(lineitem, { urlIds, deploymentEntities }),
+      this.getEligibleIdentityEntities(lineitem, tenant, { urlIds, deploymentEntities }),
       this.buildIdentityExclusionCriteria(lineitem),
     ]);
     criteria.entity = { $in: identityEntities };
@@ -41,13 +41,13 @@ module.exports = {
     };
   },
 
-  async getActiveIdentityEntities(lineitem, {
+  async getActiveIdentityEntities(lineitem, tenant, {
     urlIds,
     deploymentEntities,
   }) {
     const { requiredLeads } = lineitem;
     const [identityEntities, criteria] = await Promise.all([
-      this.getEligibleIdentityEntities(lineitem, { urlIds, deploymentEntities }),
+      this.getEligibleIdentityEntities(lineitem, tenant, { urlIds, deploymentEntities }),
       this.buildIdentityExclusionCriteria(lineitem, false),
     ]);
     criteria.entity = { $in: identityEntities };
@@ -56,25 +56,25 @@ module.exports = {
     return docs.map((doc) => doc.entity);
   },
 
-  async getInactiveIdentityEntities(lineitem, {
+  async getInactiveIdentityEntities(lineitem, tenant, {
     urlIds,
     deploymentEntities,
   }) {
     const [identityEntities, criteria] = await Promise.all([
-      this.getEligibleIdentityEntities(lineitem, { urlIds, deploymentEntities }),
+      this.getEligibleIdentityEntities(lineitem, tenant, { urlIds, deploymentEntities }),
       this.buildIdentityExclusionCriteria(lineitem, true),
     ]);
     criteria.entity = { $in: identityEntities };
     return Identity.distinct('entity', criteria);
   },
 
-  async getClickEventIdentifiers(lineitem) {
+  async getClickEventIdentifiers(lineitem, tenant) {
     const {
       urlIds,
       deploymentEntities,
     } = await this.getEligibleUrlsAndDeployments(lineitem);
 
-    const identityEntities = await this.getActiveIdentityEntities(lineitem, {
+    const identityEntities = await this.getActiveIdentityEntities(lineitem, tenant, {
       urlIds,
       deploymentEntities,
     });
@@ -91,7 +91,7 @@ module.exports = {
    * @param {*} lineitem
    * @param {*} params
    */
-  async getEligibleIdentityEntities(lineitem, {
+  async getEligibleIdentityEntities(lineitem, tenant, {
     urlIds,
     deploymentEntities,
   } = {}) {
@@ -100,7 +100,7 @@ module.exports = {
       url: { $in: urlIds },
       dep: { $in: deploymentEntities },
       date: { $gte: lineitem.range.start, $lte: this.getEndDate(lineitem) },
-      ...await emailCampaignReport.getValidClickCriteria(),
+      ...emailCampaignReport.getValidClickCriteria(tenant),
     };
 
     const pipeline = [];
@@ -115,12 +115,12 @@ module.exports = {
     return result && result.entities ? result.entities : [];
   },
 
-  async buildExportPipeline(lineitem) {
+  async buildExportPipeline(lineitem, tenant) {
     const {
       identityEntities,
       urlIds,
       deploymentEntities,
-    } = await this.getClickEventIdentifiers(lineitem);
+    } = await this.getClickEventIdentifiers(lineitem, tenant);
 
     const $match = {
       idt: { $in: identityEntities },
