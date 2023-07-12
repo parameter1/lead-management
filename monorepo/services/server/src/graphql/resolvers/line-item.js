@@ -154,8 +154,8 @@ const getEmailProgress = async (lineitem, tenant) => {
 /**
  * @todo fix form progress
  */
-const getLineItemProgress = async (lineitem) => {
-  if (lineitem.type === 'email') return getEmailProgress(lineitem);
+const getLineItemProgress = async (lineitem, tenant) => {
+  if (lineitem.type === 'email') return getEmailProgress(lineitem, tenant);
   throw new Error('Form line items are not yet implemented');
   // return getFormProgress(lineitem);
 };
@@ -165,7 +165,7 @@ const lineitemTypesEnum = new Map([
   ['EMAIL', 'email'],
 ]);
 
-const buildLineItemCriteria = async ({ input }) => {
+const buildLineItemCriteria = async ({ input, tenant }) => {
   const {
     dashboardStatus: status,
     customerIds,
@@ -201,7 +201,7 @@ const buildLineItemCriteria = async ({ input }) => {
   // Then determine their qualification rate and filter based on requested data.
   // @todo find a more efficient way of handling this condition.
   const lineitems = await LineItem.find(criteria);
-  const progresses = await Promise.all(lineitems.map(getLineItemProgress));
+  const progresses = await Promise.all(lineitems.map((li) => getLineItemProgress(li, tenant)));
 
   const ids = progresses.filter((progress) => {
     if (status === 'active') return progress.qualRate < 1;
@@ -470,9 +470,9 @@ module.exports = {
     /**
      *
      */
-    allLineItems: async (_, { input, pagination, sort }, { auth }) => {
+    allLineItems: async (_, { input, pagination, sort }, { auth, tenant }) => {
       auth.check();
-      const criteria = await buildLineItemCriteria({ input });
+      const criteria = await buildLineItemCriteria({ input, tenant });
       return new Pagination(LineItem, { pagination, sort, criteria });
     },
 
@@ -484,10 +484,10 @@ module.exports = {
       pagination,
       search,
       options,
-    }, { auth }) => {
+    }, { auth, tenant }) => {
       auth.check();
       const { field, phrase } = search;
-      const criteria = await buildLineItemCriteria({ input });
+      const criteria = await buildLineItemCriteria({ input, tenant });
       const instance = new TypeAhead(field, phrase, criteria, options);
       return instance.paginate(LineItem, pagination);
     },
