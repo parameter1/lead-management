@@ -174,7 +174,7 @@ const emailSchema = new Schema({
   },
   displayDeliveredMetrics: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   enforceMaxEmailDomains: {
     type: Boolean,
