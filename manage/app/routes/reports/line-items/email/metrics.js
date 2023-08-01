@@ -11,6 +11,9 @@ export default Route.extend(RouteQueryManager, {
     ascending: {
       refreshModel: true
     },
+    displayAdditionalColumns: {
+      refreshModel: true
+    }
   },
 
   /**

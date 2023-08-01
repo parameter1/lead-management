@@ -11,6 +11,7 @@ export default Route.extend(ListRouteMixin, {
     this.set('queryParams.rangeStart', { refreshModel: true });
     this.set('queryParams.rangeEnd', { refreshModel: true });
     this.set('queryParams.mustHaveEmailDeployments', { refreshModel: true });
+    this.set('queryParams.displayAdditionalColumns', { refreshModel: true });
   },
 
   beforeModel(transition) {
