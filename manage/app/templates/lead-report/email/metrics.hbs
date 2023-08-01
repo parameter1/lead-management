@@ -32,6 +32,7 @@
             sortBy=sortBy
             ascending=ascending
             class="mb-0"
+            displayAdditionalColumns=displayAdditionalColumns
           }}
         </div>
       </div>
@@ -41,5 +42,10 @@
   {{/if}}
 </div>
 <div class="card-footer text-right">
+  {{#if displayAdditionalColumns}}
+    <a class="btn btn-info" role="button" href="/app/lead-report/{{campaign.hash}}">{{entypo-icon "circle-with-cross"}} Hide Additional Columns</a>
+  {{else}}
+     <a class="btn btn-info" role="button" href="/app/lead-report/{{campaign.hash}}?displayAdditionalColumns=true">{{entypo-icon "check"}} Display Additional Columns</a>
+  {{/if}}
   <a class="btn btn-success" role="button" href="/export/campaign/{{campaign.hash}}/email/metrics">{{entypo-icon "download"}} Export Email Metrics</a>
 </div>
