@@ -91,7 +91,13 @@
         <ul class="list-group list-group-flush">
           <li class="list-group-item pt-0"><h5 class="mb-0 text-muted">Total Results: {{model.totalCount}}</h5></li>
           {{#each fetch.nodes as |item|}}
-            {{email-campaign/metrics-list-item item=item starting=rangeStart ending=rangeEnd displayAdditionalColumns=displayAdditionalColumns}}
+            {{email-campaign/metrics-list-item
+              item=item
+              starting=rangeStart
+              ending=rangeEnd
+              showAdvertiserCTOR=showAdvertiserCTOR
+              showTotalAdClicksPerDay=showTotalAdClicksPerDay
+            }}
           {{/each}}
         </ul>
 
