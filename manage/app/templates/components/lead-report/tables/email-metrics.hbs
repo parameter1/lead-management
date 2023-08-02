@@ -12,8 +12,10 @@
     <th>Open Rate</th>
     <th>CTOR</th>
     <th>CTR</th>
-    {{#if displayAdditionalColumns}}
+    {{#if showAdvertiserCTOR}}
       <th>Advertiser CTOR</th>
+    {{/if}}
+    {{#if showTotalAdClicksPerDay}}
       <th>Total Ad Clicks per Day</th>
     {{/if}}
     {{#if displayTotalUniqueClicks}}
@@ -42,8 +44,10 @@
       <td>{{ format-number row.deployment.metrics.openRate format="00.0%" }}</td>
       <td>{{ format-number row.deployment.metrics.clickToOpenRate format="00.0%" }}</td>
       <td>{{ format-number row.deployment.metrics.clickToDeliveredRate format="00.0%" }}</td>
-      {{#if displayAdditionalColumns}}
+      {{#if showAdvertiserCTOR}}
         <td>{{ format-number row.advertiserClickRate format="0.00%" }}</td>
+      {{/if}}
+      {{#if showTotalAdClicksPerDay}}
         <td>{{ format-number row.clicks format="0,0" }}</td>
       {{/if}}
       {{#if displayTotalUniqueClicks}}
@@ -66,8 +70,10 @@
     <th>{{ format-number totals.metrics.openRate format="00.0%" }}</th>
     <th>{{ format-number totals.metrics.clickToOpenRate format="00.0%" }}</th>
     <th>{{ format-number totals.metrics.clickToDeliveredRate format="00.0%" }}</th>
-    {{#if displayAdditionalColumns}}
+    {{#if showAdvertiserCTOR}}
       <th>{{ format-number totals.advertiserClickRate format="0.00%" }}</th>
+    {{/if}}
+    {{#if showTotalAdClicksPerDay}}
       <th>{{ format-number totals.clicks format="0,0" }}</th>
     {{/if}}
     {{#if displayTotalUniqueClicks}}
