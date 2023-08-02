@@ -6,5 +6,7 @@ export default ListController.extend({
     this.set('sortOptions', []);
     this.set('sortBy', 'omeda.SentDate');
     this.set('ascending', true);
+    this.set('showAdvertiserCTOR', null);
+    this.set('showTotalAdClicksPerDay', null);
   },
 });

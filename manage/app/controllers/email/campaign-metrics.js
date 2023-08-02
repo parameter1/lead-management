@@ -62,6 +62,8 @@ export default ListController.extend({
     ]);
     this.set('sortBy', 'fullName');
     this.set('ascending', true);
+    this.set('showAdvertiserCTOR', null);
+    this.set('showTotalAdClicksPerDay', null);
 
     this.set('limitOptions', [10, 20]);
     this.set('first', 10);
