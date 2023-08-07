@@ -5,6 +5,8 @@ fragment CampaignViewFragment on Campaign {
   name
   hash
   maxIdentities
+  showAdvertiserCTOR
+  showTotalAdClicksPerDay
   range {
     start
     end
