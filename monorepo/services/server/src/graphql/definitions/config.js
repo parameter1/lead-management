@@ -10,6 +10,7 @@ type AppConfig {
   _id: ObjectID!
   zone: String!
   modules: [AppModuleConfig!]!
+  settings: [AppSettingConfig!]!
 }
 
 type AppModuleConfig {
@@ -17,4 +18,8 @@ type AppModuleConfig {
   enabled: Boolean!
 }
 
+type AppSettingConfig {
+  key: String!
+  value: Boolean!
+}
 `;
