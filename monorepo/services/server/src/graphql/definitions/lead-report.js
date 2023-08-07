@@ -15,6 +15,8 @@ extend type Query {
 type ReportEmailMetrics {
   deployments: [ReportEmailMetricDeployment!]!
   totals: ReportEmailMetricTotals!
+  showAdvertiserCTOR: Boolean!
+  showTotalAdClicksPerDay: Boolean!
 }
 
 type ReportEmailMetricTotals {
