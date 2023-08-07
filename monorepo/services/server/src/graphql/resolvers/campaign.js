@@ -694,6 +694,8 @@ module.exports = {
         startDate,
         endDate,
         maxIdentities,
+        showAdvertiserCTOR,
+        showTotalAdClicksPerDay,
       } = input;
 
       const record = new Campaign({
@@ -703,6 +705,8 @@ module.exports = {
         startDate,
         endDate,
         maxIdentities: calcMax(auth, maxIdentities),
+        showAdvertiserCTOR,
+        showTotalAdClicksPerDay,
       });
       return record.save();
     },
@@ -742,6 +746,8 @@ module.exports = {
         startDate,
         endDate,
         maxIdentities,
+        showAdvertiserCTOR,
+        showTotalAdClicksPerDay,
       } = payload;
 
       const record = await Campaign.findOne({ _id: id || null, deleted: false });
@@ -753,6 +759,8 @@ module.exports = {
         startDate,
         endDate,
         maxIdentities: calcMax(auth, maxIdentities),
+        showAdvertiserCTOR,
+        showTotalAdClicksPerDay,
       });
       return record.save();
     },
