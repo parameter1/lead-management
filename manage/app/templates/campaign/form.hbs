@@ -44,7 +44,7 @@
       <small id="campaign-name-help" class="form-text text-muted hide">Optional. The campaign name - should be descriptive.</small>
     </div>
 
-    <div class="form-group mb-0">
+    <div class="form-group">
       <label for="maxIdentities">Maximum Leads</label>
       {{#if user.isAdmin}}
         {{input type="number" min=0 value=model.maxIdentities class="form-control" id="maxIdentities" aria-describedby="maxIdentitiesHelp" placeholder="Max Leads"}}
@@ -53,6 +53,19 @@
         {{input type="number" min=1 max=200 value=model.maxIdentities class="form-control" id="maxIdentities" aria-describedby="maxIdentitiesHelp" placeholder="Max Leads"}}
         <small id="maxIdentitiesHelp" class="form-text text-muted">Maximum 200.</small>
       {{/if}}
+    </div>
+
+    <div class="form-group mb-0">
+      <div class="custom-control custom-checkbox">
+        {{input type="checkbox" checked=model.showAdvertiserCTOR class="custom-control-input" id="showAdvertiserCTOR" aria-describedby="showAdvertiserCTORHelp"}}
+        <label class="custom-control-label" for="showAdvertiserCTOR">Show Advertiser CTOR?</label>
+        <small id="showAdvertiserCTORHelp" class="form-text text-muted">Whether or not Advertiser CTOR should be shown on reports</small>
+      </div>
+      <div class="custom-control custom-checkbox">
+        {{input type="checkbox" checked=model.showTotalAdClicksPerDay class="custom-control-input" id="showTotalAdClicksPerDay" aria-describedby="showTotalAdClicksPerDayHelp"}}
+        <label class="custom-control-label" for="showTotalAdClicksPerDay">Show Total Ad Clicks per Day?</label>
+        <small id="showTotalAdClicksPerDayHelp" class="form-text text-muted">Whether or not Total Ad Clicks per Day should be shown on reports</small>
+      </div>
     </div>
 
   </div>
