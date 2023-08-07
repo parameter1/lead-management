@@ -245,6 +245,16 @@ const schema = new Schema({
     required: true,
     default: false,
   },
+  showAdvertiserCTOR: {
+    type: Boolean,
+    required: true,
+    default: true,
+  },
+  showTotalAdClicksPerDay: {
+    type: Boolean,
+    required: true,
+    default: true,
+  },
   email: {
     type: emailSchema,
     default: {},
