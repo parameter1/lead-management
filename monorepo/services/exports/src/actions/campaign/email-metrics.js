@@ -23,8 +23,11 @@ const METRICS_FRAGMENT = gql`
 const QUERY = gql`
   query ExportCampaignEmailMetrics($hash: String!, $sort: ReportEmailMetricsSortInput!) {
     reportEmailMetrics(hash: $hash, sort: $sort) {
-      showAdvertiserCTOR
-      showTotalAdClicksPerDay
+      campaign {
+        id
+        showAdvertiserCTOR
+        showTotalAdClicksPerDay
+      }
       deployments {
         identities
         clicks
@@ -62,8 +65,8 @@ module.exports = async (params = {}, { context }) => {
   const { apollo } = context;
   const variables = { hash, sort: { field: 'sentDate', order: 1 } };
   const { data } = await apollo.query({ query: QUERY, variables });
-  const showAdvertiserCTOR = get(data, 'reportEmailMetrics.showAdvertiserCTOR');
-  const showTotalAdClicksPerDay = get(data, 'reportEmailMetrics.showTotalAdClicksPerDay');
+  const showAdvertiserCTOR = get(data, 'reportEmailMetrics.campaign.showAdvertiserCTOR');
+  const showTotalAdClicksPerDay = get(data, 'reportEmailMetrics.campaign.showTotalAdClicksPerDay');
 
   const rows = getAsArray(data, 'reportEmailMetrics.deployments').map((row) => {
     const { deployment } = row;
