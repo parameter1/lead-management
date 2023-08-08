@@ -102,12 +102,7 @@ module.exports = {
         sort,
         deploymentEntities,
       });
-      const { showAdvertiserCTOR, showTotalAdClicksPerDay } = campaign;
-      const outputObj = {
-        ...metricsObj,
-        showAdvertiserCTOR,
-        showTotalAdClicksPerDay,
-      };
+      const outputObj = { ...metricsObj, campaign };
       return outputObj;
     },
 
