@@ -15,13 +15,21 @@ export default Route.extend(RouteQueryManager, FormMixin, {
         start: null,
         end: null,
       },
-      showAdvertiserCTOR: typeof this.config.isSettingSet("advertiserCTORInitialVisibility") === 'boolean' ? this.config.isSettingSet("advertiserCTORInitialVisibility") : true,
-      showTotalAdClicksPerDay: typeof this.config.isSettingSet("totalAdClicksPerDayInitialVisibility") === 'boolean' ? this.config.isSettingSet("totalAdClicksPerDayInitialVisibility") : true,
+      showAdvertiserCTOR: this.config.getSetting('advertiserCTORInitialVisibility', true),
+      showTotalAdClicksPerDay: this.config.getSetting('totalAdClicksPerDayInitialVisibility', true),
     };
   },
 
   actions: {
-    async create({ customer, salesRep, name, range, maxIdentities, showAdvertiserCTOR, showTotalAdClicksPerDay }) {
+    async create({
+      customer,
+      salesRep,
+      name,
+      range,
+      maxIdentities,
+      showAdvertiserCTOR,
+      showTotalAdClicksPerDay,
+    }) {
       try {
         this.startRouteAction();
         const customerId = get(customer || {}, 'id');

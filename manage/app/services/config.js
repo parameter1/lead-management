@@ -19,9 +19,8 @@ export default Service.extend({
     if (found) return found.enabled;
     return false;
   },
-  isSettingSet(key) {
+  getSetting(key, defaultValue = false) {
     const found = this.settings.find((s) => s.key === key);
-    if (found) return found.value;
-    return null;
+    return found ? found.value : defaultValue;
   }
 });
