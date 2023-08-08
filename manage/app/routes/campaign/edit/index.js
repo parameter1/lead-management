@@ -17,7 +17,16 @@ export default Route.extend(FormMixin, RouteQueryManager, {
      *
      * @param {object} params
      */
-    async update({ id, customer, salesRep, name, range, maxIdentities, showAdvertiserCTOR, showTotalAdClicksPerDay }) {
+    async update({
+      id,
+      customer,
+      salesRep,
+      name,
+      range,
+      maxIdentities,
+      showAdvertiserCTOR,
+      showTotalAdClicksPerDay,
+    }) {
       try {
         this.startRouteAction();
         const customerId = get(customer || {}, 'id');
