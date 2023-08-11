@@ -22,7 +22,7 @@ module.exports = {
         })),
         settings: Object.keys(settings).map((key) => ({
           key,
-          value: get(modules, `${key}.value`),
+          value: get(settings, `${key}.value`),
         })),
       };
     },
