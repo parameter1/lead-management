@@ -6,6 +6,7 @@ export default Service.extend({
 
   init() {
     this.modules = [];
+    this.settings = [];
     this._super(...arguments)
   },
 
@@ -18,4 +19,8 @@ export default Service.extend({
     if (found) return found.enabled;
     return false;
   },
+  getSetting(key, defaultValue = false) {
+    const found = this.settings.find((s) => s.key === key);
+    return found ? found.value : defaultValue;
+  }
 });

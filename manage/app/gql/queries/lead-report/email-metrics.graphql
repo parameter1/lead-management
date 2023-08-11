@@ -2,6 +2,11 @@
 
 query LeadReportEmailMetrics($hash: String!, $sort: ReportEmailMetricsSortInput!, $starting: Date, $ending: Date) {
   reportEmailMetrics(hash: $hash, sort: $sort, starting: $starting, ending: $ending) {
+    campaign {
+      id
+      showAdvertiserCTOR
+      showTotalAdClicksPerDay
+    }
     deployments {
       deployment {
         id

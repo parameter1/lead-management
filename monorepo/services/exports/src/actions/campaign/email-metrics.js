@@ -1,6 +1,6 @@
 const Joi = require('@parameter1/joi');
 const { validateAsync } = require('@parameter1/joi/utils');
-const { getAsArray, getAsObject } = require('@parameter1/utils');
+const { getAsArray, getAsObject, get } = require('@parameter1/utils');
 const gql = require('graphql-tag');
 const { Parser } = require('json2csv');
 const dayjs = require('../../dayjs');
@@ -23,6 +23,11 @@ const METRICS_FRAGMENT = gql`
 const QUERY = gql`
   query ExportCampaignEmailMetrics($hash: String!, $sort: ReportEmailMetricsSortInput!) {
     reportEmailMetrics(hash: $hash, sort: $sort) {
+      campaign {
+        id
+        showAdvertiserCTOR
+        showTotalAdClicksPerDay
+      }
       deployments {
         identities
         clicks
@@ -60,6 +65,8 @@ module.exports = async (params = {}, { context }) => {
   const { apollo } = context;
   const variables = { hash, sort: { field: 'sentDate', order: 1 } };
   const { data } = await apollo.query({ query: QUERY, variables });
+  const showAdvertiserCTOR = get(data, 'reportEmailMetrics.campaign.showAdvertiserCTOR');
+  const showTotalAdClicksPerDay = get(data, 'reportEmailMetrics.campaign.showTotalAdClicksPerDay');
 
   const rows = getAsArray(data, 'reportEmailMetrics.deployments').map((row) => {
     const { deployment } = row;
@@ -72,8 +79,8 @@ module.exports = async (params = {}, { context }) => {
       'Open Rate': metrics.openRate * 100,
       CTOR: metrics.clickToOpenRate * 100,
       CTR: metrics.clickToDeliveredRate * 100,
-      'Advertiser CTR': row.advertiserClickRate * 100,
-      'Total Ad Clicks per Day': row.clicks,
+      ...(showAdvertiserCTOR && { 'Advertiser CTR': row.advertiserClickRate * 100 }),
+      ...(showTotalAdClicksPerDay && { 'Total Ad Clicks per Day': row.clicks }),
       'Total Unique Clicks': row.identities,
       // 'Preview URL': send.url,
     };
@@ -89,8 +96,8 @@ module.exports = async (params = {}, { context }) => {
     'Open Rate': metrics.openRate * 100,
     CTOR: metrics.clickToOpenRate * 100,
     CTR: metrics.clickToDeliveredRate * 100,
-    'Advertiser CTR': totals.advertiserClickRate * 100,
-    'Total Ad Clicks per Day': totals.clicks,
+    ...(showAdvertiserCTOR && { 'Advertiser CTR': totals.advertiserClickRate * 100 }),
+    ...(showTotalAdClicksPerDay && { 'Total Ad Clicks per Day': totals.clicks }),
     'Total Unique Clicks': totals.identities,
     // 'Preview URL': '',
   });

@@ -97,7 +97,13 @@ module.exports = {
         },
       });
       const results = await OmedaEmailClick.aggregate(pipeline);
-      return emailReportService.buildEmailMetrics({ results, sort, deploymentEntities });
+      const metricsObj = await emailReportService.buildEmailMetrics({
+        results,
+        sort,
+        deploymentEntities,
+      });
+      const outputObj = { ...metricsObj, campaign };
+      return outputObj;
     },
 
     /**

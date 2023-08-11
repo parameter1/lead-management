@@ -15,6 +15,7 @@ extend type Query {
 type ReportEmailMetrics {
   deployments: [ReportEmailMetricDeployment!]!
   totals: ReportEmailMetricTotals!
+  campaign: Campaign!
 }
 
 type ReportEmailMetricTotals {

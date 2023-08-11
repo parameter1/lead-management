@@ -68,6 +68,8 @@ type Campaign {
   deleted: Boolean!
   createdAt: Date
   updatedAt: Date
+  showAdvertiserCTOR: Boolean!
+  showTotalAdClicksPerDay: Boolean!
 
   gamLineItems(input: CampaignGAMLineItemsInput = {}): GAM_LineItemConnection!
   gamLineItemReport: JSON
@@ -260,6 +262,8 @@ input CreateCampaignInput {
   maxIdentities: Int
   startDate: Date
   endDate: Date
+  showAdvertiserCTOR: Boolean!
+  showTotalAdClicksPerDay: Boolean!
 }
 
 input UpdateCampaignPayloadInput {
@@ -269,6 +273,8 @@ input UpdateCampaignPayloadInput {
   maxIdentities: Int
   startDate: Date
   endDate: Date
+  showAdvertiserCTOR: Boolean!
+  showTotalAdClicksPerDay: Boolean!
 }
 
 input UpdateCampaignInput {

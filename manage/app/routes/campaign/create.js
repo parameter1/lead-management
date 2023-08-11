@@ -1,4 +1,5 @@
 import Route from '@ember/routing/route';
+import { inject } from '@ember/service';
 import { RouteQueryManager } from 'ember-apollo-client';
 import FormMixin from 'leads-manage/mixins/form-mixin';
 import { get } from '@ember/object';
@@ -6,6 +7,7 @@ import { get } from '@ember/object';
 import mutation from 'leads-manage/gql/mutations/campaign/create';
 
 export default Route.extend(RouteQueryManager, FormMixin, {
+  config: inject(),
   model() {
     return {
       maxIdentities: 200,
@@ -13,11 +15,21 @@ export default Route.extend(RouteQueryManager, FormMixin, {
         start: null,
         end: null,
       },
+      showAdvertiserCTOR: this.config.getSetting('advertiserCTORInitialVisibility', true),
+      showTotalAdClicksPerDay: this.config.getSetting('totalAdClicksPerDayInitialVisibility', true),
     };
   },
 
   actions: {
-    async create({ customer, salesRep, name, range, maxIdentities }) {
+    async create({
+      customer,
+      salesRep,
+      name,
+      range,
+      maxIdentities,
+      showAdvertiserCTOR,
+      showTotalAdClicksPerDay,
+    }) {
       try {
         this.startRouteAction();
         const customerId = get(customer || {}, 'id');
@@ -33,6 +45,8 @@ export default Route.extend(RouteQueryManager, FormMixin, {
           startDate: range.start.valueOf(),
           endDate: range.end.valueOf(),
           maxIdentities: parseInt(maxIdentities, 10),
+          showAdvertiserCTOR,
+          showTotalAdClicksPerDay
         };
         const variables = { input };
         const response = await this.get('apollo').mutate({ mutation, variables }, 'createCampaign');
