@@ -1,5 +1,13 @@
 # Lead Management Monorepo
 
+## Releases
+This repo contains two projects -- the `manage` ember application, and the `monorepo`. Both of the versions for these projects must remain in sync.
+Before releasing the monorepo, check if changes to the ember application should be deployed. If so, increment the ember app's package.json version accordingly before releasing via lerna.
+
+For example, if the `monorepo` is at version `1.2.3`, the ember app is at `1.2.3`, and a new feature was added:
+1. Increment and commit the `version` in the `manage` application's `package.json` file manually to match the expected lerna version (`1.3.0`).
+2. Release the monorepo: `cd monorepo; lerna version minor`
+
 ## Omeda Migration Notes
 - [ ] need "click stream" api that can search for all click events during a certain date range
 - [ ] need to determine if the deployment name can be included in merge vars
