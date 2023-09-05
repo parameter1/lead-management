@@ -6,6 +6,7 @@ query LeadReportEmailMetrics($hash: String!, $sort: ReportEmailMetricsSortInput!
       id
       showAdvertiserCTOR
       showTotalAdClicksPerDay
+      showTotalUniqueClicks
     }
     deployments {
       deployment {

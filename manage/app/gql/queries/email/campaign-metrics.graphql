@@ -9,6 +9,7 @@ query EmailCampaignMetrics($input: AllCampaignsQueryInput = {}, $pagination: Pag
         maxIdentities
         showAdvertiserCTOR
         showTotalAdClicksPerDay
+        showTotalUniqueClicks
         salesRep {
           id
           givenName
