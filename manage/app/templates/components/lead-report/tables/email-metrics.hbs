@@ -18,7 +18,7 @@
     {{#if showTotalAdClicksPerDay}}
       <th>Total Ad Clicks per Day</th>
     {{/if}}
-    {{#if displayTotalUniqueClicks}}
+    {{#if showTotalUniqueClicks}}
       <th>Total Unique Clicks</th>
     {{/if}}
   </tr>
@@ -50,7 +50,7 @@
       {{#if showTotalAdClicksPerDay}}
         <td>{{ format-number row.clicks format="0,0" }}</td>
       {{/if}}
-      {{#if displayTotalUniqueClicks}}
+      {{#if showTotalUniqueClicks}}
         <td>{{ format-number row.identities format="0,0" }}</td>
       {{/if}}
     </tr>
@@ -76,7 +76,7 @@
     {{#if showTotalAdClicksPerDay}}
       <th>{{ format-number totals.clicks format="0,0" }}</th>
     {{/if}}
-    {{#if displayTotalUniqueClicks}}
+    {{#if showTotalUniqueClicks}}
       <th>{{ format-number totals.identities format="0,0" }}</th>
     {{/if}}
   </tr>
