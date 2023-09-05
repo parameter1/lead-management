@@ -26,6 +26,7 @@ export default Route.extend(FormMixin, RouteQueryManager, {
       maxIdentities,
       showAdvertiserCTOR,
       showTotalAdClicksPerDay,
+      showTotalUniqueClicks,
     }) {
       try {
         this.startRouteAction();
@@ -43,7 +44,8 @@ export default Route.extend(FormMixin, RouteQueryManager, {
           endDate: range.end.valueOf(),
           maxIdentities: parseInt(maxIdentities, 10),
           showAdvertiserCTOR,
-          showTotalAdClicksPerDay
+          showTotalAdClicksPerDay,
+          showTotalUniqueClicks
         };
         const input = { id, payload };
         const variables = { input };
