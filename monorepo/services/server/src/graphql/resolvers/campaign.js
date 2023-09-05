@@ -748,6 +748,7 @@ module.exports = {
         maxIdentities,
         showAdvertiserCTOR,
         showTotalAdClicksPerDay,
+        showTotalUniqueClicks,
       } = payload;
 
       const record = await Campaign.findOne({ _id: id || null, deleted: false });
@@ -761,6 +762,7 @@ module.exports = {
         maxIdentities: calcMax(auth, maxIdentities),
         showAdvertiserCTOR,
         showTotalAdClicksPerDay,
+        showTotalUniqueClicks,
       });
       return record.save();
     },
