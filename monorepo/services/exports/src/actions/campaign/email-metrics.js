@@ -27,6 +27,7 @@ const QUERY = gql`
         id
         showAdvertiserCTOR
         showTotalAdClicksPerDay
+        showTotalUniqueClicks
       }
       deployments {
         identities
@@ -67,6 +68,7 @@ module.exports = async (params = {}, { context }) => {
   const { data } = await apollo.query({ query: QUERY, variables });
   const showAdvertiserCTOR = get(data, 'reportEmailMetrics.campaign.showAdvertiserCTOR');
   const showTotalAdClicksPerDay = get(data, 'reportEmailMetrics.campaign.showTotalAdClicksPerDay');
+  const showTotalUniqueClicks = get(data, 'reportEmailMetrics.campaign.showTotalUniqueClicks');
 
   const rows = getAsArray(data, 'reportEmailMetrics.deployments').map((row) => {
     const { deployment } = row;
@@ -81,7 +83,7 @@ module.exports = async (params = {}, { context }) => {
       CTR: metrics.clickToDeliveredRate * 100,
       ...(showAdvertiserCTOR && { 'Advertiser CTR': row.advertiserClickRate * 100 }),
       ...(showTotalAdClicksPerDay && { 'Total Ad Clicks per Day': row.clicks }),
-      'Total Unique Clicks': row.identities,
+      ...(showTotalUniqueClicks && { 'Total Unique Clicks': row.identities }),
       // 'Preview URL': send.url,
     };
   });

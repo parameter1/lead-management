@@ -255,6 +255,11 @@ const schema = new Schema({
     required: true,
     default: true,
   },
+  showTotalUniqueClicks: {
+    type: Boolean,
+    required: true,
+    default: true,
+  },
   email: {
     type: emailSchema,
     default: {},

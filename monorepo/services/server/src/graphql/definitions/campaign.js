@@ -70,6 +70,7 @@ type Campaign {
   updatedAt: Date
   showAdvertiserCTOR: Boolean!
   showTotalAdClicksPerDay: Boolean!
+  showTotalUniqueClicks: Boolean!
 
   gamLineItems(input: CampaignGAMLineItemsInput = {}): GAM_LineItemConnection!
   gamLineItemReport: JSON
@@ -275,6 +276,7 @@ input UpdateCampaignPayloadInput {
   endDate: Date
   showAdvertiserCTOR: Boolean!
   showTotalAdClicksPerDay: Boolean!
+  showTotalUniqueClicks: Boolean!
 }
 
 input UpdateCampaignInput {

@@ -17,6 +17,7 @@ export default Route.extend(RouteQueryManager, FormMixin, {
       },
       showAdvertiserCTOR: this.config.getSetting('advertiserCTORInitialVisibility', true),
       showTotalAdClicksPerDay: this.config.getSetting('totalAdClicksPerDayInitialVisibility', true),
+      showTotalUniqueClicks: this.config.getSetting('totalUniqueClicksInitialVisibility', true),
     };
   },
 
@@ -29,6 +30,7 @@ export default Route.extend(RouteQueryManager, FormMixin, {
       maxIdentities,
       showAdvertiserCTOR,
       showTotalAdClicksPerDay,
+      showTotalUniqueClicks,
     }) {
       try {
         this.startRouteAction();
@@ -46,7 +48,8 @@ export default Route.extend(RouteQueryManager, FormMixin, {
           endDate: range.end.valueOf(),
           maxIdentities: parseInt(maxIdentities, 10),
           showAdvertiserCTOR,
-          showTotalAdClicksPerDay
+          showTotalAdClicksPerDay,
+          showTotalUniqueClicks
         };
         const variables = { input };
         const response = await this.get('apollo').mutate({ mutation, variables }, 'createCampaign');
