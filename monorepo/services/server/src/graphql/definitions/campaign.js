@@ -265,6 +265,7 @@ input CreateCampaignInput {
   endDate: Date
   showAdvertiserCTOR: Boolean!
   showTotalAdClicksPerDay: Boolean!
+  showTotalUniqueClicks: Boolean!
 }
 
 input UpdateCampaignPayloadInput {

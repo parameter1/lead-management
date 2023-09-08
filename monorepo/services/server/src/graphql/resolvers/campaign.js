@@ -696,6 +696,7 @@ module.exports = {
         maxIdentities,
         showAdvertiserCTOR,
         showTotalAdClicksPerDay,
+        showTotalUniqueClicks,
       } = input;
 
       const record = new Campaign({
@@ -707,6 +708,7 @@ module.exports = {
         maxIdentities: calcMax(auth, maxIdentities),
         showAdvertiserCTOR,
         showTotalAdClicksPerDay,
+        showTotalUniqueClicks,
       });
       return record.save();
     },
