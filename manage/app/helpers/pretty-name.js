@@ -7,7 +7,7 @@ export default Helper.extend({
   compute([unprettiedName]) {
     const config = this.get('config');
     if (['lynchm', 'indm'].includes(config.zone)) {
-      return unprettiedName.replace(/^.+-.+-/, '');
+      return unprettiedName.replace(/^.+?-.+?-/, '');
     }
     return unprettiedName;
   }
