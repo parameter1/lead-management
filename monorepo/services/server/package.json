@@ -1,6 +1,6 @@
 {
   "name": "@lead-management/server",
-  "version": "1.11.1",
+  "version": "1.11.2",
   "main": "src/index.js",
   "repository": "https://github.com/parameter1/lead-management.git",
   "author": "Jacob Bare <jacob@parameter1.com>",
@@ -17,8 +17,8 @@
     "@graphql-tools/delegate": "^7.1.5",
     "@graphql-tools/stitch": "^7.5.3",
     "@graphql-tools/wrap": "^7.0.8",
-    "@lead-management/sync": "^1.7.0",
-    "@lead-management/tenant-loader": "^1.7.0",
+    "@lead-management/sync": "^1.11.2",
+    "@lead-management/tenant-loader": "^1.11.2",
     "@parameter1/graphql-type-date": "^1.0.18",
     "@parameter1/graphql-type-objectid": "^1.0.16",
     "@parameter1/micro": "^1.1.19",
