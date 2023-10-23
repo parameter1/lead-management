@@ -11,6 +11,8 @@ const getFieldCount = (obj) => Object.keys(obj).filter((k) => obj[k]).length;
 const demoMap = new Map([
   [85, 'Industry'],
   [86, 'Job Function'],
+  [105, 'Industry'],
+  [106, 'Job Function'],
 ]);
 
 /**
