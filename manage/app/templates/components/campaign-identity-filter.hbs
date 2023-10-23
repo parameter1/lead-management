@@ -21,6 +21,14 @@
         <a class="dropdown-item" href="javascript:void(0);" {{action "addFilter" field}}>{{ field.label }}</a>
       {{/each}}
     </div>
+    <form enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="csv-file">Upload Exclusions as CSV</label>
+        <input class="form-control" name="file" type="file" id="csv-file" accept="text/csv" required>
+      </div>
+      <button type="submit" class="btn btn-success">
+        Append Uploaded Exclusions
+      </button>
+    </form>
   </div>
 </div>
-

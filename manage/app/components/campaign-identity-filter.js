@@ -1,7 +1,8 @@
 import Component from '@ember/component';
+import FormMixin from 'leads-manage/mixins/form-mixin';
 import { inject } from '@ember/service';
 
-export default Component.extend({
+export default Component.extend(FormMixin, {
   identityAttributes: inject(),
 
   title: 'Exclude Leads Where...',
