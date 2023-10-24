@@ -32,5 +32,28 @@ export default Component.extend(FormMixin, {
         };
       }));
     },
+    async appendExclusions(event) {
+      this.startAction()
+      try {
+        event.preventDefault()
+        const data = new FormData(event.target);
+        const r = await fetch('/append-exclusions-to-campaign', {
+          method: 'POST',
+          body: data,
+        });
+        if (!r.ok) {
+          const json = await r.json();
+          if (json && json.message) throw new Error(json.message);
+          throw new Error('A fatal error was encountered')
+        }
+        const jsonResponse = await r.json()
+        this.get('filters').pushObject(jsonResponse);
+        this.send('triggerChange');
+      } catch (e) {
+        this.get('graphErrors').show(e);
+      } finally {
+        this.endAction();
+      }
+    }
   },
 });
