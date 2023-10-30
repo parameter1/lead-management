@@ -25,15 +25,22 @@ router.post('/', upload.single('file'), asyncRoute(async (req, res) => {
   let fieldName;
   Object.keys(rows[0]).forEach((k) => {
     const cleaned = slug(k.trim()).replace(/-/g, '');
-    if (/^suppress/.test(cleaned)) {
+    if (/^suppress$/.test(cleaned)) {
       if (fieldName) throw createError(400, 'More than one suppress column was found the provided file.');
       fieldName = k;
     }
   });
   if (!fieldName) throw createError(400, 'Unable to find a suppress column in the provided file.');
   const suppressions = rows.reduce((set, row) => {
-    const value = row[fieldName].trim().toLowerCase();
-    if (value) set.add(value);
+    let value = row[fieldName].trim().toLowerCase();
+    if (value) {
+      // Opted for the "crudest" e-mail RegEx, there is NOT a "good" RegEx for this purpose
+      if (value.match(/^.+?@.+?\..+$/)) set.add(value);
+      if (value.match(/^http(s?):\/\//)) value = value.replace(/^http(s?):\/\//, '');
+      if (value.match(/^mailto:/)) value = value.replace(/^mailto:/, '');
+      if (value.match(/www\./)) value = value.replace(/www\./, '');
+      if (value) set.add(value.split('/').slice(0, 1).pop());
+    }
     return set;
   }, new Set());
 
