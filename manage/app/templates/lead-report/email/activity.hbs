@@ -12,7 +12,9 @@
       <table class="table table-sm table-striped mb-0">
         <thead>
           <tr>
-            <th>Last Clicked</th>
+            {{#if showLastClicked}}
+              <th>Last Clicked</th>
+            {{/if}}
             <th>Email Address</th>
             <th>Deployment</th>
             <th>Sent At</th>
@@ -23,7 +25,9 @@
         <tbody>
           {{#each fetch.nodes as |node|}}
             <tr>
-              <td>{{moment-format node.last "MMM Do, YYYY @ h:mma"}}</td>
+              {{#if showLastClicked}}
+                <td>{{moment-format node.last "MMM Do, YYYY @ h:mma"}}</td>
+              {{/if}}
               <td>
                 {{#if showEmail}}
                   <a href="#" {{action "displayIdentityModal" node.identity}}>
