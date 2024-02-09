@@ -1,4 +1,5 @@
 module.exports = [
+  { key: 'last', label: 'Last Clicked' },
   { key: 'emailAddress', label: 'Email' },
   { key: 'givenName', label: 'First Name' },
   { key: 'familyName', label: 'Last Name' },
