@@ -156,7 +156,7 @@ const emailSchema = new Schema({
   ],
   excludeFields: {
     type: [String],
-    default: ['phoneNumber'],
+    default: ['phoneNumber', 'last'],
   },
   allowedLinkTypes: {
     type: [String],
