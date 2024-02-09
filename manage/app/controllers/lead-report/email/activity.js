@@ -7,6 +7,11 @@ export default Controller.extend({
     return true;
   }),
 
+  showLastClicked: computed('campaign.email.excludeFields.[]', function() {
+    if (this.get('campaign.email.excludeFields').includes('last')) return false;
+    return true;
+  }),
+
   init() {
     this._super(...arguments);
     this.set('iframe', {
