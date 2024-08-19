@@ -18,7 +18,7 @@ const getValidClickCriteria = (tenant, startDate) => {
   const codes = getAsArray(tenant, 'doc.omeda.disallowedUnrealClickCodes');
   if (
     startDate
-    && (Number(startDate) >= Number(new Date('07/01/2024')))
+    && (Number(startDate) >= Number(new Date('06/01/2024')))
     && ['lynchm', 'indm'].includes(tenant.key)
   ) {
     codes.push(...[1, 3, 10]);
