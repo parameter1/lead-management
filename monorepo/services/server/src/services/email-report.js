@@ -21,7 +21,7 @@ const getValidClickCriteria = (tenant, startDate) => {
     && (Number(startDate) >= Number(new Date('06/01/2024')))
     && ['lynchm', 'indm'].includes(tenant.key)
   ) {
-    codes.push(10);
+    codes.push(...[1, 3);
   }
   if (codes.length) {
     return {
