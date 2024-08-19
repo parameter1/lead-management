@@ -13,9 +13,16 @@ const {
 
 const { isArray } = Array;
 
-const getValidClickCriteria = (tenant) => {
+const getValidClickCriteria = (tenant, startDate) => {
   if (!tenant) throw new Error('Tenant configuration was not passed!');
   const codes = getAsArray(tenant, 'doc.omeda.disallowedUnrealClickCodes');
+  if (
+    startDate
+    && (Number(startDate) >= Number(new Date('07/01/2024')))
+    && ['lynchm', 'indm'].includes(tenant.key)
+  ) {
+    codes.push(...[1, 3, 10]);
+  }
   if (codes.length) {
     return {
       $or: [
@@ -112,7 +119,7 @@ module.exports = {
       date: { $gte: campaign.startDate },
       url: { $in: urlIds },
       dep: { $in: deploymentEntities },
-      ...getValidClickCriteria(tenant),
+      ...getValidClickCriteria(tenant, campaign.startDate),
     };
 
     const pipeline = [];
