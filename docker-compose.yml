@@ -1,4 +1,6 @@
-version: '3.7'
+x-env-defaults: &env
+  NODE_ENV: development
+  YARN_CACHE_FOLDER: /.yarn-cache
 
 x-node: &node
   tty: true
@@ -10,6 +12,21 @@ x-node: &node
     - ./monorepo:/monorepo:cached
     - ./monorepo/node_modules:/monorepo/node_modules:delegated
     - yarn-cache:/.yarn-cache
+
+x-node-full: &node-full
+  tty: true
+  init: true
+  image: node:14.14
+  working_dir: /monorepo
+  volumes:
+    - ~/.gitconfig:/etc/gitconfig
+    - ~/.ssh/id_rsa:/root/.ssh/id_rsa
+    - ~/.npmrc:/root/.npmrc
+    - ./monorepo:/monorepo:cached
+    - ./monorepo/node_modules:/monorepo/node_modules:delegated
+    - yarn-cache:/.yarn-cache
+  environment:
+    <<: *env
 
 x-ember-defaults: &ember
   tty: true
@@ -123,6 +140,10 @@ services:
       <<: *node-env
       DESTINATION_MONGO_URI: ${MIGRATE_DESTINATION_MONGO_URI}
       SOURCE_MONGO_URI: ${MIGRATE_SOURCE_MONGO_URI}
+
+  bash:
+    <<: *node-full
+    entrypoint: ["/bin/bash"]
 
   sync:
     <<: *node
