@@ -38,10 +38,12 @@ const extractUrlId = require('../utils/extract-url-id');
  * @prop {Date} date
  * @prop {number} n
  * @prop {Map<OmailUnrealClickReason, InvalidMappedClick>} [invalid]
+ * @prop {number} [time]
  *
  * @typedef InvalidMappedClick
  * @prop {Date} date
  * @prop {number} n
+ * @prop {number} [time]
  *
  * @typedef UpsertClickFilter
  * @prop {import("mongodb").ObjectId} url
@@ -64,6 +66,7 @@ const createUpsertOpFrom = (mapped) => {
           date: mapped.date,
           n: mapped.n,
           ...(invalid && { invalid: [...invalid].map(([code, click]) => ({ code, ...click })) }),
+          ...(mapped.time && { time: mapped.time }),
         },
       },
       upsert: true,
@@ -89,7 +92,27 @@ module.exports = async (params = {}) => {
   const tenant = await loadTenant({ key: tenantKey });
   const { db, omeda } = tenant;
 
-  const items = await loadDeploymentClicks({ trackIds }, tenant);
+  const [items, deploymentSentDateMap] = await Promise.all([
+    loadDeploymentClicks({ trackIds }, tenant),
+    (async () => {
+      const map = new Map();
+      const entities = trackIds.map((trackId) => omeda.entity.deployment({ trackId }));
+      const fromDatabase = await db.collection('omeda-email-deployments').aggregate([
+        { $match: { entity: { $in: entities } } },
+        { $project: { _id: 0, TrackId: '$omeda.TrackId', SentDate: '$omeda.SentDate' } },
+      ]).toArray();
+      fromDatabase.forEach((doc) => map.set(doc.TrackId, doc.SentDate));
+
+      const missingIds = trackIds.filter((trackId) => !map.has(trackId));
+      if (missingIds.length) {
+        await Promise.all(trackIds.map(async (trackId) => {
+          const { data } = await omeda.resource('email').lookupDeploymentById({ trackId });
+          map.set(data.TrackId, data.SentDate);
+        }));
+      }
+      return map;
+    })(),
+  ]);
 
   /**
    *
@@ -111,6 +134,18 @@ module.exports = async (params = {}) => {
   const encryptedCustomerIds = new Set();
   const identityRecords = new Map();
   items.forEach(({ data, entity }) => {
+    /** @type {Date|undefined} */
+    const sentDate = deploymentSentDateMap.get(data.TrackId);
+
+    /**
+     * @param {Date} [date]
+     * @returns {number}
+     */
+    const getTimeSince = (date) => {
+      if (!date) return null;
+      return (date.valueOf() - sentDate.valueOf()) / 1000;
+    };
+
     getAsArray(data, 'splits').forEach((split) => {
       getAsArray(split, 'links').forEach((link) => {
         const urlId = extractUrlId(link.LinkURL);
@@ -175,6 +210,7 @@ module.exports = async (params = {}) => {
           mapped.filter = getUpsertFilter(click);
           mapped.date = click.ClickDate;
           mapped.n = click.NumberOfClicks;
+          if (sentDate) mapped.time = getTimeSince(click.ClickDate);
           clickMap.set(key, mapped);
         });
 
@@ -184,14 +220,15 @@ module.exports = async (params = {}) => {
           unrealClicks.forEach((click) => {
             addCustomer(click);
 
-            /** @type {MappedClick} */
             const key = getClickKey(click);
+            /** @type {MappedClick} */
             const mapped = clickMap.get(key) || {};
             mapped.filter = getUpsertFilter(click);
             if (!mapped.n) mapped.n = 0;
             if (!mapped.date) {
               const [mostRecent] = click.UnrealClicks.sort((a, b) => b.ClickDate - a.ClickDate);
               mapped.date = mostRecent.ClickDate;
+              mapped.time = getTimeSince(mostRecent.ClickDate);
             }
             const invalid = mapped.invalid || new Map();
             click.UnrealClicks.forEach((detail) => {
@@ -199,6 +236,7 @@ module.exports = async (params = {}) => {
               invalid.set(code, {
                 date: detail.ClickDate,
                 n: detail.NumberOfUnrealClicks,
+                ...(sentDate && { time: getTimeSince(detail.ClickDate) }),
               });
             });
             mapped.invalid = invalid;
