@@ -1,23 +1,16 @@
 const Joi = require('@parameter1/joi');
 
-const {
-  array,
-  attempt,
-  number,
-  object,
-} = Joi;
-
-const unrealClickCodeProp = number().min(1).max(10);
-const unrealClickCodesProp = array().items(unrealClickCodeProp);
+const unrealClickCodeProp = Joi.number().min(1).max(10);
+const unrealClickCodesProp = Joi.array().items(unrealClickCodeProp);
 
 const validators = {
   /** @type {ObjectSchema<BuildClickFilterParams>} */
-  buildClickFilter: object({
+  buildClickFilter: Joi.object({
     allowedUnrealCodes: unrealClickCodesProp,
-    usingClicksSinceSentTime: object({
+    usingClicksSinceSentTime: Joi.object({
       allowedUnrealCodesAfter: unrealClickCodesProp,
       allowedUnrealCodesBefore: unrealClickCodesProp,
-      seconds: number().integer().min(0),
+      seconds: Joi.number().integer().min(0),
     }),
   }).default().max(1),
 };
@@ -45,7 +38,7 @@ const buildClickFilter = (params) => {
   const {
     allowedUnrealCodes,
     usingClicksSinceSentTime,
-  } = attempt(params, validators.buildClickFilter);
+  } = Joi.attempt(params, validators.buildClickFilter);
 
   if (allowedUnrealCodes) {
     // allow real clicks or, optionally, unreal clicks with the specified codes
