@@ -7,7 +7,7 @@ const validators = {
   /** @type {ObjectSchema<BuildClickFilterParams>} */
   buildClickFilter: Joi.object({
     allowedUnrealCodes: unrealClickCodesProp,
-    usingClicksSinceSentTime: Joi.object({
+    sinceSentTime: Joi.object({
       allowedUnrealCodesAfter: unrealClickCodesProp,
       allowedUnrealCodesBefore: unrealClickCodesProp,
       seconds: Joi.number().integer().min(0),
@@ -37,7 +37,7 @@ const buildClickFilter = (params) => {
   /** @type {BuildClickFilterParams} */
   const {
     allowedUnrealCodes,
-    usingClicksSinceSentTime,
+    sinceSentTime,
   } = Joi.attempt(params, validators.buildClickFilter);
 
   if (allowedUnrealCodes) {
@@ -45,22 +45,22 @@ const buildClickFilter = (params) => {
     return realOrMaybeUnrealClicks(allowedUnrealCodes);
   }
 
-  if (usingClicksSinceSentTime) {
+  if (sinceSentTime) {
     return {
       $or: [
         // include valid clicks after the seconds threshold
         {
           // click must occur after the threshold
-          time: { $gt: usingClicksSinceSentTime.seconds },
+          time: { $gt: sinceSentTime.seconds },
           // allow real clicks or, optionally, unreal clicks with the specified codes
-          ...realOrMaybeUnrealClicks(usingClicksSinceSentTime.allowedUnrealCodesAfter),
+          ...realOrMaybeUnrealClicks(sinceSentTime.allowedUnrealCodesAfter),
         },
         // include valid clicks before the seconds threshold
         {
           // click must occur before and up-to the threshold
-          time: { $lte: usingClicksSinceSentTime.seconds },
+          time: { $lte: sinceSentTime.seconds },
           // allow real clicks or, optionally, unreal clicks with the specified codes
-          ...realOrMaybeUnrealClicks(usingClicksSinceSentTime.allowedUnrealCodesBefore),
+          ...realOrMaybeUnrealClicks(sinceSentTime.allowedUnrealCodesBefore),
         },
       ],
     };
@@ -77,7 +77,7 @@ module.exports = { buildClickFilter };
  * @prop {UnrealClickCode[]} [allowedUnrealCodes] The allowed unreal click codes to treat as real.
  * If an empty array, no unreal clicks will be allowed in the results. Any codes in this array will
  * be treated as real and _included/allowed_ in results.
- * @prop {BuildClickFilterTimeParams} [usingClicksSinceSentTime] Uses seconds since a click occured
+ * @prop {BuildClickFilterTimeParams} [sinceSentTime] Uses seconds since a click occured
  * after the deployment sent time to determine which clicks should be deemed valid.
  *
  * @typedef BuildClickFilterTimeParams
