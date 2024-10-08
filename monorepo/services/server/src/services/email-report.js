@@ -144,14 +144,20 @@ module.exports = {
 
   getEmailDomainAggregationStages() {
     const publicDomains = [
+      'aol.com',
+      'apple.com',
+      'att.net',
+      'bellsouth.net',
+      'comcast.net',
       'gmail.com',
       'googlemail.com',
-      'yahoo.com',
       'hotmail.com',
+      'icloud.com',
       'msn.com',
       'outlook.com',
-      'icloud.com',
-      'aol.com',
+      'sbcglobal.net',
+      'verizon.net',
+      'yahoo.com',
     ];
 
     return [
