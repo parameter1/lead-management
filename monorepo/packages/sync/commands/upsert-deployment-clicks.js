@@ -3,6 +3,7 @@ const { ObjectId } = require('@lead-management/mongodb');
 const { getAsArray } = require('@parameter1/utils');
 const { validateAsync } = require('@parameter1/joi/utils');
 const loadTenant = require('@lead-management/tenant-loader');
+const { createHash } = require('crypto');
 
 const loadDeploymentClicks = require('../ops/load-deployment-clicks');
 const extractUrlId = require('../utils/extract-url-id');
@@ -53,20 +54,26 @@ const extractUrlId = require('../utils/extract-url-id');
  */
 
 /**
- * @param {MappedClick} mapped
+ * @param {object} params
+ * @param {Date} params.asOf
+ * @param {string} params.hash
+ * @param {MappedClick} params.mapped
  */
-const createUpsertOpFrom = (mapped) => {
+const createUpsertOpFrom = ({ asOf, hash, mapped }) => {
   const { filter, invalid } = mapped;
+
   return {
     updateOne: {
       filter,
       update: {
         $setOnInsert: filter,
         $set: {
+          asOf,
           date: mapped.date,
+          hash,
+          invalid: invalid ? [...invalid].map(([code, click]) => ({ code, ...click })) : [],
           n: mapped.n,
-          ...(invalid && { invalid: [...invalid].map(([code, click]) => ({ code, ...click })) }),
-          ...(mapped.time && { time: mapped.time }),
+          time: mapped.time || null,
         },
       },
       upsert: true,
@@ -91,6 +98,8 @@ module.exports = async (params = {}) => {
 
   const tenant = await loadTenant({ key: tenantKey });
   const { db, omeda } = tenant;
+
+  const asOf = new Date();
 
   const [items, deploymentSentDateMap] = await Promise.all([
     loadDeploymentClicks({ trackIds }, tenant),
@@ -133,9 +142,15 @@ module.exports = async (params = {}) => {
   const eventOps = [];
   const encryptedCustomerIds = new Set();
   const identityRecords = new Map();
+
+  /** @type {Map<string, Set<string>>} */
+  const deploymentClickHashMap = new Map();
+
   items.forEach(({ data, entity }) => {
     /** @type {Date|undefined} */
     const sentDate = deploymentSentDateMap.get(data.TrackId);
+
+    deploymentClickHashMap.set(entity, new Set());
 
     /**
      * @param {Date} [date]
@@ -204,8 +219,8 @@ module.exports = async (params = {}) => {
         clicks.forEach((click) => {
           addCustomer(click);
 
-          /** @type {MappedClick} */
           const key = getClickKey(click);
+          /** @type {MappedClick} */
           const mapped = clickMap.get(key) || {};
           mapped.filter = getUpsertFilter(click);
           mapped.date = click.ClickDate;
@@ -244,12 +259,20 @@ module.exports = async (params = {}) => {
           });
         }
 
-        clickMap.forEach((mapped) => {
-          eventOps.push(createUpsertOpFrom(mapped));
+        clickMap.forEach((mapped, key) => {
+          const hash = createHash('sha1').update(key).digest('hex');
+          deploymentClickHashMap.get(entity).add(hash);
+          eventOps.push(createUpsertOpFrom({ hash, mapped, asOf }));
         });
       });
     });
   });
   if (eventOps.length) await db.collection('omeda-email-clicks').bulkWrite(eventOps);
+  // remove any clicks that no longer appear in omeda
+  // it's been found that some clicks can "disappear" from this API call
+  await Promise.all([...deploymentClickHashMap].map(async ([dep, hashSet]) => {
+    const filter = { dep, hash: { $nin: [...hashSet] } };
+    await db.collection('omeda-email-clicks').deleteMany(filter);
+  }));
   return { eventOps, encryptedCustomerIds, identityRecords };
 };
