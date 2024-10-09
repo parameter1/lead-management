@@ -100,7 +100,7 @@ module.exports = {
       url: { $in: urlIds },
       dep: { $in: deploymentEntities },
       date: { $gte: lineitem.range.start, $lte: this.getEndDate(lineitem) },
-      ...emailCampaignReport.getValidClickCriteria(tenant, lineitem.range.start),
+      ...emailCampaignReport.getValidClickCriteria({ tenant, startDate: lineitem.range.start }),
     };
 
     const pipeline = [];
