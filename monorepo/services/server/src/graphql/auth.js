@@ -41,3 +41,7 @@ class Auth {
 }
 
 module.exports = Auth;
+
+/**
+ * @typedef {Auth} Auth
+ */

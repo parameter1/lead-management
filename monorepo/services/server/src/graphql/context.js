@@ -20,6 +20,7 @@ module.exports = async ({ req }) => {
     customClickFilter = { allowLegacy: true, secondsSinceSentTime };
   }
 
+  /** @type {LeadsGraphQLContext} */
   return {
     ...(customClickFilter && { customClickFilter }),
     tenant,
@@ -30,3 +31,14 @@ module.exports = async ({ req }) => {
     brightcove,
   };
 };
+
+/**
+ * @typedef LeadsGraphQLContext
+ * @prop {import("../utils/email-clicks").BuildClickFilterParams} [customClickFilter]
+ * @prop {import("./auth").Auth} [auth]
+ * @prop {import("../brightcove/api/index").BrightcoveApis} brightcove
+ * @prop {import("./schema/gam/executor").GAMExecutorFunc} gam
+ * @prop {import("./dataloaders").LeadsGraphQLDataLoaders} loaders
+ * @prop {string} host
+ * @prop {import("@lead-management/tenant-loader").LeadsTenant} tenant
+ */
