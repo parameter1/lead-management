@@ -38,6 +38,27 @@ const buildClickFilter = (params) => {
   const { secondsSinceSentTime } = Joi.attempt(params, validators.buildClickFilter);
 
   if (secondsSinceSentTime) {
+    // this is a hack to preserve the slightly incorrect querying of the legacy filter
+    if (secondsSinceSentTime[0] && Object.keys(secondsSinceSentTime).length === 1) {
+      const { allowUnrealCodes: codes = [] } = secondsSinceSentTime[0];
+      if (codes.length === 1 && codes.includes(10)) {
+        return {
+          $or: [
+            { 'invalid.0': { $exists: false } },
+            { 'invalid.code': { $nin: [1, 2, 3, 4, 5, 6, 7, 8, 9] } },
+          ],
+        };
+      }
+      if (codes.every((code) => [1, 3, 10].includes(code))) {
+        return {
+          $or: [
+            { 'invalid.0': { $exists: false } },
+            { 'invalid.code': { $nin: [2, 4, 5, 6, 7, 8, 9] } },
+          ],
+        };
+      }
+    }
+
     const keys = Object.keys(secondsSinceSentTime);
     if (!keys.length) return onlyRealClicks();
 
