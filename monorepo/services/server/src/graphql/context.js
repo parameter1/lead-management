@@ -17,7 +17,7 @@ module.exports = async ({ req }) => {
       ...o,
       [key]: { allowUnrealCodes: query[key].split(',').filter((v) => v) },
     }), {});
-    customClickFilter = { secondsSinceSentTime };
+    customClickFilter = { allowLegacy: true, secondsSinceSentTime };
   }
 
   return {

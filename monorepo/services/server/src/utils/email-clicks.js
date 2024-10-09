@@ -6,6 +6,7 @@ const unrealClickCodesProp = Joi.array().items(unrealClickCodeProp);
 const validators = {
   /** @type {ObjectSchema<BuildClickFilterParams>} */
   buildClickFilter: Joi.object({
+    allowLegacy: Joi.boolean(),
     secondsSinceSentTime: Joi.object().pattern(
       Joi.number().integer().min(0).required(),
       Joi.object({
@@ -35,11 +36,11 @@ const realAndMaybeUnrealClicks = (codes) => {
  */
 const buildClickFilter = (params) => {
   /** @type {BuildClickFilterParams} */
-  const { secondsSinceSentTime } = Joi.attempt(params, validators.buildClickFilter);
+  const { allowLegacy, secondsSinceSentTime } = Joi.attempt(params, validators.buildClickFilter);
 
   if (secondsSinceSentTime) {
     // this is a hack to preserve the slightly incorrect querying of the legacy filter
-    if (secondsSinceSentTime[0] && Object.keys(secondsSinceSentTime).length === 1) {
+    if (allowLegacy && secondsSinceSentTime[0] && Object.keys(secondsSinceSentTime).length === 1) {
       const { allowUnrealCodes: codes = [] } = secondsSinceSentTime[0];
       if (codes.length === 1 && codes.includes(10)) {
         return {
@@ -95,13 +96,14 @@ const buildClickFilter = (params) => {
   }
 
   // only allow real clicks to be returned when no options have been provided.
-  return onlyRealClicks();
+  return allowLegacy ? { n: { $gt: 0 }, 'invalid.0': { $exists: false } } : onlyRealClicks();
 };
 
 module.exports = { buildClickFilter };
 
 /**
  * @typedef BuildClickFilterParams
+ * @prop {boolean} [allowLegacy] Whether legacy filter rules can override the default query logic.
  * @prop {Record<number, ClickFilterSecondsSinceSentTime>} [secondsSinceSentTime] An object keyed by
  * the number of seconds to use as the threshold for etermining when a click should be treated as
  * valid.
