@@ -1,7 +1,54 @@
+{{#if displayClickFilterOptions}}
+  <div class="row">
+    <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
+      <form class="card mb-3" {{action "applyFilterRules" on="submit"}}>
+        <div class="card-header">
+          <strong>Test Click Filter Settings</strong>
+        </div>
+        <div class="card-body">
+          <p class="card-text">
+            Use these values for <em>testing purposes only</em>. Do not share the URL in the browser with advertisers.
+          </p>
+          {{#each this.model.clickFilterRules key="@index" as |rule index|}}
+            <div class="d-flex align-items-center">
+              <div class="form-group mr-3">
+                <label>
+                  <div class="ml-1 mr-1 mb-1">Seconds since sent</div>
+                  {{input class="form-control" type="number" min="0" required=true value=rule.seconds}}
+                </label>
+              </div>
+              <div class="form-group mr-3">
+                <label>
+                  <div class="ml-1 mr-1 mb-1">Allow unreal codes</div>
+                  {{input class="form-control" value=rule.allowUnrealCodes}}
+                </label>
+              </div>
+              <button {{action "removeFilterRule" index}} class="btn btn-danger" title="Remove this click filter rule" type="button">
+                {{entypo-icon "cross"}}
+              </button>
+            </div>
+          {{/each}}
+          <div>
+            <button class="btn btn-primary" {{action "addNewFilterRule"}} type="button">
+              {{entypo-icon "plus"}}
+              Add Rule
+            </button>
+          </div>
+        </div>
+        <div class="card-footer d-flex justify-content-end">
+          <button class="btn btn-success" type="submit">
+            {{entypo-icon "check"}}
+            Apply
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+{{/if}}
 <div class="row mb-3">
   <div class="col">
     <p class="mb-0">
-      {{lead-report-download action="campaign.emailLeads" hash=model.hash name="Email Leads"}}
+      {{lead-report-download action="campaign.emailLeads" hash=model.campaign.hash name="Email Leads"}}
     </p>
     <small class="text-muted">
       Note: Metrics reflect total clicks. Employee clicks for testing purposes and bad email addresses are removed from customer lead reports.
