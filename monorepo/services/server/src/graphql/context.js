@@ -8,8 +8,8 @@ module.exports = async ({ req }) => {
   const tenant = await loadTenant({ key: TENANT_KEY });
   const { query } = req;
 
-  let customClickFilter;
-  if (query.customClickFilter) {
+  let customClickFilterParams;
+  if (query.customClickFilterParams) {
     const secondsSinceSentTime = Object.keys(query).filter((key) => {
       if (!/\d+/.test(key)) return false;
       return parseInt(key, 10) >= 0;
@@ -17,12 +17,12 @@ module.exports = async ({ req }) => {
       ...o,
       [key]: { allowUnrealCodes: query[key].split(',').filter((v) => v) },
     }), {});
-    customClickFilter = { allowLegacy: true, secondsSinceSentTime };
+    customClickFilterParams = { allowLegacy: true, secondsSinceSentTime };
   }
 
   /** @type {LeadsGraphQLContext} */
   return {
-    ...(customClickFilter && { customClickFilter }),
+    ...(customClickFilterParams && { customClickFilterParams }),
     tenant,
     auth: req.auth,
     host: HOST_NAME,
@@ -34,7 +34,7 @@ module.exports = async ({ req }) => {
 
 /**
  * @typedef LeadsGraphQLContext
- * @prop {import("../utils/email-clicks").BuildClickFilterParams} [customClickFilter]
+ * @prop {import("../utils/email-clicks").BuildClickFilterParams} [customClickFilterParams]
  * @prop {import("./auth").Auth} [auth]
  * @prop {import("../brightcove/api/index").BrightcoveApis} brightcove
  * @prop {import("./schema/gam/executor").GAMExecutorFunc} gam

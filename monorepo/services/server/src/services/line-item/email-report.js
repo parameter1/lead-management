@@ -8,6 +8,7 @@ const {
   Order,
 } = require('../../mongodb/models');
 const emailCampaignReport = require('../email-report');
+const { buildClickFilter } = require('../../utils/email-clicks');
 
 const { isArray } = Array;
 
@@ -20,15 +21,24 @@ module.exports = {
    * 2. Has all required fields via the line items `requiredFields` setting.
    * 3. Is not filtered by the line item's `identityFilters` setting.
    *
-   * @param {*} lineitem
-   * @param {*} params
+   * @param {Record<string, any>} lineitem
+   * @param {LeadsTenant} tenant
+   * @param {object} params
+   * @param {BuildClickFilterParams} [params.customClickFilterParams]
+   * @param {string[]} params.deploymentEntities
+   * @param {import("mongodb").ObjectId[]} params.urlIds
    */
   async getQualifiedIdentityCount(lineitem, tenant, {
-    urlIds,
+    customClickFilterParams,
     deploymentEntities,
+    urlIds,
   }) {
     const [identityEntities, criteria] = await Promise.all([
-      this.getEligibleIdentityEntities(lineitem, tenant, { urlIds, deploymentEntities }),
+      this.getEligibleIdentityEntities(lineitem, tenant, {
+        customClickFilterParams,
+        deploymentEntities,
+        urlIds,
+      }),
       this.buildIdentityExclusionCriteria(lineitem),
     ]);
     criteria.entity = { $in: identityEntities };
@@ -41,13 +51,26 @@ module.exports = {
     };
   },
 
+  /**
+   * @param {Record<string, any>} lineitem
+   * @param {LeadsTenant} tenant
+   * @param {object} params
+   * @param {BuildClickFilterParams} [params.customClickFilterParams]
+   * @param {string[]} params.deploymentEntities
+   * @param {import("mongodb").ObjectId[]} params.urlIds
+   */
   async getActiveIdentityEntities(lineitem, tenant, {
-    urlIds,
+    customClickFilterParams,
     deploymentEntities,
+    urlIds,
   }) {
     const { requiredLeads } = lineitem;
     const [identityEntities, criteria] = await Promise.all([
-      this.getEligibleIdentityEntities(lineitem, tenant, { urlIds, deploymentEntities }),
+      this.getEligibleIdentityEntities(lineitem, tenant, {
+        customClickFilterParams,
+        deploymentEntities,
+        urlIds,
+      }),
       this.buildIdentityExclusionCriteria(lineitem, false),
     ]);
     criteria.entity = { $in: identityEntities };
@@ -56,27 +79,49 @@ module.exports = {
     return docs.map((doc) => doc.entity);
   },
 
+  /**
+   * @param {Record<string, any>} lineitem
+   * @param {LeadsTenant} tenant
+   * @param {object} params
+   * @param {BuildClickFilterParams} [params.customClickFilterParams]
+   * @param {string[]} params.deploymentEntities
+   * @param {import("mongodb").ObjectId[]} params.urlIds
+   */
   async getInactiveIdentityEntities(lineitem, tenant, {
-    urlIds,
+    customClickFilterParams,
     deploymentEntities,
+    urlIds,
   }) {
     const [identityEntities, criteria] = await Promise.all([
-      this.getEligibleIdentityEntities(lineitem, tenant, { urlIds, deploymentEntities }),
+      this.getEligibleIdentityEntities(lineitem, tenant, {
+        customClickFilterParams,
+        deploymentEntities,
+        urlIds,
+      }),
       this.buildIdentityExclusionCriteria(lineitem, true),
     ]);
     criteria.entity = { $in: identityEntities };
     return Identity.distinct('entity', criteria);
   },
 
-  async getClickEventIdentifiers(lineitem, tenant) {
+  /**
+   * @param {Record<string, any>} lineitem
+   * @param {LeadsTenant} tenant
+   * @param {object} params
+   * @param {BuildClickFilterParams} [params.customClickFilterParams]
+   */
+  async getClickEventIdentifiers(lineitem, tenant, {
+    customClickFilterParams,
+  } = {}) {
     const {
       urlIds,
       deploymentEntities,
     } = await this.getEligibleUrlsAndDeployments(lineitem);
 
     const identityEntities = await this.getActiveIdentityEntities(lineitem, tenant, {
-      urlIds,
+      customClickFilterParams,
       deploymentEntities,
+      urlIds,
     });
     return {
       identityEntities,
@@ -88,19 +133,29 @@ module.exports = {
   /**
    * Gets all eligible identity IDs, regardless if they qualify or not.
    *
-   * @param {*} lineitem
-   * @param {*} params
+   * @param {Record<string, any>} lineitem
+   * @param {LeadsTenant} tenant
+   * @param {object} params
+   * @param {BuildClickFilterParams} [params.customClickFilterParams]
+   * @param {string[]} params.deploymentEntities
+   * @param {import("mongodb").ObjectId[]} params.urlIds
    */
   async getEligibleIdentityEntities(lineitem, tenant, {
-    urlIds,
+    customClickFilterParams,
     deploymentEntities,
+    urlIds,
   } = {}) {
     const { enforceMaxEmailDomains } = lineitem;
+
+    const clickFilter = customClickFilterParams
+      ? buildClickFilter(customClickFilterParams)
+      : emailCampaignReport.getValidClickCriteria({ tenant, startDate: lineitem.range.start });
+
     const $match = {
       url: { $in: urlIds },
       dep: { $in: deploymentEntities },
       date: { $gte: lineitem.range.start, $lte: this.getEndDate(lineitem) },
-      ...emailCampaignReport.getValidClickCriteria({ tenant, startDate: lineitem.range.start }),
+      ...clickFilter,
     };
 
     const pipeline = [];
@@ -115,12 +170,22 @@ module.exports = {
     return result && result.entities ? result.entities : [];
   },
 
-  async buildExportPipeline(lineitem, tenant) {
+  /**
+   * @param {Record<string, any>} lineitem
+   * @param {LeadsTenant} tenant
+   * @param {object} params
+   * @param {BuildClickFilterParams} [params.customClickFilterParams]
+   */
+  async buildExportPipeline(lineitem, tenant, {
+    customClickFilterParams,
+  } = {}) {
     const {
       identityEntities,
       urlIds,
       deploymentEntities,
-    } = await this.getClickEventIdentifiers(lineitem, tenant);
+    } = await this.getClickEventIdentifiers(lineitem, tenant, {
+      customClickFilterParams,
+    });
 
     const $match = {
       idt: { $in: identityEntities },
@@ -320,3 +385,8 @@ module.exports = {
     return emailCampaignReport.buildEmailMetrics({ results, sort, deploymentEntities });
   },
 };
+
+/**
+ * @typedef {import("@lead-management/tenant-loader").LeadsTenant} LeadsTenant
+ * @typedef {import("../utils/email-clicks").BuildClickFilterParams} BuildClickFilterParams
+ */
