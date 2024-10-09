@@ -25,7 +25,7 @@
     "graphql-tag": "^2.12.4",
     "json2csv": "^5.0.6",
     "newrelic": "^7.4.0",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.7.0"
   },
   "devDependencies": {
     "@parameter1/gulp": "^1.1.17",
