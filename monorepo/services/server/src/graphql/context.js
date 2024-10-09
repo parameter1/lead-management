@@ -1,4 +1,5 @@
 const loadTenant = require('@lead-management/tenant-loader');
+const { parse } = require('querystring');
 const { HOST_NAME, TENANT_KEY } = require('../env');
 const loaders = require('./dataloaders');
 const brightcove = require('../brightcove/api');
@@ -6,10 +7,10 @@ const gam = require('./schema/gam/executor');
 
 module.exports = async ({ req }) => {
   const tenant = await loadTenant({ key: TENANT_KEY });
-  const { query } = req;
 
   let customClickFilterParams;
-  if (query.customClickFilterParams) {
+  if (req.get('x-custom-click-filter-query')) {
+    const query = parse(req.get('x-custom-click-filter-query'));
     const secondsSinceSentTime = Object.keys(query).filter((key) => {
       if (!/\d+/.test(key)) return false;
       return parseInt(key, 10) >= 0;
