@@ -27,7 +27,7 @@ const getValidClickCriteria = (tenant, startDate) => {
     return {
       $or: [
         { 'invalid.0': { $exists: false } },
-        { 'invalid.code': { $nin: codes } },
+        { 'invalid.code': { $nin: codes.sort((a, b) => a - b) } },
       ],
     };
   }
