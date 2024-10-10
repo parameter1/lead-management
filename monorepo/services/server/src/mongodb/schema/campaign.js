@@ -122,7 +122,22 @@ const adsSchema = new Schema({
   },
 });
 
+const clickRulesSchema = new Schema({
+  seconds: {
+    type: Number,
+    default: 0,
+    required: true,
+  },
+  allowUnrealCodes: {
+    type: [Number],
+    default: () => [],
+  },
+});
+
 const emailSchema = new Schema({
+  clickRules: [
+    { type: clickRulesSchema },
+  ],
   enabled: {
     type: Boolean,
     required: true,

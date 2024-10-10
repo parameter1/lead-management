@@ -122,6 +122,7 @@ type AdCampaign {
 
 type EmailCampaign {
   id: String!
+  clickRules: [EmailCampaignClickRule!]!
   enabled: Boolean!
   tags: [Tag]
   excludedTags: [Tag]
@@ -137,6 +138,11 @@ type EmailCampaign {
   urlGroups: [EmailCampaignUrlGroup!]!
   "Whether this email campaign has any eligible deployment data."
   hasDeployments: Boolean!
+}
+
+type EmailCampaignClickRule {
+  codes: [Int!]!
+  seconds: Int!
 }
 
 type IdentityAttribute {

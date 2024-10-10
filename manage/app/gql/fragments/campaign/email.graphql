@@ -1,5 +1,9 @@
 fragment EmailCampaignFragment on EmailCampaign {
   id
+  clickRules {
+    codes
+    seconds
+  }
   tags {
     id
     name

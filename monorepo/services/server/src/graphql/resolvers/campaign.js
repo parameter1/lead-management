@@ -266,7 +266,16 @@ module.exports = {
   /**
    *
    */
+  EmailCampaignClickRule: {
+    codes: ({ allowUnrealCodes }) => (Array.isArray(allowUnrealCodes) ? allowUnrealCodes : []),
+    seconds: ({ seconds }) => seconds || 0,
+  },
+
+  /**
+   *
+   */
   EmailCampaign: {
+    clickRules: ({ clickRules }) => (Array.isArray(clickRules) ? clickRules : []),
     tags: ({ tagIds }, _, { loaders }) => loaders.tag.loadMany(tagIds),
     excludedTags: ({ excludedTagIds }, _, { loaders }) => loaders.tag.loadMany(excludedTagIds),
 
