@@ -1,7 +1,7 @@
 fragment EmailCampaignFragment on EmailCampaign {
   id
   clickRules {
-    codes
+    allowUnrealCodes: codes
     seconds
   }
   tags {
