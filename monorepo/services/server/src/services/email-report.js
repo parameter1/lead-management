@@ -14,19 +14,40 @@ const { buildClickFilter } = require('../utils/email-clicks');
 
 const { isArray } = Array;
 
+const usesOmeda = new Set(['lynchm', 'indm']);
+
 /**
  * @param {object} params
- * @param {Date} [params.startDate]
+ * @param {Campaign} params.campaign
  * @param {LeadsTenant} params.tenant
  * @returns
  */
-const getValidClickCriteria = ({ startDate, tenant } = {}) => {
+const getValidClickCriteria = ({ campaign, tenant } = {}) => {
   if (!tenant) throw new Error('Tenant configuration was not passed!');
   const codes = getAsArray(tenant, 'doc.omeda.disallowedUnrealClickCodes');
+
+  if (campaign?.email?.clickRules?.length && usesOmeda.has(tenant.key)) {
+    /** @type {import("../utils/email-clicks").BuildClickFilterParams} */
+    const params = {
+      secondsSinceSentTime: campaign.email.clickRules
+        .reduce((o, { seconds, allowUnrealCodes }) => ({
+          ...o,
+          [seconds]: {
+            allowUnrealCodes: [
+              ...allowUnrealCodes,
+              ...(o[seconds] ? o[seconds].allowUnrealCodes : []),
+            ],
+          },
+        }), {}),
+    };
+    return buildClickFilter(params);
+  }
+
+  const startDate = campaign;
   if (
     startDate
     && (Number(startDate) >= Number(new Date('06/01/2024')))
-    && ['lynchm', 'indm'].includes(tenant.key)
+    && usesOmeda.has(tenant.key)
   ) {
     codes.push(1, 3);
   }
@@ -140,7 +161,7 @@ module.exports = {
 
     const clickFilter = customClickFilterParams
       ? buildClickFilter(customClickFilterParams)
-      : getValidClickCriteria({ tenant, startDate: campaign.startDate });
+      : getValidClickCriteria({ campaign, tenant });
 
     const $match = {
       date: { $gte: campaign.startDate },
