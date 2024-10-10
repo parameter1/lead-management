@@ -41,11 +41,11 @@
   <button {{action (mut isEditing) true}} class="card" type="button">
     <div class="card-body">
       <p class="mb-0 text-left">
-        When the most recent click is <strong>{{minutes}}</strong> minutes after the sent time, include clicks
+        When the most recent click is <strong>{{minutes}}</strong> minutes after the sent time,
         {{#if this.model.allowUnrealCodes.length}}
-          with unreal codes <strong>{{this.codesText}}</strong>
+          include clicks with unreal codes <strong>{{this.codesText}}</strong>
         {{else}}
-          <strong>without</strong> unreal codes
+          <strong>only</strong> include <strong>real</strong> clicks.
         {{/if}}
         in campaign reports.
       </p>
