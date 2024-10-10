@@ -1,6 +1,6 @@
 {
   "name": "@lead-management/mongodb",
-  "version": "1.11.2",
+  "version": "1.13.0",
   "main": "index.js",
   "repository": "https://github.com/parameter1/lead-management.git",
   "author": "Jacob Bare <jacob@parameter1.com>",
