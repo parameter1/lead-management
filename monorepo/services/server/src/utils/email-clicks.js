@@ -3,17 +3,19 @@ const Joi = require('@parameter1/joi');
 const unrealClickCodeProp = Joi.number().min(1).max(10);
 const unrealClickCodesProp = Joi.array().items(unrealClickCodeProp);
 
+const buildClickFilterSchema = Joi.object({
+  allowLegacy: Joi.boolean(),
+  secondsSinceSentTime: Joi.object().pattern(
+    Joi.number().integer().min(0).required(),
+    Joi.object({
+      allowUnrealCodes: unrealClickCodesProp,
+    }).required(),
+  ),
+}).default().label('buildClickFilter');
+
 const validators = {
   /** @type {ObjectSchema<BuildClickFilterParams>} */
-  buildClickFilter: Joi.object({
-    allowLegacy: Joi.boolean(),
-    secondsSinceSentTime: Joi.object().pattern(
-      Joi.number().integer().min(0).required(),
-      Joi.object({
-        allowUnrealCodes: unrealClickCodesProp,
-      }).required(),
-    ),
-  }).default().label('buildClickFilter'),
+  buildClickFilter: buildClickFilterSchema,
 };
 
 /**
@@ -104,7 +106,7 @@ const buildClickFilter = (params) => {
   return allowLegacy ? { n: { $gt: 0 }, 'invalid.0': { $exists: false } } : onlyRealClicks();
 };
 
-module.exports = { buildClickFilter };
+module.exports = { buildClickFilter, buildClickFilterSchema };
 
 /**
  * @typedef BuildClickFilterParams
