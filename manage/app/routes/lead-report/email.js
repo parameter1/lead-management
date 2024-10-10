@@ -20,7 +20,7 @@ export default Route.extend({
       .sort((a, b) => a - b)
       .map((seconds) => ({
         seconds,
-        allowUnrealCodes: query[seconds].split(',').filter((v) => v),
+        allowUnrealCodes: query[seconds].split(',').filter((v) => v).map((v) => parseInt(v, 10)),
       }));
 
       if (!clickFilterRules.find((entry) => entry.seconds === 0)) {

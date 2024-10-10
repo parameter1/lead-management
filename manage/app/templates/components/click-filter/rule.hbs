@@ -1,0 +1,31 @@
+<div class="card">
+  <div class="card-header">
+  </div>
+  <div class="card-body">
+    <div class="form-group">
+      <label class="form-label">
+        Seconds since sent
+      </label>
+      {{input
+        class="form-control"
+        min="0"
+        required=true
+        type="number"
+        value=this.model.seconds
+      }}
+    </div>
+
+    <div class="form-group">
+      <label>Allow unreal codes</label>
+      {{click-filter/unreal-code-select
+        onChange=(action "setAllowedCodes")
+        selected=this.model.allowUnrealCodes
+      }}
+    </div>
+  </div>
+  <div class="card-footer d-flex justify-content-end">
+    <button {{action onRemove}} class="btn btn-danger mt-auto mb-auto" title="Remove this click filter rule" type="button">
+      {{entypo-icon "cross"}} Remove
+    </button>
+  </div>
+</div>

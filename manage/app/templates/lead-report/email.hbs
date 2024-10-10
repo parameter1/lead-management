@@ -10,23 +10,11 @@
             Use these values for <em>testing purposes only</em>. Do not share the URL in the browser with advertisers.
           </p>
           {{#each this.model.clickFilterRules key="@index" as |rule index|}}
-            <div class="d-flex align-items-center">
-              <div class="form-group mr-3">
-                <label>
-                  <div class="ml-1 mr-1 mb-1">Seconds since sent</div>
-                  {{input class="form-control" type="number" min="0" required=true value=rule.seconds}}
-                </label>
-              </div>
-              <div class="form-group mr-3">
-                <label>
-                  <div class="ml-1 mr-1 mb-1">Allow unreal codes</div>
-                  {{input class="form-control" value=rule.allowUnrealCodes}}
-                </label>
-              </div>
-              <button {{action "removeFilterRule" index}} class="btn btn-danger" title="Remove this click filter rule" type="button">
-                {{entypo-icon "cross"}}
-              </button>
-            </div>
+            {{click-filter/rule
+              class="mb-4"
+              model=rule
+              onRemove=(action "removeFilterRule" index)
+            }}
           {{/each}}
           <div>
             <button class="btn btn-primary" {{action "addNewFilterRule"}} type="button">
