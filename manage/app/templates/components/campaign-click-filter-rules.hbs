@@ -9,7 +9,18 @@
           class="mb-3"
           disabled=isActionRunning
           model=rule
-          onRemove=(action "remove" rule)
+          onChange=(action "setTouched" true)
+          onRemove=(action "remove" rule false)
+        }}
+      {{/each}}
+      {{#each this.newRules as |rule|}}
+        {{click-filter/rule
+          class="mb-3"
+          disabled=isActionRunning
+          isEditing=true
+          model=rule
+          onChange=(action "setTouched" true)
+          onRemove=(action "remove" rule true)
         }}
       {{/each}}
       <div class="d-flex justify-content-between">

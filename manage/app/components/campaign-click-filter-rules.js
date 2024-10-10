@@ -15,15 +15,27 @@ export default Component.extend(ComponentQueryManager, ActionMixin, {
 
   show: computed.reads('user.isAdmin'),
 
+  init() {
+    this._super(...arguments);
+    this.set('newRules', []);
+  },
+
   actions: {
-    remove(rule) {
-      this.get('rules').removeObject(rule);
-      this.set('touched', true);
+    remove(rule, isNew) {
+      if (isNew) {
+        this.get('newRules').removeObject(rule);
+      } else {
+        this.get('rules').removeObject(rule);
+        this.set('touched', true);
+      }
     },
 
     add() {
-      this.get('rules').pushObject({ allowUnrealCodes: [] });
-      this.set('touched', true);
+      this.get('newRules').pushObject({ allowUnrealCodes: [] });
+    },
+
+    setTouched(value) {
+      this.set('touched', value);
     },
 
     async save() {
@@ -32,13 +44,17 @@ export default Component.extend(ComponentQueryManager, ActionMixin, {
 
         const input = {
           id: this.get('campaignId'),
-          rules: this.get('rules').map((rule) => ({
+          rules: [...this.get('rules'), ...this.get('newRules')].map((rule) => ({
             codes: rule.allowUnrealCodes || [],
             seconds: rule.seconds || 0,
           })),
         };
 
-        await this.get('apollo').mutate({ mutation, variables: { input } }, 'emailCampaignClickRules');
+        const { clickRules } = await this.get('apollo').mutate({ mutation, variables: { input } }, 'emailCampaignClickRules');
+        if (typeof this.onMutateComplete === 'function') {
+          this.onMutateComplete(clickRules);
+        }
+        this.set('newRules', []);
         this.set('touched', false);
       } catch (e) {
         this.get('graphErrors').show(e);

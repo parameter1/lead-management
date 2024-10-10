@@ -121,6 +121,7 @@
 
         {{campaign-click-filter-rules
           campaignId=model.id
+          onMutateComplete=(action (mut model.clickRules))
           rules=model.clickRules
         }}
 
