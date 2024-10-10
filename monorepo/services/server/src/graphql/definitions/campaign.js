@@ -24,6 +24,7 @@ extend type Mutation {
   cloneCampaign(input: ModelIdInput!): Campaign!
   deleteCampaign(input: ModelIdInput!): String!
 
+  emailCampaignClickRules(input: EmailCampaignClickRulesInput!): EmailCampaign!
   emailCampaignTags(input: EmailCampaignTagsInput!): EmailCampaign!
   emailCampaignExcludedTags(input: EmailCampaignExcludedTagsInput!): EmailCampaign!
   emailCampaignLinkTypes(input: EmailCampaignLinkTypesInput!): EmailCampaign!
@@ -289,6 +290,16 @@ input UpdateCampaignPayloadInput {
 input UpdateCampaignInput {
   id: String!
   payload: UpdateCampaignPayloadInput!
+}
+
+input EmailCampaignClickRulesInput {
+  id: String!
+  rules: [EmailCampaignClickRuleInput!]!
+}
+
+input EmailCampaignClickRuleInput {
+  codes: [Int!]!
+  seconds: Int!
 }
 
 input EmailCampaignTagsInput {
