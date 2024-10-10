@@ -50,7 +50,7 @@ const buildClickFilter = (params) => {
           ],
         };
       }
-      if (codes.every((code) => [1, 3, 10].includes(code))) {
+      if (codes.length && codes.every((code) => [1, 3, 10].includes(code))) {
         return {
           $or: [
             { 'invalid.0': { $exists: false } },
