@@ -3,27 +3,25 @@
     <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
       <form class="card mb-3" {{action "applyFilterRules" on="submit"}}>
         <div class="card-header">
-          <strong>Test Click Filter Settings</strong>
+          <strong>Test Custom Click Filter Rules</strong>
         </div>
         <div class="card-body">
           <p class="card-text">
-            Use these values for <em>testing purposes only</em>. Do not share the URL in the browser with advertisers.
+            Use these rules are for <em>testing purposes only</em>. Do not share the URL in the browser with advertisers.
           </p>
           {{#each this.model.clickFilterRules key="@index" as |rule index|}}
             {{click-filter/rule
-              class="mb-4"
+              class="mt-3"
               model=rule
               onRemove=(action "removeFilterRule" index)
             }}
           {{/each}}
-          <div>
-            <button class="btn btn-primary" {{action "addNewFilterRule"}} type="button">
-              {{entypo-icon "plus"}}
-              Add Rule
-            </button>
-          </div>
         </div>
-        <div class="card-footer d-flex justify-content-end">
+        <div class="card-footer d-flex justify-content-between">
+          <button class="btn btn-primary" {{action "addNewFilterRule"}} type="button">
+            {{entypo-icon "plus"}}
+            Add
+          </button>
           <button class="btn btn-success" type="submit">
             {{entypo-icon "check"}}
             Apply

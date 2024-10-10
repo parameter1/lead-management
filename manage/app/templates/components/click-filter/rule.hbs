@@ -3,24 +3,25 @@
   </div>
   <div class="card-body">
     <div class="form-group">
-      <label class="form-label">
-        Seconds since sent
-      </label>
+      <span class="d-block ml-1 mb-1">When the most recent click was</span>
       {{input
         class="form-control"
         min="0"
         required=true
         type="number"
-        value=this.model.seconds
+        value=minutes
       }}
+      <span class="d-block ml-1 mt-1">minutes after the sent time</span>
     </div>
 
-    <div class="form-group">
-      <label>Allow unreal codes</label>
+    <div class="form-group mb-0">
+      <span class="d-block ml-1 mb-1">Include clicks with unreal codes</span>
       {{click-filter/unreal-code-select
         onChange=(action "setAllowedCodes")
+        placeholder="(none)"
         selected=this.model.allowUnrealCodes
       }}
+      <span class="d-block ml-1 mt-1">in campaign reports</span>
     </div>
   </div>
   <div class="card-footer d-flex justify-content-end">
