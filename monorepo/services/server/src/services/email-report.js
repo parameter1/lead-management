@@ -10,16 +10,44 @@ const {
   OmedaEmailDeploymentUrl,
   OmedaEmailDeployment,
 } = require('../mongodb/models');
+const { buildClickFilter } = require('../utils/email-clicks');
 
 const { isArray } = Array;
 
-const getValidClickCriteria = (tenant, startDate) => {
+const usesOmeda = new Set(['lynchm', 'indm']);
+
+/**
+ * @param {object} params
+ * @param {Campaign} params.campaign
+ * @param {LeadsTenant} params.tenant
+ * @returns
+ */
+const getValidClickCriteria = ({ campaign, tenant } = {}) => {
   if (!tenant) throw new Error('Tenant configuration was not passed!');
   const codes = getAsArray(tenant, 'doc.omeda.disallowedUnrealClickCodes');
+
+  if (campaign?.email?.clickRules?.length && usesOmeda.has(tenant.key)) {
+    /** @type {import("../utils/email-clicks").BuildClickFilterParams} */
+    const params = {
+      secondsSinceSentTime: campaign.email.clickRules
+        .reduce((o, { seconds, allowUnrealCodes }) => ({
+          ...o,
+          [seconds]: {
+            allowUnrealCodes: [
+              ...allowUnrealCodes,
+              ...(o[seconds] ? o[seconds].allowUnrealCodes : []),
+            ],
+          },
+        }), {}),
+    };
+    return buildClickFilter(params);
+  }
+
+  const startDate = campaign;
   if (
     startDate
     && (Number(startDate) >= Number(new Date('06/01/2024')))
-    && ['lynchm', 'indm'].includes(tenant.key)
+    && usesOmeda.has(tenant.key)
   ) {
     codes.push(1, 3);
   }
@@ -27,7 +55,7 @@ const getValidClickCriteria = (tenant, startDate) => {
     return {
       $or: [
         { 'invalid.0': { $exists: false } },
-        { 'invalid.code': { $nin: codes } },
+        { 'invalid.code': { $nin: codes.sort((a, b) => a - b) } },
       ],
     };
   }
@@ -42,17 +70,20 @@ module.exports = {
 
   /**
    * @param {Campaign} campaign
+   * @param {LeadsTenant} tenant
    * @param {object} options
+   * @param {BuildClickFilterParams} [options.customClickFilterParams]
    * @param {boolean} [options.suppressInactives=true]
    * @param {boolean} [options.enforceMaxIdentities=true]
    * @param {Date} [options.starting]
    * @param {Date} [options.ending]
    */
   async getClickEventIdentifiers(campaign, tenant, {
-    suppressInactives = true,
+    customClickFilterParams,
+    ending,
     enforceMaxIdentities = true,
     starting,
-    ending,
+    suppressInactives = true,
   } = {}) {
     const {
       urlIds,
@@ -60,10 +91,11 @@ module.exports = {
     } = await this.getEligibleUrlsAndDeployments(campaign, { starting, ending });
 
     const identityEntities = await this.getEligibleIdentityEntities(campaign, tenant, {
-      suppressInactives,
-      enforceMaxIdentities,
-      urlIds,
+      customClickFilterParams,
       deploymentEntities,
+      enforceMaxIdentities,
+      suppressInactives,
+      urlIds,
     });
 
     return {
@@ -106,20 +138,36 @@ module.exports = {
     return pipeline;
   },
 
+  /**
+   * @param {Campaign} campaign
+   * @param {LeadsTenant} tenant
+   * @param {object} params
+   * @param {BuildClickFilterParams} [params.customClickFilterParams]
+   * @param {string[]} params.deploymentEntities
+   * @param {boolean} [params.enforceMaxIdentities=true]
+   * @param {boolean} [params.suppressInactives=true]
+   * @param {import("mongodb").ObjectId[]} params.urlIds
+   * @returns
+   */
   async getEligibleIdentityEntities(campaign, tenant, {
-    urlIds,
+    customClickFilterParams,
     deploymentEntities,
-    suppressInactives = true,
     enforceMaxIdentities = true,
+    suppressInactives = true,
+    urlIds,
   } = {}) {
     const { maxIdentities } = campaign;
     const { enforceMaxEmailDomains } = campaign.email;
+
+    const clickFilter = customClickFilterParams
+      ? buildClickFilter(customClickFilterParams)
+      : getValidClickCriteria({ campaign, tenant });
 
     const $match = {
       date: { $gte: campaign.startDate },
       url: { $in: urlIds },
       dep: { $in: deploymentEntities },
-      ...getValidClickCriteria(tenant, campaign.startDate),
+      ...clickFilter,
     };
 
     const pipeline = [];
@@ -144,14 +192,20 @@ module.exports = {
 
   getEmailDomainAggregationStages() {
     const publicDomains = [
+      'aol.com',
+      'apple.com',
+      'att.net',
+      'bellsouth.net',
+      'comcast.net',
       'gmail.com',
       'googlemail.com',
-      'yahoo.com',
       'hotmail.com',
+      'icloud.com',
       'msn.com',
       'outlook.com',
-      'icloud.com',
-      'aol.com',
+      'sbcglobal.net',
+      'verizon.net',
+      'yahoo.com',
     ];
 
     return [
@@ -487,3 +541,8 @@ module.exports = {
     return reduced;
   },
 };
+
+/**
+ * @typedef {import("@lead-management/tenant-loader").LeadsTenant} LeadsTenant
+ * @typedef {import("../utils/email-clicks").BuildClickFilterParams} BuildClickFilterParams
+ */

@@ -9,7 +9,7 @@ const buildUrl = ({ endpoint, params }) => {
   return `${BASE_URI}/${endpoint}${query}`;
 };
 
-module.exports = {
+const cms = {
   /**
    *
    */
@@ -55,3 +55,9 @@ module.exports = {
     return fetch(url);
   },
 };
+
+module.exports = cms;
+
+/**
+ * @typedef {typeof cms} BrightcoveCMSApi
+ */

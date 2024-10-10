@@ -1,7 +1,40 @@
+{{#if displayClickFilterOptions}}
+  <div class="row">
+    <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
+      <form class="card mb-3" {{action "applyFilterRules" on="submit"}}>
+        <div class="card-header">
+          <strong>Test Custom Click Filter Rules</strong>
+        </div>
+        <div class="card-body">
+          <p class="card-text">
+            Use these rules are for <em>testing purposes only</em>. Do not share the URL in the browser with advertisers.
+          </p>
+          {{#each this.model.clickFilterRules key="@index" as |rule index|}}
+            {{click-filter/rule
+              class="mt-3"
+              model=rule
+              onRemove=(action "removeFilterRule" index)
+            }}
+          {{/each}}
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+          <button class="btn btn-primary" {{action "addNewFilterRule"}} type="button">
+            {{entypo-icon "plus"}}
+            Add
+          </button>
+          <button class="btn btn-success" type="submit">
+            {{entypo-icon "check"}}
+            Apply
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+{{/if}}
 <div class="row mb-3">
   <div class="col">
     <p class="mb-0">
-      {{lead-report-download action="campaign.emailLeads" hash=model.hash name="Email Leads"}}
+      {{lead-report-download action="campaign.emailLeads" hash=model.campaign.hash name="Email Leads"}}
     </p>
     <small class="text-muted">
       Note: Metrics reflect total clicks. Employee clicks for testing purposes and bad email addresses are removed from customer lead reports.

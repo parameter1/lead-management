@@ -25,6 +25,11 @@
   padding: 2px;
 }
 
+// add padding so multiple selections do not conflict with dropdown
+.ember-power-select-multiple-trigger {
+  padding-right: 20px;
+}
+
 .ember-power-select-option {
   padding: 2px 8px;
 }

@@ -10,8 +10,8 @@
   </div>
   {{#if model.enabled}}
     <div class="row mt-3">
-      <div class="col-lg-6 mnh-100">
-        <div class="card mnh-100">
+      <div class="col-lg-6">
+        <div class="card">
           <div class="card-header">
             Email URL/Link Rules
           </div>
@@ -114,8 +114,15 @@
         </div>
 
         {{campaign-identity-filter
+          class="mb-3"
           filters=model.identityFilters
           on-change=(action "updateIdentityFilters")
+        }}
+
+        {{campaign-click-filter-rules
+          campaignId=model.id
+          onMutateComplete=(action (mut model.clickRules))
+          rules=model.clickRules
         }}
 
       </div>

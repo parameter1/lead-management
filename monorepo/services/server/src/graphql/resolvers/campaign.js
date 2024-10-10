@@ -1,3 +1,4 @@
+const Joi = require('@parameter1/joi');
 const { gql, UserInputError } = require('apollo-server-express');
 const { get } = require('@parameter1/utils');
 const fetch = require('node-fetch');
@@ -18,6 +19,7 @@ const adReportService = require('../../services/ad-report');
 const identityAttributes = require('../../services/identity-attributes');
 const redis = require('../../redis');
 const getBrightcoveReport = require('../utils/brightcove-get-report');
+const { buildClickFilterSchema } = require('../../utils/email-clicks');
 
 const { isArray } = Array;
 
@@ -266,7 +268,16 @@ module.exports = {
   /**
    *
    */
+  EmailCampaignClickRule: {
+    codes: ({ allowUnrealCodes }) => (Array.isArray(allowUnrealCodes) ? allowUnrealCodes : []),
+    seconds: ({ seconds }) => seconds || 0,
+  },
+
+  /**
+   *
+   */
   EmailCampaign: {
+    clickRules: ({ clickRules }) => (Array.isArray(clickRules) ? clickRules : []),
     tags: ({ tagIds }, _, { loaders }) => loaders.tag.loadMany(tagIds),
     excludedTags: ({ excludedTagIds }, _, { loaders }) => loaders.tag.loadMany(excludedTagIds),
 
@@ -780,6 +791,43 @@ module.exports = {
       record.deleted = true;
       await record.save();
       return 'ok';
+    },
+
+    /**
+     * @typedef EmailCampaignClickRuleInput
+     * @prop {import("../../utils/email-clicks").UnrealClickCode[]} codes
+     * @prop {number} seconds
+     *
+     * @param {void} _
+     * @param {object} args
+     * @param {object} args.input
+     * @param {string} args.input.id
+     * @param {EmailCampaignClickRuleInput[]} args.input.rules
+     *
+     * @param {import("../context").LeadsGraphQLContext} contextValue
+     */
+    emailCampaignClickRules: async (_, { input }, { auth }) => {
+      auth.check();
+      const { id, rules } = input;
+
+      // merge into a single object
+      const merged = rules.reduce((o, { seconds, codes }) => ({
+        ...o,
+        [seconds]: {
+          allowUnrealCodes: [...codes, ...(o[seconds] ? o[seconds].allowUnrealCodes : [])],
+        },
+      }), {});
+
+      // validate
+      Joi.attempt({ secondsSinceSentTime: merged }, buildClickFilterSchema.required());
+
+      const campaign = await findEmailCampaign(id);
+      campaign.set('email.clickRules', Object.keys(merged).map((secs) => ({
+        allowUnrealCodes: merged[secs].allowUnrealCodes,
+        seconds: parseInt(secs, 10),
+      })));
+      await campaign.save();
+      return campaign.email;
     },
 
     /**

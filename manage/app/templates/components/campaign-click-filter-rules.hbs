@@ -1,0 +1,42 @@
+{{#if show}}
+  <form class="card" {{action "save" on="submit"}}>
+    <div class="card-header">
+      {{this.title}}
+    </div>
+    <div class="card-body">
+      {{#each this.rules as |rule|}}
+        {{click-filter/rule
+          class="mb-3"
+          disabled=isActionRunning
+          model=rule
+          onChange=(action "setTouched" true)
+          onRemove=(action "remove" rule false)
+        }}
+      {{/each}}
+      {{#each this.newRules as |rule|}}
+        {{click-filter/rule
+          class="mb-3"
+          disabled=isActionRunning
+          isEditing=true
+          model=rule
+          onChange=(action "setTouched" true)
+          onRemove=(action "remove" rule true)
+        }}
+      {{/each}}
+      <div class="d-flex justify-content-between">
+        <button {{action "add"}} class="btn btn-primary" type="button" disabled={{isActionRunning}}>
+          {{entypo-icon "plus"}}
+          Add
+        </button>
+        <div>
+          {{#if this.touched}}
+            <button class="btn btn-success" type="submit" disabled={{isActionRunning}}>
+              {{entypo-icon "check"}}
+              Save
+            </button>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+  </form>
+{{/if}}

@@ -59,14 +59,16 @@ module.exports = {
    */
   Query: {
     /**
-     *
+     * @param {void} _
+     * @param {object} args
+     * @param {LeadsGraphQLContext} contextValue
      */
-    reportEmailMetrics: async (root, {
+    reportEmailMetrics: async (_, {
       hash,
       sort,
       starting,
       ending,
-    }, { tenant }) => {
+    }, { customClickFilterParams, tenant }) => {
       const campaign = await Campaign.findByHash(hash);
 
       const {
@@ -74,10 +76,10 @@ module.exports = {
         urlIds,
         deploymentEntities,
       } = await emailReportService.getClickEventIdentifiers(campaign, tenant, {
-        // allows all idenities to be considered, not just the max of 200.
-        enforceMaxIdentities: false,
-        starting,
+        customClickFilterParams,
         ending,
+        enforceMaxIdentities: false, // allows all idenities to be eval'd, not just the max of 200.
+        starting,
       });
 
       const $match = {
@@ -107,16 +109,20 @@ module.exports = {
     },
 
     /**
-     *
+     * @param {void} _
+     * @param {object} args
+     * @param {LeadsGraphQLContext} contextValue
      */
-    reportEmailActivity: async (root, { hash }, { tenant }) => {
+    reportEmailActivity: async (_, { hash }, { customClickFilterParams, tenant }) => {
       const campaign = await Campaign.findByHash(hash);
 
       const {
         identityEntities,
         urlIds,
         deploymentEntities,
-      } = await emailReportService.getClickEventIdentifiers(campaign, tenant);
+      } = await emailReportService.getClickEventIdentifiers(campaign, tenant, {
+        customClickFilterParams,
+      });
 
       const $match = {
         idt: { $in: identityEntities },
@@ -173,14 +179,21 @@ module.exports = {
     },
 
     /**
-     *
+     * @param {void} _
+     * @param {object} args
+     * @param {LeadsGraphQLContext} contextValue
      */
-    reportEmailIdentities: async (root, { hash, pagination, sort }, { tenant }) => {
+    reportEmailIdentities: async (_, { hash, pagination, sort }, {
+      customClickFilterParams,
+      tenant,
+    }) => {
       const campaign = await Campaign.findByHash(hash);
 
       const {
         identityEntities,
-      } = await emailReportService.getClickEventIdentifiers(campaign, tenant);
+      } = await emailReportService.getClickEventIdentifiers(campaign, tenant, {
+        customClickFilterParams,
+      });
 
       const criteria = { entity: { $in: identityEntities } };
       const projection = await emailReportService.identityFieldProjection(campaign);
@@ -224,3 +237,7 @@ module.exports = {
     // },
   },
 };
+
+/**
+ * @typedef {import("../context").LeadsGraphQLContext} LeadsGraphQLContext
+ */

@@ -1,6 +1,16 @@
 const OmedaApiClient = require('@parameter1/omeda-api-client');
 const { createHash } = require('crypto');
 
+/**
+ * @typedef {OmedaApiClient} OmedaApiClient
+ */
+
+/**
+ * @param {object} params
+ * @param {string} params.appId
+ * @param {string} params.brand
+ * @returns {OmedaApiClient}
+ */
 module.exports = ({ appId, brand } = {}) => {
   const client = new OmedaApiClient({
     appId,

@@ -1,4 +1,5 @@
 const loadTenant = require('@lead-management/tenant-loader');
+const { parse } = require('querystring');
 const { HOST_NAME, TENANT_KEY } = require('../env');
 const loaders = require('./dataloaders');
 const brightcove = require('../brightcove/api');
@@ -6,7 +7,23 @@ const gam = require('./schema/gam/executor');
 
 module.exports = async ({ req }) => {
   const tenant = await loadTenant({ key: TENANT_KEY });
+
+  let customClickFilterParams;
+  if (req.get('x-custom-click-filter-query')) {
+    const query = parse(req.get('x-custom-click-filter-query'));
+    const secondsSinceSentTime = Object.keys(query).filter((key) => {
+      if (!/\d+/.test(key)) return false;
+      return parseInt(key, 10) >= 0;
+    }).reduce((o, key) => ({
+      ...o,
+      [key]: { allowUnrealCodes: query[key].split(',').filter((v) => v) },
+    }), {});
+    customClickFilterParams = { allowLegacy: true, secondsSinceSentTime };
+  }
+
+  /** @type {LeadsGraphQLContext} */
   return {
+    ...(customClickFilterParams && { customClickFilterParams }),
     tenant,
     auth: req.auth,
     host: HOST_NAME,
@@ -15,3 +32,14 @@ module.exports = async ({ req }) => {
     brightcove,
   };
 };
+
+/**
+ * @typedef LeadsGraphQLContext
+ * @prop {import("../utils/email-clicks").BuildClickFilterParams} [customClickFilterParams]
+ * @prop {import("./auth").Auth} auth
+ * @prop {import("../brightcove/api/index").BrightcoveApis} brightcove
+ * @prop {import("./schema/gam/executor").GAMExecutorFunc} gam
+ * @prop {import("./dataloaders").LeadsGraphQLDataLoaders} loaders
+ * @prop {string} host
+ * @prop {import("@lead-management/tenant-loader").LeadsTenant} tenant
+ */

@@ -1,0 +1,9 @@
+mutation CampaignEditEmailClickRules($input: EmailCampaignClickRulesInput!) {
+  emailCampaignClickRules(input: $input) {
+    id
+    clickRules {
+      allowUnrealCodes: codes
+      seconds
+    }
+  }
+}

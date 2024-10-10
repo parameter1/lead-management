@@ -4,13 +4,15 @@ const { validateAsync } = require('@parameter1/joi/utils');
 /**
  * Loads Omeda deployment(s).
  *
+ * @typedef OmedaDeployment
+ * @prop {Record<string, any>} data
+ * @prop {string} trackId
+ * @prop {string} entity
+ *
  * @param {object} params
  * @param {string} params.trackIds
- * @param {object} tenant
- * @param {object} tenant.doc
- * @param {object} tenant.db
- * @param {object} tenant.omeda
- * @returns {Map} The deployments mapped by track ID.
+ * @param {import("@lead-management/tenant-loader").LeadsTenant} tenant
+ * @returns {Map<string, OmedaDeployment>} The deployments mapped by track ID.
  */
 module.exports = async (params = {}, { omeda } = {}) => {
   const { trackIds } = await validateAsync(Joi.object({

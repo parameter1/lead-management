@@ -30,6 +30,15 @@ export default ApolloService.extend({
   }),
 
   _runAuthorize() {
+    const customClickFilter = (() => {
+      if (!window.location.search) return null;
+      const params = new URLSearchParams(window.location.search);
+      if (!params.has('customClickFilter')) return null;
+      params.set('customClickFilter', true);
+      return `${params}`;
+    })();
+
+
     const headers = {};
     if (!this.get('session.isAuthenticated')) {
       return { headers };
@@ -37,6 +46,7 @@ export default ApolloService.extend({
     return new Promise((resolve) => {
       const data = this.get('session.data.authenticated.session');
       headers['Authorization'] = `Bearer ${get(data, 'token')}`;
+      if (customClickFilter) headers['x-custom-click-filter-query'] = customClickFilter;
       resolve({ headers })
     });
   }

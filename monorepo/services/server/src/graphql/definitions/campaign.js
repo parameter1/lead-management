@@ -24,6 +24,7 @@ extend type Mutation {
   cloneCampaign(input: ModelIdInput!): Campaign!
   deleteCampaign(input: ModelIdInput!): String!
 
+  emailCampaignClickRules(input: EmailCampaignClickRulesInput!): EmailCampaign!
   emailCampaignTags(input: EmailCampaignTagsInput!): EmailCampaign!
   emailCampaignExcludedTags(input: EmailCampaignExcludedTagsInput!): EmailCampaign!
   emailCampaignLinkTypes(input: EmailCampaignLinkTypesInput!): EmailCampaign!
@@ -122,6 +123,7 @@ type AdCampaign {
 
 type EmailCampaign {
   id: String!
+  clickRules: [EmailCampaignClickRule!]!
   enabled: Boolean!
   tags: [Tag]
   excludedTags: [Tag]
@@ -137,6 +139,11 @@ type EmailCampaign {
   urlGroups: [EmailCampaignUrlGroup!]!
   "Whether this email campaign has any eligible deployment data."
   hasDeployments: Boolean!
+}
+
+type EmailCampaignClickRule {
+  codes: [Int!]!
+  seconds: Int!
 }
 
 type IdentityAttribute {
@@ -283,6 +290,16 @@ input UpdateCampaignPayloadInput {
 input UpdateCampaignInput {
   id: String!
   payload: UpdateCampaignPayloadInput!
+}
+
+input EmailCampaignClickRulesInput {
+  id: String!
+  rules: [EmailCampaignClickRuleInput!]!
+}
+
+input EmailCampaignClickRuleInput {
+  codes: [Int!]!
+  seconds: Int!
 }
 
 input EmailCampaignTagsInput {

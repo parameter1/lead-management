@@ -9,7 +9,7 @@ const buildUrl = ({ endpoint, params }) => {
   return `${BASE_URI}/${endpoint}${query}`;
 };
 
-module.exports = {
+const analytics = {
   /**
    * @todo return full response obj along with passed params
    *
@@ -59,3 +59,9 @@ module.exports = {
     return fetch(url);
   },
 };
+
+module.exports = analytics;
+
+/**
+ * @typedef {typeof analytics} BrightcoveAnalyticsApi
+ */

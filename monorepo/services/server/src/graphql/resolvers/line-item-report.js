@@ -57,16 +57,20 @@ module.exports = {
    */
   Query: {
     /**
-     *
+     * @param {void} _
+     * @param {object} args
+     * @param {LeadsGraphQLContext} contextValue
      */
-    emailLineItemMetricsReport: async (root, { hash, sort }, { tenant }) => {
+    emailLineItemMetricsReport: async (_, { hash, sort }, { customClickFilterParams, tenant }) => {
       const lineitem = await EmailLineItem.findByHash(hash);
 
       const {
         identityEntities,
         urlIds,
         deploymentEntities,
-      } = await emailReportService.getClickEventIdentifiers(lineitem, tenant);
+      } = await emailReportService.getClickEventIdentifiers(lineitem, tenant, {
+        customClickFilterParams,
+      });
 
       const $match = {
         idt: { $in: identityEntities },
@@ -89,14 +93,21 @@ module.exports = {
     },
 
     /**
-     *
+     * @param {void} _
+     * @param {object} args
+     * @param {LeadsGraphQLContext} contextValue
      */
-    emailLineItemIdentitiesReport: async (root, { hash, pagination, sort }, { tenant }) => {
+    emailLineItemIdentitiesReport: async (_, { hash, pagination, sort }, {
+      customClickFilterParams,
+      tenant,
+    }) => {
       const lineitem = await EmailLineItem.findByHash(hash);
 
       const {
         identityEntities,
-      } = await emailReportService.getClickEventIdentifiers(lineitem, tenant);
+      } = await emailReportService.getClickEventIdentifiers(lineitem, tenant, {
+        customClickFilterParams,
+      });
 
       const criteria = { entity: { $in: identityEntities } };
       const projection = await emailReportService.identityFieldProjection(lineitem);
@@ -109,12 +120,19 @@ module.exports = {
     },
 
     /**
-     *
+     * @param {void} _
+     * @param {object} args
+     * @param {LeadsGraphQLContext} contextValue
      */
-    emailLineItemIdentityExportReport: async (root, { hash, pagination, sort }, { tenant }) => {
+    emailLineItemIdentityExportReport: async (_, { hash, pagination, sort }, {
+      customClickFilterParams,
+      tenant,
+    }) => {
       const lineitem = await EmailLineItem.findByHash(hash);
 
-      const pipeline = await emailReportService.buildExportPipeline(lineitem, tenant);
+      const pipeline = await emailReportService.buildExportPipeline(lineitem, tenant, {
+        customClickFilterParams,
+      });
 
       // @todo This isn't as effecient as it could be.
       // The match phase could be limited by the incoming after cursor, as well as the first value.
@@ -134,16 +152,20 @@ module.exports = {
     },
 
     /**
-     *
+     * @param {void} _
+     * @param {object} args
+     * @param {LeadsGraphQLContext} contextValue
      */
-    emailLineItemActivityReport: async (root, { hash }, { tenant }) => {
+    emailLineItemActivityReport: async (_, { hash }, { customClickFilterParams, tenant }) => {
       const lineitem = await EmailLineItem.findByHash(hash);
 
       const {
         identityEntities,
         urlIds,
         deploymentEntities,
-      } = await emailReportService.getClickEventIdentifiers(lineitem, tenant);
+      } = await emailReportService.getClickEventIdentifiers(lineitem, tenant, {
+        customClickFilterParams,
+      });
 
       const $match = {
         idt: { $in: identityEntities },
@@ -175,3 +197,7 @@ module.exports = {
     },
   },
 };
+
+/**
+ * @typedef {import("../context").LeadsGraphQLContext} LeadsGraphQLContext
+ */

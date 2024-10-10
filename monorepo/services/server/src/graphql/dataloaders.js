@@ -37,7 +37,7 @@ const createEntityBatchFn = (Model) => async (entities) => {
   return entities.map((entity) => map.get(entity));
 };
 
-module.exports = {
+const loaders = {
   campaign: new DataLoader(createBatchFn(Campaign)),
   customer: new DataLoader(createBatchFn(Customer)),
   deploymentTypeEntity: new DataLoader(createEntityBatchFn(OmedaDeploymentType)),
@@ -64,3 +64,9 @@ module.exports = {
     return domains.map((domain) => map.get(domain));
   }),
 };
+
+module.exports = loaders;
+
+/**
+ * @typedef {Record<keyof loaders, DataLoader>} LeadsGraphQLDataLoaders
+ */
