@@ -39,15 +39,14 @@ export default ApolloService.extend({
     })();
 
 
-    const headers = {
-      ...(customClickFilter && { 'x-custom-click-filter-query': customClickFilter }),
-    };
+    const headers = {};
     if (!this.get('session.isAuthenticated')) {
       return { headers };
     }
     return new Promise((resolve) => {
       const data = this.get('session.data.authenticated.session');
       headers['Authorization'] = `Bearer ${get(data, 'token')}`;
+      if (customClickFilter) headers['x-custom-click-filter-query'] = customClickFilter;
       resolve({ headers })
     });
   }
