@@ -36,7 +36,7 @@ module.exports = async ({ req }) => {
 /**
  * @typedef LeadsGraphQLContext
  * @prop {import("../utils/email-clicks").BuildClickFilterParams} [customClickFilterParams]
- * @prop {import("./auth").Auth} [auth]
+ * @prop {import("./auth").Auth} auth
  * @prop {import("../brightcove/api/index").BrightcoveApis} brightcove
  * @prop {import("./schema/gam/executor").GAMExecutorFunc} gam
  * @prop {import("./dataloaders").LeadsGraphQLDataLoaders} loaders
