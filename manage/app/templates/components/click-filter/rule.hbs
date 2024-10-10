@@ -6,6 +6,7 @@
       <span class="d-block ml-1 mb-1">When the most recent click was</span>
       {{input
         class="form-control"
+        disabled=disabled
         min="0"
         required=true
         type="number"
@@ -17,6 +18,7 @@
     <div class="form-group mb-0">
       <span class="d-block ml-1 mb-1">Include clicks with unreal codes</span>
       {{click-filter/unreal-code-select
+        disabled=disabled
         onChange=(action "setAllowedCodes")
         placeholder="(none)"
         selected=this.model.allowUnrealCodes
@@ -25,7 +27,7 @@
     </div>
   </div>
   <div class="card-footer d-flex justify-content-end">
-    <button {{action onRemove}} class="btn btn-danger mt-auto mb-auto" title="Remove this click filter rule" type="button">
+    <button {{action onRemove}} class="btn btn-danger mt-auto mb-auto" disabled={{disabled}} title="Remove this click filter rule" type="button">
       {{entypo-icon "cross"}} Remove
     </button>
   </div>
