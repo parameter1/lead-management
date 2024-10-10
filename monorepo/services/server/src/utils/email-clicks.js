@@ -16,20 +16,22 @@ const validators = {
   }).default().label('buildClickFilter'),
 };
 
+/**
+ * @param {object} params
+ * @param {Date} [params.end]
+ * @param {UnrealClickCode[]} params.codes
+ * @param {Date} params.start
+ */
+const unrealClicksFor = ({ end, codes, start }) => ({
+  invalid: {
+    $elemMatch: {
+      time: { $gte: start, ...(end && { $lt: end }) },
+      code: { $in: codes },
+    },
+  },
+});
+
 const onlyRealClicks = () => ({ n: { $gt: 0 } });
-
-/**
- * @param {UnrealClickCode[]} codes
- */
-const onlyUnrealClicks = (codes) => ({ 'invalid.code': { $in: codes } });
-
-/**
- * @param {UnrealClickCode[]} [codes]
- */
-const realAndMaybeUnrealClicks = (codes) => {
-  if (codes?.length) return { $or: [onlyRealClicks(), onlyUnrealClicks(codes)] };
-  return onlyRealClicks();
-};
 
 /**
  * @param {BuildClickFilterParams} params
@@ -88,11 +90,14 @@ const buildClickFilter = (params) => {
       return arr;
     }, []);
 
-    const $or = ranges.map(({ range, config }) => ({
-      time: { $gte: range[0], ...(range[1] && { $lt: range[1] }) },
-      ...realAndMaybeUnrealClicks(config.allowUnrealCodes),
-    }));
-    return { $or };
+    const maybeUnrealClicks = ranges
+      .filter(({ config }) => config.allowUnrealCodes?.length)
+      .map(({ range, config }) => unrealClicksFor({
+        end: range[1],
+        codes: config.allowUnrealCodes,
+        start: range[0],
+      }));
+    return { $or: [onlyRealClicks(), ...maybeUnrealClicks] };
   }
 
   // only allow real clicks to be returned when no options have been provided.
