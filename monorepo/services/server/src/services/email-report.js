@@ -1,5 +1,4 @@
 const { getAsArray } = require('@parameter1/utils');
-const { inspect } = require('util');
 const escapeRegex = require('escape-string-regexp');
 const {
   Campaign,
@@ -167,8 +166,6 @@ module.exports = {
         startDate: campaign.startDate,
         tenant,
       });
-
-    console.log(inspect(clickFilter, { colors: true, depth: null }));
 
     const $match = {
       date: { $gte: campaign.startDate },
