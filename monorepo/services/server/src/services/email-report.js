@@ -1,4 +1,5 @@
 const { getAsArray } = require('@parameter1/utils');
+const { inspect } = require('util');
 const escapeRegex = require('escape-string-regexp');
 const {
   Campaign,
@@ -18,19 +19,20 @@ const usesOmeda = new Set(['lynchm', 'indm']);
 
 /**
  * @param {object} params
- * @param {Campaign} params.campaign
+ * @param {import("../mongodb/schema/campaign").EmailCampaignClickRule[]} [params.clickRules]
+ * @param {Date} [params.startDate]
  * @param {LeadsTenant} params.tenant
  * @returns
  */
-const getValidClickCriteria = ({ campaign, tenant } = {}) => {
+const getValidClickCriteria = ({ clickRules, startDate, tenant } = {}) => {
   if (!tenant) throw new Error('Tenant configuration was not passed!');
   const codes = getAsArray(tenant, 'doc.omeda.disallowedUnrealClickCodes');
 
-  if (campaign?.email?.clickRules?.length && usesOmeda.has(tenant.key)) {
+  if (clickRules?.length && usesOmeda.has(tenant.key)) {
     /** @type {import("../utils/email-clicks").BuildClickFilterParams} */
     const params = {
-      secondsSinceSentTime: campaign.email.clickRules
-        .reduce((o, { seconds, allowUnrealCodes }) => ({
+      secondsSinceSentTime: clickRules
+        .reduce((o, { seconds = 0, allowUnrealCodes = [] }) => ({
           ...o,
           [seconds]: {
             allowUnrealCodes: [
@@ -43,7 +45,6 @@ const getValidClickCriteria = ({ campaign, tenant } = {}) => {
     return buildClickFilter(params);
   }
 
-  const startDate = campaign;
   if (
     startDate
     && (Number(startDate) >= Number(new Date('06/01/2024')))
@@ -161,7 +162,13 @@ module.exports = {
 
     const clickFilter = customClickFilterParams
       ? buildClickFilter(customClickFilterParams)
-      : getValidClickCriteria({ campaign, tenant });
+      : getValidClickCriteria({
+        clickRules: campaign.email?.clickRules,
+        startDate: campaign.startDate,
+        tenant,
+      });
+
+    console.log(inspect(clickFilter, { colors: true, depth: null }));
 
     const $match = {
       date: { $gte: campaign.startDate },
