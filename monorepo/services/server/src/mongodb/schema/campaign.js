@@ -122,6 +122,11 @@ const adsSchema = new Schema({
   },
 });
 
+/**
+ * @typedef EmailCampaignClickRule
+ * @prop {number} [seconds]
+ * @prop {import("../../utils/email-clicks").UnrealClickCode} [allowUnrealCodes]
+ */
 const clickRulesSchema = new Schema({
   seconds: {
     type: Number,
