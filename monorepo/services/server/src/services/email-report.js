@@ -70,10 +70,7 @@ const getValidClickCriteria = ({
       ],
     };
   }
-  return {
-    n: { $gt: 0 },
-    'invalid.0': { $exists: false },
-  };
+  return buildClickFilter();
 };
 
 module.exports = {
