@@ -36,7 +36,7 @@ const unrealClicksFor = ({ end, codes, start }) => ({
 const onlyRealClicks = () => ({ n: { $gt: 0 } });
 
 /**
- * @param {BuildClickFilterParams} params
+ * @param {BuildClickFilterParams} [params]
  */
 const buildClickFilter = (params) => {
   /** @type {BuildClickFilterParams} */
