@@ -149,7 +149,7 @@ module.exports = {
 
     const clickFilter = customClickFilterParams
       ? buildClickFilter(customClickFilterParams)
-      : emailCampaignReport.getValidClickCriteria({ startDate: lineitem.range.start, tenant });
+      : emailCampaignReport.getValidClickCriteria({ createdAt: lineitem.createdAt, tenant });
 
     const $match = {
       url: { $in: urlIds },

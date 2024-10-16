@@ -19,11 +19,17 @@ const usesOmeda = new Set(['lynchm', 'indm']);
 /**
  * @param {object} params
  * @param {import("../mongodb/schema/campaign").EmailCampaignClickRule[]} [params.clickRules]
+ * @param {Date} [params.createdAt]
  * @param {Date} [params.startDate]
  * @param {LeadsTenant} params.tenant
  * @returns
  */
-const getValidClickCriteria = ({ clickRules, startDate, tenant } = {}) => {
+const getValidClickCriteria = ({
+  clickRules,
+  createdAt,
+  startDate,
+  tenant,
+} = {}) => {
   if (!tenant) throw new Error('Tenant configuration was not passed!');
   const codes = getAsArray(tenant, 'doc.omeda.disallowedUnrealClickCodes');
 
@@ -44,12 +50,17 @@ const getValidClickCriteria = ({ clickRules, startDate, tenant } = {}) => {
     return buildClickFilter(params);
   }
 
+  const date = createdAt || startDate;
+
   if (
-    startDate
-    && (Number(startDate) >= Number(new Date('06/01/2024')))
-    && usesOmeda.has(tenant.key)
+    date && date >= new Date('2024-06-01')
+    && ['indm', 'lynchm'].includes(tenant.key)
   ) {
-    codes.push(1, 3);
+    return buildClickFilter({
+      secondsSinceSentTime: {
+        300: { allowUnrealCodes: [1, 3, 10] },
+      },
+    });
   }
   if (codes.length) {
     return {
@@ -163,7 +174,7 @@ module.exports = {
       ? buildClickFilter(customClickFilterParams)
       : getValidClickCriteria({
         clickRules: campaign.email?.clickRules,
-        startDate: campaign.startDate,
+        createdAt: campaign.createdAt,
         tenant,
       });
 
