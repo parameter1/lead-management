@@ -1,10 +1,14 @@
 import Component from '@ember/component';
+import { computed } from '@ember/object';
+import { inject } from '@ember/service';
 
 export default Component.extend({
-  init() {
-    this._super(...arguments);
-    this.set('options', [
-      1, 2, 3, 4, 5, 6, 7, 8, 9, 10
-    ]);
-  },
+  /**
+   *
+   */
+  unrealCodes: inject(),
+
+  labels: computed('selected.[]', function() {
+    return this.get('unrealCodes').convertCodesToOptions(this.get('selected'));
+  }),
 });
