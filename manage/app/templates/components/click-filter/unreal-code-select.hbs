@@ -1,10 +1,10 @@
 {{#power-select-multiple
   disabled=disabled
-  options=options
-  selected=selected
+  options=unrealCodes.options
+  selected=labels
   onchange=(action onChange)
   placeholder=placeholder
-  closeOnSelect=false as |code|
+  closeOnSelect=false as |label|
 }}
-  {{ code }}
+  {{ label }}
 {{/power-select-multiple}}

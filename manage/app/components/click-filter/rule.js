@@ -1,7 +1,13 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
+import { inject } from '@ember/service';
 
 export default Component.extend({
+  /**
+   *
+   */
+  unrealCodes: inject(),
+
   isEditing: false,
 
   minutes: computed('model.seconds', {
@@ -24,8 +30,8 @@ export default Component.extend({
   },
 
   actions: {
-    setAllowedCodes(codes) {
-      this.set('model.allowUnrealCodes', [...codes].sort((a, b) => a - b));
+    setAllowedCodes(options) {
+      this.set('model.allowUnrealCodes', this.get('unrealCodes').convertOptionsToCodes(options));
       this.emitOnChange();
     },
   },
