@@ -1,6 +1,6 @@
 {
   "name": "@lead-management/omeda",
-  "version": "1.13.0",
+  "version": "1.13.4",
   "main": "index.js",
   "repository": "https://github.com/parameter1/lead-management.git",
   "author": "Jacob Bare <jacob@parameter1.com>",
