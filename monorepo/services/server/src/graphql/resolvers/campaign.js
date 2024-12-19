@@ -299,7 +299,9 @@ module.exports = {
     /**
      * @todo find a way to not re-query the campaign here.
      */
-    urlGroups: async (emailCampaign) => {
+    urlGroups: async (emailCampaign, { input }) => {
+      const deploymentsFilter = input ? input.deploymentsFilter : null;
+      const deploymentsFilterRegEx = deploymentsFilter ? new RegExp(deploymentsFilter, 'i') : null;
       const { id } = emailCampaign;
       const campaign = await Campaign.findOne({ 'email._id': id });
       if (!campaign) return [];
@@ -310,13 +312,20 @@ module.exports = {
         const { deployment } = deploymentUrl;
         const { _id: urlId } = deploymentUrl.url;
         if (!m.has(`${urlId}`)) m.set(`${urlId}`, new Map());
-        m.get(`${urlId}`).set(deployment.entity, deployment);
+        if (
+          (deploymentsFilterRegEx && deployment.name.match(deploymentsFilterRegEx))
+          || !deploymentsFilterRegEx
+        ) {
+          m.get(`${urlId}`).set(deployment.entity, deployment);
+        }
         return m;
       }, new Map());
 
       const arr = [];
       map.forEach((deployments, urlId) => {
-        arr.push({ urlId, deployments, excludeUrls });
+        if (deployments.size) {
+          arr.push({ urlId, deployments, excludeUrls });
+        }
       });
       return arr;
     },
