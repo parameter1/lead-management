@@ -6,6 +6,20 @@
     </button>
   {{/modal.header}}
   {{#modal.body}}
+    <div class="d-flex flex-row">
+      <form>
+        <label for="deployments-filter">Filter Deployments</label>
+        <input type="text" id="deployments-filter" name="deployments-filter" value={{ model.deploymentsFilter }}>
+        <button type="submit" class="btn btn-success ml-2">
+          Apply Filter
+        </button>
+      </form>
+      <form class="pl-2">
+        <button type="submit" class="btn btn-primary">
+          Clear Filter
+        </button>
+      </form>
+    </div>
     {{email-campaign/url-groups
       urlGroups=model.urlGroups
       disabled=isActionRunning
