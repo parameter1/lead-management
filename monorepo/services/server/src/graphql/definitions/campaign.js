@@ -136,7 +136,7 @@ type EmailCampaign {
   displayDeliveredMetrics: Boolean
   enforceMaxEmailDomains: Boolean
   urlCount: Int!
-  urlGroups: [EmailCampaignUrlGroup!]!
+  urlGroups(input: EmailCampaignUrlGroupInput): [EmailCampaignUrlGroup!]!
   "Whether this email campaign has any eligible deployment data."
   hasDeployments: Boolean!
 }
@@ -400,6 +400,10 @@ input AdCampaignExcludedTrackersInput {
 input CampaignStatusInput {
   id: String!
   enabled: Boolean!
+}
+
+input EmailCampaignUrlGroupInput {
+  deploymentsFilter: String!
 }
 
 enum CampaignSortField {

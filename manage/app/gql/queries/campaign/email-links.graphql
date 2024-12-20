@@ -1,7 +1,27 @@
-#import 'leads-manage/gql/fragments/campaign/email-links'
-
-query CampaignEditEmailLinks($input: ModelIdInput!) {
+query CampaignEditEmailLinks($input: ModelIdInput!, $urlGroupsInput: EmailCampaignUrlGroupInput) {
   emailCampaign(input: $input) {
-    ...EmailCampaignLinksFragment
+    id
+    urlGroups(input: $urlGroupsInput) {
+      url {
+        id
+        title
+        values {
+          resolved
+        }
+      }
+      deploymentGroups {
+        active
+        deployment {
+          id
+          entity
+          name
+          typeDescription
+          sentDate
+          metrics {
+            sent
+          }
+        }
+      }
+    }
   }
 }

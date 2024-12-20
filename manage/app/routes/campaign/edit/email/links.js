@@ -5,9 +5,19 @@ import FormMixin from 'leads-manage/mixins/form-mixin';
 import query from 'leads-manage/gql/queries/campaign/email-links';
 
 export default Route.extend(FormMixin, RouteQueryManager, {
-  model() {
+  queryParams: {
+    'deployments-filter': '',
+  },
+
+  async model(params) {
     const id = this.modelFor('campaign.edit.email').get('id');
-    const variables = { input: { id } };
-    return this.get('apollo').watchQuery({ query, variables, fetchPolicy: 'network-only' }, 'emailCampaign');
+    const deploymentsFilter = params['deployments-filter'];
+    const urlGroupsInput = deploymentsFilter ? { deploymentsFilter } : null;
+    const variables = {
+      input: { id },
+      ...urlGroupsInput && { urlGroupsInput },
+    };
+    const result = await this.get('apollo').watchQuery({ query, variables, fetchPolicy: 'network-only' }, 'emailCampaign');
+    return {...result, deploymentsFilter };
   },
 });
