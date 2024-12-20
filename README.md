@@ -1,5 +1,19 @@
 # Lead Management Monorepo
 
+## Installation
+To set up a local developer environment using this repo, execute the following commands:
+```sh
+docker compose run --entrypoint /usr/local/bin/yarn manage
+docker compose run --entrypoint /usr/local/bin/yarn server
+```
+
+Then, the following commands to boot the server and ember applications:
+```sh
+docker compose up manage
+```
+
+The application will now be available on http://localhost:9285 (and the API on http://localhost:9288).
+
 ## Releases
 This repo contains two projects -- the `manage` ember application, and the `monorepo`. Both of the versions for these projects must remain in sync.
 Before releasing the monorepo, check if changes to the ember application should be deployed. If so, increment the ember app's package.json version accordingly before releasing via lerna.
