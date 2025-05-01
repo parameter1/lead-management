@@ -145,7 +145,7 @@ jobs:
             lead-management-service ${{ matrix.service.name }} \
             ${{ env.ECR_REGISTRY }}/${{ env.IMG_PREFIX }}-${{ matrix.service.name }}:${{ needs.version.outputs.version }}
         env:
-          RANCHER_CLUSTERID: ${{ secrets.RANCHER_CLUSTERID_MINDFUL }}
+          RANCHER_CLUSTERID: ${{ secrets.RANCHER_CLUSTERID_ADX }}
           RANCHER_TOKEN: ${{ secrets.RANCHER_TOKEN }}
           RANCHER_URL: ${{ secrets.RANCHER_URL }}
 
@@ -167,6 +167,6 @@ jobs:
             lead-automation-service ${{ matrix.service.name }} \
             ${{ env.ECR_REGISTRY }}/${{ env.IMG_PREFIX }}-${{ matrix.service.name }}:${{ needs.version.outputs.version }}
         env:
-          RANCHER_CLUSTERID: ${{ secrets.RANCHER_CLUSTERID_MINDFUL }}
+          RANCHER_CLUSTERID: ${{ secrets.RANCHER_CLUSTERID_ADX }}
           RANCHER_TOKEN: ${{ secrets.RANCHER_TOKEN }}
           RANCHER_URL: ${{ secrets.RANCHER_URL }}
