@@ -93,7 +93,7 @@ jobs:
       - name: Build docker image
         uses: docker/build-push-action@v2
         with:
-          context: monorepo/${{ matrix.service.path }}
+          context: monorepo
           push: true
           build-args: |
             SERVICE_PATH=${{ matrix.service.path }}
