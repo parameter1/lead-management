@@ -13,6 +13,6 @@ module.exports = [
   { key: 'phoneNumber', label: 'Phone #', adminOnly: true },
   { key: 'attributes.Industry', label: 'Industry' },
   { key: 'attributes.Job Function', label: 'Job Function' },
-  { key: 'attributes.Annual Revenue', label: 'Annual Revenue' },
+  { key: 'attributes.Annual Sales', label: 'Annual Sales' },
   // { key: 'attributes.NAICS Code', label: 'NAICS' },
 ];
