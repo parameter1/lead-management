@@ -9,7 +9,7 @@ ARG SERVICE_PATH
 ADD $SERVICE_PATH /app/$SERVICE_PATH
 
 # @todo purge unused packages/dependencies
-RUN yarn --production --frozen-lockfile
+RUN yarn --production --pure-lockfile
 
 FROM node:14.16-alpine
 ENV NODE_ENV production
