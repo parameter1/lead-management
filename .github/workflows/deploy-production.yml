@@ -164,7 +164,7 @@ jobs:
         run: |
           npx @parameter1/rancher2cli dl \
             --wait --namespace ${{ env.TARGET_NAMESPACE }} \
-            lead-automation-service ${{ matrix.service.name }} \
+            lead-management-service ${{ matrix.service.name }} \
             ${{ env.ECR_REGISTRY }}/${{ env.IMG_PREFIX }}-${{ matrix.service.name }}:${{ needs.version.outputs.version }}
         env:
           RANCHER_CLUSTERID: ${{ secrets.RANCHER_CLUSTERID_ADX }}
