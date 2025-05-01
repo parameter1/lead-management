@@ -125,7 +125,7 @@ jobs:
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_region: us-east-2
           function_name: ${{ matrix.function }}
-          zip_file: dist/lambda.zip
+          zip_file: monorepo/dist/lambda.zip
           debug: true
 
   deploy-app:
