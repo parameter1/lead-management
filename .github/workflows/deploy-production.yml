@@ -80,8 +80,8 @@ jobs:
     strategy:
       matrix:
         service:
-          - { path: exports, name: exports }
-          - { path: server, name: server }
+          - { path: services/exports, name: exports }
+          - { path: services/server, name: server }
     steps:
       - uses: actions/checkout@v4
       - uses: docker/login-action@v1
@@ -93,7 +93,7 @@ jobs:
       - name: Build docker image
         uses: docker/build-push-action@v2
         with:
-          context: monorepo
+          context: monorepo/${{ matrix.service.path }}
           push: true
           build-args: |
             SERVICE_PATH=${{ matrix.service.path }}
@@ -157,8 +157,8 @@ jobs:
     strategy:
       matrix:
         service:
-          - { path: exports, name: exports }
-          - { path: server, name: server }
+          - { path: services/exports, name: exports }
+          - { path: services/server, name: server }
     steps:
       - name: Deploy to Kubernetes
         run: |
