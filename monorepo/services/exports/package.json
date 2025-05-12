@@ -1,6 +1,6 @@
 {
   "name": "@lead-management/exports-service",
-  "version": "1.13.4",
+  "version": "1.14.1",
   "main": "src/index.js",
   "repository": "https://github.com/parameter1/lead-management.git",
   "author": "Jacob Bare <jacob@parameter1.com>",
