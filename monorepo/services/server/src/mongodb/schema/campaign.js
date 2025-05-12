@@ -112,7 +112,7 @@ const adsSchema = new Schema({
   ],
   excludeFields: {
     type: [String],
-    default: ['phoneNumber'],
+    default: ['phoneNumber', 'attributes.Annual Sales'],
   },
   identityFilters: {
     type: [identityFilterSchema],
@@ -176,7 +176,7 @@ const emailSchema = new Schema({
   ],
   excludeFields: {
     type: [String],
-    default: ['phoneNumber', 'last'],
+    default: ['phoneNumber', 'last', 'attributes.Annual Sales'],
   },
   allowedLinkTypes: {
     type: [String],
